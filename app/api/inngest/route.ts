@@ -3,7 +3,8 @@ import { inngest } from "@/lib/inngest/client";
 import { 
   helloWorld, 
   sendWelcomeEmail,
-  processDataSync 
+  processDataSync,
+  logEventToDatabase 
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -11,6 +12,7 @@ export const { GET, POST, PUT } = serve({
   functions: [
     helloWorld,
     sendWelcomeEmail,
-    processDataSync
+    processDataSync,
+    logEventToDatabase
   ],
 });

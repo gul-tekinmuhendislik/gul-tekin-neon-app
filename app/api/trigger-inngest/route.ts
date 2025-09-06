@@ -38,9 +38,22 @@ export async function POST(request: Request) {
       });
       break;
       
+    case "log":
+      result = await inngest.send({
+        name: "app/event.log",
+        data: data || {
+          eventName: "test.event",
+          eventType: "test",
+          payload: { test: true },
+          metadata: { source: "api" },
+          sendNotification: false
+        }
+      });
+      break;
+      
     default:
       return NextResponse.json(
-        { error: "Invalid event type. Use 'hello' or 'signup'" },
+        { error: "Invalid event type. Use 'hello', 'signup', or 'log'" },
         { status: 400 }
       );
   }
