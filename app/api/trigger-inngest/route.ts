@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { inngest } from "@/src/inngest/client";
+import { inngest } from "@/lib/inngest/client";
 
 export const dynamic = "force-dynamic";
 
