@@ -23,9 +23,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Resend ücretsiz hesapta sadece @resend.dev adresleri kullanılabilir
+    // Domain doğrulanana kadar onboarding@resend.dev kullanıyoruz
     const fromEmail = "onboarding@resend.dev";
-    const toEmail = process.env.CONTACT_EMAIL_TO || "gultekinmuhendislik@gmail.com";
+    const toEmail = "info@gul-tekinmuhendislik.com";
     const apiKey = process.env.RESEND_API_KEY;
     
     console.log("🔧 Environment check:", {
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
     // Send email
     try {
       const data = await resend.emails.send({
-        from: fromEmail,
+        from: `Gül Tekin Website <${fromEmail}>`,
         to: toEmail, // Gerçek email adresinize gönderiliyor
         subject: `İletişim Formu: ${subject}`,
         replyTo: email,

@@ -5,8 +5,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET() {
   try {
-    // Resend ücretsiz hesapta sadece @resend.dev adresleri kullanılabilir
+    // Domain doğrulanana kadar onboarding@resend.dev kullanıyoruz
     const fromEmail = "onboarding@resend.dev";
+    const toEmail = "info@gul-tekinmuhendislik.com";
     const apiKey = process.env.RESEND_API_KEY;
     
     console.log("🔧 Testing email configuration...");
@@ -28,7 +29,7 @@ export async function GET() {
     // Test email
     const testData = await resend.emails.send({
       from: fromEmail,
-      to: fromEmail,
+      to: toEmail,
       subject: "Test Email - Gul Tekin Website",
       html: `
         <div style="font-family: Arial, sans-serif;">
@@ -49,7 +50,7 @@ export async function GET() {
       data: testData,
       config: {
         from: fromEmail,
-        to: fromEmail,
+        to: toEmail,
       }
     });
     
