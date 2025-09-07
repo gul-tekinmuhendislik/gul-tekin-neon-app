@@ -1,6 +1,7 @@
 import { inngest } from "./client";
 import { sql } from "../db";
 import Exa from "exa-js";
+import { generateAndSaveContent, engineeringTopics } from "../content-generator";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -179,8 +180,8 @@ export const searchAndSaveResults = inngest.createFunction(
     retries: 2
   },
   { 
-    // Run every 5 minutes
-    cron: "*/5 * * * *"
+    // Run every hour to respect API rate limits
+    cron: "0 * * * *"
   },
   async ({ step }) => {
     // Step 1: Initialize Exa client
@@ -198,9 +199,9 @@ export const searchAndSaveResults = inngest.createFunction(
       "Termosifonik Sistemler güneş enerjili su ısıtma"
     ];
     
-    // Get current topic index from database or use timestamp
-    const currentMinute = new Date().getMinutes();
-    const topicIndex = Math.floor(currentMinute / 5) % allTopics.length;
+    // Get current topic index based on hour
+    const currentHour = new Date().getHours();
+    const topicIndex = currentHour % allTopics.length;
     const searchQueries = [allTopics[topicIndex]];
     
     interface SearchResult {
@@ -227,10 +228,19 @@ export const searchAndSaveResults = inngest.createFunction(
         try {
           console.log(`Searching for: ${query}`);
           
-          // Perform search with Exa API
-          const results = await exa.search(query, {
+          // Perform search with Exa API - get content too
+          // Add date filter to get recent content (last 30 days)
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+          
+          const results = await exa.searchAndContents(query, {
             type: "auto",
-            numResults: 5
+            numResults: 5,  // Get more results to filter duplicates
+            startPublishedDate: thirtyDaysAgo.toISOString().split('T')[0],  // Recent content only
+            text: {
+              maxCharacters: 800,  // Reduced content size
+              includeHtmlTags: false
+            }
           });
           
           return {
@@ -265,6 +275,18 @@ export const searchAndSaveResults = inngest.createFunction(
         
         for (const result of searchData.results) {
           try {
+            // Check if URL already exists
+            const existing = await sql`
+              SELECT id FROM search_results 
+              WHERE result_url = ${result.url || ''}
+              LIMIT 1
+            `;
+            
+            if (existing.length > 0) {
+              console.log(`Skipping duplicate URL: ${result.url}`);
+              continue;
+            }
+            
             await sql`
               INSERT INTO search_results (
                 search_query,
@@ -290,15 +312,20 @@ export const searchAndSaveResults = inngest.createFunction(
                 ${JSON.stringify({
                   id: result.id,
                   summary: result.summary,
-                  publishedDate: result.publishedDate
+                  publishedDate: result.publishedDate,
+                  savedAt: new Date().toISOString()
                 })}
               )
+              ON CONFLICT (result_url) DO NOTHING
             `;
             
             queryCount++;
             savedCount.total++;
           } catch (error) {
-            console.error(`Error saving result for "${searchData.query}":`, error);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            if (!errorMessage.includes('duplicate key')) {
+              console.error(`Error saving result for "${searchData.query}":`, error);
+            }
           }
         }
         
@@ -362,6 +389,91 @@ export const searchAndSaveResults = inngest.createFunction(
       totalResultsSaved: savedResults.total,
       resultsByQuery: savedResults.queries,
       oldResultsDeleted: cleanupResult.deletedCount,
+      timestamp: new Date().toISOString()
+    };
+  }
+);
+
+// Content generation function with Groq and Exa
+export const generateEngineeringContent = inngest.createFunction(
+  {
+    id: "generate-engineering-content",
+    name: "Generate Engineering Content with AI",
+    retries: 2
+  },
+  {
+    // Run every 2 hours to respect Groq API rate limits
+    cron: "0 */2 * * *"
+  },
+  async ({ step }) => {
+    // Get current topic based on time
+    const currentHour = new Date().getHours();
+    const topicIndex = currentHour % engineeringTopics.length;
+    const currentTopic = engineeringTopics[topicIndex];
+    
+    // Step 1: Check if content was already generated for this topic today
+    const existingContent = await step.run("check-existing-content", async () => {
+      const result = await sql`
+        SELECT id, topic, created_at 
+        FROM generated_content 
+        WHERE topic = ${currentTopic}
+          AND created_at > CURRENT_DATE
+        LIMIT 1
+      `;
+      return result.length > 0 ? result[0] : null;
+    });
+    
+    if (existingContent) {
+      console.log(`Content already exists for ${currentTopic} today`);
+      return {
+        success: true,
+        message: "Content already generated today",
+        existingContentId: existingContent.id
+      };
+    }
+    
+    // Step 2: Generate new content
+    const contentResult = await step.run("generate-content", async () => {
+      try {
+        const result = await generateAndSaveContent(currentTopic);
+        return result;
+      } catch (error) {
+        console.error("Error generating content:", error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`Content generation failed: ${errorMessage}`);
+      }
+    });
+    
+    // Step 3: Log the operation
+    await step.run("log-content-generation", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'content.generation',
+          'automation',
+          'completed',
+          ${JSON.stringify({
+            topic: currentTopic,
+            contentId: contentResult.contentId
+          })},
+          ${JSON.stringify({
+            topicIndex: topicIndex,
+            timestamp: new Date().toISOString()
+          })}
+        )
+      `;
+    });
+    
+    return {
+      success: true,
+      topic: currentTopic,
+      contentId: contentResult.contentId,
+      createdAt: contentResult.createdAt,
       timestamp: new Date().toISOString()
     };
   }

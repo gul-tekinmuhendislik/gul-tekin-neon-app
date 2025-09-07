@@ -5,7 +5,8 @@ import {
   sendWelcomeEmail,
   processDataSync,
   logEventToDatabase,
-  searchAndSaveResults 
+  searchAndSaveResults,
+  generateEngineeringContent 
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -15,6 +16,7 @@ export const { GET, POST, PUT } = serve({
     sendWelcomeEmail,
     processDataSync,
     logEventToDatabase,
-    searchAndSaveResults
+    searchAndSaveResults,
+    generateEngineeringContent
   ],
 });
