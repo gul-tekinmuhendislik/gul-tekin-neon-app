@@ -40,6 +40,7 @@ const contentPrompt = `Sen, Gül-Tekin Mühendislik'in dijital içerik stratejis
 **Çıktı Formatı:**
 - Markdown formatında blog yazısı
 - SEO başlığı (50-60 karakter)
+- URL Slug (URL dostu format, Türkçe karakterler olmadan, küçük harf ve tire ile ayrılmış)
 - Meta açıklama (150-160 karakter)
 - En az 10 anahtar kelime
 - Bilgi kaynaklarını [1], [2] şeklinde numaralandır`;
@@ -117,6 +118,7 @@ Yukarıdaki araştırma verilerini kullanarak, "${topic}" konusunda detaylı bir
 
 Ayrıca şunları da ekle:
 - **SEO Başlığı:** (50-60 karakter)
+- **URL Slug:** (URL dostu format, örnek: isi-pompasi-sistemleri)
 - **Meta Açıklama:** (150-160 karakter)
 - **Anahtar Kelimeler:** (virgülle ayrılmış en az 10 kelime)`
         }
@@ -130,16 +132,19 @@ Ayrıca şunları da ekle:
     
     // Parse SEO elements from content
     const seoTitleMatch = content.match(/\*\*SEO Başlığı:\*\* (.+)/);
+    const slugMatch = content.match(/\*\*URL Slug:\*\* (.+)/);
     const metaDescMatch = content.match(/\*\*Meta Açıklama:\*\* (.+)/);
     const keywordsMatch = content.match(/\*\*Anahtar Kelimeler:\*\* (.+)/);
     
     const seoTitle = seoTitleMatch ? seoTitleMatch[1] : `${topic} - Gül-Tekin Mühendislik`;
+    const slug = slugMatch ? slugMatch[1] : generateSlug(topic);
     const metaDesc = metaDescMatch ? metaDescMatch[1] : `${topic} hakkında detaylı bilgi ve çözümler`;
     const keywords = keywordsMatch ? keywordsMatch[1].split(',').map(k => k.trim()) : [topic];
 
     return {
       content,
       seoTitle,
+      slug,
       metaDescription: metaDesc,
       keywords
     };
@@ -149,40 +154,87 @@ Ayrıca şunları da ekle:
   }
 }
 
+function generateSlug(text: string): string {
+  const turkishMap: { [key: string]: string } = {
+    'ç': 'c', 'Ç': 'c',
+    'ğ': 'g', 'Ğ': 'g',
+    'ı': 'i', 'İ': 'i',
+    'ö': 'o', 'Ö': 'o',
+    'ş': 's', 'Ş': 's',
+    'ü': 'u', 'Ü': 'u'
+  };
+
+  // Türkçe karakterleri değiştir
+  let slug = text;
+  for (const [turkish, english] of Object.entries(turkishMap)) {
+    slug = slug.replace(new RegExp(turkish, 'g'), english);
+  }
+
+  // Slug oluştur
+  slug = slug
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Özel karakterleri kaldır
+    .replace(/\s+/g, '-') // Boşlukları tire ile değiştir
+    .replace(/-+/g, '-') // Birden fazla tireyi tek tire yap
+    .replace(/^-+|-+$/g, ''); // Baş ve sondaki tireleri kaldır
+
+  return slug;
+}
+
 export async function saveGeneratedContent(
   topic: string,
   title: string,
   content: string,
+  slug: string,
   metaTitle: string,
   metaDescription: string,
   keywords: string[],
   searchData: SearchDataItem[]
 ) {
   try {
-    const result = await sql`
-      INSERT INTO generated_content (
-        topic,
-        title,
-        content,
-        meta_title,
-        meta_description,
-        keywords,
-        search_data,
-        status
-      ) VALUES (
-        ${topic},
-        ${title},
-        ${content},
-        ${metaTitle},
-        ${metaDescription},
-        ${keywords},
-        ${JSON.stringify(searchData)},
-        'draft'
-      )
-      RETURNING id, topic, created_at
-    `;
+    // Benzersiz slug oluştur
+    let finalSlug = slug;
+    let counter = 1;
     
-    return result[0];
+    while (true) {
+      try {
+        const result = await sql`
+          INSERT INTO generated_content (
+            topic,
+            title,
+            content,
+            slug,
+            meta_title,
+            meta_description,
+            keywords,
+            search_data,
+            status
+          ) VALUES (
+            ${topic},
+            ${title},
+            ${content},
+            ${finalSlug},
+            ${metaTitle},
+            ${metaDescription},
+            ${keywords},
+            ${JSON.stringify(searchData)},
+            'draft'
+          )
+          RETURNING id, topic, slug, created_at
+        `;
+        return result[0];
+      } catch (error) {
+        const dbError = error as { code?: string; constraint?: string };
+        if (dbError.code === '23505' && dbError.constraint === 'generated_content_slug_key') {
+          // Slug zaten varsa, numara ekle
+          finalSlug = `${slug}-${counter}`;
+          counter++;
+        } else {
+          throw error;
+        }
+      }
+    }
   } catch (error) {
     console.error("Error saving content:", error);
     throw error;
@@ -206,6 +258,7 @@ export async function generateAndSaveContent(topic: string) {
       topic,
       generated.seoTitle,
       generated.content,
+      generated.slug,
       generated.seoTitle,
       generated.metaDescription,
       generated.keywords,
