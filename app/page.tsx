@@ -18,26 +18,26 @@ export const metadata: Metadata = {
 };
 
 const DATA = {
-  title: "Mekanik Mühendislik ve <span class='text-[#00E599]'>AI Çözümleri</span>",
+  title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
   description:
-    "Next.js, Vercel ve Neon PostgreSQL ile güçlendirilmiş modern web uygulamaları. Groq AI ve Llama 3.3 modeli ile desteklenen akıllı çözümler.",
+    "Isı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Bodrum/Yalıkavak'ta güvenilir mühendislik hizmetleri.",
   button: {
-    text: "Deploy to Vercel",
-    href: "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fneondatabase-labs%2Fvercel-marketplace-neon%2Ftree%2Fmain&project-name=my-vercel-neon-app&repository-name=my-vercel-neon-app&products=[{%22type%22:%22integration%22,%22integrationSlug%22:%22neon%22,%22productSlug%22:%22neon%22,%22protocol%22:%22storage%22}]",
+    text: "Hizmetlerimiz",
+    href: "/services",
   },
   link: {
-    text: "View on GitHub",
-    href: "https://github.com/neondatabase-labs/vercel-marketplace-neon",
+    text: "İletişime Geç",
+    href: "/contact",
   },
   footerLinks: [
     {
-      text: "Docs",
-      href: "https://neon.tech/docs/",
+      text: "Blog",
+      href: "/blog",
       icon: docs,
     },
     {
-      text: "Discord",
-      href: "https://discord.com/invite/92vNTzKDGp",
+      text: "Hakkımızda",
+      href: "/about",
       icon: discord,
     },
   ],
