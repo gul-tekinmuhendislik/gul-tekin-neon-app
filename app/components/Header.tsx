@@ -29,7 +29,8 @@ export default function Header() {
           setMenuItems([
             { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
             { id: 2, title: 'AI Asistan', href: '/ai', order_index: 2 },
-            { id: 3, title: 'İletişim', href: '/contact', order_index: 3 }
+            { id: 3, title: 'Blog', href: '/blog', order_index: 3 },
+            { id: 4, title: 'İletişim', href: '/contact', order_index: 4 }
           ]);
         }
       } catch (error) {
@@ -38,7 +39,8 @@ export default function Header() {
         setMenuItems([
           { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
           { id: 2, title: 'AI Asistan', href: '/ai', order_index: 2 },
-          { id: 3, title: 'İletişim', href: '/contact', order_index: 3 }
+          { id: 3, title: 'Blog', href: '/blog', order_index: 3 },
+          { id: 4, title: 'İletişim', href: '/contact', order_index: 4 }
         ]);
       } finally {
         setLoading(false);
