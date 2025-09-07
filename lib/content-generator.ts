@@ -137,7 +137,10 @@ Ayrıca şunları da ekle:
     const keywordsMatch = content.match(/\*\*Anahtar Kelimeler:\*\* (.+)/);
     
     const seoTitle = seoTitleMatch ? seoTitleMatch[1] : `${topic} - Gül-Tekin Mühendislik`;
-    const slug = slugMatch ? slugMatch[1] : generateSlug(topic);
+    // Slug'a tarih ekleyerek benzersizlik sağla
+    const baseSlug = slugMatch ? slugMatch[1] : generateSlug(topic);
+    const dateStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD formatında
+    const slug = `${baseSlug}-${dateStr}`;
     const metaDesc = metaDescMatch ? metaDescMatch[1] : `${topic} hakkında detaylı bilgi ve çözümler`;
     const keywords = keywordsMatch ? keywordsMatch[1].split(',').map(k => k.trim()) : [topic];
 
@@ -193,48 +196,32 @@ export async function saveGeneratedContent(
   searchData: SearchDataItem[]
 ) {
   try {
-    // Benzersiz slug oluştur
-    let finalSlug = slug;
-    let counter = 1;
-    
-    while (true) {
-      try {
-        const result = await sql`
-          INSERT INTO generated_content (
-            topic,
-            title,
-            content,
-            slug,
-            meta_title,
-            meta_description,
-            keywords,
-            search_data,
-            status
-          ) VALUES (
-            ${topic},
-            ${title},
-            ${content},
-            ${finalSlug},
-            ${metaTitle},
-            ${metaDescription},
-            ${keywords},
-            ${JSON.stringify(searchData)},
-            'draft'
-          )
-          RETURNING id, topic, slug, created_at
-        `;
-        return result[0];
-      } catch (error) {
-        const dbError = error as { code?: string; constraint?: string };
-        if (dbError.code === '23505' && dbError.constraint === 'generated_content_slug_key') {
-          // Slug zaten varsa, numara ekle
-          finalSlug = `${slug}-${counter}`;
-          counter++;
-        } else {
-          throw error;
-        }
-      }
-    }
+    // Slug zaten tarih içerdiği için benzersiz olacaktır
+    const result = await sql`
+      INSERT INTO generated_content (
+        topic,
+        title,
+        content,
+        slug,
+        meta_title,
+        meta_description,
+        keywords,
+        search_data,
+        status
+      ) VALUES (
+        ${topic},
+        ${title},
+        ${content},
+        ${slug},
+        ${metaTitle},
+        ${metaDescription},
+        ${keywords},
+        ${JSON.stringify(searchData)},
+        'draft'
+      )
+      RETURNING id, topic, slug, created_at
+    `;
+    return result[0];
   } catch (error) {
     console.error("Error saving content:", error);
     throw error;
