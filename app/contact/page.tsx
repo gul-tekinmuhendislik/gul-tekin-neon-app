@@ -1,4 +1,14 @@
+import { Metadata } from "next";
 import ContactForm from "../components/ContactForm";
+
+export const metadata: Metadata = {
+  title: "İletişim",
+  description: "Mekanik mühendislik ve AI çözümleri için bizimle iletişime geçin. Projeleriniz için profesyonel destek alın.",
+  openGraph: {
+    title: "İletişim | Gul Tekin",
+    description: "Mekanik mühendislik ve AI çözümleri için bizimle iletişime geçin.",
+  },
+};
 
 export default function ContactPage() {
   return (

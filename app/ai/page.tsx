@@ -1,4 +1,15 @@
+import { Metadata } from "next";
 import ChatInterface from "../components/ChatInterface";
+
+export const metadata: Metadata = {
+  title: "AI Sohbet Asistanı",
+  description: "Groq'un güçlü Llama 3.3 70B modeli ile desteklenen yapay zeka asistanı. Sorularınıza anında yanıt alın.",
+  openGraph: {
+    title: "AI Sohbet Asistanı | Gul Tekin",
+    description: "Groq API ve Llama 3.3 70B modeli ile güçlendirilmiş AI asistanı.",
+  },
+  keywords: ["AI asistan", "Groq API", "Llama 3.3", "yapay zeka sohbet", "chatbot"],
+};
 
 export default function AIPage() {
   return (

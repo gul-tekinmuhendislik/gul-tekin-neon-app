@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import logoDark from "@/assets/logo-dark.svg";
@@ -7,10 +8,19 @@ import discord from "@/assets/discord.svg";
 import docs from "@/assets/docs.svg";
 import { checkDbConnection } from "./db";
 
+export const metadata: Metadata = {
+  title: "Ana Sayfa",
+  description: "Mekanik mühendislik uzmanlığı ve yapay zeka destekli çözümler. Next.js, Vercel ve Neon PostgreSQL ile modern web uygulamaları.",
+  openGraph: {
+    title: "Gul Tekin - Mekanik Mühendislik ve AI Çözümleri",
+    description: "Modern web teknolojileri ve yapay zeka ile güçlendirilmiş çözümler",
+  },
+};
+
 const DATA = {
-  title: "Vercel with Neon Postgres",
+  title: "Mekanik Mühendislik ve <span class='text-[#00E599]'>AI Çözümleri</span>",
   description:
-    "A minimal template for building full-stack React applications using Next.js, Vercel, and Neon.",
+    "Next.js, Vercel ve Neon PostgreSQL ile güçlendirilmiş modern web uygulamaları. Groq AI ve Llama 3.3 modeli ile desteklenen akıllı çözümler.",
   button: {
     text: "Deploy to Vercel",
     href: "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fneondatabase-labs%2Fvercel-marketplace-neon%2Ftree%2Fmain&project-name=my-vercel-neon-app&repository-name=my-vercel-neon-app&products=[{%22type%22:%22integration%22,%22integrationSlug%22:%22neon%22,%22productSlug%22:%22neon%22,%22protocol%22:%22storage%22}]",
