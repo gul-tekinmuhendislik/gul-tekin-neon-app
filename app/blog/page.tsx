@@ -58,9 +58,9 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-900">
           Blog
         </h1>
 
@@ -69,17 +69,17 @@ export default function BlogPage() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="bg-slate-800/50 rounded-lg p-6 animate-pulse"
+                className="bg-white rounded-lg p-6 animate-pulse shadow-md"
               >
-                <div className="h-6 bg-slate-700 rounded mb-4"></div>
-                <div className="h-4 bg-slate-700 rounded mb-2"></div>
-                <div className="h-4 bg-slate-700 rounded mb-2"></div>
-                <div className="h-4 bg-slate-700 rounded w-2/3"></div>
+                <div className="h-6 bg-gray-200 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
               </div>
             ))}
           </div>
         ) : posts.length === 0 ? (
-          <p className="text-center text-gray-400">
+          <p className="text-center text-gray-600">
             Henüz blog yazısı bulunmuyor.
           </p>
         ) : (
@@ -90,26 +90,26 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group"
               >
-                <article className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700 hover:border-blue-500 transition-all duration-300 h-full flex flex-col">
-                  <h2 className="text-xl font-bold mb-3 group-hover:text-blue-400 transition-colors">
+                <article className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 h-full flex flex-col border border-gray-200">
+                  <h2 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">
                     {post.title}
                   </h2>
-                  <p className="text-gray-300 mb-4 flex-grow">
+                  <p className="text-gray-600 mb-4 flex-grow">
                     {getExcerpt(post.content)}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {post.keywords?.slice(0, 3).map((keyword, index) => (
                       <span
                         key={index}
-                        className="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded"
+                        className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded"
                       >
                         {keyword}
                       </span>
                     ))}
                   </div>
-                  <div className="flex justify-between items-center text-sm text-gray-400">
+                  <div className="flex justify-between items-center text-sm text-gray-500">
                     <span>{formatDate(post.created_at)}</span>
-                    <span className="group-hover:text-blue-400">
+                    <span className="text-blue-600 group-hover:text-blue-700">
                       Devamını Oku →
                     </span>
                   </div>

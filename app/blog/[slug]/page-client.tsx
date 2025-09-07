@@ -101,15 +101,15 @@ export default function BlogDetailClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
+      <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-16 max-w-4xl">
           <div className="animate-pulse">
-            <div className="h-12 bg-slate-700 rounded mb-4"></div>
-            <div className="h-4 bg-slate-700 rounded w-1/3 mb-8"></div>
+            <div className="h-12 bg-gray-200 rounded mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/3 mb-8"></div>
             <div className="space-y-4">
-              <div className="h-4 bg-slate-700 rounded"></div>
-              <div className="h-4 bg-slate-700 rounded"></div>
-              <div className="h-4 bg-slate-700 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
             </div>
           </div>
         </div>
@@ -119,10 +119,10 @@ export default function BlogDetailClient() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Blog yazısı bulunamadı</h1>
-          <Link href="/blog" className="text-blue-400 hover:underline">
+          <h1 className="text-2xl font-bold mb-4 text-gray-900">Blog yazısı bulunamadı</h1>
+          <Link href="/blog" className="text-blue-600 hover:underline">
             ← Blog sayfasına dön
           </Link>
         </div>
@@ -131,7 +131,7 @@ export default function BlogDetailClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <Breadcrumb 
           items={[
@@ -141,37 +141,37 @@ export default function BlogDetailClient() {
           ]}
         />
 
-        <article>
-          <header className="mb-8 pb-8 border-b border-slate-700">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+        <article className="bg-white rounded-lg shadow-lg p-8">
+          <header className="mb-8 pb-8 border-b border-gray-200">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
               {post.title}
             </h1>
-            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+            <div className="flex flex-wrap gap-4 text-sm text-gray-500">
               <span>{formatDate(post.created_at)}</span>
               {post.updated_at !== post.created_at && (
                 <span>Güncellendi: {formatDate(post.updated_at)}</span>
               )}
             </div>
             {post.meta_description && (
-              <p className="mt-4 text-lg text-gray-300">
+              <p className="mt-4 text-lg text-gray-600">
                 {post.meta_description}
               </p>
             )}
           </header>
 
           <div 
-            className="prose prose-invert max-w-none"
+            className="prose max-w-none prose-gray prose-lg"
             dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
           />
 
           {post.keywords && post.keywords.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-slate-700">
-              <h3 className="text-lg font-semibold mb-4">Anahtar Kelimeler</h3>
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Anahtar Kelimeler</h3>
               <div className="flex flex-wrap gap-2">
                 {post.keywords.map((keyword, index) => (
                   <span
                     key={index}
-                    className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm"
+                    className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
                   >
                     {keyword}
                   </span>
