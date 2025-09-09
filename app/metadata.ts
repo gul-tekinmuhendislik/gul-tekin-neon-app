@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
 export const siteConfig = {
-  name: "Gul Tekin - Mekanik Mühendislik ve AI Çözümleri",
-  url: "https://your-domain.com", // Replace with actual domain
-  description: "Mekanik mühendislik uzmanlığı ve yapay zeka destekli çözümler. Vercel ve Neon PostgreSQL ile güçlendirilmiş modern web uygulamaları.",
-  author: "Gul Tekin",
-  email: "gultekinozgur5@gmail.com",
+  name: "Gül-Tekin Mühendislik",
+  url: "https://gul-tekinmuhendislik.com",
+  description: "Bodrum ve Milas bölgesinde mekanik tesisat sistemleri, enerji verimliliği çözümleri. Isı pompası, güneş enerjisi, klima sistemleri kurulum ve servisi.",
+  author: "Gül-Tekin Mühendislik",
+  email: "info@gul-tekinmuhendislik.com",
   locale: "tr_TR",
   type: "website",
 };
@@ -18,14 +18,15 @@ export const defaultMetadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "mekanik mühendislik",
-    "yapay zeka",
-    "AI çözümleri",
-    "Vercel",
-    "Neon PostgreSQL",
-    "web uygulamaları",
-    "Groq AI",
-    "Llama 3.3",
+    "Gül-Tekin Mühendislik",
+    "Bodrum mekanik tesisat",
+    "Milas ısı pompası",
+    "güneş enerjisi sistemleri",
+    "klima kurulumu",
+    "su arıtma sistemleri",
+    "yerden ısıtma",
+    "enerji verimliliği",
+    "mekanik mühendislik Bodrum",
   ],
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
@@ -44,7 +45,7 @@ export const defaultMetadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: "/og-image.png", // You'll need to create this
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -55,8 +56,8 @@ export const defaultMetadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ["/og-image.png"],
-    creator: "@yourhandle", // Replace with actual Twitter handle
+    images: ["/logo.png"],
+    creator: "@gultekinmuh"
   },
   robots: {
     index: true,
@@ -71,5 +72,16 @@ export const defaultMetadata: Metadata = {
   },
   alternates: {
     canonical: siteConfig.url,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    apple: '/logo.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/logo.png',
+    },
   },
 };

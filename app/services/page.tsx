@@ -63,12 +63,12 @@ export default function ServicesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black text-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-900">
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
           Hizmetlerimiz
         </h1>
-        <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           Bodrum/Yalıkavak bölgesinde kaliteli mühendislik hizmetleri sunuyoruz.
           Enerji verimliliği ve sürdürülebilirlik ilkeleriyle çalışıyoruz.
         </p>
@@ -77,11 +77,11 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700 hover:border-blue-500 transition-all duration-300"
+              className="bg-white/80 backdrop-blur-sm rounded-lg p-6 border border-gray-200 hover:border-blue-500 hover:shadow-lg transition-all duration-300"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
-              <p className="text-gray-400">{service.description}</p>
+              <p className="text-gray-600">{service.description}</p>
             </div>
           ))}
         </div>
@@ -92,17 +92,17 @@ export default function ServicesPage() {
             <div>
               <div className="text-3xl mb-2">✅</div>
               <h3 className="font-semibold mb-2">Uzman Kadro</h3>
-              <p className="text-gray-400 text-sm">Alaçnının uzman mühendisleri ile profesyonel hizmet</p>
+              <p className="text-gray-600 text-sm">Alanının uzman mühendisleri ile profesyonel hizmet</p>
             </div>
             <div>
               <div className="text-3xl mb-2">🔒</div>
               <h3 className="font-semibold mb-2">Garantili Çözümler</h3>
-              <p className="text-gray-400 text-sm">Tüm işlerimizde garanti ve sonrası destek</p>
+              <p className="text-gray-600 text-sm">Tüm işlerimizde garanti ve sonrası destek</p>
             </div>
             <div>
               <div className="text-3xl mb-2">🌍</div>
               <h3 className="font-semibold mb-2">Çevre Dostu</h3>
-              <p className="text-gray-400 text-sm">Sürdürülebilir ve enerji verimli çözümler</p>
+              <p className="text-gray-600 text-sm">Sürdürülebilir ve enerji verimli çözümler</p>
             </div>
           </div>
         </div>

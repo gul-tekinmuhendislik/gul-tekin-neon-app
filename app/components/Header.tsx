@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface MenuItem {
@@ -28,9 +29,8 @@ export default function Header() {
           // Fallback menu items
           setMenuItems([
             { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
-            { id: 2, title: 'AI Asistan', href: '/ai', order_index: 2 },
-            { id: 3, title: 'Blog', href: '/blog', order_index: 3 },
-            { id: 4, title: 'İletişim', href: '/contact', order_index: 4 }
+            { id: 2, title: 'Blog', href: '/blog', order_index: 2 },
+            { id: 3, title: 'İletişim', href: '/contact', order_index: 3 }
           ]);
         }
       } catch (error) {
@@ -38,9 +38,8 @@ export default function Header() {
         // Fallback menu items
         setMenuItems([
           { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
-          { id: 2, title: 'AI Asistan', href: '/ai', order_index: 2 },
-          { id: 3, title: 'Blog', href: '/blog', order_index: 3 },
-          { id: 4, title: 'İletişim', href: '/contact', order_index: 4 }
+          { id: 2, title: 'Blog', href: '/blog', order_index: 2 },
+          { id: 3, title: 'İletişim', href: '/contact', order_index: 3 }
         ]);
       } finally {
         setLoading(false);
@@ -55,8 +54,15 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-semibold text-gray-900 hover:text-gray-700 transition-colors">
-              Gul Tekin App
+            <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Image 
+                src="/logo.png" 
+                alt="Gül-Tekin Mühendislik" 
+                width={200} 
+                height={50} 
+                className="h-10 w-auto"
+                priority
+              />
             </Link>
           </div>
           <nav className="hidden md:flex space-x-8">

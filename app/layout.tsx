@@ -14,20 +14,23 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Gul Tekin - Mekanik Mühendislik ve AI Çözümleri",
-    url: "https://your-domain.com",
-    description: "Mekanik mühendislik uzmanlığı ve yapay zeka destekli çözümler",
-    author: {
-      "@type": "Person",
-      name: "Gul Tekin",
-      email: "gultekinozgur5@gmail.com",
+    "@type": "LocalBusiness",
+    name: "Gül-Tekin Mühendislik",
+    url: "https://gul-tekinmuhendislik.com",
+    description: "Bodrum ve Milas bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bodrum/Milas",
+      addressRegion: "Muğla",
+      addressCountry: "TR"
     },
+    telephone: "+902522117171",
+    email: "info@gul-tekinmuhendislik.com",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://your-domain.com/search?q={search_term_string}",
+        urlTemplate: "https://gul-tekinmuhendislik.com/search?q={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
