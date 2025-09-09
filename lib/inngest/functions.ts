@@ -180,8 +180,8 @@ export const searchAndSaveResults = inngest.createFunction(
     retries: 2
   },
   { 
-    // Run every hour to respect API rate limits
-    cron: "0 * * * *"
+    // Run 4 times a day (every 6 hours)
+    cron: "0 */6 * * *"
   },
   async ({ step }) => {
     // Step 1: Initialize Exa client
@@ -402,8 +402,8 @@ export const generateEngineeringContent = inngest.createFunction(
     retries: 2
   },
   {
-    // Run every 2 hours to respect Groq API rate limits
-    cron: "0 */2 * * *"
+    // Run 4 times a day (every 6 hours)
+    cron: "0 */6 * * *"
   },
   async ({ step }) => {
     // Get current topic based on time
