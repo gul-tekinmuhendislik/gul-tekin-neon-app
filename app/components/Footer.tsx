@@ -43,8 +43,10 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-gray-600 text-sm">
               <li>Email: info@gul-tekinmuhendislik.com</li>
-              <li>Tel: +90 252 211 7171</li>
-              <li>Adres: Bodrum/Milas, Muğla</li>
+              <li>Tel: 0252 386 35 54</li>
+              <li>Fax: 0252 386 41 34</li>
+              <li>Gsm: 0532 317 78 59</li>
+              <li>Adres: Gökçebel Mah. İnönü Cad. 61/D Yalıkavak, Bodrum/Muğla</li>
             </ul>
           </div>
         </div>
