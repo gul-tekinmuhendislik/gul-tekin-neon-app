@@ -19,6 +19,30 @@ export const engineeringTopics = [
   "Termosifonik Sistemler"
 ];
 
+// SEO başlık template'leri - her içerik üretiminde rastgele seçilecek
+const titleTemplates = [
+  "{topic} 2024: En İyi Modeller ve Fiyatlar",
+  "Bodrum'da {topic} Kurulumu ve Servisi",
+  "{topic} Seçimi: Profesyonel Rehber",
+  "{topic} Karşılaştırma ve İnceleme",
+  "Ev İçin {topic}: Nasıl Seçilir?",
+  "{topic} Montajı: Adım Adım Kılavuz",
+  "{topic} Bakımı ve Onarımı İpuçları",
+  "En Verimli {topic} Modelleri",
+  "{topic}: Avantajları ve Dezavantajları",
+  "{topic} Fiyatları ve Maliyet Analizi",
+  "Profesyonel {topic} Çözümleri",
+  "{topic} Hakkında Bilmeniz Gerekenler",
+  "Enerji Tasarruflu {topic} Rehberi",
+  "{topic} Teknolojisi ve Yenilikleri",
+  "{topic}: Sıkça Sorulan Sorular"
+];
+
+// Rastgele başlık template'i seçme fonksiyonu
+function getRandomTitleTemplate(): string {
+  return titleTemplates[Math.floor(Math.random() * titleTemplates.length)];
+}
+
 const contentPrompt = `Sen, Gül-Tekin Mühendislik'in dijital içerik stratejisti ve üreticisi bir AI agentsin. Amacın, şirketimizin uzmanlık alanları olan enerji verimliliği, çevresel sürdürülebilirlik, konfor ve güvenilirliğe vurgu yaparak, hedef kitlemiz (konut sahipleri, villa sahipleri, ticari işletmeler, site yöneticileri) için bilgilendirici, eğitici ve etkileşimli içerikler oluşturmaktır.
 
 **Şirket Bilgileri:**
@@ -37,11 +61,23 @@ const contentPrompt = `Sen, Gül-Tekin Mühendislik'in dijital içerik stratejis
 7. Kurulum, bakım ve geri ödeme süresi bilgileri
 8. Profesyonel ve anlaşılır dil kullanımı
 
+**SEO BAŞLIK KURALLARI - ÇOK ÖNEMLİ:**
+- ASLA sadece konu adını başlık olarak kullanma (örn: "Su Arıtma Sistemleri" DEĞİL)
+- Her başlık BENZERSİZ ve İLGİ ÇEKİCİ olmalı
+- Başlıkta sayı, fayda veya çözüm odaklı kelimeler kullan
+- Örnekler:
+  * "2024'te Su Arıtma Sistemleri: En İyi 5 Model"
+  * "Bodrum'da Su Arıtma Çözümleri: Rehber"
+  * "Ev İçin Su Arıtma: Nasıl Seçilir?"
+  * "Su Arıtma Sistemleri Karşılaştırma ve Fiyatlar"
+  * "Profesyonel Su Arıtma Kurulumu: Adım Adım"
+- Başlık varyasyonları kullan: Rehber, İpuçları, Karşılaştırma, En İyi, Nasıl, Neden, vb.
+
 **Çıktı Formatı:**
 - Markdown formatında blog yazısı
-- SEO başlığı (50-60 karakter)
+- SEO başlığı (50-60 karakter, BENZERSİZ ve ilgi çekici)
 - URL Slug (URL dostu format, Türkçe karakterler olmadan, küçük harf ve tire ile ayrılmış)
-- Meta açıklama (150-160 karakter)
+- Meta açıklama (150-160 karakter, tıklanmayı teşvik edici)
 - En az 10 anahtar kelime
 - Bilgi kaynaklarını [1], [2] şeklinde numaralandır`;
 
@@ -91,6 +127,9 @@ export async function generateContent(topic: string, searchData: SearchDataItem[
       `[${index + 1}] ${item.title}\n${item.content}\nKaynak: ${item.url}`
     ).join("\n\n");
 
+    // Dinamik başlık önerisi oluştur
+    const suggestedTitle = getRandomTitleTemplate().replace("{topic}", topic);
+
     // Generate content with Groq
     const completion = await groq.chat.completions.create({
       messages: [
@@ -105,6 +144,8 @@ export async function generateContent(topic: string, searchData: SearchDataItem[
 Araştırma Verileri:
 ${searchContext}
 
+Önerilen SEO Başlığı: "${suggestedTitle}" (Bu öneriyi temel al ama daha da geliştirebilirsin)
+
 Yukarıdaki araştırma verilerini kullanarak, "${topic}" konusunda detaylı bir blog yazısı oluştur. Yazı markdown formatında olmalı ve şu bölümleri içermeli:
 
 1. ## Başlık
@@ -116,10 +157,12 @@ Yukarıdaki araştırma verilerini kullanarak, "${topic}" konusunda detaylı bir
 7. ### Kurulum ve Bakım
 8. ### Sonuç
 
+BAŞLIK KURALI: Önerilen başlığı kullan veya benzer tarzda BENZERSİZ ve ilgi çekici bir başlık oluştur. ASLA sadece "${topic}" şeklinde basit başlık kullanma!
+
 Ayrıca şunları da ekle:
-- **SEO Başlığı:** (50-60 karakter)
-- **URL Slug:** (URL dostu format, örnek: isi-pompasi-sistemleri)
-- **Meta Açıklama:** (150-160 karakter)
+- **SEO Başlığı:** (50-60 karakter, benzersiz ve ilgi çekici)
+- **URL Slug:** (URL dostu format, örnek: isi-pompasi-sistemleri-2024)
+- **Meta Açıklama:** (150-160 karakter, tıklanmayı teşvik edici)
 - **Anahtar Kelimeler:** (virgülle ayrılmış en az 10 kelime)`
         }
       ],
@@ -207,7 +250,8 @@ export async function saveGeneratedContent(
         meta_description,
         keywords,
         search_data,
-        status
+        status,
+        published_at
       ) VALUES (
         ${topic},
         ${title},
@@ -217,7 +261,8 @@ export async function saveGeneratedContent(
         ${metaDescription},
         ${keywords},
         ${JSON.stringify(searchData)},
-        'draft'
+        'published',
+        NOW()
       )
       RETURNING id, topic, slug, created_at
     `;
