@@ -73,6 +73,12 @@ const contentPrompt = `Sen, Gül-Tekin Mühendislik'in dijital içerik stratejis
   * "Profesyonel Su Arıtma Kurulumu: Adım Adım"
 - Başlık varyasyonları kullan: Rehber, İpuçları, Karşılaştırma, En İyi, Nasıl, Neden, vb.
 
+**İÇERİK KURALLARI:**
+- ASLA başka şirket ismi veya markası belirtme (sadece yukarıda listelenen çalıştığımız markalar hariç)
+- ASLA dış web sitelerine link verme (sadece gul-tekinmuhendislik.com hariç)
+- Rakip firma isimlerinden, linklerinden ve referanslarından kaçın
+- Genel sektörel bilgi ve teknik detaylara odaklan
+
 **Çıktı Formatı:**
 - Markdown formatında blog yazısı
 - SEO başlığı (50-60 karakter, BENZERSİZ ve ilgi çekici)
@@ -122,10 +128,33 @@ interface SearchDataItem {
 
 export async function generateContent(topic: string, searchData: SearchDataItem[]) {
   try {
-    // Prepare context from search results
-    const searchContext = searchData.map((item, index) => 
-      `[${index + 1}] ${item.title}\n${item.content}\nKaynak: ${item.url}`
-    ).join("\n\n");
+    // Filter and clean search results - remove competitor links and company names
+    const cleanedSearchData = searchData.map((item, index) => {
+      // Remove URLs except gul-tekinmuhendislik.com
+      let cleanedContent = item.content.replace(/https?:\/\/(?!gul-tekinmuhendislik\.com)[^\s]+/gi, '[link kaldırıldı]');
+      
+      // Remove competitor company names (common patterns)
+      const competitorPatterns = [
+        /\b(?:Ltd|A\.Ş\.|A\.S\.|Şti\.|LTD|ŞTİ)\.?\b/gi,
+        /\b[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:Mühendislik|Mekanik|Tesisat|İnşaat|Enerji|Sistem|Teknoloji)\b/gi,
+        /\b(?:www\.|http|\.com|\.tr|\.net|\.org)\b/gi
+      ];
+      
+      competitorPatterns.forEach(pattern => {
+        cleanedContent = cleanedContent.replace(pattern, '');
+      });
+      
+      // Clean title as well
+      let cleanedTitle = item.title;
+      competitorPatterns.forEach(pattern => {
+        cleanedTitle = cleanedTitle.replace(pattern, '');
+      });
+      
+      return `[${index + 1}] ${cleanedTitle}\n${cleanedContent}\nKaynak: Sektörel araştırma`;
+    });
+    
+    // Prepare context from cleaned search results
+    const searchContext = cleanedSearchData.join("\n\n");
 
     // Dinamik başlık önerisi oluştur
     const suggestedTitle = getRandomTitleTemplate().replace("{topic}", topic);
@@ -158,6 +187,12 @@ Yukarıdaki araştırma verilerini kullanarak, "${topic}" konusunda detaylı bir
 8. ### Sonuç
 
 BAŞLIK KURALI: Önerilen başlığı kullan veya benzer tarzda BENZERSİZ ve ilgi çekici bir başlık oluştur. ASLA sadece "${topic}" şeklinde basit başlık kullanma!
+
+İÇERİK KURALLARI:
+- ASLA başka şirket ismi belirtme
+- ASLA dış web sitelerine link verme veya URL paylaşma
+- Sadece Gül-Tekin Mühendislik'ten bahset
+- Teknik bilgiye ve genel sektörel bilgilere odaklan
 
 Ayrıca şunları da ekle:
 - **SEO Başlığı:** (50-60 karakter, benzersiz ve ilgi çekici)
