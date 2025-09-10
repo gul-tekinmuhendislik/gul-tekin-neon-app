@@ -2,3 +2,4 @@
   - Otomatik içerik optimizasyonu entegre edildi
   - Inngest süreçleri raporu oluşturuldu        
   - Tüm build hataları düzeltildi
+  - business
