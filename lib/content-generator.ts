@@ -1,6 +1,7 @@
 import Groq from "groq-sdk";
 import Exa from "exa-js";
 import { sql } from "./db";
+import { inngest } from "./inngest/client";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
@@ -333,6 +334,17 @@ export async function generateAndSaveContent(topic: string) {
     );
     
     console.log(`💾 Content saved with ID: ${saved.id}`);
+    
+    // Step 4: Trigger content.created event for further processing
+    await inngest.send({
+      name: "content/created",
+      data: {
+        contentId: saved.id,
+        topic: saved.topic,
+        createdAt: saved.created_at
+      }
+    });
+    console.log(`📨 Content created event triggered for ID: ${saved.id}`);
     
     return {
       success: true,

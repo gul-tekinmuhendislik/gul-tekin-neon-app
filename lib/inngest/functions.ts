@@ -1,7 +1,9 @@
 import { inngest } from "./client";
 import { sql } from "../db";
 import Exa from "exa-js";
+import Groq from "groq-sdk";
 import { generateAndSaveContent, engineeringTopics } from "../content-generator";
+import { optimizeContentForEEAT, generateSchemaMarkup } from "../eeat-optimizer";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -395,6 +397,641 @@ export const searchAndSaveResults = inngest.createFunction(
 );
 
 // Content generation function with Groq and Exa
+// Process newly created content - sitemap update, SEO optimization, notifications etc.
+export const processNewContent = inngest.createFunction(
+  {
+    id: "process-new-content",
+    name: "Process New Content After Creation",
+    retries: 2
+  },
+  {
+    event: "content/created"
+  },
+  async ({ event, step }) => {
+    const { contentId } = event.data;
+    
+    // Step 1: Fetch the full content from database
+    const content = await step.run("fetch-content-details", async () => {
+      const result = await sql`
+        SELECT 
+          id, 
+          topic, 
+          title, 
+          slug, 
+          meta_title, 
+          meta_description,
+          keywords,
+          content,
+          status,
+          created_at
+        FROM generated_content 
+        WHERE id = ${contentId}
+        LIMIT 1
+      `;
+      
+      if (result.length === 0) {
+        throw new Error(`Content not found with ID: ${contentId}`);
+      }
+      
+      return result[0];
+    });
+    
+    // Step 2: Update sitemap or trigger sitemap regeneration
+    await step.run("update-sitemap", async () => {
+      console.log(`Updating sitemap for new content: ${content.slug}`);
+      
+      // Sitemap güncellemesi için metadata kaydet
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'sitemap.update.required',
+          'seo',
+          'pending',
+          ${JSON.stringify({
+            contentId: content.id,
+            slug: content.slug,
+            url: `/blog/${content.slug}`
+          })},
+          ${JSON.stringify({
+            priority: 0.8,
+            changefreq: 'weekly',
+            lastmod: new Date().toISOString()
+          })}
+        )
+      `;
+      
+      return { sitemapUpdateScheduled: true };
+    });
+    
+    // Step 3: Generate social media meta tags or Open Graph data
+    await step.run("generate-social-meta", async () => {
+      const socialMeta = {
+        ogTitle: content.meta_title || content.title,
+        ogDescription: content.meta_description,
+        ogType: 'article',
+        ogUrl: `https://gul-tekinmuhendislik.com/blog/${content.slug}`,
+        twitterCard: 'summary_large_image',
+        articlePublishedTime: content.created_at,
+        articleAuthor: 'Gül-Tekin Mühendislik',
+        articleSection: 'Mühendislik Çözümleri'
+      };
+      
+      // Update content with social meta
+      await sql`
+        UPDATE generated_content
+        SET metadata = jsonb_set(
+          COALESCE(metadata, '{}'),
+          '{socialMeta}',
+          ${JSON.stringify(socialMeta)}::jsonb
+        )
+        WHERE id = ${content.id}
+      `;
+      
+      return socialMeta;
+    });
+    
+    // Step 4: E-E-A-T Analysis and Optimization with Groq
+    const eeatOptimization = await step.run("eeat-analysis-optimization", async () => {
+      try {
+        // Perform E-E-A-T analysis and optimization
+        const eeatResult = await optimizeContentForEEAT(
+          content.id,
+          content.content,
+          content.topic,
+          {
+            createdAt: content.created_at,
+            title: content.title,
+            metaDescription: content.meta_description
+          }
+        );
+        
+        console.log(`E-E-A-T Analysis completed for content ${content.id}`);
+        console.log(`E-E-A-T Score: ${eeatResult.analysis.overallScore}/100`);
+        console.log(`YMYL Category: ${eeatResult.analysis.ymylCategory}`);
+        
+        // If optimization was applied, update the content
+        if (eeatResult.optimizationApplied && eeatResult.optimizedContent) {
+          // Append optimization suggestions to content metadata
+          await sql`
+            UPDATE generated_content
+            SET metadata = jsonb_set(
+              COALESCE(metadata, '{}'),
+              '{eeatOptimizationContent}',
+              ${JSON.stringify({
+                applied: true,
+                timestamp: new Date().toISOString(),
+                suggestions: eeatResult.optimizedContent
+              })}::jsonb
+            )
+            WHERE id = ${content.id}
+          `;
+        }
+        
+        return eeatResult;
+      } catch (error) {
+        console.error("E-E-A-T analysis failed:", error);
+        // Return a basic analysis on error
+        return {
+          analysis: {
+            experience: { score: 0, indicators: [], recommendations: [] },
+            expertise: { score: 0, indicators: [], recommendations: [] },
+            authoritativeness: { score: 0, indicators: [], recommendations: [] },
+            trustworthiness: { score: 0, indicators: [], recommendations: [] },
+            overallScore: 0,
+            ymylCategory: true,
+            contentImprovements: [],
+            schemaMarkupSuggestions: []
+          },
+          optimizationApplied: false
+        };
+      }
+    });
+    
+    // Step 5: Generate and save Schema.org markup based on E-E-A-T
+    await step.run("generate-schema-markup", async () => {
+      const contentData = {
+        title: content.title,
+        meta_description: content.meta_description,
+        slug: content.slug,
+        created_at: content.created_at,
+        updated_at: content.updated_at,
+        keywords: content.keywords
+      };
+      const schema = generateSchemaMarkup(contentData, eeatOptimization.analysis);
+      
+      // Save schema markup to database
+      await sql`
+        UPDATE generated_content
+        SET metadata = jsonb_set(
+          COALESCE(metadata, '{}'),
+          '{schemaMarkup}',
+          ${JSON.stringify(schema)}::jsonb
+        )
+        WHERE id = ${content.id}
+      `;
+      
+      console.log(`Schema.org markup generated for content ${content.id}`);
+      return schema;
+    });
+    
+    // Step 6: Check content quality and SEO score (keeping original SEO analysis)
+    const seoAnalysis = await step.run("analyze-seo-quality", async () => {
+      const contentLength = content.content.length;
+      const keywordCount = content.keywords ? content.keywords.length : 0;
+      const hasMetaDescription = !!content.meta_description;
+      const hasMetaTitle = !!content.meta_title;
+      
+      // Combined SEO score with E-E-A-T
+      let seoScore = 0;
+      if (contentLength > 2000) seoScore += 15; // İyi uzunluk
+      if (keywordCount >= 10) seoScore += 15; // Yeterli anahtar kelime
+      if (hasMetaDescription) seoScore += 10; // Meta açıklama var
+      if (hasMetaTitle) seoScore += 10; // Meta başlık var
+      
+      // Add E-E-A-T score to overall SEO score (50% weight)
+      const eeatContribution = Math.round(eeatOptimization.analysis.overallScore * 0.5);
+      seoScore += eeatContribution;
+      
+      const analysis = {
+        contentLength,
+        keywordCount,
+        hasMetaDescription,
+        hasMetaTitle,
+        seoScore,
+        eeatScore: eeatOptimization.analysis.overallScore,
+        combinedScore: seoScore,
+        recommendations: [
+          ...eeatOptimization.analysis.contentImprovements,
+          ...(contentLength < 1500 ? ["İçerik 1500 karakterden kısa, daha detaylı yazılabilir"] : []),
+          ...(keywordCount < 10 ? ["Daha fazla anahtar kelime eklenebilir"] : [])
+        ]
+      };
+      
+      // SEO analiz sonucunu kaydet
+      await sql`
+        UPDATE generated_content
+        SET metadata = jsonb_set(
+          COALESCE(metadata, '{}'),
+          '{seoAnalysis}',
+          ${JSON.stringify(analysis)}::jsonb
+        )
+        WHERE id = ${content.id}
+      `;
+      
+      console.log(`Combined SEO Score for content ${content.id}: ${seoScore}/100`);
+      console.log(`E-E-A-T Contribution: ${eeatContribution}/50`);
+      return analysis;
+    });
+    
+    // Step 7: Schedule content distribution (e.g., newsletter, social media)
+    await step.run("schedule-distribution", async () => {
+      // İçerik dağıtımı için event oluştur (ileride kullanılabilir)
+      const distributionSchedule = {
+        newsletter: {
+          scheduled: false, // İleride aktif edilebilir
+          scheduledFor: null
+        },
+        socialMedia: {
+          scheduled: false, // İleride aktif edilebilir
+          platforms: ['twitter', 'linkedin', 'facebook']
+        }
+      };
+      
+      await sql`
+        UPDATE generated_content
+        SET metadata = jsonb_set(
+          COALESCE(metadata, '{}'),
+          '{distribution}',
+          ${JSON.stringify(distributionSchedule)}::jsonb
+        )
+        WHERE id = ${content.id}
+      `;
+      
+      return distributionSchedule;
+    });
+    
+    // Step 8: Create internal links suggestions (link to related content)
+    const relatedContent = await step.run("find-related-content", async () => {
+      // Aynı kategoride veya benzer konularda içerik bul
+      const related = await sql`
+        SELECT id, title, slug, topic
+        FROM generated_content
+        WHERE id != ${content.id}
+          AND status = 'published'
+          AND (
+            topic = ${content.topic}
+            OR keywords && ${content.keywords || []}
+          )
+        ORDER BY created_at DESC
+        LIMIT 3
+      `;
+      
+      if (related.length > 0) {
+        await sql`
+          UPDATE generated_content
+          SET metadata = jsonb_set(
+            COALESCE(metadata, '{}'),
+            '{relatedContent}',
+            ${JSON.stringify(related.map(r => ({
+              id: r.id,
+              title: r.title,
+              slug: r.slug,
+              url: `/blog/${r.slug}`
+            })))}::jsonb
+          )
+          WHERE id = ${content.id}
+        `;
+      }
+      
+      return related;
+    });
+    
+    // Step 9: Trigger E-E-A-T optimization if score is low
+    await step.run("trigger-eeat-optimization", async () => {
+      if (eeatOptimization.analysis.overallScore < 75) {
+        console.log(`E-E-A-T score is low (${eeatOptimization.analysis.overallScore}), triggering optimization...`);
+        
+        await inngest.send({
+          name: "content/optimize.eeat",
+          data: {
+            contentId: content.id,
+            eeatAnalysis: eeatOptimization.analysis,
+            forceOptimization: false
+          }
+        });
+        
+        return { optimizationTriggered: true };
+      }
+      
+      return { optimizationTriggered: false };
+    });
+    
+    // Step 10: Log the processing completion
+    await step.run("log-processing-complete", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'content.processed',
+          'automation',
+          'completed',
+          ${JSON.stringify({
+            contentId: content.id,
+            topic: content.topic,
+            slug: content.slug
+          })},
+          ${JSON.stringify({
+            seoScore: seoAnalysis.combinedScore,
+            eeatScore: eeatOptimization.analysis.overallScore,
+            relatedContentCount: relatedContent.length,
+            processedAt: new Date().toISOString()
+          })}
+        )
+      `;
+    });
+    
+    return {
+      success: true,
+      contentId: content.id,
+      slug: content.slug,
+      seoScore: seoAnalysis.combinedScore,
+      eeatScore: eeatOptimization.analysis.overallScore,
+      eeatAnalysis: {
+        experience: eeatOptimization.analysis.experience.score,
+        expertise: eeatOptimization.analysis.expertise.score,
+        authoritativeness: eeatOptimization.analysis.authoritativeness.score,
+        trustworthiness: eeatOptimization.analysis.trustworthiness.score,
+        ymylCategory: eeatOptimization.analysis.ymylCategory
+      },
+      schemaMarkupGenerated: true,
+      relatedContentFound: relatedContent.length,
+      processedAt: new Date().toISOString()
+    };
+  }
+);
+
+// Apply E-E-A-T optimizations to content
+export const applyEEATOptimizations = inngest.createFunction(
+  {
+    id: "apply-eeat-optimizations",
+    name: "Apply E-E-A-T Optimizations to Content",
+    retries: 2
+  },
+  {
+    event: "content/optimize.eeat"
+  },
+  async ({ event, step }) => {
+    const { contentId, eeatAnalysis, forceOptimization = false } = event.data;
+    
+    // Step 1: Fetch current content
+    const content = await step.run("fetch-content-for-optimization", async () => {
+      const result = await sql`
+        SELECT 
+          id, 
+          topic, 
+          title, 
+          content,
+          slug,
+          meta_title,
+          meta_description,
+          keywords,
+          metadata
+        FROM generated_content 
+        WHERE id = ${contentId}
+        LIMIT 1
+      `;
+      
+      if (result.length === 0) {
+        throw new Error(`Content not found with ID: ${contentId}`);
+      }
+      
+      return result[0];
+    });
+    
+    // Step 2: Check if optimization is needed
+    const shouldOptimize = await step.run("check-optimization-needed", async () => {
+      // Skip if already optimized (unless forced)
+      if (!forceOptimization && content.metadata?.eeatOptimized) {
+        console.log(`Content ${contentId} already optimized, skipping...`);
+        return false;
+      }
+      
+      // Only optimize if E-E-A-T score is below 75
+      const currentScore = eeatAnalysis?.overallScore || content.metadata?.eeatAnalysis?.overallScore || 0;
+      if (currentScore >= 75 && !forceOptimization) {
+        console.log(`Content ${contentId} has good E-E-A-T score (${currentScore}), skipping optimization...`);
+        return false;
+      }
+      
+      return true;
+    });
+    
+    if (!shouldOptimize) {
+      return {
+        success: true,
+        message: "Optimization not needed",
+        contentId: contentId,
+        currentScore: eeatAnalysis?.overallScore || content.metadata?.eeatAnalysis?.overallScore
+      };
+    }
+    
+    // Step 3: Generate optimized content with Groq
+    const optimizedContent = await step.run("generate-optimized-content", async () => {
+      const groq = new Groq({
+        apiKey: process.env.GROQ_API_KEY
+      });
+      
+      const recommendations = content.metadata?.eeatAnalysis || eeatAnalysis;
+      
+      const optimizationPrompt = `Sen, Gül-Tekin Mühendislik için E-E-A-T optimizasyonu yapan bir içerik uzmanısın.
+
+**Firma Bilgileri:**
+- Firma: Gül-Tekin Mühendislik
+- Lokasyon: Bodrum/Milas
+- Deneyim: 20+ yıl sektör deneyimi
+- Referanslar: 500+ tamamlanmış proje
+- Uzmanlık: Isı pompaları, güneş enerjisi, su arıtma, klima sistemleri
+
+**Mevcut E-E-A-T Skorları:**
+- Experience: ${recommendations.experience?.score || 0}/25
+- Expertise: ${recommendations.expertise?.score || 0}/25
+- Authoritativeness: ${recommendations.authoritativeness?.score || 0}/25
+- Trustworthiness: ${recommendations.trustworthiness?.score || 0}/25
+- Toplam: ${recommendations.overallScore || 0}/100
+
+**İyileştirme Önerileri:**
+${JSON.stringify(recommendations.contentImprovements || [], null, 2)}
+
+**Konu:** ${content.topic}
+
+**Mevcut İçerik:**
+${content.content}
+
+**GÖREV:**
+Bu içeriği E-E-A-T skorunu maksimuma çıkaracak şekilde YENİDEN YAZ. İçeriğe şunları ekle:
+
+1. **Deneyim (Experience):**
+   - Bodrum'da gerçek proje örnekleri
+   - Somut müşteri başarı hikayeleri
+   - Pratik uygulama detayları
+   - "20 yıllık deneyimimizle..." gibi vurgular
+
+2. **Uzmanlık (Expertise):**
+   - Daha detaylı teknik bilgiler
+   - Profesyonel terminoloji
+   - Karşılaştırmalı analizler
+   - Sertifika ve standart referansları (ISO 9001, CE, TSE)
+
+3. **Otorite (Authoritativeness):**
+   - "Bodrum'un lider mühendislik firması" vurgusu
+   - 500+ proje referansı
+   - Çalıştığımız markalar (Aldea, Varmeks, LG, vb.)
+   - Sektör liderliği vurgusu
+
+4. **Güvenilirlik (Trustworthiness):**
+   - İletişim bilgileri (Telefon, adres)
+   - Garanti ve servis vurgusu
+   - "7/24 teknik destek" gibi güven unsurları
+   - Müşteri memnuniyeti garantisi
+
+**ÖNEMLİ KURALLAR:**
+- Orijinal içeriğin ana mesajını koru
+- SEO başlığını ve anahtar kelimeleri koru
+- Minimum 1000 kelime olmalı
+- Paragraflar arasında mantıklı geçişler
+- Markdown formatını koru
+- ASLA başka firma ismi belirtme
+- ASLA dış link verme
+
+Optimized içeriği tam olarak döndür:`;
+
+      try {
+        const completion = await groq.chat.completions.create({
+          messages: [
+            {
+              role: "system",
+              content: "Sen E-E-A-T optimizasyon uzmanısın. İçerikleri Google'ın kalite kriterlerine göre iyileştiriyorsun."
+            },
+            {
+              role: "user",
+              content: optimizationPrompt
+            }
+          ],
+          model: "mixtral-8x7b-32768",
+          temperature: 0.4,
+          max_tokens: 3500
+        });
+        
+        const newContent = completion.choices[0]?.message?.content;
+        
+        if (!newContent) {
+          throw new Error("Failed to generate optimized content");
+        }
+        
+        return newContent;
+      } catch (error) {
+        console.error("Error generating optimized content:", error);
+        throw error;
+      }
+    });
+    
+    // Step 4: Update content in database
+    const updateResult = await step.run("update-content-in-database", async () => {
+      try {
+        const result = await sql`
+          UPDATE generated_content
+          SET 
+            content = ${optimizedContent},
+            metadata = jsonb_set(
+              jsonb_set(
+                jsonb_set(
+                  COALESCE(metadata, '{}'),
+                  '{eeatOptimized}',
+                  'true'::jsonb
+                ),
+                '{eeatOptimizationDate}',
+                ${JSON.stringify(new Date().toISOString())}::jsonb
+              ),
+              '{originalContent}',
+              ${JSON.stringify({
+                content: content.content.substring(0, 1000), // Store first 1000 chars as backup
+                savedAt: new Date().toISOString()
+              })}::jsonb
+            ),
+            updated_at = NOW()
+          WHERE id = ${contentId}
+          RETURNING id, slug, updated_at
+        `;
+        
+        console.log(`Content ${contentId} successfully optimized and updated`);
+        return result[0];
+      } catch (error) {
+        console.error("Error updating content:", error);
+        throw error;
+      }
+    });
+    
+    // Step 5: Re-analyze E-E-A-T score after optimization
+    const newAnalysis = await step.run("reanalyze-eeat-score", async () => {
+      const { analyzeEEAT } = await import("../eeat-optimizer");
+      
+      try {
+        const analysis = await analyzeEEAT(optimizedContent, content.topic, {
+          createdAt: content.created_at,
+          optimized: true
+        });
+        
+        // Save new analysis
+        await sql`
+          UPDATE generated_content
+          SET metadata = jsonb_set(
+            COALESCE(metadata, '{}'),
+            '{eeatAnalysisPostOptimization}',
+            ${JSON.stringify(analysis)}::jsonb
+          )
+          WHERE id = ${contentId}
+        `;
+        
+        console.log(`New E-E-A-T Score: ${analysis.overallScore}/100 (was ${eeatAnalysis?.overallScore || 0})`);
+        return analysis;
+      } catch (error) {
+        console.error("Error re-analyzing E-E-A-T:", error);
+        return null;
+      }
+    });
+    
+    // Step 6: Log the optimization
+    await step.run("log-optimization", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'content.eeat.optimized',
+          'optimization',
+          'completed',
+          ${JSON.stringify({
+            contentId: contentId,
+            topic: content.topic,
+            slug: content.slug
+          })},
+          ${JSON.stringify({
+            originalScore: eeatAnalysis?.overallScore || 0,
+            newScore: newAnalysis?.overallScore || 0,
+            improvement: (newAnalysis?.overallScore || 0) - (eeatAnalysis?.overallScore || 0),
+            optimizedAt: new Date().toISOString()
+          })}
+        )
+      `;
+    });
+    
+    return {
+      success: true,
+      contentId: contentId,
+      slug: content.slug,
+      optimizationApplied: true,
+      scores: {
+        original: eeatAnalysis?.overallScore || 0,
+        new: newAnalysis?.overallScore || 0,
+        improvement: (newAnalysis?.overallScore || 0) - (eeatAnalysis?.overallScore || 0)
+      },
+      updatedAt: updateResult.updated_at
+    };
+  }
+);
+
 export const generateEngineeringContent = inngest.createFunction(
   {
     id: "generate-engineering-content",
@@ -444,7 +1081,19 @@ export const generateEngineeringContent = inngest.createFunction(
       }
     });
     
-    // Step 3: Log the operation
+    // Step 3: Trigger content.created event for the new content
+    await step.run("trigger-content-created-event", async () => {
+      await inngest.send({
+        name: "content/created",
+        data: {
+          contentId: contentResult.contentId,
+          topic: currentTopic,
+          createdAt: contentResult.createdAt
+        }
+      });
+    });
+    
+    // Step 4: Log the operation
     await step.run("log-content-generation", async () => {
       await sql`
         INSERT INTO event_logs (

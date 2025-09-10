@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
   },
   
   /* Performance */
-  swcMinify: true,
   reactStrictMode: true,
   
   /* Headers for Security and SEO */
