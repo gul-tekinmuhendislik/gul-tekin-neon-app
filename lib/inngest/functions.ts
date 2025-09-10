@@ -1,9 +1,16 @@
+import 'groq-sdk/shims/node';
 import { inngest } from "./client";
 import { sql } from "../db";
 import Exa from "exa-js";
 import Groq from "groq-sdk";
 import { generateAndSaveContent, engineeringTopics } from "../content-generator";
 import { optimizeContentForEEAT, generateSchemaMarkup } from "../eeat-optimizer";
+import { 
+  getFacebookPageAccessToken, 
+  postToFacebookPage, 
+  extractOGData, 
+  saveFacebookPost 
+} from "../facebook-api";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -989,7 +996,30 @@ Optimized içeriği tam olarak döndür:`;
       }
     });
     
-    // Step 6: Log the optimization
+    // Step 6: Trigger Facebook post if E-E-A-T score is good
+    await step.run("trigger-facebook-post", async () => {
+      const finalScore = newAnalysis?.overallScore || eeatAnalysis?.overallScore || 0;
+      
+      // Only post to Facebook if E-E-A-T score is 75 or higher
+      if (finalScore >= 75) {
+        console.log(`E-E-A-T score is good (${finalScore}), triggering Facebook post...`);
+        
+        await inngest.send({
+          name: "social/facebook.post",
+          data: {
+            contentId: contentId,
+            immediate: true // Post immediately after optimization
+          }
+        });
+        
+        return { facebookPostTriggered: true };
+      }
+      
+      console.log(`E-E-A-T score (${finalScore}) not high enough for Facebook post`);
+      return { facebookPostTriggered: false };
+    });
+    
+    // Step 7: Log the optimization
     await step.run("log-optimization", async () => {
       await sql`
         INSERT INTO event_logs (
@@ -1028,6 +1058,222 @@ Optimized içeriği tam olarak döndür:`;
         improvement: (newAnalysis?.overallScore || 0) - (eeatAnalysis?.overallScore || 0)
       },
       updatedAt: updateResult.updated_at
+    };
+  }
+);
+
+// Post optimized content to Facebook
+export const postToFacebook = inngest.createFunction(
+  {
+    id: "post-to-facebook",
+    name: "Post Content to Facebook Page",
+    retries: 2
+  },
+  {
+    event: "social/facebook.post"
+  },
+  async ({ event, step }) => {
+    const { contentId, immediate = false } = event.data;
+    
+    // Step 1: Fetch content from database
+    const content = await step.run("fetch-content-for-facebook", async () => {
+      const result = await sql`
+        SELECT 
+          id,
+          topic,
+          title,
+          content,
+          slug,
+          meta_title,
+          meta_description,
+          keywords,
+          status
+        FROM generated_content
+        WHERE id = ${contentId}
+          AND status = 'published'
+        LIMIT 1
+      `;
+      
+      if (result.length === 0) {
+        throw new Error(`Published content not found with ID: ${contentId}`);
+      }
+      
+      return result[0];
+    });
+    
+    // Step 2: Check if already posted to Facebook
+    const existingPost = await step.run("check-existing-facebook-post", async () => {
+      const result = await sql`
+        SELECT id, post_id, status
+        FROM social_media_posts
+        WHERE content_id = ${contentId}
+          AND platform = 'facebook'
+          AND status IN ('published', 'scheduled')
+        LIMIT 1
+      `;
+      
+      if (result.length > 0) {
+        console.log(`Content ${contentId} already posted to Facebook`);
+        return result[0];
+      }
+      
+      return null;
+    });
+    
+    if (existingPost) {
+      return {
+        success: true,
+        message: "Content already posted to Facebook",
+        postId: existingPost.post_id,
+        status: existingPost.status
+      };
+    }
+    
+    // Step 3: Get Facebook credentials
+    const credentials = await step.run("get-facebook-credentials", async () => {
+      const creds = await getFacebookPageAccessToken();
+      
+      if (!creds) {
+        throw new Error("Facebook credentials not available");
+      }
+      
+      return creds;
+    });
+    
+    // Step 4: Extract and prepare post data
+    const postData = await step.run("prepare-facebook-post-data", async () => {
+      // Extract Open Graph data
+      const ogData = extractOGData({
+        title: content.meta_title || content.title,
+        meta_description: content.meta_description,
+        slug: content.slug,
+        keywords: content.keywords
+      });
+      
+      console.log(`Preparing Facebook post for: ${content.title}`);
+      console.log(`Link: ${ogData.link}`);
+      
+      return ogData;
+    });
+    
+    // Step 5: Post to Facebook
+    const facebookResponse = await step.run("send-facebook-post", async () => {
+      try {
+        // If immediate post or scheduled for now
+        if (immediate) {
+          const response = await postToFacebookPage(
+            postData,
+            credentials.accessToken,
+            credentials.pageId
+          );
+          
+          if (!response) {
+            throw new Error("Failed to post to Facebook");
+          }
+          
+          return {
+            postId: response.id,
+            status: "published" as const
+          };
+        } else {
+          // Schedule for optimal time (e.g., 2 PM local time next day)
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          tomorrow.setHours(14, 0, 0, 0); // 2 PM
+          
+          // For now, just post immediately
+          // In production, you'd implement scheduling logic
+          const response = await postToFacebookPage(
+            postData,
+            credentials.accessToken,
+            credentials.pageId
+          );
+          
+          if (!response) {
+            throw new Error("Failed to post to Facebook");
+          }
+          
+          return {
+            postId: response.id,
+            status: "published" as const
+          };
+        }
+      } catch (error) {
+        console.error("Error posting to Facebook:", error);
+        
+        // Save failed attempt
+        await saveFacebookPost(
+          contentId,
+          "failed",
+          postData,
+          "failed"
+        );
+        
+        throw error;
+      }
+    });
+    
+    // Step 6: Save post data to database
+    await step.run("save-facebook-post-data", async () => {
+      await saveFacebookPost(
+        contentId,
+        facebookResponse.postId,
+        postData,
+        facebookResponse.status
+      );
+      
+      // Update content metadata with Facebook post info
+      await sql`
+        UPDATE generated_content
+        SET metadata = jsonb_set(
+          COALESCE(metadata, '{}'),
+          '{facebookPost}',
+          ${JSON.stringify({
+            postId: facebookResponse.postId,
+            postedAt: new Date().toISOString(),
+            link: postData.link,
+            status: facebookResponse.status
+          })}::jsonb
+        )
+        WHERE id = ${contentId}
+      `;
+    });
+    
+    // Step 7: Log the operation
+    await step.run("log-facebook-post", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'social.facebook.posted',
+          'social_media',
+          'completed',
+          ${JSON.stringify({
+            contentId: contentId,
+            postId: facebookResponse.postId,
+            title: content.title
+          })},
+          ${JSON.stringify({
+            platform: 'facebook',
+            link: postData.link,
+            postedAt: new Date().toISOString(),
+            contentId: contentId
+          })}
+        )
+      `;
+    });
+    
+    return {
+      success: true,
+      contentId: contentId,
+      postId: facebookResponse.postId,
+      status: facebookResponse.status,
+      link: postData.link,
+      postedAt: new Date().toISOString()
     };
   }
 );

@@ -1,7 +1,7 @@
 # Inngest İşlem Süreçleri Raporu
 
 ## Genel Bakış
-Bu rapor, Gül-Tekin Mühendislik web uygulamasında kullanılan Inngest fonksiyonlarının detaylı dokümantasyonunu içerir. Sistem, içerik üretimi, SEO optimizasyonu ve E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) analizleri için otomatik işlem süreçleri kullanmaktadır.
+Bu rapor, Gül-Tekin Mühendislik web uygulamasında kullanılan Inngest fonksiyonlarının detaylı dokümantasyonunu içerir. Sistem, içerik üretimi, SEO optimizasyonu, E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) analizleri ve sosyal medya otomasyonu için otomatik işlem süreçleri kullanmaktadır.
 
 ---
 
@@ -10,7 +10,8 @@ Bu rapor, Gül-Tekin Mühendislik web uygulamasında kullanılan Inngest fonksiy
 2. [Veri Senkronizasyon Fonksiyonları](#veri-senkronizasyon-fonksiyonları)
 3. [İçerik Üretim ve Optimizasyon Fonksiyonları](#i̇çerik-üretim-ve-optimizasyon-fonksiyonları)
 4. [E-E-A-T Optimizasyon Süreci](#e-e-a-t-optimizasyon-süreci)
-5. [İşlem Akışı Diyagramı](#i̇şlem-akışı-diyagramı)
+5. [Sosyal Medya Otomasyonu](#sosyal-medya-otomasyonu)
+6. [İşlem Akışı Diyagramı](#i̇şlem-akışı-diyagramı)
 
 ---
 
@@ -160,14 +161,73 @@ Bu rapor, Gül-Tekin Mühendislik web uygulamasında kullanılan Inngest fonksiy
      - `metadata.eeatOptimized`: true
      - `metadata.eeatOptimizationDate`: tarih
   5. Optimizasyon sonrası E-E-A-T skorunu yeniden analiz
-  6. Yeni analizi `metadata.eeatAnalysisPostOptimization`'a kaydetme
-  7. İşlem logu oluşturma (orijinal skor, yeni skor, iyileşme miktarı)
+  6. **Facebook'a otomatik paylaşım tetikleme (skor ≥75 ise)**
+  7. Yeni analizi `metadata.eeatAnalysisPostOptimization`'a kaydetme
+  8. İşlem logu oluşturma (orijinal skor, yeni skor, iyileşme miktarı)
+
+### 9. postToFacebook
+- **ID:** `post-to-facebook`
+- **Tetikleme:** Event - `social/facebook.post`
+- **Deneme Sayısı:** 2
+- **Amaç:** E-E-A-T optimizasyonu tamamlanmış içeriği Facebook'a paylaşma
+- **İşlem Adımları:**
+  1. İçerik detaylarını veritabanından çekme
+  2. Duplicate post kontrolü (daha önce paylaşılmış mı?)
+  3. Facebook API kimlik bilgilerini alma
+  4. **Post verisi hazırlama:**
+     - Open Graph meta verileri çıkarma
+     - Hashtag'leri anahtar kelimelerden üretme
+     - OG görsel URL'i oluşturma (`/api/og`)
+     - Post mesajı formatı:
+       - Başlık ve özet
+       - Call-to-action
+       - Otomatik hashtag'ler
+       - Şirket hashtag'leri (#GülTekinMühendislik #Bodrum vb.)
+  5. **Facebook Graph API v23.0 ile paylaşım:**
+     - Page feed endpoint'ine POST isteği
+     - Access token doğrulaması
+     - Link ve mesaj gönderimi
+  6. Post verilerini `social_media_posts` tablosuna kaydetme
+  7. İçerik metadata'sını Facebook post bilgileriyle güncelleme
+  8. İşlem logunu `event_logs` tablosuna kaydetme
+
+---
+
+## Sosyal Medya Otomasyonu
+
+### Facebook Graph API v23.0 Entegrasyonu
+
+#### Özellikler:
+- **Otomatik Paylaşım:** E-E-A-T skoru ≥75 olan içerikler otomatik paylaşılır
+- **Open Graph Görselleri:** Dinamik OG görsel üretimi (`/api/og`)
+- **Hashtag Otomasyonu:** Anahtar kelimelerden hashtag üretimi
+- **Duplicate Kontrolü:** Aynı içeriğin tekrar paylaşılmasını engelleme
+- **Engagement Tracking:** Paylaşım metriklerinin takibi
+
+#### Facebook Post Formatı:
+```
+🔧 [İçerik Başlığı]
+
+[Meta Açıklama]
+
+📖 Detaylı bilgi için tıklayın:
+
+#[OtomatikHashtag1] #[OtomatikHashtag2] ...
+
+#GülTekinMühendislik #Bodrum #MekanikTesisat #EnerjiVerimliliği
+```
+
+#### API Endpoints:
+- `GET /api/test-facebook-simple`: Test mesajı gönderimi
+- `POST /api/test-facebook`: İçerik paylaşım tetikleme
+- `GET /api/test-facebook`: Paylaşım durumu kontrolü
+- `GET /api/og?title={title}&slug={slug}`: Open Graph görsel üretimi
 
 ---
 
 ## E-E-A-T Optimizasyon Süreci
 
-### Otomatik Optimizasyon Akışı
+### Otomatik Optimizasyon ve Sosyal Medya Akışı
 
 ```mermaid
 graph TD
@@ -179,8 +239,13 @@ graph TD
     E --> G[applyEEATOptimizations]
     G --> H[Groq AI ile İçerik Yeniden Yazma]
     H --> I[Veritabanı Güncelleme]
-    I --> J[Yeni E-E-A-T Skoru]
-    J --> K[İşlem Tamamlandı]
+    I --> J{Yeni Skor >= 75?}
+    J -->|Evet| K[social/facebook.post event]
+    J -->|Hayır| L[İşlem Tamamlandı]
+    K --> M[postToFacebook]
+    M --> N[Facebook'a Paylaş]
+    N --> O[social_media_posts Tablosuna Kaydet]
+    O --> L
 ```
 
 ### E-E-A-T Skorlama Kriterleri
@@ -213,7 +278,7 @@ graph TD
 
 ## İşlem Akışı Diyagramı
 
-### Ana İçerik Üretim ve Optimizasyon Döngüsü
+### Ana İçerik Üretim, Optimizasyon ve Sosyal Medya Döngüsü
 
 ```
 Her 6 Saatte Bir (Cron)
@@ -245,7 +310,17 @@ Her 6 Saatte Bir (Cron)
    - Veritabanını güncelle
    - Skoru yeniden hesapla
     ↓
-8. İşlem Tamamlandı
+8. Yeni Skor >= 75?
+    ↓ (Evet)
+9. social/facebook.post event
+    ↓
+10. postToFacebook
+    - Open Graph görsel üret
+    - Hashtag'leri oluştur
+    - Facebook'a paylaş
+    - Metrikleri kaydet
+    ↓
+11. İşlem Tamamlandı
 ```
 
 ---
@@ -357,17 +432,68 @@ Her 6 Saatte Bir (Cron)
 
 ---
 
+### social_media_posts
+- **id**: Benzersiz kimlik
+- **content_id**: generated_content tablosuna referans
+- **platform**: Sosyal medya platformu (facebook, twitter, linkedin, instagram)
+- **post_id**: Platform-specific post ID (örn: Facebook post ID)
+- **post_data**: Post verilerinin tamamı (JSONB)
+  - `message`: Post mesajı
+  - `link`: Paylaşılan link
+  - `hashtags`: Kullanılan hashtag'ler
+  - `imageUrl`: Open Graph görsel URL'i
+- **status**: Post durumu (pending, published, scheduled, failed)
+- **posted_at**: Yayınlanma zamanı
+- **scheduled_for**: Zamanlanmış postlar için
+- **error_message**: Hata durumunda detaylar
+- **engagement_metrics**: Sosyal medya metrikleri (JSONB)
+  - `likes`: Beğeni sayısı
+  - `shares`: Paylaşım sayısı
+  - `comments`: Yorum sayısı
+  - `reach`: Erişim sayısı
+- **created_at**: Kayıt oluşturma tarihi
+- **updated_at**: Son güncelleme tarihi
+
+---
+
+## Teknoloji Stack
+
+### API Entegrasyonları
+- **Groq AI**: Llama 3.3 70B ve Mixtral-8x7b modelleri ile içerik üretimi ve optimizasyon
+- **Exa API**: Web aramaları ve içerik keşfi
+- **Facebook Graph API v23.0**: Sosyal medya paylaşımları
+- **Inngest**: Event-driven workflow orchestration
+- **Neon PostgreSQL**: Veritabanı
+
+### Kullanılan Modeller
+- **İçerik Üretimi**: Llama 3.3 70B (Groq)
+- **E-E-A-T Optimizasyon**: Mixtral-8x7b (Groq)
+- **Token Limitleri**: 
+  - İçerik üretimi: 2500 token
+  - E-E-A-T analizi: 2000 token
+  - Optimizasyon: 3500 token
+
+---
+
 ## Sonuç
 
 Inngest tabanlı bu otomasyon sistemi, Gül-Tekin Mühendislik için:
 - **Otomatik İçerik Üretimi**: Günde 4 farklı mühendislik konusunda içerik
 - **SEO Optimizasyonu**: Google'ın E-E-A-T kriterlerine uygun içerik
 - **Veri Güncelleme**: Otomatik içerik iyileştirme ve veritabanı güncelleme
+- **Sosyal Medya Otomasyonu**: Facebook'a otomatik içerik paylaşımı
 - **Performans Takibi**: Detaylı loglama ve metrik takibi
 
-sağlayarak, web sitesinin organik trafiğini ve arama motoru sıralamasını artırmayı hedeflemektedir.
+sağlayarak, web sitesinin organik trafiğini, sosyal medya etkileşimini ve arama motoru sıralamasını artırmayı hedeflemektedir.
+
+### Başarı Metrikleri
+- **İçerik Üretim Hızı**: Her 6 saatte 1 içerik
+- **E-E-A-T Hedef Skoru**: 75/100
+- **Facebook Paylaşım Kriteri**: E-E-A-T skoru ≥75
+- **Veri Saklama**: Arama sonuçları 7 gün, içerikler süresiz
 
 ---
 
 *Rapor Tarihi: ${new Date().toLocaleDateString('tr-TR')}*
-*Versiyon: 1.0*
+*Versiyon: 2.0*
+*Son Güncelleme: Facebook Graph API v23.0 entegrasyonu eklendi*

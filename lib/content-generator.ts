@@ -1,3 +1,4 @@
+import 'groq-sdk/shims/node';
 import Groq from "groq-sdk";
 import Exa from "exa-js";
 import { sql } from "./db";
