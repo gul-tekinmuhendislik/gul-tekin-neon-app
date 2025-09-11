@@ -30,30 +30,6 @@ export function LogoCloud() {
       name: "Yelkenci",
       logo: "/yelkenci.png",
     },
-    {
-      name: "Daikin",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/7/79/Daikin-logo.svg",
-    },
-    {
-      name: "Mitsubishi",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/2/2e/Mitsubishi_logo.svg",
-    },
-    {
-      name: "Vaillant",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/0/00/Vaillant-logo.svg",
-    },
-    {
-      name: "Bosch",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Bosch-logotype.svg",
-    },
-    {
-      name: "Viessmann",
-      logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Viessmann-logo.svg",
-    },
-    {
-      name: "Baymak",
-      logo: "https://www.baymak.com.tr/assets/images/baymak-logo.svg",
-    },
   ];
 
   return (
