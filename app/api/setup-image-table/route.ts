@@ -15,10 +15,19 @@ export async function GET() {
         status VARCHAR(20) DEFAULT 'pending',
         cloudinary_url TEXT,
         cloudinary_public_id TEXT,
+        metadata JSONB,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `;
+    
+    // Add metadata column if it doesn't exist
+    await sql`
+      ALTER TABLE generated_images 
+      ADD COLUMN IF NOT EXISTS metadata JSONB
+    `.catch(() => {
+      // Ignore error if column already exists
+    });
 
     // Add indexes for better performance
     await sql`

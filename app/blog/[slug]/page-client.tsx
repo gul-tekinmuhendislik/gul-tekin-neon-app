@@ -19,6 +19,7 @@ interface BlogPost {
   published_at: string | null;
   created_at: string;
   updated_at: string;
+  image?: string;
 }
 
 export default function BlogDetailClient() {
@@ -141,11 +142,22 @@ export default function BlogDetailClient() {
           ]}
         />
 
-        <article className="bg-white rounded-lg shadow-lg p-8">
-          <header className="mb-8 pb-8 border-b border-gray-200">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-              {post.title}
-            </h1>
+        <article className="bg-white rounded-lg shadow-lg overflow-hidden">
+          {post.image && (
+            <div className="relative h-64 md:h-96 w-full">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          <div className="p-8">
+            <header className="mb-8 pb-8 border-b border-gray-200">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                {post.title}
+              </h1>
             <div className="flex flex-wrap gap-4 text-sm text-gray-500">
               <span>{formatDate(post.created_at)}</span>
               {post.updated_at !== post.created_at && (
@@ -157,29 +169,29 @@ export default function BlogDetailClient() {
                 {post.meta_description}
               </p>
             )}
-          </header>
+            </header>
 
-          <div 
-            className="prose max-w-none prose-gray prose-lg"
-            dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
-          />
+            <div 
+              className="prose max-w-none prose-gray prose-lg"
+              dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
+            />
 
-          {post.keywords && post.keywords.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <h3 className="text-lg font-semibold mb-4 text-gray-900">Anahtar Kelimeler</h3>
-              <div className="flex flex-wrap gap-2">
-                {post.keywords.map((keyword, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
-                  >
-                    {keyword}
-                  </span>
-                ))}
+            {post.keywords && post.keywords.length > 0 && (
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <h3 className="text-lg font-semibold mb-4 text-gray-900">Anahtar Kelimeler</h3>
+                <div className="flex flex-wrap gap-2">
+                  {post.keywords.map((keyword, index) => (
+                    <span
+                      key={index}
+                      className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                    >
+                      {keyword}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-
+            )}
+          </div>
         </article>
       </div>
     </div>

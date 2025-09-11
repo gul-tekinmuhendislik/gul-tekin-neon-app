@@ -12,6 +12,7 @@ interface BlogPost {
   content: string;
   meta_description: string;
   keywords: string[];
+  image?: string;
   created_at: string;
   updated_at: string;
 }
@@ -96,30 +97,42 @@ export default function BlogPage() {
               >
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="block p-6 h-full"
+                  className="block h-full"
                 >
                   <article className="flex flex-col h-full">
-                    <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                      {post.title}
-                    </h2>
-                    <p className="text-gray-600 mb-4 flex-grow leading-relaxed">
-                      {getExcerpt(post.content)}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {post.keywords?.slice(0, 3).map((keyword, index) => (
-                        <span
-                          key={index}
-                          className="text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 px-3 py-1 rounded-full font-medium"
-                        >
-                          {keyword}
+                    {post.image && (
+                      <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                        {post.title}
+                      </h2>
+                      <p className="text-gray-600 mb-4 flex-grow leading-relaxed">
+                        {getExcerpt(post.content)}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.keywords?.slice(0, 3).map((keyword, index) => (
+                          <span
+                            key={index}
+                            className="text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 px-3 py-1 rounded-full font-medium"
+                          >
+                            {keyword}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-500">{formatDate(post.created_at)}</span>
+                        <span className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold">
+                          Devamını Oku →
                         </span>
-                      ))}
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-500">{formatDate(post.created_at)}</span>
-                      <span className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold">
-                        Devamını Oku →
-                      </span>
+                      </div>
                     </div>
                   </article>
                 </Link>

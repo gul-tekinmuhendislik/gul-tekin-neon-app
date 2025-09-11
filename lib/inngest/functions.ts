@@ -12,6 +12,12 @@ import {
   saveFacebookPost 
 } from "../facebook-api";
 import { syncMarkalarDaily, syncMarkalarManual } from "./markalar-sync";
+import { 
+  generateContentWithXAI, 
+  generateImageWithXAI, 
+  enhanceContentWithXAI,
+  generatePromptForContent 
+} from "./xai-content-generator";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -1654,6 +1660,12 @@ import {
   generateBulkImages
 } from "./image-generation";
 
+// Import Fal.ai image generation functions
+import {
+  generateImageWithFalAI,
+  generateBulkImagesWithFalAI
+} from "./fal-ai-generation";
+
 // Export Markalar and Hizmetler sync functions
 export { 
   syncMarkalarDaily, 
@@ -1670,5 +1682,12 @@ export {
   bulkSyncHizmetlerImages,
   dailyImageSync,
   generateImage,
-  generateBulkImages
+  generateBulkImages,
+  generateImageWithFalAI,
+  generateBulkImagesWithFalAI,
+  // XAI functions
+  generateContentWithXAI,
+  generateImageWithXAI,
+  enhanceContentWithXAI,
+  generatePromptForContent
 };

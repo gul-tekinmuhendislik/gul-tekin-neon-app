@@ -13,6 +13,7 @@ export async function GET() {
         meta_title,
         meta_description,
         keywords,
+        image,
         status,
         published_at,
         created_at,
