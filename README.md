@@ -6,3 +6,4 @@
   - feat: Homepage UI yenileme ve modern component entegrasyonu
   - test: Kapsamlı test suite ve UI güncellemeleri
   - logo clean again
+  - feat: Footer sosyal medya linkleri ve logo cloud güncelleme
