@@ -11,6 +11,7 @@ import {
   extractOGData, 
   saveFacebookPost 
 } from "../facebook-api";
+import { syncMarkalarDaily, syncMarkalarManual } from "./markalar-sync";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -1626,3 +1627,6 @@ export const monitorTokenExpiry = inngest.createFunction(
     };
   }
 );
+
+// Export Markalar sync functions
+export { syncMarkalarDaily, syncMarkalarManual };

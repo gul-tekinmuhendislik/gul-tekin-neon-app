@@ -16,6 +16,7 @@
     "@ai-sdk/openai": "^2.0.24",
     "@neondatabase/serverless": "^1.0.0",
     "ai": "^5.0.34",
+    "airtable": "^0.12.2",
     "clsx": "^2.1.1",
     "exa-js": "^1.9.3",
     "framer-motion": "^12.23.12",

@@ -11,7 +11,9 @@ import {
   applyEEATOptimizations,
   postToFacebook,
   checkAndRefreshFacebookToken,
-  monitorTokenExpiry
+  monitorTokenExpiry,
+  syncMarkalarDaily,
+  syncMarkalarManual
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -27,6 +29,8 @@ export const { GET, POST, PUT } = serve({
     applyEEATOptimizations,
     postToFacebook,
     checkAndRefreshFacebookToken,
-    monitorTokenExpiry
+    monitorTokenExpiry,
+    syncMarkalarDaily,
+    syncMarkalarManual
   ],
 });
