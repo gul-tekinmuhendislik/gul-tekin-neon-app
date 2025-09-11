@@ -7,7 +7,9 @@ import arrow from "@/assets/arrow.svg";
 import discord from "@/assets/discord.svg";
 import docs from "@/assets/docs.svg";
 import { checkDbConnection } from "./db";
-import { Vortex } from "@/components/ui/vortex";
+import { Vortex } from "@/components/ui/gul-tekin-hero";
+import { IntegrationsSection } from "@/components/ui/integrations-section";
+import { LogoCloud } from "@/components/ui/logo-cloud";
 
 export const metadata: Metadata = {
   title: "Ana Sayfa",
@@ -47,12 +49,16 @@ const DATA = {
 export default async function Home() {
   const result = await checkDbConnection();
   return (
-    <div className="flex min-h-screen flex-col bg-black">
+    <div className="flex min-h-screen flex-col bg-white">
       <Vortex
-        backgroundColor="black"
-        className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
+        backgroundColor="white"
+        className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-screen"
         baseHue={120}
         particleCount={150}
+        enableWaves={true}
+        waveColors={["#00E599", "#3b82f6", "#8b5cf6"]}
+        waveOpacity={0.15}
+        waveSpeed={0.001}
       >
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 md:max-w-lg md:px-0 lg:max-w-xl">
           <main className="flex flex-1 flex-col justify-center">
@@ -75,11 +81,11 @@ export default async function Home() {
               />
             </div>
             <h1
-              className="text-3xl font-semibold leading-none tracking-tighter text-white md:text-4xl md:leading-none lg:text-5xl lg:leading-none"
+              className="text-3xl font-semibold leading-none tracking-tighter text-gray-900 md:text-4xl md:leading-none lg:text-5xl lg:leading-none"
               dangerouslySetInnerHTML={{ __html: DATA.title }}
             />
             <p
-              className="mt-3.5 max-w-lg text-base leading-snug tracking-tight text-gray-300 md:text-lg md:leading-snug lg:text-xl lg:leading-snug"
+              className="mt-3.5 max-w-lg text-base leading-snug tracking-tight text-gray-700 md:text-lg md:leading-snug lg:text-xl lg:leading-snug"
               dangerouslySetInnerHTML={{ __html: DATA.description }}
             />
             <div className="mt-8 flex flex-wrap items-center gap-5 md:mt-9 lg:mt-10">
@@ -90,12 +96,12 @@ export default async function Home() {
                 {DATA.button.text}
               </Link>
               <Link
-                className="group flex items-center gap-2 leading-none tracking-tight text-white hover:text-[#00E599] transition-colors"
+                className="group flex items-center gap-2 leading-none tracking-tight text-gray-900 hover:text-[#00E599] transition-colors"
                 href={DATA.link.href}
               >
                 {DATA.link.text}
                 <Image
-                  className="transition-transform duration-200 group-hover:translate-x-1 invert"
+                  className="transition-transform duration-200 group-hover:translate-x-1"
                   src={arrow}
                   alt="arrow"
                   width={16}
@@ -105,16 +111,16 @@ export default async function Home() {
               </Link>
             </div>
           </main>
-          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-800 py-5 sm:gap-2 sm:gap-6 md:pb-12 md:pt-10">
+          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 py-5 sm:gap-2 sm:gap-6 md:pb-12 md:pt-10">
             <ul className="flex items-center gap-4 sm:gap-6">
               {DATA.footerLinks.map((link) => (
                 <Link
-                  className="flex items-center gap-2 text-gray-400 transition-all duration-200 hover:text-white"
+                  className="flex items-center gap-2 text-gray-600 transition-all duration-200 hover:text-gray-900"
                   key={link.text}
                   href={link.href}
                 >
                   <Image
-                    className="invert"
+                    className=""
                     src={link.icon}
                     alt={link.text}
                     width={16}
@@ -137,6 +143,8 @@ export default async function Home() {
           </footer>
         </div>
       </Vortex>
+      <IntegrationsSection />
+      <LogoCloud />
     </div>
   );
 }

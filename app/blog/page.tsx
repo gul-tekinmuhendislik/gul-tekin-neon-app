@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatedCard } from "@/components/ui/animated-card";
 
 interface BlogPost {
   id: number;
@@ -58,24 +59,26 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       <div className="container mx-auto px-4 py-16">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-gray-900">
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           Blog
         </h1>
 
         {loading ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div
+              <AnimatedCard
                 key={i}
-                className="bg-white rounded-lg p-6 animate-pulse shadow-md"
+                className="animate-pulse"
               >
-                <div className="h-6 bg-gray-200 rounded mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
-              </div>
+                <div className="p-6">
+                  <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-4"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-2"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-2"></div>
+                  <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded w-2/3"></div>
+                </div>
+              </AnimatedCard>
             ))}
           </div>
         ) : posts.length === 0 ? (
@@ -85,36 +88,42 @@ export default function BlogPage() {
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
-              <Link
+              <AnimatedCard
                 key={post.id}
-                href={`/blog/${post.slug}`}
-                className="group"
+                withArrow={true}
+                gradientColors={["#3b82f6", "#8b5cf6", "#ec4899", "#f59e0b"]}
+                className="h-full"
               >
-                <article className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 h-full flex flex-col border border-gray-200">
-                  <h2 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-600 mb-4 flex-grow">
-                    {getExcerpt(post.content)}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.keywords?.slice(0, 3).map((keyword, index) => (
-                      <span
-                        key={index}
-                        className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded"
-                      >
-                        {keyword}
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="block p-6 h-full"
+                >
+                  <article className="flex flex-col h-full">
+                    <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                      {post.title}
+                    </h2>
+                    <p className="text-gray-600 mb-4 flex-grow leading-relaxed">
+                      {getExcerpt(post.content)}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {post.keywords?.slice(0, 3).map((keyword, index) => (
+                        <span
+                          key={index}
+                          className="text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 px-3 py-1 rounded-full font-medium"
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500">{formatDate(post.created_at)}</span>
+                      <span className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold">
+                        Devamını Oku →
                       </span>
-                    ))}
-                  </div>
-                  <div className="flex justify-between items-center text-sm text-gray-500">
-                    <span>{formatDate(post.created_at)}</span>
-                    <span className="text-blue-600 group-hover:text-blue-700">
-                      Devamını Oku →
-                    </span>
-                  </div>
-                </article>
-              </Link>
+                    </div>
+                  </article>
+                </Link>
+              </AnimatedCard>
             ))}
           </div>
         )}
