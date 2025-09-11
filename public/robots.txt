@@ -1,5 +1,5 @@
 # Gül-Tekin Mühendislik - Robots.txt
-# https://yalikavak.gul-tekinmuhendislik.com
+# https://ai.gul-tekinmuhendislik.com
 
 # Allow all bots
 User-agent: *
@@ -9,7 +9,7 @@ Disallow: /_next/
 Disallow: /admin/
 
 # Sitemap location
-Sitemap: https://yalikavak.gul-tekinmuhendislik.com/sitemap.xml
+Sitemap: https://ai.gul-tekinmuhendislik.com/sitemap.xml
 
 # Crawl-delay (optional, in seconds)
 Crawl-delay: 1

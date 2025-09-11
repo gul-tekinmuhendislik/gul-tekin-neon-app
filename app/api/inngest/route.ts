@@ -13,7 +13,9 @@ import {
   checkAndRefreshFacebookToken,
   monitorTokenExpiry,
   syncMarkalarDaily,
-  syncMarkalarManual
+  syncMarkalarManual,
+  syncHizmetlerDaily,
+  syncHizmetlerManual
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -31,6 +33,8 @@ export const { GET, POST, PUT } = serve({
     checkAndRefreshFacebookToken,
     monitorTokenExpiry,
     syncMarkalarDaily,
-    syncMarkalarManual
+    syncMarkalarManual,
+    syncHizmetlerDaily,
+    syncHizmetlerManual
   ],
 });

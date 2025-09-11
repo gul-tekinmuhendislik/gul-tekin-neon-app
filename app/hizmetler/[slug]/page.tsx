@@ -1,0 +1,262 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
+import { Hizmet } from '@/lib/types/hizmet';
+import Link from 'next/link';
+import Image from 'next/image';
+
+interface PageProps {
+  params: Promise<{
+    slug: string;
+  }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+  const hizmet = hizmetler.find((h) => h.seo_slug === slug);
+  
+  if (!hizmet) {
+    return {
+      title: 'Hizmet Bulunamadı | Gül-Tekin Mühendislik',
+      description: 'Aradığınız hizmet bulunamadı.'
+    };
+  }
+
+  return {
+    title: hizmet.seo_title || `${hizmet.hizmet_adi} | Gül-Tekin Mühendislik`,
+    description: hizmet.seo_description || hizmet.aciklama || `Gül-Tekin Mühendislik ${hizmet.hizmet_adi} hizmetleri`,
+    keywords: hizmet.marka_text?.join(', ') || hizmet.hizmet_adi,
+    openGraph: {
+      title: hizmet.seo_title || hizmet.hizmet_adi,
+      description: hizmet.seo_description || hizmet.aciklama,
+      type: 'website',
+      locale: 'tr_TR',
+      siteName: 'Gül-Tekin Mühendislik',
+      images: hizmet.resim_url ? [{ url: hizmet.resim_url, alt: hizmet.hizmet_adi }] : undefined,
+    },
+    alternates: {
+      canonical: `/hizmetler/${slug}`,
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+  
+  return hizmetler
+    .filter((hizmet) => hizmet.seo_slug)
+    .map((hizmet) => ({
+      slug: hizmet.seo_slug,
+    }));
+}
+
+export default async function HizmetDetailPage({ params }: PageProps) {
+  const { slug } = await params;
+  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+  const hizmet = hizmetler.find((h) => h.seo_slug === slug);
+  
+  if (!hizmet) {
+    notFound();
+  }
+
+  // Find related services from same category
+  const relatedServices = hizmetler
+    .filter((h) => h.kategori === hizmet.kategori && h.id !== hizmet.id)
+    .slice(0, 3);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="container mx-auto px-4 py-8">
+        {/* Breadcrumb */}
+        <nav className="flex mb-8 text-sm">
+          <Link href="/" className="text-gray-500 hover:text-gray-700">
+            Ana Sayfa
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <Link href="/hizmetler" className="text-gray-500 hover:text-gray-700">
+            Hizmetler
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-gray-900">{hizmet.hizmet_adi}</span>
+        </nav>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {hizmet.hizmet_adi}
+            </h1>
+            
+            {hizmet.kategori && (
+              <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-md text-sm font-medium mb-6">
+                {hizmet.kategori}
+              </div>
+            )}
+
+            {hizmet.resim_url && (
+              <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={hizmet.resim_url}
+                  alt={hizmet.hizmet_adi}
+                  width={800}
+                  height={600}
+                  className="w-full h-auto"
+                />
+              </div>
+            )}
+
+            <div className="prose prose-lg max-w-none mb-8">
+              <p className="text-gray-700 leading-relaxed">
+                {hizmet.aciklama}
+              </p>
+            </div>
+
+            {/* Ana Faaliyet Konuları */}
+            {hizmet.ana_faaliyet_konusu && hizmet.ana_faaliyet_konusu.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Ana Faaliyet Konularımız
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {hizmet.ana_faaliyet_konusu.map((konu: string, index: number) => (
+                    <div key={index} className="flex items-start">
+                      <svg className="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-gray-700">{konu}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Ürünler */}
+            {hizmet.urunler && hizmet.urunler.length > 0 && (
+              <div className="mb-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Ürünlerimiz
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {hizmet.urunler.map((urun: string, index: number) => (
+                    <span
+                      key={index}
+                      className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm"
+                    >
+                      {urun}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            {/* Markalar */}
+            {hizmet.marka_text && hizmet.marka_text.length > 0 && (
+              <div className="bg-white rounded-xl shadow-md p-6 mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Çalıştığımız Markalar
+                </h3>
+                <div className="space-y-2">
+                  {hizmet.marka_text.map((marka: string, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center p-2 bg-blue-50 rounded-lg"
+                    >
+                      <svg className="w-4 h-4 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="text-gray-700 text-sm font-medium">{marka}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* CTA Box */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
+              <h3 className="text-xl font-bold mb-3">
+                Hemen Teklif Alın!
+              </h3>
+              <p className="text-blue-100 text-sm mb-4">
+                20 yıllık deneyimimiz ile size en uygun çözümü sunuyoruz.
+              </p>
+              <ul className="space-y-2 mb-6">
+                <li className="flex items-center text-sm">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Ücretsiz Keşif
+                </li>
+                <li className="flex items-center text-sm">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Garanti & Servis
+                </li>
+                <li className="flex items-center text-sm">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Profesyonel Ekip
+                </li>
+              </ul>
+              <Link
+                href="/contact"
+                className="block w-full text-center bg-white text-blue-600 font-semibold py-3 px-4 rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                İletişime Geç
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Related Services */}
+        {relatedServices.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              İlgili Hizmetler
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedServices.map((related) => (
+                <Link
+                  key={related.id}
+                  href={`/hizmetler/${related.seo_slug}`}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                >
+                  {related.resim_url && (
+                    <div className="h-48 overflow-hidden bg-gray-100">
+                      <Image
+                        src={related.resim_url}
+                        alt={related.hizmet_adi}
+                        width={400}
+                        height={300}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">
+                      {related.hizmet_adi}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2">
+                      {related.aciklama}
+                    </p>
+                    <span className="inline-flex items-center text-blue-600 text-sm font-medium mt-3 group-hover:translate-x-1 transition-transform">
+                      Detaylı Bilgi
+                      <svg className="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

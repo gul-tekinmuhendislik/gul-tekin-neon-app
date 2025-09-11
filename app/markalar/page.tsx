@@ -1,4 +1,5 @@
 import { getMarkalarFromNeon } from '@/lib/airtable-markalar-client';
+import Image from 'next/image';
 
 export default async function MarkalarPage() {
   const markalar = await getMarkalarFromNeon();
@@ -23,9 +24,11 @@ export default async function MarkalarPage() {
             >
               {marka.logo_url ? (
                 <div className="w-full h-32 mb-4 flex items-center justify-center">
-                  <img
+                  <Image
                     src={marka.logo_url}
                     alt={`${marka.marka_adi} logo`}
+                    width={150}
+                    height={150}
                     className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>

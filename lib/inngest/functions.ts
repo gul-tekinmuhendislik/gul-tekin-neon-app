@@ -1628,5 +1628,13 @@ export const monitorTokenExpiry = inngest.createFunction(
   }
 );
 
-// Export Markalar sync functions
-export { syncMarkalarDaily, syncMarkalarManual };
+// Import Hizmetler sync functions
+import { syncHizmetlerDaily, syncHizmetlerManual } from "./hizmetler-sync";
+
+// Export Markalar and Hizmetler sync functions
+export { 
+  syncMarkalarDaily, 
+  syncMarkalarManual,
+  syncHizmetlerDaily,
+  syncHizmetlerManual
+};

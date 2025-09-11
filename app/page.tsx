@@ -1,11 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import logo from "@/assets/logo.svg";
-import logoDark from "@/assets/logo-dark.svg";
 import Link from "next/link";
-import arrow from "@/assets/arrow.svg";
-import discord from "@/assets/discord.svg";
-import docs from "@/assets/docs.svg";
 import { checkDbConnection } from "./db";
 import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
@@ -49,12 +44,12 @@ const DATA = {
     {
       text: "Blog",
       href: "/blog",
-      icon: docs,
+      icon: "/assets/docs.svg",
     },
     {
       text: "Hakkımızda",
       href: "/about",
-      icon: discord,
+      icon: "/assets/discord.svg",
     },
   ],
 };
@@ -78,7 +73,7 @@ export default async function Home() {
             <div className="mb-6 md:mb-7">
               <Image
                 className="lg:h-7 lg:w-auto dark:hidden"
-                src={logo}
+                src="/assets/logo.svg"
                 alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
                 width={88}
                 height={24}
@@ -86,7 +81,7 @@ export default async function Home() {
               />
               <Image
                 className="hidden lg:h-7 lg:w-auto dark:block"
-                src={logoDark}
+                src="/assets/logo-dark.svg"
                 alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
                 width={88}
                 height={24}
@@ -129,7 +124,7 @@ export default async function Home() {
                 {DATA.link.text}
                 <Image
                   className="transition-transform duration-200 group-hover:translate-x-1"
-                  src={arrow}
+                  src="/assets/arrow.svg"
                   alt="Bağlantıya git ok işareti"
                   width={16}
                   height={10}

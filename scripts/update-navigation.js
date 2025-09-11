@@ -1,45 +1,36 @@
-import { sql } from '../lib/db.js';
+const { neon } = require('@neondatabase/serverless');
+require('dotenv').config({ path: '.env.local' });
 
 async function updateNavigation() {
+  const sql = neon(process.env.DATABASE_URL);
+  
   try {
-    console.log('AI Asistan menü öğesi devre dışı bırakılıyor...');
-    
-    // AI Asistan menü öğesini devre dışı bırak
-    await sql`
+    // Update navigation to point to /hizmetler
+    const result = await sql`
       UPDATE navigation_menu 
-      SET is_active = false 
-      WHERE href = '/ai'
+      SET href = '/hizmetler' 
+      WHERE href = '/services'
+      RETURNING *
     `;
     
-    // Blog'un order_index'ini 2 yap
-    await sql`
-      UPDATE navigation_menu 
-      SET order_index = 2 
-      WHERE href = '/blog'
+    console.log('Navigation updated:', result);
+    
+    // Also add Markalar to navigation if not exists
+    const checkMarkalar = await sql`
+      SELECT * FROM navigation_menu WHERE href = '/markalar'
     `;
     
-    // İletişim'in order_index'ini 3 yap
-    await sql`
-      UPDATE navigation_menu 
-      SET order_index = 3 
-      WHERE href = '/contact'
-    `;
+    if (checkMarkalar.length === 0) {
+      const addMarkalar = await sql`
+        INSERT INTO navigation_menu (title, href, order_index, is_active)
+        VALUES ('Markalar', '/markalar', 6, true)
+        RETURNING *
+      `;
+      console.log('Markalar added to navigation:', addMarkalar);
+    }
     
-    // Güncel aktif menü öğelerini göster
-    const activeMenuItems = await sql`
-      SELECT * FROM navigation_menu 
-      WHERE is_active = true 
-      ORDER BY order_index ASC
-    `;
-    
-    console.log('Güncel aktif menü öğeleri:');
-    console.table(activeMenuItems);
-    
-    console.log('✅ Navigasyon başarıyla güncellendi!');
-    process.exit(0);
   } catch (error) {
-    console.error('Hata:', error);
-    process.exit(1);
+    console.error('Error updating navigation:', error);
   }
 }
 

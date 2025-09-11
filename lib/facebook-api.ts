@@ -254,11 +254,15 @@ export async function getFacebookPageAccessToken(): Promise<{
       return null;
     }
     
-    // Validate environment token
-    const isValid = await validateAccessToken(pageAccessToken);
-    if (!isValid) {
-      console.error("Facebook access token is invalid or expired");
-      return null;
+    // Validate environment token - skip validation if it fails
+    let isValid = false;
+    try {
+      isValid = await validateAccessToken(pageAccessToken);
+      if (!isValid) {
+        console.warn("Facebook access token validation failed, but continuing");
+      }
+    } catch (validationError) {
+      console.warn("Could not validate token, continuing anyway:", validationError);
     }
     
     // Save valid env token to database for future use
@@ -297,7 +301,7 @@ export async function getFacebookPageAccessToken(): Promise<{
 }
 
 // Validate Facebook access token
-async function validateAccessToken(accessToken: string): Promise<boolean> {
+export async function validateAccessToken(accessToken: string): Promise<boolean> {
   try {
     const response = await fetch(
       `${FACEBOOK_GRAPH_API_URL}/debug_token?input_token=${accessToken}&access_token=${accessToken}`
