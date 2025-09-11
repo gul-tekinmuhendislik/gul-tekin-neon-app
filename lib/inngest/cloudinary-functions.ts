@@ -53,7 +53,7 @@ export const cloudinaryUpload = inngest.createFunction(
       return await uploadToCloudinary(file, options);
     });
 
-    if (!uploadResult.success) {
+    if (!uploadResult.success || !uploadResult.data) {
       throw new Error(`Upload failed: ${uploadResult.error}`);
     }
 
@@ -61,11 +61,17 @@ export const cloudinaryUpload = inngest.createFunction(
     let responsiveUrls = {};
     if (uploadResult.data.resource_type === 'image') {
       responsiveUrls = await step.run("generate-responsive-urls", async () => {
+        if (!uploadResult.data) {
+          throw new Error("No upload data available for responsive URLs");
+        }
         return getResponsiveImageUrls(uploadResult.data.public_id);
       });
     }
 
     await step.run("log-upload", async () => {
+      if (!uploadResult.data) {
+        throw new Error("No upload data available for logging");
+      }
       console.log(`File uploaded successfully: ${uploadResult.data.public_id}`);
     });
 
@@ -108,7 +114,10 @@ export const cloudinaryTransform = inngest.createFunction(
       throw new Error("No publicId provided for transformation");
     }
 
-    const results: any = {
+    const results: {
+      publicId: string;
+      urls: Record<string, unknown>;
+    } = {
       publicId,
       urls: {}
     };
@@ -244,7 +253,7 @@ export const cloudinaryOptimizeExisting = inngest.createFunction(
         publicIds.map(async (publicId) => {
           const optimizedUrl = getOptimizedImageUrl(publicId, undefined, undefined, {
             quality: optimizations.quality,
-            fetch_format: optimizations.format as any
+            fetch_format: optimizations.format as 'auto' | 'webp' | 'avif'
           });
 
           let responsiveUrls = {};
@@ -254,7 +263,7 @@ export const cloudinaryOptimizeExisting = inngest.createFunction(
               optimizations.sizes,
               {
                 quality: optimizations.quality,
-                fetch_format: optimizations.format as any
+                fetch_format: optimizations.format as 'auto' | 'webp' | 'avif'
               }
             );
           }

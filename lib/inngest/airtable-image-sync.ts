@@ -18,7 +18,7 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
     retries: 3,
   },
   { event: "airtable/image.sync" },
-  async ({ step }) => {
+  async ({ step, event }) => {
     const { id, imageUrl, type, name, folder } = event.data as ImageSyncData;
 
     if (!imageUrl) {
@@ -47,7 +47,7 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
         ]
       });
 
-      if (!result.success) {
+      if (!result.success || !result.data) {
         throw new Error(`Cloudinary upload failed: ${result.error}`);
       }
 
@@ -57,6 +57,10 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
 
     // Step 2: Update database with Cloudinary URL
     const updateResult = await step.run("update-database", async () => {
+      if (!uploadResult.data) {
+        throw new Error("No upload result data available");
+      }
+      
       if (type === 'marka') {
         const result = await sql`
           UPDATE markalar 
@@ -85,6 +89,10 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
 
     // Step 3: Generate responsive URLs
     const responsiveUrls = await step.run("generate-responsive-urls", async () => {
+      if (!uploadResult.data) {
+        throw new Error("No upload result data available for responsive URLs");
+      }
+      
       const { getResponsiveImageUrls } = await import("@/lib/cloudinary");
       
       return getResponsiveImageUrls(uploadResult.data.public_id, [320, 640, 768, 1024, 1280]);
@@ -92,6 +100,9 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
 
     // Step 4: Log the sync
     await step.run("log-image-sync", async () => {
+      if (!uploadResult.data) {
+        throw new Error("No upload result data available for logging");
+      }
       await sql`
         INSERT INTO event_logs (
           event_name,
@@ -112,7 +123,7 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
           })},
           ${JSON.stringify({
             publicId: uploadResult.data.public_id,
-            folder: uploadResult.data.folder || 'airtable',
+            folder: 'airtable',
             bytes: uploadResult.data.bytes,
             syncedAt: new Date().toISOString()
           })}
@@ -120,6 +131,10 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
       `;
     });
 
+    if (!uploadResult.data) {
+      throw new Error("No upload result data available for return");
+    }
+    
     return {
       success: true,
       id,

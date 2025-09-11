@@ -68,10 +68,10 @@ export default async function HizmetlerPage() {
                   key={hizmet.id}
                   className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  {hizmet.resim_url && (
+                  {(hizmet.cloudinary_url || hizmet.resim_url) && (
                     <div className="h-48 overflow-hidden bg-gray-100">
                       <Image
-                        src={hizmet.resim_url}
+                        src={hizmet.cloudinary_url || hizmet.resim_url || ''}
                         alt={hizmet.hizmet_adi}
                         width={400}
                         height={300}

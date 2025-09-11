@@ -5,6 +5,8 @@ export interface Hizmet {
   kategori?: string;
   ana_faaliyet_konusu?: string[];
   resim_url?: string;
+  cloudinary_url?: string;
+  cloudinary_public_id?: string;
   markalar?: string[];
   marka_text?: string[];
   urunler?: string[];

@@ -22,10 +22,10 @@ export default async function MarkalarPage() {
               key={marka.id}
               className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center justify-center group"
             >
-              {marka.logo_url ? (
+              {(marka.cloudinary_url || marka.logo_url) ? (
                 <div className="w-full h-32 mb-4 flex items-center justify-center">
                   <Image
-                    src={marka.logo_url}
+                    src={marka.cloudinary_url || marka.logo_url}
                     alt={`${marka.marka_adi} logo`}
                     width={150}
                     height={150}

@@ -169,7 +169,7 @@ export async function checkImageSyncStatus() {
 }
 
 // Export test functions
-export default {
+const airtableImageSyncTestSuite = {
   testSingleImageSync,
   testBulkMarkalarImageSync,
   testBulkHizmetlerImageSync,
@@ -178,6 +178,8 @@ export default {
   runAllImageSyncTests,
   checkImageSyncStatus
 };
+
+export default airtableImageSyncTestSuite;
 
 // Usage example:
 // import imageTests from '@/lib/test-airtable-image-sync';

@@ -1,14 +1,75 @@
-// Import shim first
+// Import shim first before any other imports
 import 'groq-sdk/shims/node';
 
-// Mock all dependencies before importing functions
-jest.mock('../../db');
-jest.mock('../../content-generator');
+// Mock web APIs
+global.Request = jest.fn();
+global.Response = jest.fn();
+global.fetch = jest.fn();
+
+// Mock Airtable
+jest.mock('airtable', () => ({
+  __esModule: true,
+  default: {
+    base: jest.fn(() => ({
+      table: jest.fn()
+    }))
+  }
+}));
+
+// Mock all dependencies before importing functions  
+jest.mock('../../db', () => ({
+  sql: jest.fn()
+}));
+jest.mock('../../content-generator', () => ({
+  generateAndSaveContent: jest.fn(),
+  engineeringTopics: [
+    'Isı Pompası Sistemleri',
+    'Güneş Enerjisi Sistemleri', 
+    'Su Depoları ve Hidrofor Sistemleri',
+    'Yerden Isıtma Sistemleri',
+    'Su Arıtma Sistemleri',
+    'Klima Sistemleri',
+    'Sulama Sistemleri',
+    'Termosifonik Sistemler'
+  ]
+}));
 jest.mock('../../eeat-optimizer');
-jest.mock('../client');
-jest.mock('groq-sdk');
+jest.mock('../client', () => ({
+  inngest: {
+    createFunction: jest.fn((config, trigger, handler) => {
+      // Return the handler function directly for testing
+      return handler;
+    }),
+    send: jest.fn()
+  }
+}));
+jest.mock('groq-sdk', () => {
+  return jest.fn().mockImplementation(() => ({
+    chat: {
+      completions: {
+        create: jest.fn()
+      }
+    }
+  }));
+});
 jest.mock('../../facebook-api');
 jest.mock('exa-js');
+jest.mock('../markalar-sync', () => ({
+  syncMarkalarDaily: jest.fn(),
+  syncMarkalarManual: jest.fn()
+}));
+jest.mock('../hizmetler-sync', () => ({
+  syncHizmetlerDaily: jest.fn(),
+  syncHizmetlerManual: jest.fn()
+}));
+jest.mock('../../airtable-markalar-client', () => ({
+  getAirtableBase: jest.fn(),
+  syncMarkalarToNeon: jest.fn()
+}));
+jest.mock('../../airtable-hizmetler-client', () => ({
+  getAirtableBase: jest.fn(),
+  syncHizmetlerToNeon: jest.fn()
+}));
 
 // Now import the functions
 import { generateEngineeringContent, processNewContent, applyEEATOptimizations } from '../functions';

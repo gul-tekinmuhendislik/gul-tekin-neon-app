@@ -14,9 +14,13 @@ export interface UploadOptions {
   overwrite?: boolean;
   resource_type?: 'image' | 'video' | 'raw' | 'auto';
   tags?: string[];
-  transformation?: any[];
+  transformation?: Record<string, unknown>[];
   format?: string;
   quality?: string | number;
+  width?: number;
+  height?: number;
+  crop?: string;
+  background?: string;
 }
 
 export interface TransformationOptions {
@@ -41,7 +45,21 @@ export interface TransformationOptions {
 export async function uploadToCloudinary(
   file: string | Buffer,
   options: UploadOptions = {}
-): Promise<any> {
+): Promise<{
+  success: boolean;
+  data?: {
+    public_id: string;
+    url: string;
+    width: number;
+    height: number;
+    format: string;
+    resource_type: string;
+    created_at: string;
+    bytes: number;
+    tags: string[];
+  };
+  error?: string;
+}> {
   try {
     const uploadOptions = {
       folder: options.folder || 'gul-tekin',
@@ -79,10 +97,10 @@ export async function uploadToCloudinary(
 }
 
 // Delete file from Cloudinary
-export async function deleteFromCloudinary(publicId: string, resourceType: string = 'image'): Promise<any> {
+export async function deleteFromCloudinary(publicId: string, resourceType: string = 'image'): Promise<Record<string, unknown>> {
   try {
     const result = await cloudinary.uploader.destroy(publicId, {
-      resource_type: resourceType as any
+      resource_type: resourceType as 'image' | 'video' | 'raw'
     });
 
     return {
@@ -157,8 +175,8 @@ export function getResponsiveImageUrls(
 export async function batchUpload(
   files: Array<{ file: string | Buffer; options?: UploadOptions }>,
   concurrency: number = 3
-): Promise<any[]> {
-  const results: any[] = [];
+): Promise<Record<string, unknown>[]> {
+  const results: Record<string, unknown>[] = [];
   const chunks: Array<Array<{ file: string | Buffer; options?: UploadOptions }>> = [];
 
   // Split files into chunks for concurrent processing
@@ -189,7 +207,7 @@ export function getAITransformationUrl(
   } = {},
   additionalOptions: TransformationOptions = {}
 ): string {
-  const transformations: any = { ...additionalOptions };
+  const transformations: Record<string, unknown> = { ...additionalOptions };
 
   if (aiTransformations.removeBackground) {
     transformations.effect = 'background_removal';

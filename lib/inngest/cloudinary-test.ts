@@ -216,7 +216,7 @@ export async function runAllCloudinaryTests() {
 }
 
 // Export test functions for use in other files
-export default {
+const cloudinaryTestSuite = {
   testCloudinaryUpload,
   testCloudinaryTransform,
   testCloudinaryBatchUpload,
@@ -225,3 +225,5 @@ export default {
   testCloudinaryAutoTag,
   runAllCloudinaryTests
 };
+
+export default cloudinaryTestSuite;

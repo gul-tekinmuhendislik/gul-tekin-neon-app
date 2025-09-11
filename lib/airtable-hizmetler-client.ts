@@ -267,6 +267,8 @@ export async function getHizmetlerFromNeon() {
         kategori,
         ana_faaliyet_konusu,
         resim_url,
+        cloudinary_url,
+        cloudinary_public_id,
         markalar,
         marka_text,
         urunler,

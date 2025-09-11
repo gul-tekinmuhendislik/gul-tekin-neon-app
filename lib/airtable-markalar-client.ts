@@ -292,6 +292,8 @@ export async function getMarkalarFromNeon() {
         email,
         url,
         logo_url,
+        cloudinary_url,
+        cloudinary_public_id,
         website,
         kategori,
         aciklama,
