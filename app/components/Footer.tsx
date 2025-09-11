@@ -53,9 +53,22 @@ export default function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
-              © 2024 Gül-Tekin Mühendislik. Tüm hakları saklıdır.
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-2 text-gray-500 text-sm">
+              <p>© {new Date().getFullYear()} Gül-Tekin Mühendislik. Tüm hakları saklıdır.</p>
+              <span className="hidden sm:inline">•</span>
+              <p className="flex items-center gap-1">
+                Yalıkavak, Bodrum&apos;da <span className="text-red-500">❤️</span> ile yapıldı
+              </p>
+              <span className="hidden sm:inline">•</span>
+              <a 
+                href="https://ebartan.dev" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-gray-900 transition-colors underline"
+              >
+                ebartan.dev
+              </a>
+            </div>
             <div className="flex items-center gap-4">
               <a 
                 href="https://ai.gul-tekinmuhendislik.com/" 

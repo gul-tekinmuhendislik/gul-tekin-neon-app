@@ -101,20 +101,17 @@ export default async function Home() {
                 dangerouslySetInnerHTML={{ __html: DATA.subtitle }}
               />
             )}
-            <p className="mt-3.5 max-w-lg text-base leading-snug tracking-tight text-gray-700 md:text-lg md:leading-snug lg:text-xl lg:leading-snug">
-              Bodrum/Yalıkavak&apos;ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.
-            </p>
-            <div className="mt-3 flex items-center gap-2">
-              <span className="text-base md:text-lg lg:text-xl font-semibold text-gray-900">
+            <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
+              <p className="inline">
+                Bodrum/Yalıkavak&apos;ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
                 <TextFlip 
                   words={brandNames}
-                  duration={2000}
-                  className="text-[#00E599]"
+                  duration={4000}
+                  randomCount={3}
+                  className="text-[#00E599] font-semibold inline-flex"
                 />
-              </span>
-              <span className="text-base md:text-lg lg:text-xl text-gray-700">
-                yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
-              </span>
+                {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
+              </p>
             </div>
             {DATA.emergencyBanner && (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">

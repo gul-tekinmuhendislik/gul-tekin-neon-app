@@ -26,6 +26,11 @@ import {
   bulkSyncHizmetlerImages,
   dailyImageSync
 } from "@/lib/inngest/functions";
+import { 
+  generateMissingImages,
+  scheduledImageGeneration,
+  regenerateImage
+} from "@/lib/inngest/image-generator";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -53,6 +58,9 @@ export const { GET, POST, PUT } = serve({
     syncAirtableImageToCloudinary,
     bulkSyncMarkalarImages,
     bulkSyncHizmetlerImages,
-    dailyImageSync
+    dailyImageSync,
+    generateMissingImages,
+    scheduledImageGeneration,
+    regenerateImage
   ],
 });
