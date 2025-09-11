@@ -1648,6 +1648,12 @@ import {
   dailyImageSync
 } from "./airtable-image-sync";
 
+// Import image generation functions
+import {
+  generateImage,
+  generateBulkImages
+} from "./image-generation";
+
 // Export Markalar and Hizmetler sync functions
 export { 
   syncMarkalarDaily, 
@@ -1662,5 +1668,7 @@ export {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
-  dailyImageSync
+  dailyImageSync,
+  generateImage,
+  generateBulkImages
 };
