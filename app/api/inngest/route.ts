@@ -6,7 +6,10 @@ import {
   processDataSync,
   logEventToDatabase,
   searchAndSaveResults,
-  generateEngineeringContent 
+  generateEngineeringContent,
+  processNewContent,
+  applyEEATOptimizations,
+  postToFacebook
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -17,6 +20,9 @@ export const { GET, POST, PUT } = serve({
     processDataSync,
     logEventToDatabase,
     searchAndSaveResults,
-    generateEngineeringContent
+    generateEngineeringContent,
+    processNewContent,
+    applyEEATOptimizations,
+    postToFacebook
   ],
 });
