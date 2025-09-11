@@ -8,3 +8,8 @@
   - logo clean again
   - feat: Footer sosyal medya linkleri ve logo cloud güncelleme
   - feat: E-E-A-T optimizasyonu ve Facebook entegrasyonu düzeltmeleri
+  - Airtable Markalar entegrasyonu tamamlandı
+  - Inngest ile günlük otomatik senkronizasyon kuruldu
+  - Inngest ile günlük otomatik senkronizasyon kuruldu
+  - 45 marka logosu ve bilgileri gösteriliyor
+    
