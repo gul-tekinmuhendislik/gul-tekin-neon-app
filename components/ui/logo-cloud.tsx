@@ -1,36 +1,45 @@
 import Image from "next/image";
+import { sql } from '@/lib/db';
 
-export function LogoCloud() {
-  const partners = [
-    {
-      name: "Aldea",
-      logo: "/aldea.jpeg",
-    },
-    {
-      name: "REHAU",
-      logo: "/REHAU.png",
-    },
-    {
-      name: "Solimpeks",
-      logo: "/solimpeks.png",
-    },
-    {
-      name: "Varmek",
-      logo: "/varmek.png",
-    },
-    {
-      name: "Wepomp",
-      logo: "/wepomp.png",
-    },
-    {
-      name: "Wilo",
-      logo: "/wilo.png",
-    },
-    {
-      name: "Yelkenci",
-      logo: "/yelkenci.png",
-    },
-  ];
+interface Partner {
+  name: string;
+  logo: string;
+}
+
+async function getRandomPartners(): Promise<Partner[]> {
+  try {
+    const result = await sql`
+      SELECT 
+        marka_adi as name,
+        COALESCE(cloudinary_url, logo_url) as logo
+      FROM markalar
+      WHERE aktif = true 
+        AND (cloudinary_url IS NOT NULL OR logo_url IS NOT NULL)
+      ORDER BY RANDOM()
+      LIMIT 12
+    `;
+    
+    return result.map(row => ({
+      name: row.name || 'Partner',
+      logo: row.logo || '/placeholder-logo.png'
+    }));
+  } catch (error) {
+    console.error('Error fetching partners:', error);
+    // Fallback veriler
+    return [
+      { name: "Aldea", logo: "/aldea.jpeg" },
+      { name: "REHAU", logo: "/REHAU.png" },
+      { name: "Solimpeks", logo: "/solimpeks.png" },
+      { name: "Varmek", logo: "/varmek.png" },
+      { name: "Wepomp", logo: "/wepomp.png" },
+      { name: "Wilo", logo: "/wilo.png" },
+      { name: "Yelkenci", logo: "/yelkenci.png" },
+    ];
+  }
+}
+
+export async function LogoCloud() {
+  const partners = await getRandomPartners();
 
   return (
     <section
@@ -56,6 +65,7 @@ export function LogoCloud() {
                     width={128}
                     height={48}
                     priority
+                    unoptimized={partner.logo.includes('cloudinary')}
                   />
                 </div>
               </li>
