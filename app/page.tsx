@@ -39,7 +39,7 @@ const DATA = {
     href: "/contact",
   },
   emergencyBanner: {
-    text: "🚨 7/24 Acil Servis",
+    text: "📞 7/24 Teknik Destek",
     phone: "0532 317 78 59"
   },
   footerLinks: [
@@ -114,9 +114,9 @@ export default async function Home() {
               </p>
             </div>
             {DATA.emergencyBanner && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
-                <span className="text-red-700 font-semibold">{DATA.emergencyBanner.text}</span>
-                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-red-600 font-bold hover:underline">
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center gap-2">
+                <span className="text-blue-700 font-semibold">{DATA.emergencyBanner.text}</span>
+                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-blue-600 font-bold hover:underline">
                   {DATA.emergencyBanner.phone}
                 </a>
               </div>
