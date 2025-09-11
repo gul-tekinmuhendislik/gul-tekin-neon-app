@@ -1637,6 +1637,9 @@ export const monitorTokenExpiry = inngest.createFunction(
 // Import Hizmetler sync functions
 import { syncHizmetlerDaily, syncHizmetlerManual } from "./hizmetler-sync";
 
+// Import Urunler sync functions
+import { syncUrunlerDaily, syncUrunlerManual } from "./urunler-sync";
+
 // Import Cloudinary functions
 import {
   cloudinaryUpload,
@@ -1667,12 +1670,14 @@ import {
   generateBulkImagesWithFalAI
 } from "./fal-ai-generation";
 
-// Export Markalar and Hizmetler sync functions
+// Export Markalar, Hizmetler and Urunler sync functions
 export { 
   syncMarkalarDaily, 
   syncMarkalarManual,
   syncHizmetlerDaily,
   syncHizmetlerManual,
+  syncUrunlerDaily,
+  syncUrunlerManual,
   cloudinaryUpload,
   cloudinaryTransform,
   cloudinaryDelete,

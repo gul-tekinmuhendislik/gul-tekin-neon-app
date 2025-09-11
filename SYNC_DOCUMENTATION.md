@@ -6,7 +6,7 @@
 - **3:00 AM** → Markalar (Brands) Sync
 - **3:30 AM** → Hizmetler (Services) Sync  
 - **4:00 AM** → Projeler (Projects) Sync
-- **4:30 AM** → Ürünler (Products) Sync (if configured)
+- **4:30 AM** → Ürünler (Products) Sync
 
 ### Additional Automated Functions
 - **Every 6 hours** → Data Sync, Content Generation

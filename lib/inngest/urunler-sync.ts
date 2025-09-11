@@ -10,7 +10,7 @@ export const syncUrunlerDaily = inngest.createFunction(
     retries: 2,
   },
   {
-    cron: "0 3 * * 2", // Every Tuesday at 3 AM (weekly)
+    cron: "30 4 * * 1", // Every Monday at 4:30 AM (weekly)
   },
   async ({ step }) => {
     console.log("Starting daily Urunler sync...");
