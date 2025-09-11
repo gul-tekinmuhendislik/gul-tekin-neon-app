@@ -5,3 +5,4 @@
   - test: Inngest fonksiyonları için kapsamlı test suite ve build optimizasyonları
   - feat: Homepage UI yenileme ve modern component entegrasyonu
   - test: Kapsamlı test suite ve UI güncellemeleri
+  - logo clean
