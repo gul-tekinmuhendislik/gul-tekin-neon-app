@@ -1,3 +1,21 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
+  description: 'Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri ve mekanik tesisat hizmetleri. Bodrum Yalıkavak bölgesinde profesyonel mühendislik çözümleri.',
+  keywords: 'Bodrum ısı pompası, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, hidrofor, sulama sistemleri, mekanik tesisat, termosifonik sistem, radyatör',
+  openGraph: {
+    title: 'Hizmetlerimiz | Gül-Tekin Mühendislik',
+    description: 'Enerji verimli ve çevre dostu mühendislik çözümleri. Isıtma, soğutma, su arıtma ve enerji sistemleri.',
+    type: 'website',
+    locale: 'tr_TR',
+    siteName: 'Gül-Tekin Mühendislik',
+  },
+  alternates: {
+    canonical: '/services',
+  },
+};
+
 export default function ServicesPage() {
   const services = [
     {

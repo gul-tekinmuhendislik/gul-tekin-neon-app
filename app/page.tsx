@@ -66,7 +66,7 @@ export default async function Home() {
               <Image
                 className="lg:h-7 lg:w-auto dark:hidden"
                 src={logo}
-                alt="Neon logo"
+                alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
                 width={88}
                 height={24}
                 priority
@@ -74,7 +74,7 @@ export default async function Home() {
               <Image
                 className="hidden lg:h-7 lg:w-auto dark:block"
                 src={logoDark}
-                alt="Neon logo"
+                alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
                 width={88}
                 height={24}
                 priority
@@ -103,7 +103,7 @@ export default async function Home() {
                 <Image
                   className="transition-transform duration-200 group-hover:translate-x-1"
                   src={arrow}
-                  alt="arrow"
+                  alt="Bağlantıya git ok işareti"
                   width={16}
                   height={10}
                   priority
@@ -122,7 +122,7 @@ export default async function Home() {
                   <Image
                     className=""
                     src={link.icon}
-                    alt={link.text}
+                    alt={`${link.text} sayfası ikonu`}
                     width={16}
                     height={16}
                     priority

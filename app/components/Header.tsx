@@ -58,7 +58,7 @@ export default function Header() {
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Image 
                 src="/logo.png" 
-                alt="Gül-Tekin Mühendislik" 
+                alt="Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri" 
                 width={200} 
                 height={50} 
                 className="h-10 w-auto"

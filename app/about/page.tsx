@@ -1,3 +1,21 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Hakkımızda | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
+  description: 'Bodrum Yalıkavak merkezli mekanik tesisat ve enerji verimliliği uzmanı. Isı pompaları, güneş enerjisi, su arıtma sistemleri ile güvenilir çözüm ortağınız.',
+  keywords: 'Bodrum mühendislik, Yalıkavak mekanik tesisat, ısı pompası, güneş enerjisi, su arıtma, yerden ısıtma, Alarko, Baymak, Demirdöküm',
+  openGraph: {
+    title: 'Hakkımızda | Gül-Tekin Mühendislik',
+    description: 'Bodrum bölgesinde mekanik tesisat ve enerji sistemleri alanında uzman mühendislik hizmetleri',
+    type: 'website',
+    locale: 'tr_TR',
+    siteName: 'Gül-Tekin Mühendislik',
+  },
+  alternates: {
+    canonical: '/about',
+  },
+};
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-gray-900">

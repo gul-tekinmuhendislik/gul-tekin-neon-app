@@ -3,6 +3,34 @@ import Image from "next/image";
 export function LogoCloud() {
   const partners = [
     {
+      name: "Aldea",
+      logo: "/aldea.jpeg",
+    },
+    {
+      name: "REHAU",
+      logo: "/REHAU.png",
+    },
+    {
+      name: "Solimpeks",
+      logo: "/solimpeks.png",
+    },
+    {
+      name: "Varmek",
+      logo: "/varmek.png",
+    },
+    {
+      name: "Wepomp",
+      logo: "/wepomp.png",
+    },
+    {
+      name: "Wilo",
+      logo: "/wilo.png",
+    },
+    {
+      name: "Yelkenci",
+      logo: "/yelkenci.png",
+    },
+    {
       name: "Daikin",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/79/Daikin-logo.svg",
     },
@@ -46,7 +74,7 @@ export function LogoCloud() {
               <li key={partner.name}>
                 <div className="flex items-center justify-center h-12 w-32 relative grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
                   <Image
-                    alt={partner.name}
+                    alt={`${partner.name} - Gül-Tekin Mühendislik çözüm ortağı`}
                     src={partner.logo}
                     className="h-full w-full object-contain"
                     width={128}

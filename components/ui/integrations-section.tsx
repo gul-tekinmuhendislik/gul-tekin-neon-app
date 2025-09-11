@@ -14,36 +14,42 @@ import { cn } from "@/lib/utils";
 
 const tiles = [
   {
+    id: "droplets",
     icon: <Droplets className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-400 opacity-70 blur-[20px]"></div>
     ),
   },
   {
+    id: "sun",
     icon: <Sun className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-500 opacity-70 blur-[20px]"></div>
     ),
   },
   {
+    id: "thermometer",
     icon: <Thermometer className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-red-500 via-orange-500 to-red-400 opacity-70 blur-[20px]"></div>
     ),
   },
   {
+    id: "showerhead",
     icon: <ShowerHead className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-gray-500 via-slate-500 to-gray-600 opacity-70 blur-[20px]"></div>
     ),
   },
   {
+    id: "airvent",
     icon: <AirVent className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-green-500 via-emerald-500 to-green-400 opacity-70 blur-[20px]"></div>
     ),
   },
   {
+    id: "waves",
     icon: <Waves className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-400 opacity-70 blur-[20px]"></div>
@@ -65,7 +71,7 @@ function shuffleArray<T>(array: T[]): T[] {
   return array;
 }
 
-function Card(card: { icon: React.ReactElement; bg: React.ReactElement }) {
+function Card(card: { id: string; icon: React.ReactElement; bg: React.ReactElement }) {
   const id = useId();
   const controls = useAnimation();
   const ref = useRef(null);
@@ -127,8 +133,8 @@ export function IntegrationsSection() {
               className="w-full justify-center overflow-hidden [--duration:30s] [--gap:2rem]"
               pauseOnHover
             >
-              {randomTiles1.map((review, idx) => (
-                <Card key={idx} {...review} />
+              {randomTiles1.map((review) => (
+                <Card key={review.id} {...review} />
               ))}
             </Marquee>
             <Marquee
@@ -136,8 +142,8 @@ export function IntegrationsSection() {
               className="w-full justify-center overflow-hidden [--duration:30s] [--gap:2rem]"
               pauseOnHover
             >
-              {randomTiles2.map((review, idx) => (
-                <Card key={idx} {...review} />
+              {randomTiles2.map((review) => (
+                <Card key={review.id} {...review} />
               ))}
             </Marquee>
           </div>

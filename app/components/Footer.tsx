@@ -10,7 +10,7 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
               <Image 
                 src="/logo.png" 
-                alt="Gül-Tekin Mühendislik" 
+                alt="Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri" 
                 width={150} 
                 height={40} 
                 className="h-8 w-auto"
