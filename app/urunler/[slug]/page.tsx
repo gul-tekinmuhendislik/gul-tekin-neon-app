@@ -42,6 +42,26 @@ async function getUrunBySlug(slug: string) {
   return result[0];
 }
 
+export async function generateStaticParams() {
+  try {
+    const result = await sql`
+      SELECT slug 
+      FROM urunler 
+      WHERE aktif = true 
+        AND slug IS NOT NULL 
+        AND slug != ''
+      LIMIT 100
+    `;
+    
+    return result.map((urun) => ({
+      slug: urun.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for urunler:', error);
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: UrunDetailPageProps) {
   const { slug } = await params;
   const urun = await getUrunBySlug(slug);

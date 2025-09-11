@@ -276,6 +276,7 @@ export async function getHizmetlerFromNeon() {
         seo_title,
         seo_description,
         seo_slug,
+        slug,
         seo_index,
         aktif,
         synced_at,
