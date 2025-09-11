@@ -31,10 +31,10 @@ export default function AboutPage() {
     "@graph": [
       {
         "@type": "LocalBusiness",
-        "@id": "https://gul-tekinmuhendislik.com/#business",
+        "@id": "https://ai.gul-tekinmuhendislik.com/#business",
         "name": "Gül-Tekin Mühendislik",
         "description": "Bodrum ve Milas bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
-        "url": "https://gul-tekinmuhendislik.com",
+        "url": "https://ai.gul-tekinmuhendislik.com",
         "telephone": "+90 252 386 35 54",
         "email": "info@gul-tekinmuhendislik.com",
         "address": {
@@ -127,12 +127,12 @@ export default function AboutPage() {
         "name": "Gül-Tekin Mühendislik",
         "serviceType": "Mekanik Tesisat ve Enerji Sistemleri",
         "provider": {
-          "@id": "https://gul-tekinmuhendislik.com/#business"
+          "@id": "https://ai.gul-tekinmuhendislik.com/#business"
         }
       },
       {
         "@type": "Organization",
-        "@id": "https://gul-tekinmuhendislik.com/#organization",
+        "@id": "https://ai.gul-tekinmuhendislik.com/#organization",
         "name": "Gül-Tekin Mühendislik",
         "legalName": "Gül-Tekin Mühendislik San. ve Tic. Ltd. Şti.",
         "sameAs": [
@@ -142,7 +142,7 @@ export default function AboutPage() {
         ],
         "logo": {
           "@type": "ImageObject",
-          "url": "https://gul-tekinmuhendislik.com/logo.png",
+          "url": "https://ai.gul-tekinmuhendislik.com/logo.png",
           "width": 200,
           "height": 50
         },
@@ -262,7 +262,7 @@ export default function AboutPage() {
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">🌐</span>
-                yalikavak.gul-tekinmuhendislik.com
+                ai.gul-tekinmuhendislik.com
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">⏰</span>

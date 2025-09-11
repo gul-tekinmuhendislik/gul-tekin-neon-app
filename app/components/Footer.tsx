@@ -58,7 +58,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a 
-                href="https://yalikavak.gul-tekinmuhendislik.com/" 
+                href="https://ai.gul-tekinmuhendislik.com/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -103,7 +103,7 @@ export default function Footer() {
                 <MessageCircle className="w-5 h-5" />
               </a>
               <a 
-                href="https://share.google/qhY0hk8fYNOH6GPwY" 
+                href="https://share.google/XnDMvkV4bTVtWo6BV" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-600 hover:text-red-600 transition-colors"
