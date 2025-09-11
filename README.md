@@ -7,3 +7,4 @@
   - test: Kapsamlı test suite ve UI güncellemeleri
   - logo clean again
   - feat: Footer sosyal medya linkleri ve logo cloud güncelleme
+  - feat: E-E-A-T optimizasyonu ve Facebook entegrasyonu düzeltmeleri
