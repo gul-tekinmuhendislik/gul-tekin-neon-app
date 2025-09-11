@@ -27,7 +27,7 @@ const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
   subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span> • <span class='text-purple-600 font-semibold'>ISO 9001 Sertifikalı</span>",
   description:
-    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. <strong>Alarko, Baymak, Demirdöküm yetkili servisi.</strong> Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
+    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. <strong>Daikin, Mitsubishi, Bosch, Vaillant, Viessmann yetkili servisi.</strong> Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
     text: "Hizmetlerimiz",
     href: "/services",
@@ -165,9 +165,9 @@ export default async function Home() {
           </footer>
         </div>
       </Vortex>
-      <Testimonials />
-      <IntegrationsSection />
       <LogoCloud />
+      <IntegrationsSection />
+      <Testimonials />
     </div>
   );
 }

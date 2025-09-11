@@ -59,9 +59,9 @@ export default function Header() {
               <Image 
                 src="/logo.png" 
                 alt="Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri" 
-                width={200} 
-                height={50} 
-                className="h-10 w-auto"
+                width={150} 
+                height={38} 
+                className="h-8 w-auto"
                 priority
               />
             </Link>
