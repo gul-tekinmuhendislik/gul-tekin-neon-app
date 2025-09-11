@@ -1631,10 +1631,36 @@ export const monitorTokenExpiry = inngest.createFunction(
 // Import Hizmetler sync functions
 import { syncHizmetlerDaily, syncHizmetlerManual } from "./hizmetler-sync";
 
+// Import Cloudinary functions
+import {
+  cloudinaryUpload,
+  cloudinaryTransform,
+  cloudinaryDelete,
+  cloudinaryOptimizeExisting,
+  cloudinaryAutoTag
+} from "./cloudinary-functions";
+
+// Import Airtable image sync functions
+import {
+  syncAirtableImageToCloudinary,
+  bulkSyncMarkalarImages,
+  bulkSyncHizmetlerImages,
+  dailyImageSync
+} from "./airtable-image-sync";
+
 // Export Markalar and Hizmetler sync functions
 export { 
   syncMarkalarDaily, 
   syncMarkalarManual,
   syncHizmetlerDaily,
-  syncHizmetlerManual
+  syncHizmetlerManual,
+  cloudinaryUpload,
+  cloudinaryTransform,
+  cloudinaryDelete,
+  cloudinaryOptimizeExisting,
+  cloudinaryAutoTag,
+  syncAirtableImageToCloudinary,
+  bulkSyncMarkalarImages,
+  bulkSyncHizmetlerImages,
+  dailyImageSync
 };

@@ -15,7 +15,16 @@ import {
   syncMarkalarDaily,
   syncMarkalarManual,
   syncHizmetlerDaily,
-  syncHizmetlerManual
+  syncHizmetlerManual,
+  cloudinaryUpload,
+  cloudinaryTransform,
+  cloudinaryDelete,
+  cloudinaryOptimizeExisting,
+  cloudinaryAutoTag,
+  syncAirtableImageToCloudinary,
+  bulkSyncMarkalarImages,
+  bulkSyncHizmetlerImages,
+  dailyImageSync
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -35,6 +44,15 @@ export const { GET, POST, PUT } = serve({
     syncMarkalarDaily,
     syncMarkalarManual,
     syncHizmetlerDaily,
-    syncHizmetlerManual
+    syncHizmetlerManual,
+    cloudinaryUpload,
+    cloudinaryTransform,
+    cloudinaryDelete,
+    cloudinaryOptimizeExisting,
+    cloudinaryAutoTag,
+    syncAirtableImageToCloudinary,
+    bulkSyncMarkalarImages,
+    bulkSyncHizmetlerImages,
+    dailyImageSync
   ],
 });

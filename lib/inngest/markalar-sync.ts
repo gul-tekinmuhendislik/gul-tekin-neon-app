@@ -81,6 +81,23 @@ export const syncMarkalarDaily = inngest.createFunction(
           )
         `;
       });
+
+      // Step 2.1: Trigger image sync for markalar
+      await step.run("trigger-markalar-image-sync", async () => {
+        try {
+          await inngest.send({
+            name: "airtable/markalar.images.bulk_sync",
+            data: {
+              source: 'markalar_sync_completion',
+              syncedCount: syncResult.count
+            }
+          });
+          console.log("Triggered markalar image sync after successful data sync");
+        } catch (error) {
+          console.error("Failed to trigger markalar image sync:", error);
+          // Don't throw - image sync failure shouldn't fail the main sync
+        }
+      });
     }
     
     // Step 3: Check data quality

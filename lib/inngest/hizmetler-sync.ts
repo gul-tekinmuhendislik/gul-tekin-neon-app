@@ -81,6 +81,23 @@ export const syncHizmetlerDaily = inngest.createFunction(
           )
         `;
       });
+
+      // Step 2.1: Trigger image sync for hizmetler
+      await step.run("trigger-hizmetler-image-sync", async () => {
+        try {
+          await inngest.send({
+            name: "airtable/hizmetler.images.bulk_sync",
+            data: {
+              source: 'hizmetler_sync_completion',
+              syncedCount: syncResult.count
+            }
+          });
+          console.log("Triggered hizmetler image sync after successful data sync");
+        } catch (error) {
+          console.error("Failed to trigger hizmetler image sync:", error);
+          // Don't throw - image sync failure shouldn't fail the main sync
+        }
+      });
     }
     
     // Step 3: Check data quality

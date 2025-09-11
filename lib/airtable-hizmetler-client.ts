@@ -103,9 +103,20 @@ export async function syncHizmetlerToNeon() {
         aktif BOOLEAN DEFAULT true,
         airtable_modified TIMESTAMP,
         synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        cloudinary_url TEXT,
+        cloudinary_public_id TEXT
       )
     `;
+    
+    // Add new columns if they don't exist (for existing tables)
+    await sql`
+      ALTER TABLE hizmetler 
+      ADD COLUMN IF NOT EXISTS cloudinary_url TEXT,
+      ADD COLUMN IF NOT EXISTS cloudinary_public_id TEXT
+    `.catch(() => {
+      // Ignore error if columns already exist
+    });
     
     // Get all services from Airtable
     const hizmetler = await getHizmetler();

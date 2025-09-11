@@ -128,7 +128,9 @@ export async function syncMarkalarToNeon() {
         siralama_no INTEGER,
         airtable_created_time TIMESTAMP,
         synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        cloudinary_url TEXT,
+        cloudinary_public_id TEXT
       )
     `;
     
@@ -137,7 +139,9 @@ export async function syncMarkalarToNeon() {
       ALTER TABLE markalar 
       ADD COLUMN IF NOT EXISTS slug TEXT,
       ADD COLUMN IF NOT EXISTS email TEXT,
-      ADD COLUMN IF NOT EXISTS url TEXT
+      ADD COLUMN IF NOT EXISTS url TEXT,
+      ADD COLUMN IF NOT EXISTS cloudinary_url TEXT,
+      ADD COLUMN IF NOT EXISTS cloudinary_public_id TEXT
     `.catch(() => {
       // Ignore error if columns already exist
     });
