@@ -8,7 +8,7 @@ export async function GET() {
         COUNT(*) as total,
         COUNT(CASE WHEN image_sync_status = 'completed' THEN 1 END) as completed,
         COUNT(CASE WHEN cloudinary_resim_url IS NOT NULL THEN 1 END) as has_cloudinary
-      FROM projeler_2026
+      FROM projeler_gul_tekin
     `;
     
     return NextResponse.json({

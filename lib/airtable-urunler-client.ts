@@ -1,5 +1,6 @@
 import Airtable from 'airtable';
 import { sql } from '@/lib/db';
+import { advancedSyncUrunlerToNeon } from './airtable-urunler-advanced-sync';
 
 // Airtable configuration
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY || '';
@@ -110,8 +111,14 @@ export async function getActiveUrunler() {
   }
 }
 
-// Sync Urunler to Neon database
+// Sync Urunler to Neon database (now uses advanced sync)
 export async function syncUrunlerToNeon() {
+  // Use the advanced sync function that preserves Cloudinary fields
+  return advancedSyncUrunlerToNeon();
+}
+
+// Legacy sync function (kept for backwards compatibility)
+export async function legacySyncUrunlerToNeon() {
   try {
     console.log('Starting Urunler sync to Neon database...');
     
@@ -176,6 +183,17 @@ export async function syncUrunlerToNeon() {
         // Get the first attachment URL if available
         const gorselUrl = urun.fields.Assets?.[0]?.url || null;
         
+        // First check if record exists to preserve Cloudinary fields
+        const existingRecord = await sql`
+          SELECT cloudinary_url, cloudinary_public_id 
+          FROM urunler 
+          WHERE id = ${urun.id}
+        `;
+        
+        // Preserve existing Cloudinary fields if they exist
+        const cloudinaryUrl = existingRecord[0]?.cloudinary_url || null;
+        const cloudinaryPublicId = existingRecord[0]?.cloudinary_public_id || null;
+        
         await sql`
           INSERT INTO urunler (
             id,
@@ -195,7 +213,9 @@ export async function syncUrunlerToNeon() {
             agirlik,
             boyutlar,
             airtable_created_time,
-            synced_at
+            synced_at,
+            cloudinary_url,
+            cloudinary_public_id
           ) VALUES (
             ${urun.id},
             ${urun.fields['Ürün Adı'] || null},
@@ -214,7 +234,9 @@ export async function syncUrunlerToNeon() {
             ${urun.fields['Hacim (Ton)'] || null},
             ${urun.fields['Depo Tipi'] || null},
             ${urun.fields['Created'] || null},
-            ${new Date().toISOString()}
+            ${new Date().toISOString()},
+            ${cloudinaryUrl},
+            ${cloudinaryPublicId}
           )
           ON CONFLICT (id)
           DO UPDATE SET
@@ -235,7 +257,9 @@ export async function syncUrunlerToNeon() {
             boyutlar = EXCLUDED.boyutlar,
             airtable_created_time = EXCLUDED.airtable_created_time,
             updated_at = CURRENT_TIMESTAMP,
-            synced_at = EXCLUDED.synced_at
+            synced_at = EXCLUDED.synced_at,
+            cloudinary_url = COALESCE(urunler.cloudinary_url, EXCLUDED.cloudinary_url),
+            cloudinary_public_id = COALESCE(urunler.cloudinary_public_id, EXCLUDED.cloudinary_public_id)
         `;
         
         syncedCount++;

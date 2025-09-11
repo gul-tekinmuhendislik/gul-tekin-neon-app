@@ -3,11 +3,11 @@ import { sql } from '@/lib/db';
 
 export async function GET() {
   try {
-    console.log('🔧 Adding Cloudinary columns to projeler_2026...');
+    console.log('🔧 Adding Cloudinary columns to projeler_gul_tekin...');
     
     // Add new columns for Cloudinary data
     await sql`
-      ALTER TABLE projeler_2026 
+      ALTER TABLE projeler_gul_tekin 
       ADD COLUMN IF NOT EXISTS cloudinary_resim_url TEXT,
       ADD COLUMN IF NOT EXISTS cloudinary_public_id TEXT,
       ADD COLUMN IF NOT EXISTS cloudinary_galeri JSONB DEFAULT '[]'::jsonb,
@@ -19,11 +19,11 @@ export async function GET() {
     
     // Create indexes for better performance
     await sql`
-      CREATE INDEX IF NOT EXISTS idx_projeler_2026_cloudinary_status ON projeler_2026(image_sync_status);
+      CREATE INDEX IF NOT EXISTS idx_projeler_gul_tekin_cloudinary_status ON projeler_gul_tekin(image_sync_status);
     `;
     
     await sql`
-      CREATE INDEX IF NOT EXISTS idx_projeler_2026_cloudinary_date ON projeler_2026(image_sync_date);
+      CREATE INDEX IF NOT EXISTS idx_projeler_gul_tekin_cloudinary_date ON projeler_gul_tekin(image_sync_date);
     `;
     
     console.log('✅ Indexes created');
@@ -32,7 +32,7 @@ export async function GET() {
     const columns = await sql`
       SELECT column_name, data_type, column_default
       FROM information_schema.columns
-      WHERE table_name = 'projeler_2026'
+      WHERE table_name = 'projeler_gul_tekin'
       AND column_name LIKE '%cloudinary%' OR column_name LIKE '%image_sync%'
       ORDER BY column_name
     `;
@@ -40,7 +40,7 @@ export async function GET() {
     // Count projects that need image sync
     const needsSync = await sql`
       SELECT COUNT(*) as count 
-      FROM projeler_2026 
+      FROM projeler_gul_tekin 
       WHERE (resim_url IS NOT NULL AND resim_url != '')
         OR (array_length(galeri, 1) > 0)
     `;

@@ -12,7 +12,7 @@ export async function GET() {
         COUNT(CASE WHEN image_sync_status = 'pending' OR image_sync_status IS NULL THEN 1 END) as pending,
         COUNT(CASE WHEN cloudinary_resim_url IS NOT NULL THEN 1 END) as has_main_image,
         COUNT(CASE WHEN cloudinary_galeri IS NOT NULL AND cloudinary_galeri::text != '[]' THEN 1 END) as has_gallery
-      FROM projeler_2026
+      FROM projeler_gul_tekin
     `;
     
     // Get projects with images that need sync
@@ -30,7 +30,7 @@ export async function GET() {
           ELSE 'Not synced'
         END as cloudinary_status,
         image_sync_status
-      FROM projeler_2026
+      FROM projeler_gul_tekin
       WHERE (resim_url IS NOT NULL AND resim_url != '')
         AND (cloudinary_resim_url IS NULL OR cloudinary_resim_url = '')
       LIMIT 10
@@ -44,7 +44,7 @@ export async function GET() {
         cloudinary_resim_url,
         image_sync_status,
         image_sync_date
-      FROM projeler_2026
+      FROM projeler_gul_tekin
       WHERE cloudinary_resim_url IS NOT NULL
       ORDER BY image_sync_date DESC NULLS LAST
       LIMIT 10

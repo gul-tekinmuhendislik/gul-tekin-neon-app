@@ -20,7 +20,7 @@ export const syncUrunlerDaily = inngest.createFunction(
       try {
         const result = await syncUrunlerToNeon();
         
-        console.log(`Sync completed: ${result.count} products synced`);
+        console.log(`Sync completed: ${'inserted' in result ? result.inserted + result.updated : 0} products synced`);
         
         return result;
       } catch (error) {
@@ -55,7 +55,8 @@ export const syncUrunlerDaily = inngest.createFunction(
     });
     
     // Step 2: Send notification if significant changes
-    if (syncResult.count > 0) {
+    const syncCount = 'inserted' in syncResult ? syncResult.inserted + syncResult.updated : 0;
+    if (syncCount > 0) {
       await step.run("log-success", async () => {
         await sql`
           INSERT INTO event_logs (
@@ -69,8 +70,8 @@ export const syncUrunlerDaily = inngest.createFunction(
             'scheduled_task',
             'success',
             ${JSON.stringify({
-              synced: syncResult.count,
-              total: 'total' in syncResult ? syncResult.total : syncResult.count,
+              synced: syncCount,
+              total: 'total' in syncResult ? syncResult.total : syncCount,
               timestamp: 'timestamp' in syncResult ? syncResult.timestamp : new Date().toISOString()
             })},
             ${JSON.stringify({
@@ -89,7 +90,7 @@ export const syncUrunlerDaily = inngest.createFunction(
             name: "airtable/urunler.images.bulk_sync",
             data: {
               source: 'urunler_sync_completion',
-              syncedCount: syncResult.count
+              syncedCount: syncCount
             }
           });
           console.log("Triggered urunler image sync after successful data sync");
@@ -118,8 +119,8 @@ export const syncUrunlerDaily = inngest.createFunction(
     
     return {
       success: true,
-      synced: syncResult.count,
-      total: 'total' in syncResult ? syncResult.total : syncResult.count,
+      synced: syncCount,
+      total: 'total' in syncResult ? syncResult.total : syncCount,
       timestamp: 'timestamp' in syncResult ? syncResult.timestamp : new Date().toISOString(),
       dataQuality: {
         totalActive: dataQuality.total,
@@ -150,7 +151,7 @@ export const syncUrunlerManual = inngest.createFunction(
       try {
         const result = await syncUrunlerToNeon();
         
-        console.log(`Manual sync completed: ${result.count} products synced`);
+        console.log(`Manual sync completed: ${'inserted' in result ? result.inserted + result.updated : 0} products synced`);
         
         return result;
       } catch (error) {
@@ -173,8 +174,8 @@ export const syncUrunlerManual = inngest.createFunction(
           'user_action',
           'success',
           ${JSON.stringify({
-            synced: syncResult.count,
-            total: 'total' in syncResult ? syncResult.total : syncResult.count,
+            synced: 'inserted' in syncResult ? syncResult.inserted + syncResult.updated : 0,
+            total: 'total' in syncResult ? syncResult.total : 0,
             timestamp: 'timestamp' in syncResult ? syncResult.timestamp : new Date().toISOString(),
             triggeredBy: event.data?.userId || 'api'
           })},
@@ -188,8 +189,8 @@ export const syncUrunlerManual = inngest.createFunction(
     
     return {
       success: true,
-      synced: syncResult.count,
-      total: 'total' in syncResult ? syncResult.total : syncResult.count,
+      synced: 'inserted' in syncResult ? syncResult.inserted + syncResult.updated : 0,
+      total: 'total' in syncResult ? syncResult.total : 0,
       timestamp: 'timestamp' in syncResult ? syncResult.timestamp : new Date().toISOString(),
     };
   }

@@ -49,7 +49,7 @@ export async function GET(request: Request) {
     const projects = await sql`
       SELECT 
         id, airtable_id, isim, resim_url, galeri
-      FROM projeler_2026 
+      FROM projeler_gul_tekin 
       WHERE ((resim_url IS NOT NULL AND resim_url != '')
         OR (array_length(galeri, 1) > 0))
         AND (image_sync_status IS NULL OR image_sync_status != 'completed')
@@ -126,7 +126,7 @@ export async function GET(request: Request) {
         
         // Update database with Cloudinary URLs
         await sql`
-          UPDATE projeler_2026 SET
+          UPDATE projeler_gul_tekin SET
             cloudinary_resim_url = ${cloudinaryMainUrl},
             cloudinary_public_id = ${cloudinaryMainPublicId},
             cloudinary_galeri = ${JSON.stringify(cloudinaryGallery)},
@@ -146,7 +146,7 @@ export async function GET(request: Request) {
         // Mark as failed in database
         try {
           await sql`
-            UPDATE projeler_2026 SET
+            UPDATE projeler_gul_tekin SET
               image_sync_status = 'failed',
               image_sync_date = NOW()
             WHERE id = ${project.id}
