@@ -179,11 +179,11 @@ export default function AboutPage() {
             <p className="text-gray-700 leading-relaxed mb-4">
               <strong>2000 yılından beri</strong> Bodrum/Yalıkavak merkezli olarak faaliyet gösteren firmamız, mekanik tesisat sistemleri ve 
               enerji verimliliği alanında uzmanlaşmış, <strong>ISO 9001:2015 sertifikalı</strong> bir mühendislik şirketidir. 
-              <strong>500'den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile 
+              <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile 
               bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Uzman mühendis kadromuz, <strong>İTÜ, ODTÜ, YTÜ ve Boğaziçi Üniversitesi</strong> gibi Türkiye'nin önde gelen 
+              Uzman mühendis kadromuz, <strong>İTÜ, ODTÜ, YTÜ ve Boğaziçi Üniversitesi</strong> gibi Türkiye&apos;nin önde gelen 
               teknik üniversitelerinden mezun, alanında sertifikalı profesyonellerden oluşmaktadır. <strong>Alarko, Baymak, 
               Demirdöküm, Daikin, Mitsubishi</strong> gibi sektörün lider markalarının yetkili servisi olarak, en kaliteli 
               ürün ve hizmetleri sunuyoruz.
