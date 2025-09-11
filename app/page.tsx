@@ -10,20 +10,29 @@ import { checkDbConnection } from "./db";
 import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
+import Testimonials from "@/components/Testimonials";
 
 export const metadata: Metadata = {
-  title: "Ana Sayfa",
-  description: "Mekanik mühendislik uzmanlığı ve yapay zeka destekli çözümler. Next.js, Vercel ve Neon PostgreSQL ile modern web uygulamaları.",
+  title: "Ana Sayfa | Gül-Tekin Mühendislik - Bodrum Isı Pompası ve Enerji Sistemleri",
+  description: "Bodrum Yalıkavak'ta 20+ yıllık deneyimle ısı pompası, güneş enerjisi, su arıtma ve mekanik tesisat hizmetleri. ISO 9001 sertifikalı, %98 müşteri memnuniyeti.",
+  keywords: "Bodrum ısı pompası, Yalıkavak mekanik tesisat, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, Alarko yetkili servis",
   openGraph: {
-    title: "Gul Tekin - Mekanik Mühendislik ve AI Çözümleri",
-    description: "Modern web teknolojileri ve yapay zeka ile güçlendirilmiş çözümler",
+    title: "Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri",
+    description: "20+ yıl deneyim, 500+ tamamlanmış proje. Isı pompası, güneş enerjisi, su arıtma sistemleri. 7/24 teknik destek.",
+    images: [{
+      url: "/logo.png",
+      width: 1200,
+      height: 630,
+      alt: "Gül-Tekin Mühendislik - Bodrum"
+    }]
   },
 };
 
 const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
+  subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span> • <span class='text-purple-600 font-semibold'>ISO 9001 Sertifikalı</span>",
   description:
-    "Isı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Bodrum/Yalıkavak'ta güvenilir mühendislik hizmetleri.",
+    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. <strong>Alarko, Baymak, Demirdöküm yetkili servisi.</strong> Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
     text: "Hizmetlerimiz",
     href: "/services",
@@ -31,6 +40,10 @@ const DATA = {
   link: {
     text: "İletişime Geç",
     href: "/contact",
+  },
+  emergencyBanner: {
+    text: "🚨 7/24 Acil Servis",
+    phone: "0532 317 78 59"
   },
   footerLinks: [
     {
@@ -52,7 +65,7 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col bg-white">
       <Vortex
         backgroundColor="white"
-        className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-screen"
+        className="flex items-center flex-col justify-center px-2 md:px-10 py-12 md:py-16 lg:py-20 w-full min-h-[60vh] md:min-h-[70vh]"
         baseHue={120}
         particleCount={150}
         enableWaves={true}
@@ -84,10 +97,24 @@ export default async function Home() {
               className="text-3xl font-semibold leading-none tracking-tighter text-gray-900 md:text-4xl md:leading-none lg:text-5xl lg:leading-none"
               dangerouslySetInnerHTML={{ __html: DATA.title }}
             />
+            {DATA.subtitle && (
+              <p
+                className="mt-2 text-sm md:text-base text-gray-600"
+                dangerouslySetInnerHTML={{ __html: DATA.subtitle }}
+              />
+            )}
             <p
               className="mt-3.5 max-w-lg text-base leading-snug tracking-tight text-gray-700 md:text-lg md:leading-snug lg:text-xl lg:leading-snug"
               dangerouslySetInnerHTML={{ __html: DATA.description }}
             />
+            {DATA.emergencyBanner && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
+                <span className="text-red-700 font-semibold">{DATA.emergencyBanner.text}</span>
+                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-red-600 font-bold hover:underline">
+                  {DATA.emergencyBanner.phone}
+                </a>
+              </div>
+            )}
             <div className="mt-8 flex flex-wrap items-center gap-5 md:mt-9 lg:mt-10">
               <Link
                 className="rounded-full bg-[#00E599] px-5 py-2.5 font-semibold tracking-tight text-[#0C0D0D] transition-all duration-200 hover:bg-[#00E5BF] hover:scale-105 lg:px-7 lg:py-3"
@@ -143,6 +170,7 @@ export default async function Home() {
           </footer>
         </div>
       </Vortex>
+      <Testimonials />
       <IntegrationsSection />
       <LogoCloud />
     </div>
