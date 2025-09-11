@@ -12,4 +12,6 @@
   - Inngest ile günlük otomatik senkronizasyon kuruldu
   - Inngest ile günlük otomatik senkronizasyon kuruldu
   - 45 marka logosu ve bilgileri gösteriliyor
+  - feat: Airtable Hizmetler entegrasyonu ve dinamik hizmet sayfaları
+  - Dinamik hizmet sayfaları (/hizmetler ve /hizmetler/[slug])
     
