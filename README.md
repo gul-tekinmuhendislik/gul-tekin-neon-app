@@ -14,4 +14,5 @@
   - 45 marka logosu ve bilgileri gösteriliyor
   - feat: Airtable Hizmetler entegrasyonu ve dinamik hizmet sayfaları
   - Dinamik hizmet sayfaları (/hizmetler ve /hizmetler/[slug])
+  - feat: SEO iyileştirmeleri ve domain konsolidasyonu
     
