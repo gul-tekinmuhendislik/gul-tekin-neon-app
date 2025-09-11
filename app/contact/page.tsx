@@ -3,6 +3,7 @@ import ContactForm from "../components/ContactForm";
 import { FeatureSection } from "@/components/ui/feature-section";
 import GoogleMyBusiness from "@/components/GoogleMyBusiness";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
+import ReviewQRCode from "../components/ReviewQRCode";
 
 export const metadata: Metadata = {
   title: "İletişim",
@@ -29,9 +30,12 @@ export default function ContactPage() {
             </p>
             <ContactForm />
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Bizi Ziyaret Edin</h2>
-            <GoogleMyBusiness />
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Bizi Ziyaret Edin</h2>
+              <GoogleMyBusiness />
+            </div>
+            <ReviewQRCode />
           </div>
         </div>
       </div>

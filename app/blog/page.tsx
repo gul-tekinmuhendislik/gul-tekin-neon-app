@@ -13,6 +13,8 @@ interface BlogPost {
   meta_description: string;
   keywords: string[];
   image?: string;
+  image_url?: string;
+  image_prompt?: string;
   created_at: string;
   updated_at: string;
 }
@@ -100,14 +102,19 @@ export default function BlogPage() {
                   className="block h-full"
                 >
                   <article className="flex flex-col h-full">
-                    {post.image && (
+                    {(post.image_url || post.image) && (
                       <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={post.image}
+                          src={post.image_url || post.image}
                           alt={post.title}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
+                        {post.image_url && (
+                          <div className="absolute top-2 right-2 bg-gradient-to-r from-green-400 to-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium shadow-lg">
+                            AI Generated
+                          </div>
+                        )}
                       </div>
                     )}
                     <div className="p-6 flex-1 flex flex-col">

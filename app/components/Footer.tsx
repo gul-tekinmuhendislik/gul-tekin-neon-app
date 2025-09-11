@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, BookOpen, Facebook, MessageCircle, Instagram, MapPin, Github } from "lucide-react";
+import { Globe, BookOpen, Facebook, MessageCircle, Instagram, MapPin, Github, Star } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -132,6 +132,15 @@ export default function Footer() {
                 aria-label="Gül-Tekin Mühendislik GitHub"
               >
                 <Github className="w-5 h-5" />
+              </a>
+              <a 
+                href="https://g.page/r/Cd6nGRPdggFxEBE/review" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-yellow-500 transition-colors"
+                aria-label="Google'da Değerlendir - Gül-Tekin Mühendislik"
+              >
+                <Star className="w-5 h-5" />
               </a>
             </div>
           </div>

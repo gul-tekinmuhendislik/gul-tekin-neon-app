@@ -20,6 +20,8 @@ interface BlogPost {
   created_at: string;
   updated_at: string;
   image?: string;
+  image_url?: string;
+  image_prompt?: string;
 }
 
 export default function BlogDetailClient() {
@@ -143,14 +145,24 @@ export default function BlogDetailClient() {
         />
 
         <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-          {post.image && (
+          {(post.image_url || post.image) && (
             <div className="relative h-64 md:h-96 w-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={post.image}
+                src={post.image_url || post.image}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />
+              {post.image_url && (
+                <div className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-blue-500 text-white text-sm px-3 py-1 rounded-full font-medium shadow-lg">
+                  AI Generated
+                </div>
+              )}
+              {post.image_prompt && (
+                <div className="absolute bottom-4 left-4 right-4 bg-black bg-opacity-70 text-white text-sm px-3 py-2 rounded-lg">
+                  <span className="font-medium">Prompt:</span> {post.image_prompt}
+                </div>
+              )}
             </div>
           )}
           <div className="p-8">

@@ -107,7 +107,7 @@ export default async function Home() {
                 <TextFlip 
                   words={brandNames}
                   duration={4000}
-                  randomCount={3}
+                  randomCount={6}
                   className="text-[#00E599] font-semibold inline-flex"
                 />
                 {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
