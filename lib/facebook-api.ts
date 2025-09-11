@@ -222,17 +222,30 @@ export async function saveFacebookPost(
   }
 }
 
-// Get Facebook page access token (you'll need to implement token refresh logic)
+// Get Facebook page access token from database or environment
 export async function getFacebookPageAccessToken(): Promise<{
   accessToken: string;
   pageId: string;
 } | null> {
   try {
-    // In production, you should:
-    // 1. Store long-lived page access tokens securely
-    // 2. Implement token refresh logic
-    // 3. Handle token expiration
+    // Try to get token from database first
+    const { getActiveFacebookToken } = await import("./token-manager");
+    const dbToken = await getActiveFacebookToken();
     
+    if (dbToken && dbToken.access_token && dbToken.page_id) {
+      // Validate token from database
+      const isValid = await validateAccessToken(dbToken.access_token);
+      if (isValid) {
+        return {
+          accessToken: dbToken.access_token,
+          pageId: dbToken.page_id
+        };
+      } else {
+        console.warn("Database token is invalid, falling back to environment variable");
+      }
+    }
+    
+    // Fallback to environment variable
     const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
     const pageId = process.env.FACEBOOK_PAGE_ID;
     
@@ -241,11 +254,24 @@ export async function getFacebookPageAccessToken(): Promise<{
       return null;
     }
     
-    // Optionally validate token
+    // Validate environment token
     const isValid = await validateAccessToken(pageAccessToken);
     if (!isValid) {
       console.error("Facebook access token is invalid or expired");
       return null;
+    }
+    
+    // Save valid env token to database for future use
+    if (isValid) {
+      const { saveFacebookToken } = await import("./token-manager");
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 60); // 60 days default
+      await saveFacebookToken(
+        pageAccessToken,
+        pageId,
+        "Gül-tekin Mühendislik",
+        expiresAt
+      );
     }
     
     return {
@@ -254,6 +280,18 @@ export async function getFacebookPageAccessToken(): Promise<{
     };
   } catch (error) {
     console.error("Error getting Facebook access token:", error);
+    
+    // Last resort: try environment variable without validation
+    const pageAccessToken = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
+    const pageId = process.env.FACEBOOK_PAGE_ID;
+    
+    if (pageAccessToken && pageId) {
+      return {
+        accessToken: pageAccessToken,
+        pageId
+      };
+    }
+    
     return null;
   }
 }

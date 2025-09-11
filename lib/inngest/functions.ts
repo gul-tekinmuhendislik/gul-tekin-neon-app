@@ -1373,3 +1373,256 @@ export const generateEngineeringContent = inngest.createFunction(
     };
   }
 );
+
+// Check and refresh Facebook token
+export const checkAndRefreshFacebookToken = inngest.createFunction(
+  {
+    id: "check-refresh-facebook-token",
+    name: "Check and Refresh Facebook Token",
+    retries: 2
+  },
+  {
+    // Run daily at 3 AM
+    cron: "0 3 * * *"
+  },
+  async ({ step }) => {
+    const { 
+      checkTokenNeedsRefresh, 
+      getTokenExpiryInfo,
+      exchangeForLongLivedToken,
+      saveFacebookToken,
+      logTokenRefresh,
+      getActiveFacebookToken
+    } = await import("../token-manager");
+    
+    // Step 1: Check if token needs refresh
+    const needsRefresh = await step.run("check-token-needs-refresh", async () => {
+      const needs = await checkTokenNeedsRefresh();
+      const expiryInfo = await getTokenExpiryInfo();
+      
+      console.log("Token expiry check:", {
+        needsRefresh: needs,
+        expiryInfo: expiryInfo
+      });
+      
+      return { needsRefresh: needs, expiryInfo };
+    });
+    
+    if (!needsRefresh.needsRefresh) {
+      return {
+        success: true,
+        message: "Token does not need refresh",
+        daysRemaining: needsRefresh.expiryInfo?.days_remaining
+      };
+    }
+    
+    // Step 2: Get current token
+    const currentToken = await step.run("get-current-token", async () => {
+      return await getActiveFacebookToken();
+    });
+    
+    if (!currentToken) {
+      console.error("No active Facebook token found");
+      await logTokenRefresh(
+        "facebook",
+        null,
+        "failed",
+        null,
+        null,
+        "No active token found"
+      );
+      
+      return {
+        success: false,
+        error: "No active Facebook token found"
+      };
+    }
+    
+    // Step 3: Exchange for long-lived token
+    const newToken = await step.run("exchange-for-long-lived-token", async () => {
+      // First, check if the current token is still valid
+      const debugUrl = `https://graph.facebook.com/v23.0/debug_token?` +
+        `input_token=${currentToken.access_token}&` +
+        `access_token=${currentToken.access_token}`;
+      
+      const debugResponse = await fetch(debugUrl);
+      const debugData = await debugResponse.json();
+      
+      if (!debugData.data?.is_valid) {
+        throw new Error("Current token is invalid, manual refresh required");
+      }
+      
+      // Exchange for long-lived token
+      const result = await exchangeForLongLivedToken(currentToken.access_token);
+      
+      if (!result) {
+        throw new Error("Failed to exchange token");
+      }
+      
+      return result;
+    });
+    
+    // Step 4: Save new token
+    const saveResult = await step.run("save-new-token", async () => {
+      const expiresAt = new Date();
+      expiresAt.setSeconds(expiresAt.getSeconds() + newToken.expires_in);
+      
+      const saved = await saveFacebookToken(
+        newToken.access_token,
+        currentToken.page_id,
+        currentToken.page_name,
+        expiresAt
+      );
+      
+      // Log the refresh
+      await logTokenRefresh(
+        "facebook",
+        null,
+        saved ? "success" : "failed",
+        new Date(currentToken.expires_at),
+        expiresAt,
+        saved ? undefined : "Failed to save token"
+      );
+      
+      return {
+        saved,
+        newExpiresAt: expiresAt
+      };
+    });
+    
+    // Step 5: Send notification
+    await step.run("send-notification", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'facebook.token.refreshed',
+          'maintenance',
+          'completed',
+          ${JSON.stringify({
+            oldExpiresAt: currentToken.expires_at,
+            newExpiresAt: saveResult.newExpiresAt,
+            daysExtended: 60
+          })},
+          ${JSON.stringify({
+            refreshedAt: new Date().toISOString(),
+            success: saveResult.saved
+          })}
+        )
+      `;
+    });
+    
+    return {
+      success: true,
+      message: "Facebook token refreshed successfully",
+      newExpiresAt: saveResult.newExpiresAt,
+      daysExtended: 60
+    };
+  }
+);
+
+// Monitor token expiry and send alerts
+export const monitorTokenExpiry = inngest.createFunction(
+  {
+    id: "monitor-token-expiry",
+    name: "Monitor Token Expiry",
+    retries: 1
+  },
+  {
+    // Run twice daily
+    cron: "0 9,21 * * *"
+  },
+  async ({ step }) => {
+    const { getTokenExpiryInfo } = await import("../token-manager");
+    
+    // Check token expiry
+    const expiryInfo = await step.run("check-expiry", async () => {
+      return await getTokenExpiryInfo();
+    });
+    
+    if (!expiryInfo) {
+      // Send alert - no token found
+      await step.run("alert-no-token", async () => {
+        console.error("ALERT: No Facebook token found in database");
+        
+        await sql`
+          INSERT INTO event_logs (
+            event_name,
+            event_type,
+            status,
+            payload,
+            metadata
+          ) VALUES (
+            'facebook.token.missing',
+            'alert',
+            'critical',
+            ${JSON.stringify({
+              message: "No Facebook token found",
+              action_required: "Manual token setup required"
+            })},
+            ${JSON.stringify({
+              alertedAt: new Date().toISOString(),
+              severity: 'critical'
+            })}
+          )
+        `;
+      });
+      
+      return {
+        success: false,
+        alert: "No Facebook token found"
+      };
+    }
+    
+    // Check if token is expiring soon
+    if (expiryInfo.days_remaining <= 3) {
+      await step.run("alert-expiring-soon", async () => {
+        console.warn(`ALERT: Facebook token expiring in ${expiryInfo.days_remaining} days`);
+        
+        // Trigger immediate refresh
+        await inngest.send({
+          name: "facebook/token.refresh",
+          data: {
+            urgent: true,
+            daysRemaining: expiryInfo.days_remaining
+          }
+        });
+        
+        await sql`
+          INSERT INTO event_logs (
+            event_name,
+            event_type,
+            status,
+            payload,
+            metadata
+          ) VALUES (
+            'facebook.token.expiring',
+            'alert',
+            'warning',
+            ${JSON.stringify({
+              daysRemaining: expiryInfo.days_remaining,
+              expiresAt: expiryInfo.expires_at,
+              action: "Triggered automatic refresh"
+            })},
+            ${JSON.stringify({
+              alertedAt: new Date().toISOString(),
+              severity: 'warning'
+            })}
+          )
+        `;
+      });
+    }
+    
+    return {
+      success: true,
+      platform: expiryInfo.platform,
+      expiresAt: expiryInfo.expires_at,
+      daysRemaining: expiryInfo.days_remaining,
+      needsRefresh: expiryInfo.needs_refresh
+    };
+  }
+);

@@ -9,7 +9,9 @@ import {
   generateEngineeringContent,
   processNewContent,
   applyEEATOptimizations,
-  postToFacebook
+  postToFacebook,
+  checkAndRefreshFacebookToken,
+  monitorTokenExpiry
 } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
@@ -23,6 +25,8 @@ export const { GET, POST, PUT } = serve({
     generateEngineeringContent,
     processNewContent,
     applyEEATOptimizations,
-    postToFacebook
+    postToFacebook,
+    checkAndRefreshFacebookToken,
+    monitorTokenExpiry
   ],
 });

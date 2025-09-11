@@ -5,8 +5,8 @@ import Testimonials from '@/components/Testimonials';
 
 export const metadata: Metadata = {
   title: 'Hakkımızda | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
-  description: 'Bodrum Yalıkavak merkezli mekanik tesisat ve enerji verimliliği uzmanı. 20+ yıl deneyim, 500+ tamamlanmış proje. ISO 9001 sertifikalı, Alarko, Baymak, Demirdöküm yetkili servisi.',
-  keywords: 'Bodrum mühendislik, Yalıkavak mekanik tesisat, ısı pompası uzmanı, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, Alarko yetkili servis, Baymak yetkili servis, Demirdöküm yetkili servis, ISO 9001 sertifikalı',
+  description: 'Bodrum Yalıkavak merkezli mekanik tesisat ve enerji verimliliği uzmanı. 20+ yıl deneyim, 500+ tamamlanmış proje. Solimpeks yetkili servisi.',
+  keywords: 'Bodrum mühendislik, Yalıkavak mekanik tesisat, ısı pompası uzmanı, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, Solimpeks yetkili servis',
   openGraph: {
     title: 'Hakkımızda | Gül-Tekin Mühendislik - 20+ Yıl Deneyim',
     description: 'Bodrum bölgesinde mekanik tesisat ve enerji sistemleri alanında uzman mühendislik hizmetleri. 500+ başarılı proje, %98 müşteri memnuniyeti.',
@@ -112,9 +112,9 @@ export default function AboutPage() {
         },
         "founder": {
           "@type": "Person",
-          "name": "Murat Gül",
-          "jobTitle": "Kurucu & Baş Mühendis",
-          "alumniOf": "İstanbul Teknik Üniversitesi"
+          "name": "Yusuf Gültekin",
+          "jobTitle": "Kurucu",
+          "alumniOf": ""
         },
         "foundingDate": "2000",
         "numberOfEmployees": {
@@ -147,16 +147,10 @@ export default function AboutPage() {
           "height": 50
         },
         "award": [
-          "ISO 9001:2015 Kalite Yönetim Sistemi Sertifikası",
           "TSE Hizmet Yeri Yeterlilik Belgesi",
           "CE Uygunluk Sertifikası"
         ],
-        "memberOf": [
-          {
-            "@type": "Organization",
-            "name": "TMMOB Makina Mühendisleri Odası"
-          }
-        ]
+        "memberOf": []
       }
     ]
   };
@@ -178,14 +172,12 @@ export default function AboutPage() {
             <h2 className="text-2xl font-bold mb-4 text-blue-600">Gül-Tekin Mühendislik - 20+ Yıllık Güven</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
               <strong>2000 yılından beri</strong> Bodrum/Yalıkavak merkezli olarak faaliyet gösteren firmamız, mekanik tesisat sistemleri ve 
-              enerji verimliliği alanında uzmanlaşmış, <strong>ISO 9001:2015 sertifikalı</strong> bir mühendislik şirketidir. 
+              enerji verimliliği alanında uzmanlaşmış bir mühendislik şirketidir. 
               <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile 
               bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Uzman mühendis kadromuz, <strong>İTÜ, ODTÜ, YTÜ ve Boğaziçi Üniversitesi</strong> gibi Türkiye&apos;nin önde gelen 
-              teknik üniversitelerinden mezun, alanında sertifikalı profesyonellerden oluşmaktadır. <strong>Alarko, Baymak, 
-              Demirdöküm, Daikin, Mitsubishi</strong> gibi sektörün lider markalarının yetkili servisi olarak, en kaliteli 
+              Uzman mühendis kadromuz, alanında deneyimli ve sertifikalı profesyonellerden oluşmaktadır. <strong>Solimpeks</strong> gibi sektörün lider markalarının yetkili servisi olarak, en kaliteli 
               ürün ve hizmetleri sunuyoruz.
             </p>
             <p className="text-gray-700 leading-relaxed">
@@ -233,7 +225,7 @@ export default function AboutPage() {
                 <span className="text-green-600 text-xl mr-3">✓</span>
                 <div>
                   <h4 className="font-semibold mb-1">Kaliteli Markalar</h4>
-                  <p className="text-gray-600 text-sm">Alarko, Baymak, Demirdöküm, Grundfos gibi lider markalar</p>
+                  <p className="text-gray-600 text-sm">Solimpeks, Grundfos gibi lider markalar</p>
                 </div>
               </div>
               <div className="flex items-start">

@@ -1,6 +1,6 @@
 "use client";
 
-import { Award, BookOpen, Shield, Users } from "lucide-react";
+import { Award, BookOpen } from "lucide-react";
 
 interface TeamMember {
   id: number;
@@ -15,43 +15,17 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: "Murat Gül",
-    title: "Kurucu & Baş Mühendis",
+    name: "Yusuf Gültekin",
+    title: "Kurucu",
     expertise: ["Isı Pompaları", "Enerji Verimliliği", "Mekanik Tesisat"],
-    experience: "25+ yıl",
-    certifications: ["Makine Mühendisi (İTÜ)", "Enerji Yöneticisi Sertifikası", "ISO 9001 Baş Denetçi"]
-  },
-  {
-    id: 2,
-    name: "Ahmet Tekin",
-    title: "Proje Müdürü",
-    expertise: ["Güneş Enerjisi Sistemleri", "Elektrik Tesisatı", "Otomasyon"],
     experience: "20+ yıl",
-    certifications: ["Elektrik-Elektronik Mühendisi (ODTÜ)", "PV Sistem Uzmanı", "Schneider Electric Sertifikalı"]
-  },
-  {
-    id: 3,
-    name: "Serkan Yılmaz",
-    title: "Teknik Müdür",
-    expertise: ["VRF Sistemler", "Klima Sistemleri", "Soğutma"],
-    experience: "15+ yıl",
-    certifications: ["Makine Mühendisi (YTÜ)", "Daikin VRV Uzmanı", "Mitsubishi Heavy Sertifikalı"]
-  },
-  {
-    id: 4,
-    name: "Elif Özkan",
-    title: "Kalite & Ar-Ge Müdürü",
-    expertise: ["Su Arıtma", "Kalite Kontrol", "Sürdürülebilirlik"],
-    experience: "12+ yıl",
-    certifications: ["Çevre Mühendisi (Boğaziçi)", "ISO 14001 Uzmanı", "LEED Green Associate"]
+    certifications: ["Makine Mühendisi", "Enerji Yöneticisi Sertifikası"]
   }
 ];
 
 const companyCredentials = [
-  { icon: Shield, title: "ISO 9001:2015", desc: "Kalite Yönetim Sistemi Sertifikası" },
   { icon: Award, title: "CE Belgeli Ürünler", desc: "Avrupa Uygunluk Sertifikası" },
-  { icon: BookOpen, title: "TSE Hizmet Yeri Yeterlilik", desc: "Türk Standartları Enstitüsü Onaylı" },
-  { icon: Users, title: "TMMOB Üyeliği", desc: "Makina Mühendisleri Odası Kayıtlı" }
+  { icon: BookOpen, title: "TSE Hizmet Yeri Yeterlilik", desc: "Türk Standartları Enstitüsü Onaylı" }
 ];
 
 export default function TeamExperts() {
@@ -71,7 +45,7 @@ export default function TeamExperts() {
         </div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="flex justify-center mb-16">
           {teamMembers.map((member) => (
             <div key={member.id} className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
               <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold">
@@ -135,22 +109,6 @@ export default function TeamExperts() {
           </div>
         </div>
 
-        {/* Partner Brands */}
-        <div className="mt-12 border-t pt-12">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
-            Çözüm Ortaklarımız
-          </h3>
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            {["Alarko", "Baymak", "Demirdöküm", "Daikin", "Mitsubishi", "Grundfos", "Wilo"].map((brand) => (
-              <div key={brand} className="px-6 py-3 bg-gray-100 rounded-lg">
-                <p className="font-semibold text-gray-700">{brand}</p>
-              </div>
-            ))}
-          </div>
-          <p className="text-center text-sm text-gray-600 mt-4">
-            Sektörün lider markalarıyla çalışarak, en kaliteli ürün ve hizmetleri sunuyoruz
-          </p>
-        </div>
       </div>
     </section>
   );
