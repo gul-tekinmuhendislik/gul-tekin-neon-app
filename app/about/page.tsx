@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const brandNames = await getRandomBrands(5);
+  const brandNames = await getRandomBrands(6);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -184,14 +184,10 @@ export default async function AboutPage() {
               <TextFlip 
                 words={brandNames}
                 duration={3500}
-                randomCount={2}
+                randomCount={6}
                 className="text-blue-600 font-bold inline-flex"
               />
               {" "}gibi sektörün lider markalarının yetkili servisi ve çözüm ortağı olarak, en kaliteli ürün ve hizmetleri sunuyoruz.
-              <strong> Solimpeks</strong> (Türkiye&apos;nin lider güneş enerjisi sistemleri üreticisi), 
-              <strong> Grundfos</strong> (dünyanın en büyük pompa üreticilerinden biri), <strong>Bosch</strong> (Alman mühendislik devi), 
-              <strong> Daikin</strong> (Japon iklimlendirme lideri) ve <strong>Viessmann</strong> (Alman ısıtma sistemleri öncüsü) dahil 
-              olmak üzere birçok global markanın Bodrum bölgesindeki güvenilir iş ortağıyız.
             </p>
             <p className="text-gray-700 leading-relaxed">
               Isı pompalarından güneş enerjisi sistemlerine, su arıtma çözümlerinden yerden ısıtma 
@@ -238,7 +234,7 @@ export default async function AboutPage() {
                 <span className="text-green-600 text-xl mr-3">✓</span>
                 <div>
                   <h4 className="font-semibold mb-1">Kaliteli Markalar</h4>
-                  <p className="text-gray-600 text-sm">Solimpeks, Grundfos, Bosch, Daikin, Viessmann gibi dünya lideri markalar</p>
+                  <p className="text-gray-600 text-sm">Sektörün önde gelen markalarıyla güvenilir ortaklık</p>
                 </div>
               </div>
               <div className="flex items-start">
