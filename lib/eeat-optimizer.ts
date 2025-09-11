@@ -129,7 +129,7 @@ Bu içeriği E-E-A-T kriterlerine göre analiz et ve JSON formatında şu yapıd
 }`
         }
       ],
-      model: "mixtral-8x7b-32768", // Groq'ta gpt-oss-120b yoksa en yakın güçlü model
+      model: "llama-3.3-70b-versatile", // Groq'un önerdiği yeni model
       temperature: 0.3,
       max_tokens: 2000,
       response_format: { type: "json_object" }
@@ -235,7 +235,7 @@ Optimized içeriği döndür (sadece eklenen/değiştirilen kısımları, tam i�
             content: optimizationPrompt
           }
         ],
-        model: "mixtral-8x7b-32768",
+        model: "llama-3.3-70b-versatile",
         temperature: 0.5,
         max_tokens: 1500
       });

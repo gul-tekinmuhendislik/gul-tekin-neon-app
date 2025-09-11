@@ -416,7 +416,7 @@ describe('Inngest Functions', () => {
 
       expect(mockGroqClient.chat.completions.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          model: 'mixtral-8x7b-32768',
+          model: 'llama-3.3-70b-versatile',
           temperature: 0.4,
           max_tokens: 3500
         })

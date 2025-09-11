@@ -10,7 +10,7 @@ export const syncMarkalarDaily = inngest.createFunction(
     retries: 2,
   },
   {
-    cron: "0 3 * * *", // Every day at 3 AM
+    cron: "0 3 * * 1", // Every Monday at 3 AM (weekly)
   },
   async ({ step }) => {
     console.log("Starting daily Markalar sync...");

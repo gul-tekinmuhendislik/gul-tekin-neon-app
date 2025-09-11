@@ -188,6 +188,7 @@ export async function syncHizmetlerToNeon() {
             airtable_modified = EXCLUDED.airtable_modified,
             updated_at = CURRENT_TIMESTAMP,
             synced_at = EXCLUDED.synced_at
+            -- cloudinary_url ve cloudinary_public_id alanlarına dokunmuyoruz
         `;
         
         syncedCount++;

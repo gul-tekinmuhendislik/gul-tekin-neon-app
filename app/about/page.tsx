@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import TeamExperts from '@/components/TeamExperts';
 import ProjectPortfolio from '@/components/ProjectPortfolio';
 import Testimonials from '@/components/Testimonials';
+import { TextFlip } from '@/components/ui/text-flip';
+import { getRandomBrands } from '@/lib/get-brands';
 
 export const metadata: Metadata = {
   title: 'Hakkımızda | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
@@ -25,7 +27,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const brandNames = await getRandomBrands(5);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -177,8 +180,18 @@ export default function AboutPage() {
               bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Uzman mühendis kadromuz, alanında deneyimli ve sertifikalı profesyonellerden oluşmaktadır. <strong>Solimpeks</strong> gibi sektörün lider markalarının yetkili servisi olarak, en kaliteli 
-              ürün ve hizmetleri sunuyoruz.
+              Uzman mühendis kadromuz, alanında deneyimli ve sertifikalı profesyonellerden oluşmaktadır.{" "}
+              <TextFlip 
+                words={brandNames}
+                duration={3500}
+                randomCount={2}
+                className="text-blue-600 font-bold inline-flex"
+              />
+              {" "}gibi sektörün lider markalarının yetkili servisi ve çözüm ortağı olarak, en kaliteli ürün ve hizmetleri sunuyoruz.
+              <strong> Solimpeks</strong> (Türkiye&apos;nin lider güneş enerjisi sistemleri üreticisi), 
+              <strong> Grundfos</strong> (dünyanın en büyük pompa üreticilerinden biri), <strong>Bosch</strong> (Alman mühendislik devi), 
+              <strong> Daikin</strong> (Japon iklimlendirme lideri) ve <strong>Viessmann</strong> (Alman ısıtma sistemleri öncüsü) dahil 
+              olmak üzere birçok global markanın Bodrum bölgesindeki güvenilir iş ortağıyız.
             </p>
             <p className="text-gray-700 leading-relaxed">
               Isı pompalarından güneş enerjisi sistemlerine, su arıtma çözümlerinden yerden ısıtma 
@@ -225,7 +238,7 @@ export default function AboutPage() {
                 <span className="text-green-600 text-xl mr-3">✓</span>
                 <div>
                   <h4 className="font-semibold mb-1">Kaliteli Markalar</h4>
-                  <p className="text-gray-600 text-sm">Solimpeks, Grundfos gibi lider markalar</p>
+                  <p className="text-gray-600 text-sm">Solimpeks, Grundfos, Bosch, Daikin, Viessmann gibi dünya lideri markalar</p>
                 </div>
               </div>
               <div className="flex items-start">

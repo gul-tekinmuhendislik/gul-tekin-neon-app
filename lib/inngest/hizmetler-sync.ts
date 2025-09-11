@@ -10,7 +10,7 @@ export const syncHizmetlerDaily = inngest.createFunction(
     retries: 2,
   },
   {
-    cron: "30 3 * * *", // Every day at 3:30 AM
+    cron: "30 3 * * 1", // Every Monday at 3:30 AM (weekly)
   },
   async ({ step }) => {
     console.log("Starting daily Hizmetler sync...");

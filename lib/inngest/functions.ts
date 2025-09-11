@@ -920,7 +920,7 @@ Optimized içeriği tam olarak döndür:`;
               content: optimizationPrompt
             }
           ],
-          model: "mixtral-8x7b-32768",
+          model: "llama-3.3-70b-versatile",
           temperature: 0.4,
           max_tokens: 3500
         });
@@ -1651,6 +1651,7 @@ import {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
+  bulkSyncUrunlerImages,
   dailyImageSync
 } from "./airtable-image-sync";
 
@@ -1680,6 +1681,7 @@ export {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
+  bulkSyncUrunlerImages,
   dailyImageSync,
   generateImage,
   generateBulkImages,
