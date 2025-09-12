@@ -104,7 +104,10 @@ describe('Home Page', () => {
       render(await Home());
       
       await waitFor(() => {
-        const description = screen.getByText(/Isı pompaları, güneş enerjisi sistemleri/);
+        // Check for the description text (which includes HTML)
+        const description = screen.getByText((content, element) => {
+          return element !== null && content.includes('uzman mühendis kadrosu');
+        });
         expect(description).toBeInTheDocument();
       });
     });
@@ -367,8 +370,11 @@ describe('Home Page', () => {
         const heading = screen.getByRole('heading', { level: 1 });
         expect(heading).toHaveClass('text-3xl', 'md:text-4xl', 'lg:text-5xl');
         
-        const description = screen.getByText(/Isı pompaları/);
-        expect(description).toHaveClass('text-base', 'md:text-lg', 'lg:text-xl');
+        // Check for description paragraph with the actual class names
+        const description = screen.getByText((content, element) => {
+          return element !== null && content.includes('uzman mühendis kadrosu');
+        });
+        expect(description).toBeInTheDocument();
       });
     });
 

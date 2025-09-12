@@ -47,12 +47,15 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
-// Suppress console errors in tests (optional)
+// Suppress console errors and logs in tests (optional)
 const originalError = console.error
+const originalLog = console.log
 beforeAll(() => {
   console.error = jest.fn()
+  console.log = jest.fn()
 })
 
 afterAll(() => {
   console.error = originalError
+  console.log = originalLog
 })

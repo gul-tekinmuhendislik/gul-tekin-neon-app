@@ -1,7 +1,20 @@
+// Import shim first before any other imports
+import 'groq-sdk/shims/node';
+
 // Test Inngest business logic without importing functions directly
 jest.mock('../../db');
 jest.mock('../../content-generator');
 jest.mock('../../eeat-optimizer');
+jest.mock('groq-sdk', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    chat: {
+      completions: {
+        create: jest.fn()
+      }
+    }
+  }))
+}));
 
 import { sql } from '../../db';
 import { generateAndSaveContent } from '../../content-generator';

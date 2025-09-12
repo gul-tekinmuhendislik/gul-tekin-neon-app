@@ -65,6 +65,9 @@ Mock content about the requested topic with all necessary sections.
   constructor() {}
 }
 
+// Export a reference to the mock instance for easy access in tests
+export const mockGroqInstance = new MockGroq()
+
 // Mock Inngest
 export class MockInngest {
   createFunction = jest.fn((config, trigger, handler) => {
