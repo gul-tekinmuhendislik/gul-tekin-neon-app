@@ -18,4 +18,5 @@
   - fix: NeonDbError metadata column eksikliği çözüldü ve Cloudinary entegrasyonu
   - feat: UI iyileştirmeleri ve marka güncellemeleri
   - fix: Slug-based routing for hizmetler and urunler detail
+  - afer vercel lmit
     
