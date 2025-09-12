@@ -5,7 +5,7 @@ import { sql } from "@/lib/db";
 interface ImageSyncData {
   id: string;
   imageUrl: string;
-  type: 'marka' | 'hizmet';
+  type: 'marka' | 'hizmet' | 'urun';
   name: string;
   folder?: string;
 }
@@ -81,6 +81,17 @@ export const syncAirtableImageToCloudinary = inngest.createFunction(
             updated_at = CURRENT_TIMESTAMP
           WHERE id = ${id}
           RETURNING id, hizmet_adi, cloudinary_url
+        `;
+        return result[0];
+      } else if (type === 'urun') {
+        const result = await sql`
+          UPDATE urunler 
+          SET 
+            cloudinary_url = ${uploadResult.data.url},
+            cloudinary_public_id = ${uploadResult.data.public_id},
+            updated_at = CURRENT_TIMESTAMP
+          WHERE id = ${id}
+          RETURNING id, urun_adi, cloudinary_url
         `;
         return result[0];
       }
@@ -367,7 +378,7 @@ export const dailyImageSync = inngest.createFunction(
     retries: 1,
   },
   {
-    cron: "0 4 * * *", // Every day at 4 AM
+    event: "airtable/images.daily_sync_disabled", // DISABLED - was: cron: "0 4 * * *"
   },
   async ({ step }) => {
     console.log("Starting daily image sync...");
@@ -424,6 +435,111 @@ export const dailyImageSync = inngest.createFunction(
       markalarSyncTriggered: !!markalarSync,
       hizmetlerSyncTriggered: !!hizmetlerSync,
       message: "Daily image sync triggers sent"
+    };
+  }
+);
+
+// Bulk sync images for all urunler
+export const bulkSyncUrunlerImages = inngest.createFunction(
+  {
+    id: "bulk-sync-urunler-images",
+    name: "Bulk Sync Urunler Images to Cloudinary",
+    retries: 2,
+  },
+  { event: "airtable/urunler.images.bulk_sync" },
+  async ({ step }) => {
+    // Step 1: Get all urunler with images that need syncing
+    const urunlerToSync = await step.run("get-urunler-with-images", async () => {
+      const result = await sql`
+        SELECT id, urun_adi, gorsel_url, cloudinary_url
+        FROM urunler
+        WHERE gorsel_url IS NOT NULL 
+          AND aktif = true
+          AND (cloudinary_url IS NULL OR LENGTH(cloudinary_url) = 0)
+      `;
+      
+      console.log(`Found ${result.length} urunler with images to sync`);
+      return result;
+    });
+
+    if (urunlerToSync.length === 0) {
+      return {
+        success: true,
+        message: "No urunler images to sync",
+        syncedCount: 0
+      };
+    }
+
+    // Step 2: Sync images in batches of 5
+    const batchSize = 5;
+    let syncedCount = 0;
+    let failedCount = 0;
+
+    for (let i = 0; i < urunlerToSync.length; i += batchSize) {
+      const batch = urunlerToSync.slice(i, i + batchSize);
+      
+      await step.run(`sync-batch-${Math.floor(i / batchSize) + 1}`, async () => {
+        const syncPromises = batch.map(async (urun) => {
+          try {
+            await inngest.send({
+              name: "airtable/image.sync",
+              data: {
+                id: urun.id,
+                imageUrl: urun.gorsel_url,
+                type: 'urun' as const,
+                name: urun.urun_adi,
+                folder: 'airtable/urunler'
+              }
+            });
+            syncedCount++;
+            console.log(`Triggered sync for urun: ${urun.urun_adi}`);
+          } catch (error) {
+            failedCount++;
+            console.error(`Failed to trigger sync for urun ${urun.id}:`, error);
+          }
+        });
+
+        await Promise.all(syncPromises);
+        
+        // Wait between batches to avoid rate limiting
+        if (i + batchSize < urunlerToSync.length) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      });
+    }
+
+    // Step 3: Log bulk sync completion
+    await step.run("log-bulk-sync", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'airtable.urunler.images.bulk_synced',
+          'bulk_operation',
+          'success',
+          ${JSON.stringify({
+            totalFound: urunlerToSync.length,
+            syncTriggered: syncedCount,
+            failed: failedCount
+          })},
+          ${JSON.stringify({
+            batchSize,
+            completedAt: new Date().toISOString()
+          })}
+        )
+      `;
+    });
+
+    return {
+      success: true,
+      totalFound: urunlerToSync.length,
+      syncTriggered: syncedCount,
+      failed: failedCount,
+      message: `Triggered sync for ${syncedCount} urun images`
     };
   }
 );

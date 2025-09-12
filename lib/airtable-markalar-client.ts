@@ -213,6 +213,7 @@ export async function syncMarkalarToNeon() {
             airtable_created_time = EXCLUDED.airtable_created_time,
             updated_at = CURRENT_TIMESTAMP,
             synced_at = EXCLUDED.synced_at
+            -- cloudinary_url ve cloudinary_public_id alanlarına dokunmuyoruz
         `;
         
         syncedCount++;

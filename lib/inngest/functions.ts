@@ -12,6 +12,12 @@ import {
   saveFacebookPost 
 } from "../facebook-api";
 import { syncMarkalarDaily, syncMarkalarManual } from "./markalar-sync";
+import { 
+  generateContentWithXAI, 
+  generateImageWithXAI, 
+  enhanceContentWithXAI,
+  generatePromptForContent 
+} from "./xai-content-generator";
 
 export const helloWorld = inngest.createFunction(
   { id: "hello-world", name: "Hello World Function" },
@@ -914,7 +920,7 @@ Optimized içeriği tam olarak döndür:`;
               content: optimizationPrompt
             }
           ],
-          model: "mixtral-8x7b-32768",
+          model: "llama-3.3-70b-versatile",
           temperature: 0.4,
           max_tokens: 3500
         });
@@ -1631,6 +1637,9 @@ export const monitorTokenExpiry = inngest.createFunction(
 // Import Hizmetler sync functions
 import { syncHizmetlerDaily, syncHizmetlerManual } from "./hizmetler-sync";
 
+// Import Urunler sync functions
+import { syncUrunlerDaily, syncUrunlerManual } from "./urunler-sync";
+
 // Import Cloudinary functions
 import {
   cloudinaryUpload,
@@ -1645,15 +1654,30 @@ import {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
+  bulkSyncUrunlerImages,
   dailyImageSync
 } from "./airtable-image-sync";
 
-// Export Markalar and Hizmetler sync functions
+// Import image generation functions
+import {
+  generateImage,
+  generateBulkImages
+} from "./image-generation";
+
+// Import Fal.ai image generation functions
+import {
+  generateImageWithFalAI,
+  generateBulkImagesWithFalAI
+} from "./fal-ai-generation";
+
+// Export Markalar, Hizmetler and Urunler sync functions
 export { 
   syncMarkalarDaily, 
   syncMarkalarManual,
   syncHizmetlerDaily,
   syncHizmetlerManual,
+  syncUrunlerDaily,
+  syncUrunlerManual,
   cloudinaryUpload,
   cloudinaryTransform,
   cloudinaryDelete,
@@ -1662,5 +1686,15 @@ export {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
-  dailyImageSync
+  bulkSyncUrunlerImages,
+  dailyImageSync,
+  generateImage,
+  generateBulkImages,
+  generateImageWithFalAI,
+  generateBulkImagesWithFalAI,
+  // XAI functions
+  generateContentWithXAI,
+  generateImageWithXAI,
+  enhanceContentWithXAI,
+  generatePromptForContent
 };

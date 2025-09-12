@@ -24,8 +24,27 @@ import {
   syncAirtableImageToCloudinary,
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
+  bulkSyncUrunlerImages,
   dailyImageSync
 } from "@/lib/inngest/functions";
+import {
+  syncProjelerDaily,
+  syncProjelerManual,
+  syncSingleProject
+} from "@/lib/inngest/projeler-sync";
+import {
+  syncUrunlerDaily,
+  syncUrunlerManual
+} from "@/lib/inngest/urunler-sync";
+import {
+  syncAnafaaliyetDaily,
+  syncAnafaaliyetManual
+} from "@/lib/inngest/anafaaliyet-sync";
+import { 
+  generateMissingImages,
+  scheduledImageGeneration,
+  regenerateImage
+} from "@/lib/inngest/image-generator";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -45,6 +64,13 @@ export const { GET, POST, PUT } = serve({
     syncMarkalarManual,
     syncHizmetlerDaily,
     syncHizmetlerManual,
+    syncProjelerDaily,
+    syncProjelerManual,
+    syncSingleProject,
+    syncUrunlerDaily,
+    syncUrunlerManual,
+    syncAnafaaliyetDaily,
+    syncAnafaaliyetManual,
     cloudinaryUpload,
     cloudinaryTransform,
     cloudinaryDelete,
@@ -53,6 +79,10 @@ export const { GET, POST, PUT } = serve({
     syncAirtableImageToCloudinary,
     bulkSyncMarkalarImages,
     bulkSyncHizmetlerImages,
-    dailyImageSync
+    bulkSyncUrunlerImages,
+    dailyImageSync,
+    generateMissingImages,
+    scheduledImageGeneration,
+    regenerateImage
   ],
 });

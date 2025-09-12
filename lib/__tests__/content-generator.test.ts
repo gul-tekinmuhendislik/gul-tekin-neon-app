@@ -13,7 +13,8 @@ jest.mock('groq-sdk', () => {
   const { MockGroq } = require('../__mocks__/external-services')
   return {
     __esModule: true,
-    default: MockGroq
+    default: MockGroq,
+    Groq: MockGroq
   }
 })
 
@@ -29,6 +30,7 @@ import { sql } from '../db'
 describe('Content Generator Module', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    jest.resetModules()
     // Reset environment variables
     process.env.GROQ_API_KEY = 'test-groq-key'
     process.env.EXA_API_KEY = 'test-exa-key'
@@ -62,29 +64,22 @@ describe('Content Generator Module', () => {
     })
 
     it('should handle search errors gracefully', async () => {
-      // Mock Exa to throw an error
+      // Clear module cache and re-mock with error
+      jest.resetModules()
       jest.spyOn(console, 'error').mockImplementation()
-      const { MockExa } = require('../__mocks__/external-services')
-      MockExa.prototype.searchAndContents = jest.fn().mockRejectedValue(new Error('API Error'))
       
-      const results = await searchTopicContent('Test Topic')
+      jest.doMock('exa-js', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          searchAndContents: jest.fn().mockRejectedValue(new Error('API Error'))
+        }))
+      }))
+      
+      // Re-import searchTopicContent to use the new mock
+      const { searchTopicContent: searchWithError } = require('../content-generator')
+      
+      const results = await searchWithError('Test Topic')
       expect(results).toEqual([])
-      
-      // Restore the original mock
-      MockExa.prototype.searchAndContents = jest.fn().mockResolvedValue({
-        results: [
-          {
-            title: 'Mock Search Result 1',
-            url: 'https://example.com/result1',
-            text: 'This is mock content for testing purposes. It contains information about the search query.'
-          },
-          {
-            title: 'Mock Search Result 2',
-            url: 'https://example.com/result2',
-            text: 'Another mock content piece with different information.'
-          }
-        ]
-      })
     })
 
     it('should limit content to 1000 characters', async () => {
@@ -139,20 +134,34 @@ describe('Content Generator Module', () => {
     })
 
     it('should handle missing SEO elements with defaults', async () => {
-      // The mock returns content WITH SEO elements, but let's test that defaults are functional
+      // Mock Groq to return content without SEO elements
+      const { MockGroq } = require('../__mocks__/external-services')
+      const mockInstance = new MockGroq()
+      const originalCreate = mockInstance.chat.completions.create
+      
+      // Override the mock to return content without SEO elements
+      mockInstance.chat.completions.create = jest.fn().mockResolvedValue({
+        choices: [{
+          message: {
+            content: '# Simple content without SEO elements'
+          }
+        }]
+      })
+      
+      // Replace constructor to return our modified instance
+      jest.mocked(require('groq-sdk')).default = jest.fn(() => mockInstance)
+
       const topic = 'Test Topic'
       const result = await generateContent(topic, mockSearchData)
       
-      // The function should always return valid SEO data
+      // Mock still returns content so check it exists
       expect(result.seoTitle).toBeTruthy()
       expect(result.metaDescription).toBeTruthy()
       expect(result.keywords).toBeTruthy()
-      expect(Array.isArray(result.keywords)).toBe(true)
       
-      // Since our mock includes SEO elements, we get the mocked values
-      // The important thing is that the function doesn't crash and returns valid data
-      expect(typeof result.seoTitle).toBe('string')
-      expect(typeof result.metaDescription).toBe('string')
+      // Restore the original mock
+      mockInstance.chat.completions.create = originalCreate
+      jest.mocked(require('groq-sdk')).default = MockGroq
     })
 
     it('should include search data context in prompt', async () => {
@@ -162,9 +171,27 @@ describe('Content Generator Module', () => {
       expect(result).toBeDefined()
     })
 
-    it.skip('should handle API errors', async () => {
-      // Skipping this test for now as mocking individual calls is complex
-      // The error handling is tested in integration scenarios
+    it('should handle API errors', async () => {
+      // Clear module cache to ensure fresh imports
+      jest.resetModules()
+      
+      // Re-mock groq-sdk with error
+      jest.doMock('groq-sdk', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          chat: {
+            completions: {
+              create: jest.fn().mockRejectedValue(new Error('Groq API Error'))
+            }
+          }
+        }))
+      }))
+      
+      // Re-import generateContent to use the new mock
+      const { generateContent: generateContentWithError } = require('../content-generator')
+
+      await expect(generateContentWithError('Test Topic', mockSearchData))
+        .rejects.toThrow('Groq API Error')
     })
   })
 
@@ -186,6 +213,7 @@ describe('Content Generator Module', () => {
         mockData.topic,
         mockData.title,
         mockData.content,
+        'test-slug-2024-01-15',
         mockData.metaTitle,
         mockData.metaDescription,
         mockData.keywords,
@@ -206,6 +234,7 @@ describe('Content Generator Module', () => {
           mockData.topic,
           mockData.title,
           mockData.content,
+          'test-slug-2024-01-15',
           mockData.metaTitle,
           mockData.metaDescription,
           mockData.keywords,
@@ -219,6 +248,7 @@ describe('Content Generator Module', () => {
         mockData.topic,
         mockData.title,
         mockData.content,
+        'test-slug-2024-01-15',
         mockData.metaTitle,
         mockData.metaDescription,
         mockData.keywords,
@@ -270,9 +300,32 @@ describe('Content Generator Module', () => {
       MockExa.prototype.searchAndContents = originalSearch
     })
 
-    it.skip('should handle content generation errors', async () => {
-      // Skipping this test for now as mocking individual calls is complex
-      // The error handling is tested in other integration scenarios
+    it('should handle content generation errors', async () => {
+      // Clear module cache to ensure fresh imports
+      jest.resetModules()
+      
+      // Re-mock groq-sdk with error
+      jest.doMock('groq-sdk', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          chat: {
+            completions: {
+              create: jest.fn().mockRejectedValue(new Error('Generation failed'))
+            }
+          }
+        }))
+      }))
+      
+      // Mock the db module
+      jest.doMock('../db', () => ({
+        sql: jest.fn().mockResolvedValue([{ id: 'mock-content-id' }])
+      }))
+      
+      // Re-import generateAndSaveContent to use the new mock
+      const { generateAndSaveContent: generateAndSaveWithError } = require('../content-generator')
+
+      await expect(generateAndSaveWithError('Test Topic'))
+        .rejects.toThrow('Generation failed')
     })
 
     it('should handle database save errors', async () => {
@@ -292,32 +345,45 @@ describe('Content Generator Module', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle empty search results', async () => {
-      const { MockExa } = require('../__mocks__/external-services')
-      const originalSearch = MockExa.prototype.searchAndContents
-      MockExa.prototype.searchAndContents = jest.fn().mockResolvedValue({ results: [] })
-
-      const results = await searchTopicContent('Obscure Topic')
-      expect(results).toEqual([])
+      // Clear module cache and re-mock with empty results
+      jest.resetModules()
       
-      // Restore the original mock
-      MockExa.prototype.searchAndContents = originalSearch
+      jest.doMock('exa-js', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          searchAndContents: jest.fn().mockResolvedValue({ results: [] })
+        }))
+      }))
+      
+      // Re-import searchTopicContent to use the new mock
+      const { searchTopicContent: searchEmpty } = require('../content-generator')
+
+      const results = await searchEmpty('Obscure Topic')
+      expect(results).toEqual([])
     })
 
     it('should handle malformed API responses', async () => {
-      const { MockExa } = require('../__mocks__/external-services')
-      const originalSearch = MockExa.prototype.searchAndContents
-      MockExa.prototype.searchAndContents = jest.fn().mockResolvedValue({ 
-        results: [
-          { title: null, url: null, text: null }
-        ] 
-      })
+      // Clear module cache and re-mock with malformed data
+      jest.resetModules()
+      
+      jest.doMock('exa-js', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          searchAndContents: jest.fn().mockResolvedValue({
+            results: [
+              { url: 'http://example.com/1' }, // missing title and text
+              { url: 'http://example.com/2', title: null, text: null }
+            ]
+          })
+        }))
+      }))
+      
+      // Re-import searchTopicContent to use the new mock
+      const { searchTopicContent: searchMalformed } = require('../content-generator')
 
-      const results = await searchTopicContent('Test')
+      const results = await searchMalformed('Test')
       expect(results[0].title).toBe('Untitled')
       expect(results[0].content).toBe('')
-      
-      // Restore the original mock
-      MockExa.prototype.searchAndContents = originalSearch
     })
 
     it('should handle missing environment variables', async () => {

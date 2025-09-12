@@ -4,6 +4,11 @@ import '@testing-library/jest-dom'
 // Add Groq SDK shim for Node.js environment
 import 'groq-sdk/shims/node'
 
+// Add TextDecoder/TextEncoder for Node.js environment
+import { TextDecoder, TextEncoder } from 'util'
+global.TextDecoder = TextDecoder
+global.TextEncoder = TextEncoder
+
 // Mock environment variables for testing
 process.env.DATABASE_URL = 'postgresql://test@localhost/test'
 process.env.GROQ_API_KEY = 'test-groq-key'

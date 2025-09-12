@@ -6,6 +6,8 @@ import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
+import { TextFlip } from "@/components/ui/text-flip";
+import { getRandomBrands } from "@/lib/get-brands";
 
 export const metadata: Metadata = {
   title: "Ana Sayfa | Gül-Tekin Mühendislik - Bodrum Isı Pompası ve Enerji Sistemleri",
@@ -27,7 +29,7 @@ const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
   subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span> • <span class='text-purple-600 font-semibold'>ISO 9001 Sertifikalı</span>",
   description:
-    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. <strong>Daikin, Mitsubishi, Bosch, Vaillant, Viessmann yetkili servisi.</strong> Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
+    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
     text: "Hizmetlerimiz",
     href: "/services",
@@ -37,7 +39,7 @@ const DATA = {
     href: "/contact",
   },
   emergencyBanner: {
-    text: "🚨 7/24 Acil Servis",
+    text: "📞 7/24 Teknik Destek",
     phone: "0532 317 78 59"
   },
   footerLinks: [
@@ -56,6 +58,7 @@ const DATA = {
 
 export default async function Home() {
   const result = await checkDbConnection();
+  const brandNames = await getRandomBrands(6);
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <Vortex
@@ -98,14 +101,22 @@ export default async function Home() {
                 dangerouslySetInnerHTML={{ __html: DATA.subtitle }}
               />
             )}
-            <p
-              className="mt-3.5 max-w-lg text-base leading-snug tracking-tight text-gray-700 md:text-lg md:leading-snug lg:text-xl lg:leading-snug"
-              dangerouslySetInnerHTML={{ __html: DATA.description }}
-            />
+            <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
+              <p className="inline">
+                Bodrum/Yalıkavak&apos;ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
+                <TextFlip 
+                  words={brandNames}
+                  duration={4000}
+                  randomCount={6}
+                  className="text-[#00E599] font-semibold inline-flex"
+                />
+                {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
+              </p>
+            </div>
             {DATA.emergencyBanner && (
-              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center justify-center gap-2">
-                <span className="text-red-700 font-semibold">{DATA.emergencyBanner.text}</span>
-                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-red-600 font-bold hover:underline">
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center gap-2">
+                <span className="text-blue-700 font-semibold">{DATA.emergencyBanner.text}</span>
+                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-blue-600 font-bold hover:underline">
                   {DATA.emergencyBanner.phone}
                 </a>
               </div>

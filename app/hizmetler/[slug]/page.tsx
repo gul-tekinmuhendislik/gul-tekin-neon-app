@@ -14,7 +14,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
-  const hizmet = hizmetler.find((h) => h.seo_slug === slug);
+  const hizmet = hizmetler.find((h) => h.slug === slug || h.seo_slug === slug);
   
   if (!hizmet) {
     return {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'website',
       locale: 'tr_TR',
       siteName: 'Gül-Tekin Mühendislik',
-      images: hizmet.resim_url ? [{ url: hizmet.resim_url, alt: hizmet.hizmet_adi }] : undefined,
+      images: (hizmet.cloudinary_url || hizmet.resim_url) ? [{ url: hizmet.cloudinary_url || hizmet.resim_url!, alt: hizmet.hizmet_adi }] : undefined,
     },
     alternates: {
       canonical: `/hizmetler/${slug}`,
@@ -45,16 +45,16 @@ export async function generateStaticParams() {
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
   
   return hizmetler
-    .filter((hizmet) => hizmet.seo_slug)
+    .filter((hizmet) => hizmet.slug || hizmet.seo_slug)
     .map((hizmet) => ({
-      slug: hizmet.seo_slug,
+      slug: hizmet.slug || hizmet.seo_slug,
     }));
 }
 
 export default async function HizmetDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
-  const hizmet = hizmetler.find((h) => h.seo_slug === slug);
+  const hizmet = hizmetler.find((h) => h.slug === slug || h.seo_slug === slug);
   
   if (!hizmet) {
     notFound();
@@ -94,10 +94,10 @@ export default async function HizmetDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {hizmet.resim_url && (
+            {(hizmet.cloudinary_url || hizmet.resim_url) && (
               <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
                 <Image
-                  src={hizmet.resim_url}
+                  src={hizmet.cloudinary_url || hizmet.resim_url!}
                   alt={hizmet.hizmet_adi}
                   width={800}
                   height={600}
@@ -223,13 +223,13 @@ export default async function HizmetDetailPage({ params }: PageProps) {
               {relatedServices.map((related) => (
                 <Link
                   key={related.id}
-                  href={`/hizmetler/${related.seo_slug}`}
+                  href={`/hizmetler/${related.slug || related.seo_slug}`}
                   className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
-                  {related.resim_url && (
+                  {(related.cloudinary_url || related.resim_url) && (
                     <div className="h-48 overflow-hidden bg-gray-100">
                       <Image
-                        src={related.resim_url}
+                        src={related.cloudinary_url || related.resim_url!}
                         alt={related.hizmet_adi}
                         width={400}
                         height={300}

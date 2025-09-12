@@ -16,4 +16,7 @@
   - Dinamik hizmet sayfaları (/hizmetler ve /hizmetler/[slug])
   - feat: SEO iyileştirmeleri ve domain konsolidasyonu
   - fix: NeonDbError metadata column eksikliği çözüldü ve Cloudinary entegrasyonu
+  - feat: UI iyileştirmeleri ve marka güncellemeleri
+  - fix: Slug-based routing for hizmetler and urunler detail
+  - afer vercel lmit
     
