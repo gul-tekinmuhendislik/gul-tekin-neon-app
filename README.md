@@ -19,4 +19,5 @@
   - feat: UI iyileştirmeleri ve marka güncellemeleri
   - fix: Slug-based routing for hizmetler and urunler detail
   - afer vercel lmit
+  - Neon markalar tablosuna airtable_hizmetler_id ve airtable_faaliyet_id alanları eklendi
     
