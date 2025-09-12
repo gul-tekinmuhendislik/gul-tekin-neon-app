@@ -83,17 +83,24 @@ export async function postToFacebookPage(
   pageId: string
 ): Promise<FacebookPostResponse | null> {
   try {
-    const { link } = postData;
+    const { link, imageUrl } = postData;
     
     // Format the post message
     const message = formatFacebookPost(postData);
     
     // Prepare post data
-    const post: FacebookPagePost = {
+    const post: FacebookPagePost & { picture?: string } = {
       message,
       link,
       published: true
     };
+    
+    // Add image if available (Facebook will also scrape og:image from the link)
+    const pictureUrl = imageUrl || (postData as FacebookPostData & { picture?: string }).picture;
+    if (pictureUrl) {
+      post.picture = pictureUrl;
+      console.log(`Adding image to Facebook post: ${post.picture}`);
+    }
     
     // Make API request
     const response = await fetch(
@@ -325,6 +332,7 @@ export function extractOGData(content: {
   meta_description: string;
   slug: string;
   keywords?: string[];
+  image_url?: string;
 }): FacebookPostData {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://gul-tekinmuhendislik.com";
   
@@ -335,8 +343,8 @@ export function extractOGData(content: {
   // Generate hashtags from keywords
   const hashtags = content.keywords ? generateHashtags(content.keywords) : [];
   
-  // Generate OG image URL
-  const imageUrl = generateOGImageUrl(content.slug, content.title);
+  // Use provided image URL or generate OG image URL
+  const imageUrl = content.image_url || generateOGImageUrl(content.slug, content.title);
   
   return {
     title: content.title,

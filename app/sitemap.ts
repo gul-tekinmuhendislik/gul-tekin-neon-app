@@ -33,7 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       SELECT slug, updated_at 
       FROM hizmetler 
       WHERE aktif = true
-      ORDER BY siralama_no ASC
+      ORDER BY id ASC
     `;
     
     hizmetlerPages = hizmetler.map((hizmet) => ({
@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       SELECT slug, updated_at 
       FROM urunler 
       WHERE aktif = true
-      ORDER BY siralama_no ASC
+      ORDER BY id ASC
     `;
     
     urunlerPages = urunler.map((urun) => ({

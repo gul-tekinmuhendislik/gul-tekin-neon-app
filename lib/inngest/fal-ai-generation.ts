@@ -290,10 +290,10 @@ export const generateImageForBlog = inngest.createFunction(
       guidanceScale?: number;
     };
 
-    // Step 1: Blog kaydını kontrol et
+    // Step 1: Blog kaydını ve prompt'u kontrol et
     const blogPost = await step.run("check-blog-post", async () => {
       const result = await sql`
-        SELECT id, title, topic, content, status
+        SELECT id, title, topic, content, status, prompt, image_prompt
         FROM generated_content
         WHERE id = ${blogId}
       `;
@@ -305,14 +305,62 @@ export const generateImageForBlog = inngest.createFunction(
       return result[0];
     });
 
+    // Step 1.5: Eğer prompt boşsa, mevcut prompt'u kullan veya XAI ile üret
+    const finalPrompt = await step.run("prepare-prompt", async () => {
+      // Eğer parametrede prompt varsa onu kullan
+      if (prompt && prompt.trim() !== "") {
+        return prompt;
+      }
+      
+      // Blog kaydında prompt varsa onu kullan
+      if (blogPost.prompt && blogPost.prompt.trim() !== "") {
+        console.log(`Using existing prompt from database for blog ${blogId}`);
+        return blogPost.prompt;
+      }
+      
+      // Blog kaydında image_prompt varsa onu kullan
+      if (blogPost.image_prompt && blogPost.image_prompt.trim() !== "") {
+        console.log(`Using existing image_prompt from database for blog ${blogId}`);
+        return blogPost.image_prompt;
+      }
+      
+      // Hiç prompt yoksa, XAI ile üret
+      console.log(`No prompt found, triggering XAI prompt generation for blog ${blogId}`);
+      await inngest.send({
+        name: "content/generate-prompt.xai",
+        data: {
+          contentId: blogId,
+          batchProcess: false
+        }
+      });
+      
+      // XAI'nin prompt üretmesi için kısa bir süre bekle
+      await step.sleep("wait-for-xai-prompt", "10s");
+      
+      // Güncellenmiş prompt'u al
+      const updatedResult = await sql`
+        SELECT prompt, image_prompt
+        FROM generated_content
+        WHERE id = ${blogId}
+      `;
+      
+      if (updatedResult.length > 0) {
+        return updatedResult[0].prompt || updatedResult[0].image_prompt || 
+          `Modern ${blogPost.topic} installation in Mediterranean villa, professional photography, golden hour`;
+      }
+      
+      // Fallback prompt
+      return `Modern ${blogPost.topic} installation in Mediterranean villa, professional photography, golden hour`;
+    });
+
     // Step 2: Fal.ai ile resim üret
     const falResponse = await step.run("generate-with-fal-ai", async () => {
       console.log(`Generating image for blog ID: ${blogId}`);
       console.log(`Blog title: ${blogPost.title}`);
-      console.log(`Prompt: ${prompt}`);
+      console.log(`Prompt: ${finalPrompt}`);
       
       return await generateWithFalAI(
-        prompt,
+        finalPrompt,
         model,
         imageSize,
         numInferenceSteps,
@@ -330,7 +378,7 @@ export const generateImageForBlog = inngest.createFunction(
       }
 
       try {
-        const cloudinaryResult = await uploadToCloudinary(image.url, `Blog: ${blogPost.title} - ${prompt}`);
+        const cloudinaryResult = await uploadToCloudinary(image.url, `Blog: ${blogPost.title} - ${finalPrompt}`);
         return {
           originalUrl: image.url,
           cloudinaryUrl: cloudinaryResult.url,
@@ -350,7 +398,8 @@ export const generateImageForBlog = inngest.createFunction(
         UPDATE generated_content
         SET 
           image_url = ${uploadedImage.cloudinaryUrl},
-          image_prompt = ${prompt},
+          image_prompt = ${finalPrompt},
+          prompt = ${finalPrompt},
           updated_at = ${new Date().toISOString()}
         WHERE id = ${blogId}
       `;
@@ -380,7 +429,7 @@ export const generateImageForBlog = inngest.createFunction(
           metadata,
           created_at
         ) VALUES (
-          ${prompt},
+          ${finalPrompt},
           ${`Blog image for: ${blogPost.title}`},
           ${null}, -- Blog'lar için brand_id yok
           ${`${uploadedImage.width}x${uploadedImage.height}`},
@@ -420,7 +469,7 @@ export const generateImageForBlog = inngest.createFunction(
           ${JSON.stringify({
             blogId: blogId,
             blogTitle: blogPost.title,
-            prompt: prompt,
+            prompt: finalPrompt,
             imageUrl: uploadedImage.cloudinaryUrl
           })},
           ${JSON.stringify({
@@ -441,7 +490,7 @@ export const generateImageForBlog = inngest.createFunction(
       blogId: blogId,
       blogTitle: blogPost.title,
       imageUrl: uploadedImage.cloudinaryUrl,
-      imagePrompt: prompt,
+      imagePrompt: finalPrompt,
       model: model,
       inferenceTime: falResponse.timings?.inference,
       message: `Successfully generated and assigned image to blog post: ${blogPost.title}`

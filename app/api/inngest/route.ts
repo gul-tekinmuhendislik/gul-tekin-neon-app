@@ -25,8 +25,14 @@ import {
   bulkSyncMarkalarImages,
   bulkSyncHizmetlerImages,
   bulkSyncUrunlerImages,
-  dailyImageSync
+  dailyImageSync,
+  generateImageWithFalAI,
+  generateBulkImagesWithFalAI,
+  generatePromptForContent
 } from "@/lib/inngest/functions";
+import {
+  generateImageForBlog
+} from "@/lib/inngest/fal-ai-generation";
 import {
   syncProjelerDaily,
   syncProjelerManual,
@@ -83,6 +89,10 @@ export const { GET, POST, PUT } = serve({
     dailyImageSync,
     generateMissingImages,
     scheduledImageGeneration,
-    regenerateImage
+    regenerateImage,
+    generateImageWithFalAI,
+    generateBulkImagesWithFalAI,
+    generateImageForBlog,
+    generatePromptForContent
   ],
 });
