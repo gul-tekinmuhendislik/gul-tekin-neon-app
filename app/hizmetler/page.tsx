@@ -4,9 +4,9 @@ import { Hizmet } from '@/lib/types/hizmet';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
-  description: 'Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri ve mekanik tesisat hizmetleri. Bodrum Yalıkavak bölgesinde profesyonel mühendislik çözümleri.',
-  keywords: 'Bodrum ısı pompası, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, hidrofor, sulama sistemleri, mekanik tesisat, termosifonik sistem, radyatör',
+  title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Mekanik Tesisat',
+  description: 'Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri ve mekanik tesisat hizmetleri. Muğla bölgesinde profesyonel mühendislik çözümleri.',
+  keywords: 'ısı pompası, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, hidrofor, sulama sistemleri, mekanik tesisat, termosifonik sistem, radyatör, Muğla, Bodrum, Yalıkavak',
   openGraph: {
     title: 'Hizmetlerimiz | Gül-Tekin Mühendislik',
     description: 'Enerji verimli ve çevre dostu mühendislik çözümleri. Isıtma, soğutma, su arıtma ve enerji sistemleri.',
@@ -48,7 +48,7 @@ export default async function HizmetlerPage() {
             Hizmetlerimiz
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Bodrum ve Milas bölgesinde, 20 yıllık deneyimimiz ile mekanik tesisat, 
+            Muğla bölgesinde, 20 yıllık deneyimimiz ile mekanik tesisat, 
             enerji sistemleri ve su arıtma konularında profesyonel çözümler sunuyoruz.
           </p>
         </div>

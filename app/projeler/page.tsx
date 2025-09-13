@@ -6,10 +6,10 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Projeler - Gül-Tekin Mühendislik',
-  description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Bodrum ve çevresinde 500+ başarılı proje.',
+  description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Muğla bölgesinde 500+ başarılı proje.',
   openGraph: {
     title: 'Projeler - Gül-Tekin Mühendislik',
-    description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Bodrum ve çevresinde 500+ başarılı proje.',
+    description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Muğla bölgesinde 500+ başarılı proje.',
     type: 'website',
   },
 };

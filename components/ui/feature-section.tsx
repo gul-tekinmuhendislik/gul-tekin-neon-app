@@ -85,7 +85,7 @@ const features = [
   },
   {
     title: "Hızlı Müdahale",
-    content: "Bodrum ve Yalıkavak bölgesinde ortalama 30 dakika içinde adresinize ulaşıyor, sorunlarınıza hızlı çözüm üretiyoruz.",
+    content: "Muğla bölgesinde ortalama 30 dakika içinde adresinize ulaşıyor, sorunlarınıza hızlı çözüm üretiyoruz.",
     icon: <Zap className="w-6 h-6" />,
   },
   {

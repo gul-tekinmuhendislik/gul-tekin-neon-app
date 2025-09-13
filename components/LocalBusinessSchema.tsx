@@ -10,8 +10,8 @@ export default function LocalBusinessSchema() {
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Yalıkavak Mahallesi",
-      "addressLocality": "Bodrum",
+      "streetAddress": "Gökçebel Mah. İnönü Cad. 61/D",
+      "addressLocality": "Yalıkavak",
       "addressRegion": "Muğla",
       "postalCode": "48990",
       "addressCountry": "TR"
@@ -47,7 +47,7 @@ export default function LocalBusinessSchema() {
       "https://www.instagram.com/gultekinmuhendislik",
       "https://www.linkedin.com/company/gul-tekin-muhendislik"
     ],
-    "description": "Yalıkavak ve Bodrum bölgesinde profesyonel mühendislik, proje yönetimi ve danışmanlık hizmetleri sunan lider firma.",
+    "description": "Muğla bölgesinde profesyonel mühendislik, proje yönetimi ve danışmanlık hizmetleri sunan lider firma.",
     "foundingDate": "2015",
     "areaServed": {
       "@type": "GeoCircle",
