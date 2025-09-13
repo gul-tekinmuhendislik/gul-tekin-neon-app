@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { cookies } from 'next/headers';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Cookie'den token'ları al
     const cookieStore = await cookies();
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     }
 
     const redirectUri = process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3002/api/google/callback'
+      ? 'http://localhost:3003/api/google/callback'
       : `${process.env.NEXT_PUBLIC_SITE_URL}/api/google/callback`;
 
     const oauth2Client = new google.auth.OAuth2(
@@ -55,28 +55,23 @@ export async function GET(request: NextRequest) {
         }
       });
 
-    } catch (apiError: any) {
+    } catch (apiError) {
       // Eğer account bulunamazsa, Places API dene
       console.log('Trying Places API fallback...');
 
-      const places = google.places({
-        version: 'v1',
-        auth: oauth2Client
-      });
-
       return NextResponse.json({
         success: false,
-        error: apiError.message,
+        error: apiError instanceof Error ? apiError.message : 'API error',
         fallback: 'Places API can be used as alternative',
-        details: apiError.response?.data
+        details: (apiError as { response?: { data: unknown } }).response?.data
       });
     }
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('GMB Info API error:', error);
     return NextResponse.json({
       success: false,
-      error: error.message || 'Failed to fetch business information'
+      error: error instanceof Error ? error.message : 'Failed to fetch business information'
     }, { status: 500 });
   }
 }

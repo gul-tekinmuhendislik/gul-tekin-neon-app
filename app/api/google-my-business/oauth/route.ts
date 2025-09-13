@@ -75,11 +75,11 @@ export async function GET(request: NextRequest) {
           error: 'Invalid action'
         }, { status: 400 });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error('GMB OAuth API error:', error);
 
     // Token expired kontrolü
-    if (error.code === 401) {
+    if ((error as { code?: number }).code === 401) {
       return NextResponse.json({
         success: false,
         error: 'Token expired',
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: false,
-      error: error.message || 'Failed to fetch GMB data'
+      error: error instanceof Error ? error.message : 'Failed to fetch GMB data'
     }, { status: 500 });
   }
 }

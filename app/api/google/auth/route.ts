@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
 // Development'ta localhost kullan
@@ -12,7 +12,7 @@ const oauth2Client = new google.auth.OAuth2(
   redirectUri
 );
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const scopes = [
     'https://www.googleapis.com/auth/business.manage',
   ];

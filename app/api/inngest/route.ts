@@ -46,11 +46,15 @@ import {
   syncAnafaaliyetDaily,
   syncAnafaaliyetManual
 } from "@/lib/inngest/anafaaliyet-sync";
-import { 
+import {
   generateMissingImages,
   scheduledImageGeneration,
   regenerateImage
 } from "@/lib/inngest/image-generator";
+import {
+  testGoogleGemini,
+  generateContentWithGemini
+} from "@/lib/inngest/google-gemini-test";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -93,6 +97,8 @@ export const { GET, POST, PUT } = serve({
     generateImageWithFalAI,
     generateBulkImagesWithFalAI,
     generateImageForBlog,
-    generatePromptForContent
+    generatePromptForContent,
+    testGoogleGemini,
+    generateContentWithGemini
   ],
 });

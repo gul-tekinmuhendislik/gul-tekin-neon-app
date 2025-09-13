@@ -1,13 +1,14 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function GMBAdminPage() {
+function GMBAdminContent() {
   const searchParams = useSearchParams();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accounts, setAccounts] = useState<any[]>([]);
-  const [locations, setLocations] = useState<any[]>([]);
+  const [accounts, setAccounts] = useState<Array<{ name: string; accountName: string; type: string }>>([]);
+  const [locations, setLocations] = useState<Array<{ name: string; title: string; address?: { formattedAddress: string }; phoneNumbers?: { primaryPhone: string } }>>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,8 +37,8 @@ export default function GMBAdminPage() {
       } else if (data.authUrl) {
         setIsAuthenticated(false);
       }
-    } catch (err) {
-      console.error('Auth check failed:', err);
+    } catch {
+      console.error('Auth check failed');
     }
   };
 
@@ -56,7 +57,7 @@ export default function GMBAdminPage() {
           setIsAuthenticated(false);
         }
       }
-    } catch (err) {
+    } catch {
       setError('Failed to fetch accounts');
     } finally {
       setLoading(false);
@@ -75,7 +76,7 @@ export default function GMBAdminPage() {
       } else {
         setError(data.error);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to fetch locations');
     } finally {
       setLoading(false);
@@ -121,7 +122,7 @@ export default function GMBAdminPage() {
 
               {accounts.length > 0 ? (
                 <div className="space-y-4">
-                  {accounts.map((account: any) => (
+                  {accounts.map((account) => (
                     <div key={account.name} className="border p-4 rounded">
                       <h3 className="font-semibold">{account.accountName}</h3>
                       <p className="text-sm text-gray-600">ID: {account.name}</p>
@@ -144,7 +145,7 @@ export default function GMBAdminPage() {
               <div className="bg-white p-6 rounded-lg shadow">
                 <h2 className="text-xl font-semibold mb-4">İşletme Lokasyonları</h2>
                 <div className="space-y-4">
-                  {locations.map((location: any) => (
+                  {locations.map((location) => (
                     <div key={location.name} className="border p-4 rounded">
                       <h3 className="font-semibold">{location.title}</h3>
                       <p className="text-sm text-gray-600">
@@ -162,5 +163,13 @@ export default function GMBAdminPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function GMBAdminPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <GMBAdminContent />
+    </Suspense>
   );
 }
