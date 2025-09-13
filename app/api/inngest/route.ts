@@ -34,6 +34,11 @@ import {
   generateImageForBlog
 } from "@/lib/inngest/fal-ai-generation";
 import {
+  shareBlogOnTwitter,
+  createTwitterThread,
+  autoShareNewBlogOnTwitter
+} from "@/lib/inngest/twitter-integration";
+import {
   syncProjelerDaily,
   syncProjelerManual,
   syncSingleProject
@@ -55,6 +60,11 @@ import {
   testGoogleGemini,
   generateContentWithGemini
 } from "@/lib/inngest/google-gemini-test";
+import {
+  generateImageWithGeminiPrompt,
+  batchGenerateWithGemini,
+  suggestImageWithGemini
+} from "@/lib/inngest/gemini-image-generation";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -99,6 +109,12 @@ export const { GET, POST, PUT } = serve({
     generateImageForBlog,
     generatePromptForContent,
     testGoogleGemini,
-    generateContentWithGemini
+    generateContentWithGemini,
+    generateImageWithGeminiPrompt,
+    batchGenerateWithGemini,
+    suggestImageWithGemini,
+    shareBlogOnTwitter,
+    createTwitterThread,
+    autoShareNewBlogOnTwitter
   ],
 });

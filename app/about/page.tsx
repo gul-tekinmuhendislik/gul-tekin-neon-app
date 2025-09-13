@@ -6,12 +6,12 @@ import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
 
 export const metadata: Metadata = {
-  title: 'Hakkımızda | Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat',
-  description: 'Bodrum Yalıkavak merkezli mekanik tesisat ve enerji verimliliği uzmanı. 20+ yıl deneyim, 500+ tamamlanmış proje. Solimpeks yetkili servisi.',
-  keywords: 'Bodrum mühendislik, Yalıkavak mekanik tesisat, ısı pompası uzmanı, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, Solimpeks yetkili servis',
+  title: 'Hakkımızda | Gül-Tekin Mühendislik - Mekanik Tesisat',
+  description: 'Muğla bölgesinde mekanik tesisat ve enerji verimliliği uzmanı. 20+ yıl deneyim, 500+ tamamlanmış proje. Solimpeks yetkili servisi.',
+  keywords: 'mühendislik, mekanik tesisat, ısı pompası uzmanı, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, Solimpeks yetkili servis, Muğla, Bodrum, Yalıkavak',
   openGraph: {
     title: 'Hakkımızda | Gül-Tekin Mühendislik - 20+ Yıl Deneyim',
-    description: 'Bodrum bölgesinde mekanik tesisat ve enerji sistemleri alanında uzman mühendislik hizmetleri. 500+ başarılı proje, %98 müşteri memnuniyeti.',
+    description: 'Muğla bölgesinde mekanik tesisat ve enerji sistemleri alanında uzman mühendislik hizmetleri. 500+ başarılı proje, %98 müşteri memnuniyeti.',
     type: 'website',
     locale: 'tr_TR',
     siteName: 'Gül-Tekin Mühendislik',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
       url: '/logo.png',
       width: 1200,
       height: 630,
-      alt: 'Gül-Tekin Mühendislik - Bodrum'
+      alt: 'Gül-Tekin Mühendislik'
     }]
   },
   alternates: {
@@ -36,14 +36,14 @@ export default async function AboutPage() {
         "@type": "LocalBusiness",
         "@id": "https://ai.gul-tekinmuhendislik.com/#business",
         "name": "Gül-Tekin Mühendislik",
-        "description": "Bodrum ve Milas bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
+        "description": "Muğla bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
         "url": "https://ai.gul-tekinmuhendislik.com",
         "telephone": "+90 252 386 35 54",
         "email": "info@gul-tekinmuhendislik.com",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Gökçebel Mahallesi İnönü Caddesi 61/D",
-          "addressLocality": "Yalıkavak, Bodrum",
+          "addressLocality": "Yalıkavak",
           "addressRegion": "Muğla",
           "postalCode": "48990",
           "addressCountry": "TR"
@@ -174,7 +174,7 @@ export default async function AboutPage() {
           <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
             <h2 className="text-2xl font-bold mb-4 text-blue-600">Gül-Tekin Mühendislik - 20+ Yıllık Güven</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>2000 yılından beri</strong> Bodrum/Yalıkavak merkezli olarak faaliyet gösteren firmamız, mekanik tesisat sistemleri ve 
+              <strong>2000 yılından beri</strong> Yalıkavak merkezli olarak faaliyet gösteren firmamız, mekanik tesisat sistemleri ve 
               enerji verimliliği alanında uzmanlaşmış bir mühendislik şirketidir. 
               <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile 
               bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
@@ -248,7 +248,7 @@ export default async function AboutPage() {
                 <span className="text-green-600 text-xl mr-3">✓</span>
                 <div>
                   <h4 className="font-semibold mb-1">Yerel Deneyim</h4>
-                  <p className="text-gray-600 text-sm">Bodrum bölgesinde yıllardır hizmet</p>
+                  <p className="text-gray-600 text-sm">Muğla bölgesinde yıllardır hizmet</p>
                 </div>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default async function AboutPage() {
             <div className="space-y-3">
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">📍</span>
-                Gökçebel Mahallesi İnönü Caddesi 61/D Yalıkavak, Bodrum/MUĞLA
+                Gökçebel Mahallesi İnönü Caddesi 61/D Yalıkavak/MUĞLA
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">📞</span>

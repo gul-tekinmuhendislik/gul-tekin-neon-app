@@ -11,14 +11,14 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
               <Image 
                 src="/logo.png" 
-                alt="Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri" 
+                alt="Gül-Tekin Mühendislik - Mekanik Tesisat ve Enerji Sistemleri" 
                 width={150} 
                 height={40} 
                 className="h-8 w-auto"
               />
             </Link>
             <p className="text-gray-600 text-sm">
-              Bodrum ve Milas bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri sunuyoruz.
+              Muğla bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri sunuyoruz.
             </p>
           </div>
           <div>
@@ -47,7 +47,7 @@ export default function Footer() {
               <li>Tel: 0252 386 35 54</li>
               <li>Fax: 0252 386 41 34</li>
               <li>Gsm: 0532 317 78 59</li>
-              <li>Adres: Gökçebel Mah. İnönü Cad. 61/D Yalıkavak, Bodrum/Muğla</li>
+              <li>Adres: Gökçebel Mah. İnönü Cad. 61/D Yalıkavak/Muğla</li>
             </ul>
           </div>
         </div>
@@ -57,7 +57,7 @@ export default function Footer() {
               <p>© {new Date().getFullYear()} Gül-Tekin Mühendislik. Tüm hakları saklıdır.</p>
               <span className="hidden sm:inline">•</span>
               <p className="flex items-center gap-1">
-                Yalıkavak, Bodrum&apos;da <span className="text-red-500">❤️</span> ile yapıldı
+                Muğla&apos;da <span className="text-red-500">❤️</span> ile yapıldı
               </p>
               <span className="hidden sm:inline">•</span>
               <a 

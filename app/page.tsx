@@ -9,17 +9,17 @@ import { TextFlip } from "@/components/ui/text-flip";
 import { getRandomBrands } from "@/lib/get-brands";
 
 export const metadata: Metadata = {
-  title: "Ana Sayfa | Gül-Tekin Mühendislik - Bodrum Isı Pompası ve Enerji Sistemleri",
-  description: "Bodrum Yalıkavak'ta 20+ yıllık deneyimle ısı pompası, güneş enerjisi, su arıtma ve mekanik tesisat hizmetleri. ISO 9001 sertifikalı, %98 müşteri memnuniyeti.",
-  keywords: "Bodrum ısı pompası, Yalıkavak mekanik tesisat, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, Alarko yetkili servis",
+  title: "Ana Sayfa | Gül-Tekin Mühendislik - Isı Pompası ve Enerji Sistemleri",
+  description: "Muğla bölgesinde 20+ yıllık deneyimle ısı pompası, güneş enerjisi, su arıtma ve mekanik tesisat hizmetleri. ISO 9001 sertifikalı, %98 müşteri memnuniyeti.",
+  keywords: "ısı pompası, mekanik tesisat, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, Alarko yetkili servis, Muğla, Bodrum, Milas, Yalıkavak",
   openGraph: {
-    title: "Gül-Tekin Mühendislik - Bodrum Mekanik Tesisat ve Enerji Sistemleri",
+    title: "Gül-Tekin Mühendislik - Mekanik Tesisat ve Enerji Sistemleri",
     description: "20+ yıl deneyim, 500+ tamamlanmış proje. Isı pompası, güneş enerjisi, su arıtma sistemleri. 7/24 teknik destek.",
     images: [{
       url: "/logo.png",
       width: 1200,
       height: 630,
-      alt: "Gül-Tekin Mühendislik - Bodrum"
+      alt: "Gül-Tekin Mühendislik"
     }]
   },
 };
@@ -28,7 +28,7 @@ const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
   subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span>",
   description:
-    "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
+    "Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
     text: "Hizmetlerimiz",
     href: "/services",
@@ -91,7 +91,7 @@ export default async function Home() {
             )}
             <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
               <p className="inline">
-                Bodrum/Yalıkavak&apos;ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
+                Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
                 <TextFlip 
                   words={brandNames}
                   duration={4000}

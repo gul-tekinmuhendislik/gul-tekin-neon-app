@@ -17,10 +17,10 @@ export default function RootLayout({
     "@type": "LocalBusiness",
     name: "Gül-Tekin Mühendislik",
     url: "https://gul-tekinmuhendislik.com",
-    description: "Bodrum ve Milas bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
+    description: "Muğla bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Bodrum/Milas",
+      addressLocality: "Yalıkavak",
       addressRegion: "Muğla",
       addressCountry: "TR"
     },
