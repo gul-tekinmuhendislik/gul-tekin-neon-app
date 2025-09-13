@@ -17,7 +17,7 @@ interface Proje {
 
 async function getRandomProjects() {
   try {
-    const projects = await sql<Proje[]>`
+    const projects = await sql`
       SELECT
         id,
         proje_adi,
@@ -37,7 +37,7 @@ async function getRandomProjects() {
         AND aciklama != ''
       ORDER BY RANDOM()
       LIMIT 3
-    `;
+    ` as Proje[];
 
     return projects.map(project => ({
       id: project.id,
