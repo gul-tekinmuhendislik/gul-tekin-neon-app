@@ -1,6 +1,18 @@
 import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getListingImageUrl } from '@/lib/utils/image-optimization';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Projeler - Gül-Tekin Mühendislik',
+  description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Bodrum ve çevresinde 500+ başarılı proje.',
+  openGraph: {
+    title: 'Projeler - Gül-Tekin Mühendislik',
+    description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Bodrum ve çevresinde 500+ başarılı proje.',
+    type: 'website',
+  },
+};
 
 interface Proje {
   id: number;
@@ -115,11 +127,12 @@ export default async function ProjelerPage({ searchParams }: PageProps) {
               {imageUrl && (
                 <div className="relative h-48 w-full bg-gray-200">
                   <Image
-                    src={imageUrl}
+                    src={getListingImageUrl(imageUrl)}
                     alt={proje.proje_adi}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
                   />
                   {proje.proje_yili && (
                     <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-sm font-semibold">

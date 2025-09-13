@@ -2,6 +2,7 @@ import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
 interface ProjeDetay {
   id: number;
@@ -62,6 +63,33 @@ async function getProjeBySlug(slug: string): Promise<ProjeDetay | null> {
     console.error('Error fetching proje:', error);
     return null;
   }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const proje = await getProjeBySlug(slug);
+  
+  if (!proje) {
+    return {
+      title: 'Proje Bulunamadı',
+      description: 'Aradığınız proje bulunamadı.'
+    };
+  }
+  
+  return {
+    title: `${proje.proje_adi} - Gül-Tekin Mühendislik`,
+    description: proje.aciklama ? proje.aciklama.substring(0, 160).replace(/\*\*/g, '') : `${proje.proje_adi} projesi detayları. ${proje.mahalle}, ${proje.ilce}`,
+    alternates: {
+      canonical: `https://ai.gul-tekinmuhendislik.com/projeler/${slug}`,
+    },
+    openGraph: {
+      title: proje.proje_adi,
+      description: proje.aciklama ? proje.aciklama.substring(0, 160).replace(/\*\*/g, '') : `${proje.proje_adi} projesi detayları`,
+      images: proje.cloudinary_url || proje.airtable_resim_url ? [proje.cloudinary_url || proje.airtable_resim_url] : [],
+      url: `https://ai.gul-tekinmuhendislik.com/projeler/${slug}`,
+      type: 'website',
+    }
+  };
 }
 
 export default async function ProjeDetayPage({ params }: { params: Promise<{ slug: string }> }) {

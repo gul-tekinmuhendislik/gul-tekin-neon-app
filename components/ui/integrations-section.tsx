@@ -8,6 +8,10 @@ import {
   ShowerHead,
   Waves,
   AirVent,
+  Snowflake,
+  Wind,
+  Recycle,
+  ThermometerSun,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -53,6 +57,34 @@ const tiles = [
     icon: <Waves className="size-full" />,
     bg: (
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-teal-500 via-cyan-500 to-teal-400 opacity-70 blur-[20px]"></div>
+    ),
+  },
+  {
+    id: "snowflake",
+    icon: <Snowflake className="size-full" />,
+    bg: (
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 opacity-70 blur-[20px]"></div>
+    ),
+  },
+  {
+    id: "wind",
+    icon: <Wind className="size-full" />,
+    bg: (
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-cyan-300 via-cyan-400 to-cyan-500 opacity-70 blur-[20px]"></div>
+    ),
+  },
+  {
+    id: "recycle",
+    icon: <Recycle className="size-full" />,
+    bg: (
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 opacity-70 blur-[20px]"></div>
+    ),
+  },
+  {
+    id: "thermometersun",
+    icon: <ThermometerSun className="size-full" />,
+    bg: (
+      <div className="pointer-events-none absolute left-1/2 top-1/2 size-1/2 -translate-x-1/2 -translate-y-1/2 overflow-visible rounded-full bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 opacity-70 blur-[20px]"></div>
     ),
   },
 ];
@@ -109,10 +141,24 @@ function Card(card: { id: string; icon: React.ReactElement; bg: React.ReactEleme
 export function IntegrationsSection() {
   const [randomTiles1, setRandomTiles1] = useState<typeof tiles>(tiles);
   const [randomTiles2, setRandomTiles2] = useState<typeof tiles>(tiles);
+  const [services, setServices] = useState<string[]>([]);
 
   useEffect(() => {
     setRandomTiles1(shuffleArray([...tiles]));
     setRandomTiles2(shuffleArray([...tiles]));
+
+    // Fetch services from database
+    fetch('/api/get-services-subtitle')
+      .then(res => res.json())
+      .then(data => {
+        if (data.services && data.services.length > 0) {
+          setServices(data.services);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching services:', err);
+        setServices(['Sıhhi tesisat', 'güneş enerjisi sistemleri', 'ısı pompası çözümleri']);
+      });
   }, []);
 
   return (
@@ -123,7 +169,9 @@ export function IntegrationsSection() {
             Hizmetler
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Sıhhi tesisat, güneş enerjisi sistemleri ve ısı pompası çözümleri
+            {services.length > 0
+              ? services.join(', ')
+              : 'Sıhhi tesisat, güneş enerjisi sistemleri ve ısı pompası çözümleri'}
           </p>
         </div>
 

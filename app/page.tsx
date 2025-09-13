@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { checkDbConnection } from "./db";
 import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
 
 const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
-  subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span> • <span class='text-purple-600 font-semibold'>ISO 9001 Sertifikalı</span>",
+  subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span>",
   description:
     "Bodrum/Yalıkavak'ta <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
@@ -42,34 +41,23 @@ const DATA = {
     text: "📞 7/24 Teknik Destek",
     phone: "0532 317 78 59"
   },
-  footerLinks: [
-    {
-      text: "Blog",
-      href: "/blog",
-      icon: "/assets/docs.svg",
-    },
-    {
-      text: "Hakkımızda",
-      href: "/about",
-      icon: "/assets/discord.svg",
-    },
-  ],
+  footerLinks: [],
 };
 
 export default async function Home() {
-  const result = await checkDbConnection();
-  const brandNames = await getRandomBrands(6);
+  const brandNames = await getRandomBrands(3);
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <Vortex
         backgroundColor="white"
-        className="flex items-center flex-col justify-center px-2 md:px-10 py-12 md:py-16 lg:py-20 w-full min-h-[60vh] md:min-h-[70vh]"
+        className="flex items-center flex-col justify-center px-2 md:px-10 py-8 md:py-12 lg:py-16 w-full min-h-[50vh] md:min-h-[60vh]"
         baseHue={120}
         particleCount={150}
         enableWaves={true}
         waveColors={["#00E599", "#3b82f6", "#8b5cf6"]}
         waveOpacity={0.15}
         waveSpeed={0.001}
+        enableSnowflakes={false}
       >
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 md:max-w-lg md:px-0 lg:max-w-xl">
           <main className="flex flex-1 flex-col justify-center">
@@ -145,34 +133,6 @@ export default async function Home() {
             </div>
           </main>
           <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 py-5 sm:gap-2 sm:gap-6 md:pb-12 md:pt-10">
-            <ul className="flex items-center gap-4 sm:gap-6">
-              {DATA.footerLinks.map((link) => (
-                <Link
-                  className="flex items-center gap-2 text-gray-600 transition-all duration-200 hover:text-gray-900"
-                  key={link.text}
-                  href={link.href}
-                >
-                  <Image
-                    className=""
-                    src={link.icon}
-                    alt={`${link.text} sayfası ikonu`}
-                    width={16}
-                    height={16}
-                    priority
-                  />
-                  <span className="text-sm tracking-tight">{link.text}</span>
-                </Link>
-              ))}
-            </ul>
-            <span
-              className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${
-                result === "Database connected"
-                  ? "border-[#00E599]/20 bg-[#00E599]/10 text-[#00E599]"
-                  : "border-red-500/20 bg-red-500/10 text-red-500"
-              }`}
-            >
-              {result}
-            </span>
           </footer>
         </div>
       </Vortex>

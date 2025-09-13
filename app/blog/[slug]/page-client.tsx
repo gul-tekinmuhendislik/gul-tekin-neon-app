@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/app/components/Breadcrumb";
+import BlogArticleSchema from "@/components/BlogArticleSchema";
 
 interface BlogPost {
   id: number;
@@ -135,6 +136,15 @@ export default function BlogDetailClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <BlogArticleSchema
+        title={post.title}
+        description={post.meta_description || post.title}
+        datePublished={post.created_at}
+        dateModified={post.updated_at}
+        image={post.image_url || post.image}
+        url={`https://ai.gul-tekinmuhendislik.com/blog/${post.slug}`}
+        keywords={post.keywords}
+      />
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         <Breadcrumb 
           items={[

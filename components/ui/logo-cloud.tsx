@@ -57,13 +57,13 @@ export async function LogoCloud() {
           <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-8 md:gap-x-16">
             {partners.map((partner) => (
               <li key={partner.name}>
-                <div className="flex items-center justify-center h-12 w-32 relative grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="flex items-center justify-center h-16 w-40 relative grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
                   <Image
                     alt={`${partner.name} - Gül-Tekin Mühendislik çözüm ortağı`}
                     src={partner.logo}
                     className="h-full w-full object-contain"
-                    width={128}
-                    height={48}
+                    width={160}
+                    height={64}
                     priority
                     unoptimized={partner.logo.includes('cloudinary')}
                   />

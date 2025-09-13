@@ -1,6 +1,7 @@
 import { sql } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
+import { getListingImageUrl } from "@/lib/utils/image-optimization";
 
 export const metadata = {
   title: "Ürünler - Gül-Tekin Mühendislik",
@@ -322,11 +323,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               <div className="aspect-square relative overflow-hidden bg-gray-50">
                 {(product.cloudinary_url || product.gorsel_url) ? (
                   <Image
-                    src={product.cloudinary_url || product.gorsel_url || ''}
+                    src={getListingImageUrl(product.cloudinary_url || product.gorsel_url)}
                     alt={product.urun_adi}
                     fill
                     className="object-contain group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-400">

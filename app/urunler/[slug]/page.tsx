@@ -124,10 +124,14 @@ export async function generateMetadata({ params }: UrunDetailPageProps) {
   return {
     title: `${urun.urun_adi} - ${urun.marka || 'Gül-Tekin Mühendislik'}`,
     description: urun.aciklama || `${urun.urun_adi} detayları ve fiyat bilgisi. ${urun.kategori} kategorisinde ${urun.marka || ''} markasının kaliteli ürünü.`,
+    alternates: {
+      canonical: `https://ai.gul-tekinmuhendislik.com/urunler/${slug}`,
+    },
     openGraph: {
       title: urun.urun_adi,
       description: urun.aciklama || `${urun.urun_adi} detayları`,
       images: urun.cloudinary_url || urun.gorsel_url ? [urun.cloudinary_url || urun.gorsel_url] : [],
+      url: `https://ai.gul-tekinmuhendislik.com/urunler/${slug}`,
     }
   };
 }
