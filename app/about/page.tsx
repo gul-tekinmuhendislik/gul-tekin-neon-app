@@ -4,6 +4,7 @@ import ProjectPortfolioServer from '@/components/ProjectPortfolioServer';
 import Testimonials from '@/components/Testimonials';
 import WebPages from '@/components/WebPages';
 import ProjectStatistics from '@/components/ProjectStatistics';
+import DatabaseStats from '@/components/DatabaseStats';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
 
@@ -186,10 +187,6 @@ export default async function AboutPage() {
               getiriyoruz. Uzman ekibimiz ve yıllara dayanan tecrübemizle, bireysel ve endüstriyel müşterilerimizin
               tüm ihtiyaçlarına profesyonel yaklaşımımızla cevap veriyoruz.
             </p>
-            <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile
-              bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
-            </p>
           </div>
 
           <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
@@ -275,8 +272,7 @@ export default async function AboutPage() {
               yenilenebilir enerjiye geçişinizi güvenle gerçekleştiriyoruz.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Projelerimizde ortalama <strong>%45 enerji tasarrufu</strong> sağlıyoruz. Isı pompalarından güneş enerjisi
-              sistemlerine, su arıtma çözümlerinden yerden ısıtma sistemlerine kadar geniş bir yelpazede,
+              Isı pompalarından güneş enerjisi sistemlerine, su arıtma çözümlerinden yerden ısıtma sistemlerine kadar geniş bir yelpazede,
               <strong>enerji verimliliği odaklı</strong> ve <strong>çevre dostu</strong> profesyonel hizmet sunuyoruz.
             </p>
           </div>
@@ -391,6 +387,9 @@ export default async function AboutPage() {
           </div>
 
         </div>
+
+        {/* Veritabanı İstatistikleri */}
+        <DatabaseStats />
 
         {/* Proje İstatistikleri */}
         <ProjectStatistics />
