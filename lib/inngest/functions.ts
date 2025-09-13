@@ -190,35 +190,126 @@ export const logEventToDatabase = inngest.createFunction(
 
 // Exa API search function with cron job
 export const searchAndSaveResults = inngest.createFunction(
-  { 
-    id: "search-and-save-results", 
+  {
+    id: "search-and-save-results",
     name: "Search with Exa API and Save Results",
     retries: 2
   },
-  { 
+  {
     // Run 4 times a day (every 6 hours)
     cron: "0 */6 * * *"
   },
   async ({ step }) => {
     // Step 1: Initialize Exa client
     const exa = new Exa(process.env.EXA_API_KEY || "");
-    
-    // Define mechanical engineering search queries - rotating through topics
-    const allTopics = [
-      "Isı Pompası Sistemleri yenilikler teknoloji",
-      "Güneş Enerjisi Sistemleri fotovoltaik panel",
-      "Su Depoları Hidrofor Sistemleri basınç tankı",
-      "Yerden Isıtma Sistemleri radyant ısıtma",
-      "Su Arıtma Sistemleri ters osmoz filtreleme",
-      "Klima Sistemleri VRF inverter teknoloji",
-      "Sulama Sistemleri damla sulama otomasyon",
-      "Termosifonik Sistemler güneş enerjili su ısıtma"
-    ];
-    
-    // Get current topic index based on hour
-    const currentHour = new Date().getHours();
-    const topicIndex = currentHour % allTopics.length;
-    const searchQueries = [allTopics[topicIndex]];
+
+    // Step 2: Get related brands and services from database for dynamic queries
+    const dynamicData = await step.run("fetch-related-brands-and-services", async () => {
+      try {
+        // Get services with their related brands
+        const servicesWithBrands = await sql`
+          SELECT DISTINCT
+            h.id as hizmet_id,
+            h.hizmet_adi,
+            h.kategori,
+            m.marka_adi
+          FROM hizmetler h
+          INNER JOIN markalar m ON m.airtable_hizmetler_id::text LIKE '%' || h.id || '%'
+          WHERE h.hizmet_adi IS NOT NULL
+            AND m.marka_adi IS NOT NULL
+            AND m.airtable_hizmetler_id IS NOT NULL
+          ORDER BY RANDOM()
+          LIMIT 10
+        `;
+
+        // Group by service
+        const serviceGroups: Record<string, { kategori: string; markalar: string[] }> = {};
+        servicesWithBrands.forEach(row => {
+          if (!serviceGroups[row.hizmet_adi]) {
+            serviceGroups[row.hizmet_adi] = {
+              kategori: row.kategori,
+              markalar: []
+            };
+          }
+          if (!serviceGroups[row.hizmet_adi].markalar.includes(row.marka_adi)) {
+            serviceGroups[row.hizmet_adi].markalar.push(row.marka_adi);
+          }
+        });
+
+        // Get random products
+        const products = await sql`
+          SELECT urun_adi, kategori
+          FROM urunler
+          WHERE urun_adi IS NOT NULL
+          ORDER BY RANDOM()
+          LIMIT 3
+        `;
+
+        return { serviceGroups, products };
+      } catch (error) {
+        console.error("Error fetching dynamic data:", error);
+        // Fallback to default topics if database fails
+        return null;
+      }
+    });
+
+    // Step 3: Generate search queries dynamically
+    const searchQueries = await step.run("generate-search-queries", async () => {
+      const queries: string[] = [];
+
+      if (dynamicData && dynamicData.serviceGroups) {
+        const services = Object.keys(dynamicData.serviceGroups);
+
+        if (services.length > 0) {
+          // Pick a random service with its related brands
+          const randomService = services[Math.floor(Math.random() * services.length)];
+          const serviceData = dynamicData.serviceGroups[randomService];
+
+          if (serviceData.markalar.length > 0) {
+            // Use a brand that is ACTUALLY related to this service
+            const relatedBrand = serviceData.markalar[Math.floor(Math.random() * serviceData.markalar.length)];
+
+            // Create highly relevant queries
+            queries.push(`${relatedBrand} ${randomService} kurulum montaj fiyat Bodrum Muğla`);
+            queries.push(`${relatedBrand} ${randomService} özellikleri yorumlar 2024`);
+
+            // Service-specific technical query
+            queries.push(`${randomService} teknoloji yenilikler ${relatedBrand} karşılaştırma`);
+          }
+
+          // Category-based query
+          if (serviceData.kategori) {
+            queries.push(`${serviceData.kategori} sistemleri Bodrum ${randomService} tavsiye`);
+          }
+        }
+
+        // Product focused query if available
+        if (dynamicData.products && dynamicData.products.length > 0) {
+          const product = dynamicData.products[0];
+          queries.push(`${product.urun_adi} özellikleri fiyat inceleme`);
+        }
+      }
+
+      // Fallback queries if no dynamic data or not enough queries
+      if (queries.length === 0) {
+        // Use default topics as fallback
+        const fallbackTopics = [
+          "Isı Pompası Sistemleri yenilikler teknoloji",
+          "Güneş Enerjisi Sistemleri fotovoltaik panel",
+          "Su Arıtma Sistemleri ters osmoz filtreleme",
+          "Klima Sistemleri VRF inverter teknoloji"
+        ];
+        const currentHour = new Date().getHours();
+        const topicIndex = currentHour % fallbackTopics.length;
+        queries.push(fallbackTopics[topicIndex]);
+      }
+
+      // Log the queries that will be searched
+      console.log("Generated search queries:", queries);
+
+      // Return only the first query to search (to not overwhelm the API)
+      return [queries[0]];
+    });
     
     interface SearchResult {
       query: string;
@@ -238,17 +329,30 @@ export const searchAndSaveResults = inngest.createFunction(
     
     const allResults: SearchResult[] = [];
     
-    // Step 2: Perform searches for each query
+    // Step 4: Perform searches for each query
     for (const query of searchQueries) {
       const searchResults = await step.run(`search-${query.slice(0, 20)}`, async (): Promise<SearchResult> => {
         try {
           console.log(`Searching for: ${query}`);
-          
+
+          // Log which brands/services are being searched
+          if (dynamicData && dynamicData.serviceGroups) {
+            const services = Object.keys(dynamicData.serviceGroups);
+            console.log("Using related brand-service pairs:", {
+              totalServices: services.length,
+              samplePairs: services.slice(0, 2).map(s => ({
+                service: s,
+                brands: dynamicData.serviceGroups[s].markalar.slice(0, 3)
+              })),
+              products: dynamicData.products ? dynamicData.products.map(p => p.urun_adi).slice(0, 3) : []
+            });
+          }
+
           // Perform search with Exa API - get content too
           // Add date filter to get recent content (last 30 days)
           const thirtyDaysAgo = new Date();
           thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-          
+
           const results = await exa.searchAndContents(query, {
             type: "auto",
             numResults: 5,  // Get more results to filter duplicates
@@ -277,7 +381,7 @@ export const searchAndSaveResults = inngest.createFunction(
       allResults.push(searchResults);
     }
     
-    // Step 3: Save results to database
+    // Step 5: Save results to database
     const savedResults = await step.run("save-results-to-db", async () => {
       const savedCount: { total: number; queries: Record<string, number> } = { total: 0, queries: {} };
       
@@ -351,7 +455,7 @@ export const searchAndSaveResults = inngest.createFunction(
       return savedCount;
     });
     
-    // Step 4: Clean up old results (optional - keep only last 7 days)
+    // Step 6: Clean up old results (optional - keep only last 7 days)
     const cleanupResult = await step.run("cleanup-old-results", async () => {
       try {
         const result = await sql`
@@ -369,7 +473,7 @@ export const searchAndSaveResults = inngest.createFunction(
       }
     });
     
-    // Step 5: Log the operation
+    // Step 7: Log the operation
     await step.run("log-search-operation", async () => {
       await sql`
         INSERT INTO event_logs (
@@ -385,23 +489,36 @@ export const searchAndSaveResults = inngest.createFunction(
           ${JSON.stringify({
             queries: searchQueries,
             savedResults: savedResults,
-            topicIndex: topicIndex,
-            topic: allTopics[topicIndex]
+            dynamicData: dynamicData ? {
+              serviceGroups: Object.keys(dynamicData.serviceGroups || {}).map(service => ({
+                service,
+                brands: dynamicData.serviceGroups[service].markalar
+              })),
+              products: dynamicData.products ? dynamicData.products.map(p => p.urun_adi) : []
+            } : null
           })},
           ${JSON.stringify({
             totalResults: savedResults.total,
             cleanupCount: cleanupResult.deletedCount,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
+            queryType: dynamicData ? 'dynamic' : 'fallback'
           })}
         )
       `;
     });
-    
+
     return {
       success: true,
       searchQueries: searchQueries,
-      currentTopic: allTopics[topicIndex],
-      topicIndex: topicIndex,
+      dynamicDataUsed: !!dynamicData,
+      relatedPairs: dynamicData && dynamicData.serviceGroups ?
+        Object.keys(dynamicData.serviceGroups).map(service => ({
+          service,
+          brands: dynamicData.serviceGroups[service].markalar,
+          category: dynamicData.serviceGroups[service].kategori
+        })) : [],
+      productsSearched: dynamicData && dynamicData.products ?
+        dynamicData.products.map(p => p.urun_adi) : [],
       totalResultsSaved: savedResults.total,
       resultsByQuery: savedResults.queries,
       oldResultsDeleted: cleanupResult.deletedCount,
