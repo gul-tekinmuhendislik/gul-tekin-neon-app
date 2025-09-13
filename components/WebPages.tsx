@@ -94,16 +94,6 @@ export default function WebPages() {
             ))}
           </div>
 
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center justify-center space-x-2 bg-blue-50 px-6 py-3 rounded-full">
-              <span className="text-blue-600 font-medium">
-                Tüm sitelerimiz mobil uyumlu ve SEO optimizasyonlu
-              </span>
-              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
         </div>
       </div>
     </section>
