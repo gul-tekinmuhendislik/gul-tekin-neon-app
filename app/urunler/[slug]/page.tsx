@@ -2,6 +2,7 @@ import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { decodeAndNormalizeSlug } from '@/lib/utils/slug';
 
 export const revalidate = 3600;
 
@@ -112,7 +113,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: UrunDetailPageProps) {
   const { slug } = await params;
-  const urun = await getUrunBySlug(slug);
+  const decodedSlug = decodeAndNormalizeSlug(slug);
+  const urun = await getUrunBySlug(decodedSlug);
   
   if (!urun) {
     return {
@@ -138,13 +140,14 @@ export async function generateMetadata({ params }: UrunDetailPageProps) {
 
 export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
   const { slug } = await params;
-  const urun = await getUrunBySlug(slug);
+  const decodedSlug = decodeAndNormalizeSlug(slug);
+  const urun = await getUrunBySlug(decodedSlug);
   
   if (!urun) {
     notFound();
   }
   
-  const relatedProducts = urun.kategori ? await getRelatedProducts(urun.kategori, slug) : [];
+  const relatedProducts = urun.kategori ? await getRelatedProducts(urun.kategori, decodedSlug) : [];
   
   return (
     <div className="min-h-screen bg-gray-50">

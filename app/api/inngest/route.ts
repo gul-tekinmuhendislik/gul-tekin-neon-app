@@ -65,6 +65,12 @@ import {
   batchGenerateWithGemini,
   suggestImageWithGemini
 } from "@/lib/inngest/gemini-image-generation";
+import {
+  syncGoogleBusinessLocations,
+  syncGoogleBusinessManual,
+  autoReplyToReviews,
+  createGoogleBusinessPost
+} from "@/lib/inngest/google-business";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -115,6 +121,10 @@ export const { GET, POST, PUT } = serve({
     suggestImageWithGemini,
     shareBlogOnTwitter,
     createTwitterThread,
-    autoShareNewBlogOnTwitter
+    autoShareNewBlogOnTwitter,
+    syncGoogleBusinessLocations,
+    syncGoogleBusinessManual,
+    autoReplyToReviews,
+    createGoogleBusinessPost
   ],
 });

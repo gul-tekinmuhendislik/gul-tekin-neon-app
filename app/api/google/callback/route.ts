@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 
 // Development'ta localhost kullan
 const redirectUri = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:3003/api/google/callback'
+  ? 'http://localhost:3000/api/google/callback'
   : `${process.env.NEXT_PUBLIC_SITE_URL}/api/google/callback`;
 
 const oauth2Client = new google.auth.OAuth2(
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   const error = searchParams.get('error');
 
   const baseUrl = process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3003'
+    ? 'http://localhost:3000'
     : process.env.NEXT_PUBLIC_SITE_URL;
 
   if (error) {
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     }
 
     const redirectUrl = process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3003/admin/gmb?success=true'
+      ? 'http://localhost:3000/admin/gmb?success=true'
       : `${process.env.NEXT_PUBLIC_SITE_URL}/admin/gmb?success=true`;
     return NextResponse.redirect(redirectUrl);
   } catch (error) {
