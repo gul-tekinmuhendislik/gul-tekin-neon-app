@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 interface Product {
-  id: number;
+  id: string;
   urun_adi: string;
   slug: string;
   kategori?: string;
@@ -19,7 +19,7 @@ interface Product {
   cloudinary_url?: string;
   fiyat?: number;
   stokta?: boolean;
-  ozellikler?: Record<string, unknown>;
+  ozellikler?: string;
   airtable_created_time?: string;
   updated_at?: string;
 }
@@ -42,72 +42,245 @@ async function getProducts(
   search?: string
 ) {
   try {
-    // Build WHERE conditions
-    const conditions = ['slug IS NOT NULL'];
-    const params: (string | number)[] = [];
-    
-    if (kategori) {
-      conditions.push(`kategori = $${params.length + 1}`);
-      params.push(kategori);
-    }
-    
-    if (marka) {
-      conditions.push(`marka = $${params.length + 1}`);
-      params.push(marka);
-    }
-    
-    if (search) {
-      conditions.push(`(LOWER(urun_adi) LIKE LOWER($${params.length + 1}) OR LOWER(aciklama) LIKE LOWER($${params.length + 2}))`);
-      params.push(`%${search}%`, `%${search}%`);
-    }
-    
-    const whereClause = conditions.join(' AND ');
     const offset = (page - 1) * PRODUCTS_PER_PAGE;
     
     // Get total count
-    const countQuery = `
-      SELECT COUNT(*) as total
-      FROM urunler
-      WHERE ${whereClause}
-    `;
+    let countResult;
+    if (kategori && marka && search) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE kategori = ${kategori} 
+          AND marka = ${marka}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+      `;
+    } else if (kategori && marka) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE kategori = ${kategori} AND marka = ${marka}
+      `;
+    } else if (kategori && search) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE kategori = ${kategori}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+      `;
+    } else if (marka && search) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE marka = ${marka}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+      `;
+    } else if (kategori) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE kategori = ${kategori}
+      `;
+    } else if (marka) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE marka = ${marka}
+      `;
+    } else if (search) {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+        WHERE LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'})
+      `;
+    } else {
+      countResult = await sql`
+        SELECT COUNT(*) as total
+        FROM urunler
+      `;
+    }
     
     // Get products with pagination
-    const productsQuery = `
-      SELECT 
-        id,
-        urun_adi,
-        slug,
-        kategori,
-        marka,
-        aciklama,
-        gorsel_url,
-        cloudinary_url,
-        fiyat,
-        stokta,
-        ozellikler,
-        airtable_created_time,
-        updated_at
-      FROM urunler
-      WHERE ${whereClause}
-      ORDER BY kategori, urun_adi
-      LIMIT ${PRODUCTS_PER_PAGE}
-      OFFSET ${offset}
-    `;
-    
-    // Replace placeholders with actual values
-    let finalCountQuery = countQuery;
-    let finalProductsQuery = productsQuery;
-    
-    params.forEach((param, index) => {
-      const placeholder = `$${index + 1}`;
-      finalCountQuery = finalCountQuery.replace(placeholder, typeof param === 'string' ? `'${param}'` : String(param));
-      finalProductsQuery = finalProductsQuery.replace(placeholder, typeof param === 'string' ? `'${param}'` : String(param));
-    });
-    
-    const [countResult, productsResult] = await Promise.all([
-      sql.unsafe(finalCountQuery),
-      sql.unsafe(finalProductsQuery)
-    ]);
+    let productsResult;
+    if (kategori && marka && search) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE kategori = ${kategori} 
+          AND marka = ${marka}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (kategori && marka) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE kategori = ${kategori} AND marka = ${marka}
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (kategori && search) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE kategori = ${kategori}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (marka && search) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE marka = ${marka}
+          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (kategori) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE kategori = ${kategori}
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (marka) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE marka = ${marka}
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else if (search) {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        WHERE LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'})
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    } else {
+      productsResult = await sql`
+        SELECT 
+          id,
+          urun_adi,
+          slug,
+          kategori,
+          marka,
+          aciklama,
+          gorsel_url,
+          cloudinary_url,
+          fiyat,
+          stokta,
+          ozellikler,
+          airtable_created_time,
+          updated_at
+        FROM urunler
+        ORDER BY kategori, urun_adi
+        LIMIT ${PRODUCTS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+    }
 
     const countArray = countResult as unknown as Array<{total: number}>;
     const productsArray = Array.isArray(productsResult) ? productsResult as unknown as Product[] : [];
@@ -127,7 +300,7 @@ async function getCategories() {
     const categories = await sql`
       SELECT DISTINCT kategori, COUNT(*) as count
       FROM urunler
-      WHERE slug IS NOT NULL AND kategori IS NOT NULL
+      WHERE kategori IS NOT NULL
       GROUP BY kategori
       ORDER BY kategori
     `;
@@ -143,7 +316,7 @@ async function getBrands() {
     const brands = await sql`
       SELECT DISTINCT marka, COUNT(*) as count
       FROM urunler
-      WHERE slug IS NOT NULL AND marka IS NOT NULL
+      WHERE marka IS NOT NULL
       GROUP BY marka
       ORDER BY marka
     `;
