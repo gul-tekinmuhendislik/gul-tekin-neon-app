@@ -3,7 +3,7 @@ import TeamExperts from '@/components/TeamExperts';
 import ProjectPortfolioServer from '@/components/ProjectPortfolioServer';
 import Testimonials from '@/components/Testimonials';
 import WebPages from '@/components/WebPages';
-import ProjectStatistics from '@/components/ProjectStatistics';
+import ProjectStatisticsServer from '@/components/ProjectStatisticsServer';
 import DatabaseStats from '@/components/DatabaseStats';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
@@ -392,7 +392,7 @@ export default async function AboutPage() {
         <DatabaseStats />
 
         {/* Proje İstatistikleri */}
-        <ProjectStatistics />
+        <ProjectStatisticsServer />
 
         {/* E-E-A-T Components */}
         <TeamExperts />

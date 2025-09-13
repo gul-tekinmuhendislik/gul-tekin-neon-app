@@ -10,46 +10,6 @@ interface Statistic {
   icon: string;
 }
 
-const statistics: Statistic[] = [
-  {
-    label: 'Tamamlanan Proje',
-    value: 500,
-    suffix: '+',
-    icon: '🏗️'
-  },
-  {
-    label: 'Müşteri Memnuniyeti',
-    value: 98,
-    suffix: '%',
-    icon: '😊'
-  },
-  {
-    label: 'Yıllık Deneyim',
-    value: 24,
-    suffix: '+',
-    icon: '📅'
-  },
-  {
-    label: 'Uzman Ekip',
-    value: 25,
-    suffix: ' Kişi',
-    icon: '👷'
-  },
-  {
-    label: 'Enerji Tasarrufu',
-    value: 45,
-    suffix: '%',
-    prefix: '~',
-    icon: '⚡'
-  },
-  {
-    label: 'Hizmet Verilen İlçe',
-    value: 12,
-    suffix: '+',
-    icon: '📍'
-  }
-];
-
 interface CounterProps {
   stat: Statistic;
 }
@@ -114,7 +74,52 @@ function Counter({ stat }: CounterProps) {
   );
 }
 
-export default function ProjectStatistics() {
+interface ProjectStatisticsProps {
+  projectCount?: number;
+  brandCount?: number;
+}
+
+export default function ProjectStatistics({ projectCount = 500, brandCount = 98 }: ProjectStatisticsProps) {
+  const statistics: Statistic[] = [
+    {
+      label: 'Tamamlanan Proje',
+      value: projectCount,
+      suffix: '+',
+      icon: '🏗️'
+    },
+    {
+      label: 'Çalıştığımız Marka',
+      value: brandCount,
+      suffix: '+',
+      icon: '🏆'
+    },
+    {
+      label: 'Müşteri Memnuniyeti',
+      value: 98,
+      suffix: '%',
+      icon: '😊'
+    },
+    {
+      label: 'Yıllık Deneyim',
+      value: 24,
+      suffix: '+',
+      icon: '📅'
+    },
+    {
+      label: 'Enerji Tasarrufu',
+      value: 45,
+      suffix: '%',
+      prefix: '~',
+      icon: '⚡'
+    },
+    {
+      label: 'Hizmet Verilen İlçe',
+      value: 12,
+      suffix: '+',
+      icon: '📍'
+    }
+  ];
+
   return (
     <section className="relative py-20 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50"></div>

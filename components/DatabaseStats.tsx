@@ -4,12 +4,12 @@ async function getDatabaseStats() {
   try {
     // Markalar sayısı
     const markalarResult = await sql`
-      SELECT COUNT(*) as count FROM markalar_gul_tekin WHERE aktif = true
+      SELECT COUNT(*) as count FROM markalar WHERE aktif = true
     `;
 
     // Hizmetler sayısı
     const hizmetlerResult = await sql`
-      SELECT COUNT(*) as count FROM hizmetler_gul_tekin WHERE aktif = true
+      SELECT COUNT(*) as count FROM hizmetler WHERE aktif = true
     `;
 
     // Projeler sayısı
@@ -19,7 +19,7 @@ async function getDatabaseStats() {
 
     // Ürünler sayısı
     const urunlerResult = await sql`
-      SELECT COUNT(*) as count FROM urunler_gul_tekin WHERE aktif = true
+      SELECT COUNT(*) as count FROM urunler WHERE aktif = true
     `;
 
     return {
