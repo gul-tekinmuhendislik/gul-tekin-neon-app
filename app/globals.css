@@ -7,3 +7,18 @@ body {
   @apply bg-white text-[#0C0D0D];
   -webkit-tap-highlight-color: transparent;
 }
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 3s ease-in-out infinite;
+}

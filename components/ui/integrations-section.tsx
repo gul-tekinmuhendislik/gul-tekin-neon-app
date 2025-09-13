@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { FlipWords } from "./flip-words";
 
 const tiles = [
   {
@@ -141,7 +142,21 @@ function Card(card: { id: string; icon: React.ReactElement; bg: React.ReactEleme
 export function IntegrationsSection() {
   const [randomTiles1, setRandomTiles1] = useState<typeof tiles>(tiles);
   const [randomTiles2, setRandomTiles2] = useState<typeof tiles>(tiles);
-  const [services, setServices] = useState<string[]>([]);
+  const [services, setServices] = useState<string[]>([
+    'Isı Pompaları',
+    'Su Depoları',
+    'Güneş Enerjisi',
+    'Klima Sistemleri',
+    'Yerden Isıtma Sistemleri',
+    'Su Arıtma Sistemleri',
+    'Hidrofor Sistemleri',
+    'Akıllı Oda Termostatları',
+    'Pompalar',
+    'Radyatör',
+    'Sulama Sistemleri',
+    'Tahliye İstasyonu',
+    'Termosifonik Sistemler'
+  ]);
 
   useEffect(() => {
     setRandomTiles1(shuffleArray([...tiles]));
@@ -152,12 +167,28 @@ export function IntegrationsSection() {
       .then(res => res.json())
       .then(data => {
         if (data.services && data.services.length > 0) {
-          setServices(data.services);
+          // Ana hizmetleri seç
+          const priorityServices = [
+            'Isı Pompaları',
+            'Su Depoları',
+            'Güneş Enerjisi',
+            'Klima Sistemleri',
+            'Yerden Isıtma Sistemleri',
+            'Su Arıtma Sistemleri',
+            'Hidrofor Sistemleri'
+          ];
+
+          const filteredServices = data.services.filter((service: string) =>
+            priorityServices.some(priority => service.includes(priority.split(' ')[0]))
+          );
+
+          if (filteredServices.length > 0) {
+            setServices(filteredServices.slice(0, 7));
+          }
         }
       })
       .catch(err => {
         console.error('Error fetching services:', err);
-        setServices(['Sıhhi tesisat', 'güneş enerjisi sistemleri', 'ısı pompası çözümleri']);
       });
   }, []);
 
@@ -169,9 +200,7 @@ export function IntegrationsSection() {
             Hizmetler
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            {services.length > 0
-              ? services.join(', ')
-              : 'Sıhhi tesisat, güneş enerjisi sistemleri ve ısı pompası çözümleri'}
+            Profesyonel <FlipWords words={services} duration={3000} className="text-[#00E599] font-semibold" /> çözümleri ile evinizin enerji verimliliğini ve konforunu artırıyoruz.
           </p>
         </div>
 

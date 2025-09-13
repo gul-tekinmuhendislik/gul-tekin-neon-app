@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Sparkles } from "@/components/ui/sparkles";
 
 interface MenuItem {
   id: number;
@@ -51,8 +52,15 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-gray-100 border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="w-full bg-gray-100 border-b border-gray-200 relative overflow-hidden">
+      <Sparkles
+        className="absolute inset-0"
+        particleColor="#9CA3AF"
+        particleDensity={60}
+        minSize={0.3}
+        maxSize={0.8}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">

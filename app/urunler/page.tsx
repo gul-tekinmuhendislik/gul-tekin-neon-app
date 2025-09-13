@@ -110,7 +110,7 @@ async function getProducts(
     ]);
 
     const countArray = countResult as unknown as Array<{total: number}>;
-    const productsArray = productsResult as unknown as Product[];
+    const productsArray = Array.isArray(productsResult) ? productsResult as unknown as Product[] : [];
 
     const totalProducts = countArray[0]?.total || 0;
     const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
@@ -131,7 +131,7 @@ async function getCategories() {
       GROUP BY kategori
       ORDER BY kategori
     `;
-    return categories;
+    return Array.isArray(categories) ? categories : [];
   } catch (error) {
     console.error("Error fetching categories:", error);
     return [];
@@ -147,7 +147,7 @@ async function getBrands() {
       GROUP BY marka
       ORDER BY marka
     `;
-    return brands;
+    return Array.isArray(brands) ? brands : [];
   } catch (error) {
     console.error("Error fetching brands:", error);
     return [];
