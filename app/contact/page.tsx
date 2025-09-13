@@ -4,6 +4,7 @@ import { FeatureSection } from "@/components/ui/feature-section";
 import GoogleMyBusiness from "@/components/GoogleMyBusiness";
 import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import ReviewQRCode from "../components/ReviewQRCode";
+import GoogleMap from "@/components/GoogleMap";
 
 export const metadata: Metadata = {
   title: "İletişim",
@@ -34,6 +35,10 @@ export default function ContactPage() {
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Bizi Ziyaret Edin</h2>
               <GoogleMyBusiness />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Konum</h3>
+              <GoogleMap height="300px" className="shadow-lg" />
             </div>
             <ReviewQRCode />
           </div>

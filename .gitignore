@@ -44,3 +44,7 @@ next-env.d.ts
 
 #Ignore windsurf AI rules
 .windsurfrules
+
+# Google Service Account Key
+service-account-key.json
+*.json
