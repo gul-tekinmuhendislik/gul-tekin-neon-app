@@ -5,6 +5,7 @@ import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
+import WebPages from "@/components/WebPages";
 import { TextFlip } from "@/components/ui/text-flip";
 import { getRandomBrands } from "@/lib/get-brands";
 
@@ -138,6 +139,7 @@ export default async function Home() {
       </Vortex>
       <LogoCloud />
       <IntegrationsSection />
+      <WebPages />
       <Testimonials />
     </div>
   );

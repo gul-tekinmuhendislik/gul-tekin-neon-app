@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import TeamExperts from '@/components/TeamExperts';
 import ProjectPortfolioServer from '@/components/ProjectPortfolioServer';
 import Testimonials from '@/components/Testimonials';
+import WebPages from '@/components/WebPages';
+import ProjectStatistics from '@/components/ProjectStatistics';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
 
@@ -388,122 +390,15 @@ export default async function AboutPage() {
             </div>
           </div>
 
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
-            <h3 className="text-2xl font-bold mb-6 text-blue-600">Web Sayfalarımız</h3>
-            <p className="text-gray-700 mb-6">
-              Hizmetlerimiz hakkında detaylı bilgi almak için özel web sayfalarımızı ziyaret edebilirsiniz:
-            </p>
-            <div className="grid md:grid-cols-2 gap-4">
-              <a
-                href="https://bodrum-hidrofor.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">💧</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Bodrum Hidrofor</p>
-                  <p className="text-sm text-gray-600">Hidrofor sistemleri ve su basınçlandırma</p>
-                </div>
-              </a>
-
-              <a
-                href="https://yalikavak.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">🏖️</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Yalıkavak</p>
-                  <p className="text-sm text-gray-600">Yalıkavak bölgesi özel hizmetler</p>
-                </div>
-              </a>
-
-              <a
-                href="https://bodrum.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">🌊</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Bodrum</p>
-                  <p className="text-sm text-gray-600">Bodrum geneli mühendislik hizmetleri</p>
-                </div>
-              </a>
-
-              <a
-                href="https://su-deposu.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">🏗️</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Su Deposu</p>
-                  <p className="text-sm text-gray-600">Su depolama sistemleri ve tanklar</p>
-                </div>
-              </a>
-
-              <a
-                href="https://isi-pompasi.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">🔥</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Isı Pompası</p>
-                  <p className="text-sm text-gray-600">Enerji verimli ısıtma ve soğutma</p>
-                </div>
-              </a>
-
-              <a
-                href="https://yerden-isitma.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">♨️</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Yerden Isıtma</p>
-                  <p className="text-sm text-gray-600">Konforlu yerden ısıtma sistemleri</p>
-                </div>
-              </a>
-
-              <a
-                href="https://gunes-enerjisi.gul-tekinmuhendislik.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">☀️</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Güneş Enerjisi</p>
-                  <p className="text-sm text-gray-600">Solar panel ve güneş enerjisi sistemleri</p>
-                </div>
-              </a>
-
-              <a
-                href="https://gultekinmuhendislik.substack.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition-colors"
-              >
-                <span className="text-blue-600 mr-3">📝</span>
-                <div>
-                  <p className="font-semibold text-gray-800">Blog & Haberler</p>
-                  <p className="text-sm text-gray-600">Sektörel gelişmeler ve teknik yazılar</p>
-                </div>
-              </a>
-            </div>
-          </div>
         </div>
+
+        {/* Proje İstatistikleri */}
+        <ProjectStatistics />
 
         {/* E-E-A-T Components */}
         <TeamExperts />
         <ProjectPortfolioServer />
+        <WebPages />
         <Testimonials />
       </div>
     </div>
