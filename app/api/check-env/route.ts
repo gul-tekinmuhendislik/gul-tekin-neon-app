@@ -16,6 +16,10 @@ export async function GET() {
     inngest: {
       eventKey: !!process.env.INNGEST_EVENT_KEY,
       signingKey: !!process.env.INNGEST_SIGNING_KEY,
+    },
+    ai: {
+      googleGeminiApiKey: !!process.env.GOOGLE_GEMINI_API_KEY,
+      falAiKey: !!process.env.FAL_AI_KEY,
     }
   };
 
@@ -37,6 +41,9 @@ export async function GET() {
       inngest: Object.entries(envCheck.inngest)
         .filter(([, exists]) => !exists)
         .map(([key]) => `INNGEST_${key.toUpperCase()}`),
+      ai: Object.entries(envCheck.ai)
+        .filter(([, exists]) => !exists)
+        .map(([key]) => key === 'googleGeminiApiKey' ? 'GOOGLE_GEMINI_API_KEY' : 'FAL_AI_KEY'),
     }
   });
 }

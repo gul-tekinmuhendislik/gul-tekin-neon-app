@@ -137,7 +137,7 @@ export default async function AboutPage() {
         "@type": "Organization",
         "@id": "https://ai.gul-tekinmuhendislik.com/#organization",
         "name": "Gül-Tekin Mühendislik",
-        "legalName": "Gül-Tekin Mühendislik San. ve Tic. Ltd. Şti.",
+        "legalName": "GÜL-TEKİN SIHHİ TESİSAT, MÜHENDİSLİK, İNŞAAT, TAAHÜT, EMLAK, TURİZM, ENERJİ KAYNAKLARI, GIDA, İTHALAT İHRACAT TİCARET VE SANAYİ LİMİTED ŞİRKETİ",
         "sameAs": [
           "https://www.facebook.com/gultekinbodrum",
           "https://www.instagram.com/gultekinmuhendislik48/",
@@ -172,27 +172,131 @@ export default async function AboutPage() {
         
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
-            <h2 className="text-2xl font-bold mb-4 text-blue-600">Gül-Tekin Mühendislik - 20+ Yıllık Güven</h2>
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">Biz Kimiz Ne Yaparız?</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              <strong>2000 yılından beri</strong> Yalıkavak merkezli olarak faaliyet gösteren firmamız, mekanik tesisat sistemleri ve 
-              enerji verimliliği alanında uzmanlaşmış bir mühendislik şirketidir. 
-              <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile 
+              <strong>GÜL-TEKİN SIHHİ TESİSAT, MÜHENDİSLİK, İNŞAAT, TAAHÜT, EMLAK, TURİZM, ENERJİ KAYNAKLARI,
+              GIDA, İTHALAT İHRACAT TİCARET VE SANAYİ LİMİTED ŞİRKETİ</strong> olarak, 2000 yılından bu yana
+              Bodrum Yalıkavak&apos;ta, Muğla bölgesi ve özellikle Bodrum Yarımadası&apos;nda müşterilerimize kaliteli hizmet sunmaktayız.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Gültekin Mühendislik olarak, su teknolojileri ve tesisat sektöründe yenilikçi, güvenilir ve kaliteli
+              çözümler sunmanın yanı sıra, gelişen enerji ihtiyaçlarına da sürdürülebilir ve çevre dostu alternatifler
+              getiriyoruz. Uzman ekibimiz ve yıllara dayanan tecrübemizle, bireysel ve endüstriyel müşterilerimizin
+              tüm ihtiyaçlarına profesyonel yaklaşımımızla cevap veriyoruz.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              <strong>500&apos;den fazla başarıyla tamamlanmış proje</strong> ve <strong>%98 müşteri memnuniyeti oranı</strong> ile
               bölgenin en güvenilir çözüm ortağı olarak hizmet vermekteyiz.
             </p>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">Su Teknolojileri ve Tesisat Çözümleri</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Uzman mühendis kadromuz, alanında deneyimli ve sertifikalı profesyonellerden oluşmaktadır.{" "}
-              <TextFlip 
-                words={brandNames}
-                duration={3500}
-                randomCount={6}
-                className="text-blue-600 font-bold inline-flex"
-              />
-              {" "}gibi sektörün lider markalarının yetkili servisi ve çözüm ortağı olarak, en kaliteli ürün ve hizmetleri sunuyoruz.
+              Ürün portföyümüzde; su sayaçları, hidrofor sistemleri, su depoları, arıtma sistemleri, sulama ekipmanları,
+              filtreler ve yerden ısıtma sistemleri gibi geniş bir yelpazede, sektörün önde gelen markalarını bir araya getiriyoruz.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4 mb-4">
+              <div className="border-l-4 border-blue-500 pl-4">
+                <h4 className="font-semibold text-lg mb-2">Hidrofor Sistemleri</h4>
+                <p className="text-gray-600"><strong>Aldea hidroforlar</strong>, <strong>Wepomp</strong> ve <strong>Wilso</strong> markalarıyla,
+                su basınçlandırma ve su temini konusunda yüksek performans ve güvenilirlik sunuyoruz.</p>
+              </div>
+              <div className="border-l-4 border-green-500 pl-4">
+                <h4 className="font-semibold text-lg mb-2">Isı Pompası ve Su Deposu</h4>
+                <p className="text-gray-600"><strong>Solimpeks</strong>, <strong>Varmeks</strong> ve <strong>Makse</strong> markalarının
+                ısı pompası ve su deposu modelleriyle, müşterilerimize enerji verimliliği ve uzun ömürlü çözümler sağlıyoruz.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">Güçlü Markalarımız</h2>
+            <div className="space-y-4">
+              <div className="flex items-start">
+                <span className="text-blue-600 text-xl mr-3">●</span>
+                <div>
+                  <h4 className="font-semibold">Solimpeks</h4>
+                  <p className="text-gray-600">Yenilikçi ısı pompası ve güneş enerjisi sistemleriyle, enerji tasarrufu ve çevre dostu çözümler.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">●</span>
+                <div>
+                  <h4 className="font-semibold">Varmeks</h4>
+                  <p className="text-gray-600">Dayanıklı ve yüksek performanslı ısı pompası ve su deposu modelleri.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-purple-600 text-xl mr-3">●</span>
+                <div>
+                  <h4 className="font-semibold">Makse</h4>
+                  <p className="text-gray-600">Modern teknolojisiyle, hem konut hem de endüstriyel projelerde yüksek verimlilik.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-orange-600 text-xl mr-3">●</span>
+                <div>
+                  <h4 className="font-semibold">Aldea</h4>
+                  <p className="text-gray-600">Güçlü ve sessiz çalışan hidrofor sistemleriyle, su basınçlandırmada lider marka.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-red-600 text-xl mr-3">●</span>
+                <div>
+                  <h4 className="font-semibold">Wepomp & Wilso</h4>
+                  <p className="text-gray-600">Su teknolojileri ve hidrofor sistemlerinde güvenilir ve yenilikçi çözümler.</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-indigo-600 text-xl mr-3">●</span>
+                <div>
+                  <p className="text-gray-700">Ve daha fazlası:{" "}
+                  <TextFlip
+                    words={brandNames}
+                    duration={3500}
+                    randomCount={6}
+                    className="text-blue-600 font-bold inline-flex"
+                  />
+                  {" "}gibi sektörün lider markalarının yetkili servisi ve çözüm ortağıyız.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">Alternatif Enerji Sistemleri</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Güneş enerjisiyle elektrik üretimi sağlayan fotovoltaik (PV) panel sistemleri ve yüksek verimli
+              ısı pompası teknolojileriyle, hem enerji tasarrufu hem de çevreye duyarlı çözümler sunuyoruz.
+              Anahtar teslim projelerimizle, konutlardan endüstriyel tesislere kadar her ölçekte,
+              yenilenebilir enerjiye geçişinizi güvenle gerçekleştiriyoruz.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Isı pompalarından güneş enerjisi sistemlerine, su arıtma çözümlerinden yerden ısıtma 
-              sistemlerine kadar geniş bir yelpazede, <strong>enerji verimliliği odaklı</strong> ve <strong>çevre dostu</strong> 
-              profesyonel hizmet sunuyoruz. Projelerimizde ortalama <strong>%45 enerji tasarrufu</strong> sağlıyoruz.
+              Projelerimizde ortalama <strong>%45 enerji tasarrufu</strong> sağlıyoruz. Isı pompalarından güneş enerjisi
+              sistemlerine, su arıtma çözümlerinden yerden ısıtma sistemlerine kadar geniş bir yelpazede,
+              <strong>enerji verimliliği odaklı</strong> ve <strong>çevre dostu</strong> profesyonel hizmet sunuyoruz.
+            </p>
+          </div>
+
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
+            <h2 className="text-2xl font-bold mb-4 text-blue-600">Hizmet Anlayışımız</h2>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Endüstriyel tesislerden konut projelerine, tarımsal sulamadan su arıtma ve enerji sistemlerine
+              kadar farklı alanlarda; yüksek verimlilik, enerji tasarrufu ve uzun ömürlü kullanım sunan
+              çözümlerimizle, müşterilerimizin memnuniyetini her zaman ön planda tutuyoruz.
+            </p>
+            <p className="text-gray-700 leading-relaxed mb-4">
+              Satış öncesi danışmanlık, projelendirme, satış sonrası teknik destek ve bakım hizmetlerimizle,
+              iş ortaklarımıza ve müşterilerimize tam kapsamlı bir hizmet sunuyoruz.
+            </p>
+            <p className="text-gray-700 leading-relaxed">
+              Gelişen teknolojiyi yakından takip ederek, sürdürülebilir ve çevre dostu ürünlerle sektörde
+              fark yaratmaya devam ediyoruz. Gültekin Mühendislik olarak, güvenilir iş ortaklığı, kaliteli
+              ürün ve hizmet anlayışımızla, suya, enerjiye ve hayata değer katmak için çalışıyoruz.
+            </p>
+            <p className="text-gray-700 leading-relaxed mt-4 font-semibold">
+              Siz de suyun ve enerjinin olduğu her yerde, doğru çözüm ve güvenilir hizmet için bize ulaşabilirsiniz.
             </p>
           </div>
 
@@ -203,18 +307,18 @@ export default async function AboutPage() {
                 Vizyonumuz
               </h3>
               <p className="text-gray-600">
-                Enerji verimliliği ve çevresel sürdürülebilirlik ilkeleri doğrultusunda, 
+                Enerji verimliliği ve çevresel sürdürülebilirlik ilkeleri doğrultusunda,
                 bölgemizin lider mühendislik firması olmak.
               </p>
             </div>
-            
+
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 border border-gray-200 shadow-lg">
               <h3 className="text-xl font-semibold mb-3 flex items-center">
                 <span className="text-2xl mr-3">💡</span>
                 Misyonumuz
               </h3>
               <p className="text-gray-600">
-                Müşterilerimize kaliteli, güvenilir ve uygun maliyetli çözümler sunarak, 
+                Müşterilerimize kaliteli, güvenilir ve uygun maliyetli çözümler sunarak,
                 yaşam kalitelerini artırmak ve enerji tasarrufu sağlamak.
               </p>
             </div>
