@@ -4,7 +4,6 @@ import ProjectPortfolioServer from '@/components/ProjectPortfolioServer';
 import Testimonials from '@/components/Testimonials';
 import WebPages from '@/components/WebPages';
 import ProjectStatisticsServer from '@/components/ProjectStatisticsServer';
-import DatabaseStats from '@/components/DatabaseStats';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
 
@@ -387,9 +386,6 @@ export default async function AboutPage() {
           </div>
 
         </div>
-
-        {/* Veritabanı İstatistikleri */}
-        <DatabaseStats />
 
         {/* Proje İstatistikleri */}
         <ProjectStatisticsServer />
