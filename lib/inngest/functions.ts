@@ -1567,6 +1567,29 @@ export const postToFacebook = inngest.createFunction(
         )
       `;
     });
+
+    // Step 8: Trigger Twitter post after successful Facebook post
+    await step.run("trigger-twitter-post", async () => {
+      // Check if Twitter is enabled
+      const twitterEnabled = process.env.TWITTER_API_KEY && process.env.TWITTER_ACCESS_TOKEN;
+
+      if (twitterEnabled) {
+        console.log(`Triggering Twitter post for content ${contentId}`);
+
+        // Send event to share on Twitter
+        await inngest.send({
+          name: "blog/twitter.share.requested",
+          data: {
+            blogId: contentId,
+            fromFacebook: true
+          }
+        });
+
+        console.log(`Twitter share event triggered for content ${contentId}`);
+      } else {
+        console.log("Twitter integration not configured, skipping Twitter post");
+      }
+    });
     
     return {
       success: true,

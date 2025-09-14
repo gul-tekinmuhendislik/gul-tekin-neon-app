@@ -113,21 +113,29 @@ export const shareBlogOnTwitter = inngest.createFunction(
       }
 
       // Blog başlığından tweet metni oluştur
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://yourdomain.com';
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai.gul-tekinmuhendislik.com';
       const blogUrl = `${baseUrl}/blog/${blogPost.slug}`;
 
-      // Tweet karakter limiti 280, URL için yer bırak
-      const maxTextLength = 250;
+      // Tweet karakter limiti 280, URL için yer bırak (Twitter URL'leri 23 karakter sayar)
+      const maxTextLength = 180; // Hashtag'ler ve URL için yer bırak
       let text = blogPost.title;
 
       if (text.length > maxTextLength) {
         text = text.substring(0, maxTextLength - 3) + '...';
       }
 
-      // Hashtag'ler ekle
-      const hashtags = ['#blog', `#${blogPost.topic.replace(/\s+/g, '')}`];
+      // Türkçe hashtag'ler ekle
+      const hashtags = [
+        '#MekanikTesisat',
+        '#EnerjiVerimliliği',
+        '#Bodrum',
+        '#GülTekinMühendislik'
+      ];
 
-      return `${text}\n\n${hashtags.join(' ')}\n\n${blogUrl}`;
+      // Tweet formatı
+      const tweet = `🔧 ${text}\n\n${hashtags.slice(0, 3).join(' ')}\n\n📖 Detaylı bilgi: ${blogUrl}`;
+
+      return tweet;
     });
 
     // Step 3: Görsel varsa Twitter'a yükle
@@ -155,30 +163,27 @@ export const shareBlogOnTwitter = inngest.createFunction(
     await step.run("save-to-database", async () => {
       await sql`
         INSERT INTO social_media_posts (
+          content_id,
           platform,
           post_id,
-          content_id,
-          content_type,
-          post_text,
-          post_url,
-          media_urls,
+          post_data,
           status,
-          metadata,
+          posted_at,
           created_at
         ) VALUES (
+          ${blogId},
           'twitter',
           ${tweetResult.tweetId},
-          ${blogId},
-          'blog',
-          ${tweetText},
-          ${`https://twitter.com/user/status/${tweetResult.tweetId}`},
-          ${blogPost.image_url ? [blogPost.image_url] : null},
-          'published',
           ${JSON.stringify({
+            text: tweetText,
+            url: `https://twitter.com/gul_tekin_muh/status/${tweetResult.tweetId}`,
             blogTitle: blogPost.title,
             blogSlug: blogPost.slug,
             mediaId: mediaId,
+            imageUrl: blogPost.image_url
           })},
+          'published',
+          ${new Date().toISOString()},
           ${new Date().toISOString()}
         )
       `;
@@ -270,24 +275,26 @@ export const createTwitterThread = inngest.createFunction(
     await step.run("save-thread-to-database", async () => {
       await sql`
         INSERT INTO social_media_posts (
+          content_id,
           platform,
           post_id,
-          content_type,
-          post_text,
+          post_data,
           status,
-          metadata,
+          posted_at,
           created_at
         ) VALUES (
+          ${0}, -- Thread doesn't have a specific content_id
           'twitter',
           ${tweetIds.join(',')},
-          'thread',
-          ${tweets.map(t => t.text).join('\n---\n')},
-          'published',
           ${JSON.stringify({
+            type: 'thread',
+            texts: tweets.map(t => t.text),
             tweetIds,
             tweetCount: tweets.length,
             hasMedia: tweets.some(t => t.mediaUrl),
           })},
+          'published',
+          ${new Date().toISOString()},
           ${new Date().toISOString()}
         )
       `;
