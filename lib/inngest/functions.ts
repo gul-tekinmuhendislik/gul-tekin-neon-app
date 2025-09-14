@@ -595,18 +595,19 @@ export const processNewContent = inngest.createFunction(
     // Step 1: Fetch the full content from database
     const content = await step.run("fetch-content-details", async () => {
       const result = await sql`
-        SELECT 
-          id, 
-          topic, 
-          title, 
-          slug, 
-          meta_title, 
+        SELECT
+          id,
+          topic,
+          title,
+          slug,
+          meta_title,
           meta_description,
           keywords,
           content,
           status,
-          created_at
-        FROM generated_content 
+          COALESCE(created_at, createdat) as created_at,
+          COALESCE(updated_at, updatedat) as updated_at
+        FROM generated_content
         WHERE id = ${contentId}
         LIMIT 1
       `;
@@ -686,7 +687,7 @@ export const processNewContent = inngest.createFunction(
           content.content,
           content.topic,
           {
-            createdAt: content.created_at,
+            createdAt: content.created_at || new Date().toISOString(),
             title: content.title,
             metaDescription: content.meta_description
           }
@@ -740,8 +741,8 @@ export const processNewContent = inngest.createFunction(
         title: content.title,
         meta_description: content.meta_description,
         slug: content.slug,
-        created_at: content.created_at,
-        updated_at: content.updated_at,
+        created_at: content.created_at || new Date().toISOString(),
+        updated_at: content.updated_at || new Date().toISOString(),
         keywords: content.keywords
       };
       const schema = generateSchemaMarkup(contentData, eeatOptimization.analysis);
