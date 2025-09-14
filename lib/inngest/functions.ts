@@ -1970,6 +1970,15 @@ import {
   generateBulkImagesWithFalAI
 } from "./fal-ai-generation";
 
+// Import Vertex AI image generation functions
+import {
+  generateImageWithVertexAI,
+  generateBulkImagesWithVertexAI,
+  generateBlogImageWithVertexAI,
+  testVertexAIConnection,
+  generateVertexImagesHourly
+} from "./vertex-ai-generation";
+
 // Export Markalar, Hizmetler and Urunler sync functions
 export { 
   syncMarkalarDaily, 
@@ -1996,5 +2005,11 @@ export {
   generateContentWithXAI,
   generateImageWithXAI,
   enhanceContentWithXAI,
-  generatePromptForContent
+  generatePromptForContent,
+  // Vertex AI functions
+  generateImageWithVertexAI,
+  generateBulkImagesWithVertexAI,
+  generateBlogImageWithVertexAI,
+  testVertexAIConnection,
+  generateVertexImagesHourly
 };
