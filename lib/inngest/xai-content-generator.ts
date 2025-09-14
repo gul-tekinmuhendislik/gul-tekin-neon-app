@@ -201,15 +201,21 @@ export const generateContentWithXAI = inngest.createFunction(
     // Step 5: Log event
     await step.run("log-event", async () => {
       await sql`
-        INSERT INTO event_logs (name, data)
+        INSERT INTO event_logs (event_name, event_type, status, payload, metadata)
         VALUES (
           'xai_content_generated',
+          'content_generation',
+          'completed',
           ${JSON.stringify({
             contentId: saved.id,
             topic: topic,
             slug: saved.slug,
             contentType: contentType
-          })}::jsonb
+          })},
+          ${JSON.stringify({
+            generatedAt: new Date().toISOString(),
+            provider: 'xai'
+          })}
         )
       `;
     });
@@ -586,14 +592,20 @@ export const generatePromptForContent = inngest.createFunction(
     // Step 4: Log event
     await step.run("log-prompt-generation", async () => {
       await sql`
-        INSERT INTO event_logs (name, data)
+        INSERT INTO event_logs (event_name, event_type, status, payload, metadata)
         VALUES (
           'xai_prompt_generated',
+          'prompt_generation',
+          'completed',
           ${JSON.stringify({
             count: updated.length,
             contentIds: updated.map(u => u.contentId),
             batchProcess: batchProcess
-          })}::jsonb
+          })},
+          ${JSON.stringify({
+            generatedAt: new Date().toISOString(),
+            provider: 'xai'
+          })}
         )
       `;
     });
