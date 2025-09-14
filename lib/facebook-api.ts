@@ -83,7 +83,7 @@ export async function postToFacebookPage(
   pageId: string
 ): Promise<FacebookPostResponse | null> {
   try {
-    const { link, imageUrl } = postData;
+    const { link } = postData;
     
     // Format the post message
     const message = formatFacebookPost(postData);
@@ -95,12 +95,9 @@ export async function postToFacebookPage(
       published: true
     };
     
-    // Add image if available (Facebook will also scrape og:image from the link)
-    const pictureUrl = imageUrl || (postData as FacebookPostData & { picture?: string }).picture;
-    if (pictureUrl) {
-      post.picture = pictureUrl;
-      console.log(`Adding image to Facebook post: ${post.picture}`);
-    }
+    // Note: We cannot specify picture parameter when sharing external links
+    // Facebook will automatically scrape the og:image from the link
+    // Only page owners can specify picture parameter for their own URLs
     
     // Make API request
     const response = await fetch(

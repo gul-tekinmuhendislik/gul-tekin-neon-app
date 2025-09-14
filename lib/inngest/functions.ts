@@ -1448,19 +1448,12 @@ export const postToFacebook = inngest.createFunction(
         image_url: content.image_url
       });
       
-      // Add image URL if available
-      if (content.image_url) {
-        console.log(`Adding image to Facebook post: ${content.image_url}`);
-        // Facebook will use the og:image from the blog post URL
-        // But we can also add it directly to the post
-        const extendedData = ogData as typeof ogData & { picture?: string };
-        extendedData.picture = content.image_url;
-      }
-      
+      // Facebook will automatically scrape the og:image from the blog post URL
+      // We cannot specify picture parameter for external links due to Facebook security
       console.log(`Preparing Facebook post for: ${content.title}`);
       console.log(`Link: ${ogData.link}`);
-      console.log(`Image: ${content.image_url || 'No image available'}`);
-      
+      console.log(`Image will be scraped from og:image tag`);
+
       return ogData;
     });
     
