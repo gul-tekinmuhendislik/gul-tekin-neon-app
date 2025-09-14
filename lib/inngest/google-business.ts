@@ -72,7 +72,7 @@ export const syncGoogleBusinessLocations = inngest.createFunction(
           UPDATE google_tokens
           SET
             access_token = ${credentials.access_token},
-            expires_at = ${new Date(Date.now() + (credentials.expiry_date || 3600000))},
+            expires_at = ${new Date(credentials.expiry_date || Date.now() + 3600000)},
             updated_at = NOW()
           WHERE platform = 'google_business'
         `;
@@ -87,20 +87,37 @@ export const syncGoogleBusinessLocations = inngest.createFunction(
     const locations = await step.run("fetch-business-locations", async () => {
       const mybusinessinformation = google.mybusinessbusinessinformation({
         version: 'v1',
-        auth: oauth2Client as any
+        auth: oauth2Client as any,
+      });
+
+      const mybusinessaccountmanagement = google.mybusinessaccountmanagement({
+        version: 'v1',
+        auth: oauth2Client as any,
       });
 
       try {
-        // Direkt lokasyonları çek (account wildcard kullanarak)
-        const locationsResponse = await mybusinessinformation.accounts.locations.list({
-          parent: 'accounts/-', // Wildcard for all accounts
-          pageSize: 100,
-        });
+        // Step 3a: Hesapları listele (doğru API ile)
+        const accountsResponse = await mybusinessaccountmanagement.accounts.list({});
+        const accounts = accountsResponse.data.accounts || [];
+        if (accounts.length === 0) {
+          console.log("No Google Business accounts found.");
+          return [];
+        }
 
-        const locations = locationsResponse.data.locations || [];
-        console.log(`Found ${locations.length} Google Business locations`);
+        // Step 3b: Her hesaptaki lokasyonları çek
+        let allLocations: any[] = [];
+        for (const account of accounts) {
+          if (!account.name) continue;
+          const locationsResponse = await mybusinessinformation.accounts.locations.list({
+            parent: account.name,
+            pageSize: 100,
+          });
+          const locations = locationsResponse.data.locations || [];
+          allLocations = allLocations.concat(locations);
+        }
 
-        return locations;
+        console.log(`Found ${allLocations.length} Google Business locations across ${accounts.length} accounts`);
+        return allLocations;
       } catch (error) {
         console.error("Error fetching business locations:", error);
         throw error;

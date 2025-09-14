@@ -206,35 +206,63 @@ export const searchAndSaveResults = inngest.createFunction(
     // Step 2: Get related brands and services from database for dynamic queries
     const dynamicData = await step.run("fetch-related-brands-and-services", async () => {
       try {
-        // Get services with their related brands
-        const servicesWithBrands = await sql`
-          SELECT DISTINCT
-            h.id as hizmet_id,
-            h.hizmet_adi,
-            h.kategori,
-            m.marka_adi
-          FROM hizmetler h
-          INNER JOIN markalar m ON m.airtable_hizmetler_id::text LIKE '%' || h.id || '%'
-          WHERE h.hizmet_adi IS NOT NULL
-            AND m.marka_adi IS NOT NULL
-            AND m.airtable_hizmetler_id IS NOT NULL
-          ORDER BY RANDOM()
-          LIMIT 10
+        // Get total number of services to create rotation
+        const serviceCount = await sql`
+          SELECT COUNT(DISTINCT id) as count
+          FROM hizmetler
+          WHERE hizmet_adi IS NOT NULL
         `;
 
-        // Group by service
+        const totalServices = serviceCount[0]?.count || 0;
+        console.log(`Total services in database: ${totalServices}`);
+
+        // Calculate which service to use based on time (rotating through all 13 services)
+        const currentHour = new Date().getHours();
+        const currentDay = new Date().getDate();
+        const rotationIndex = ((currentDay * 4) + Math.floor(currentHour / 6)) % Math.max(totalServices, 1);
+
+        // Get the specific service based on rotation (ensures all services get coverage)
+        const targetService = await sql`
+          SELECT DISTINCT
+            id as hizmet_id,
+            hizmet_adi,
+            kategori
+          FROM hizmetler
+          WHERE hizmet_adi IS NOT NULL
+          ORDER BY id
+          LIMIT 1 OFFSET ${rotationIndex}
+        `;
+
+        if (targetService.length === 0) {
+          console.log("No services found in database");
+          return null;
+        }
+
+        console.log(`Rotation ${rotationIndex}/${totalServices}: Selected service: ${targetService[0].hizmet_adi}`);
+
+        // Then, get ALL brands related to the selected service
         const serviceGroups: Record<string, { kategori: string; markalar: string[] }> = {};
-        servicesWithBrands.forEach(row => {
-          if (!serviceGroups[row.hizmet_adi]) {
-            serviceGroups[row.hizmet_adi] = {
-              kategori: row.kategori,
-              markalar: []
-            };
-          }
-          if (!serviceGroups[row.hizmet_adi].markalar.includes(row.marka_adi)) {
-            serviceGroups[row.hizmet_adi].markalar.push(row.marka_adi);
-          }
-        });
+
+        const service = targetService[0];
+        const relatedBrands = await sql`
+          SELECT DISTINCT marka_adi
+          FROM markalar
+          WHERE airtable_hizmetler_id::text LIKE '%' || ${service.hizmet_id} || '%'
+            AND marka_adi IS NOT NULL
+            AND airtable_hizmetler_id IS NOT NULL
+        `;
+
+        if (relatedBrands.length > 0) {
+          serviceGroups[service.hizmet_adi] = {
+            kategori: service.kategori,
+            markalar: relatedBrands.map(b => b.marka_adi)
+          };
+
+          console.log(`Service: ${service.hizmet_adi} has ${relatedBrands.length} related brands:`,
+            relatedBrands.map(b => b.marka_adi).slice(0, 5).join(', '));
+        } else {
+          console.log(`No brands found for service: ${service.hizmet_adi}`);
+        }
 
         // Get random products
         const products = await sql`
@@ -260,33 +288,67 @@ export const searchAndSaveResults = inngest.createFunction(
       if (dynamicData && dynamicData.serviceGroups) {
         const services = Object.keys(dynamicData.serviceGroups);
 
-        if (services.length > 0) {
-          // Pick a random service with its related brands
-          const randomService = services[Math.floor(Math.random() * services.length)];
-          const serviceData = dynamicData.serviceGroups[randomService];
+        // Process each service with its related brands
+        for (const serviceName of services) {
+          const serviceData = dynamicData.serviceGroups[serviceName];
 
           if (serviceData.markalar.length > 0) {
-            // Use a brand that is ACTUALLY related to this service
-            const relatedBrand = serviceData.markalar[Math.floor(Math.random() * serviceData.markalar.length)];
+            // Time-based query variations (different queries at different times)
+            const hour = new Date().getHours();
+            const queryVariation = hour % 4; // 4 different variation sets
 
-            // Create highly relevant queries
-            queries.push(`${relatedBrand} ${randomService} kurulum montaj fiyat Bodrum Muğla`);
-            queries.push(`${relatedBrand} ${randomService} özellikleri yorumlar 2024`);
+            // Pick 2-3 random brands from this service's brand list
+            const brandsToUse = serviceData.markalar
+              .sort(() => 0.5 - Math.random())
+              .slice(0, Math.min(2, serviceData.markalar.length));
 
-            // Service-specific technical query
-            queries.push(`${randomService} teknoloji yenilikler ${relatedBrand} karşılaştırma`);
+            for (const brand of brandsToUse) {
+              // Create different query types based on time of day
+              switch(queryVariation) {
+                case 0: // Morning queries - Price focused
+                  queries.push(`${brand} ${serviceName} Bodrum Muğla fiyat listesi 2024`);
+                  queries.push(`${brand} ${serviceName} kampanya indirim Bodrum`);
+                  break;
+                case 1: // Noon queries - Technical focused
+                  queries.push(`${brand} ${serviceName} teknik özellikler avantajlar`);
+                  queries.push(`${brand} ${serviceName} kurulum montaj Bodrum`);
+                  break;
+                case 2: // Afternoon queries - Service focused
+                  queries.push(`${serviceName} ${brand} yetkili servis Bodrum Muğla`);
+                  queries.push(`${brand} ${serviceName} garanti bakım onarım`);
+                  break;
+                case 3: // Evening queries - Comparison focused
+                  queries.push(`${serviceName} en iyi ${brand} modelleri 2024`);
+                  queries.push(`${brand} ${serviceName} kullanıcı yorumları tavsiye`);
+                  break;
+              }
+            }
+
+            // Add a comparison query with multiple brands
+            if (serviceData.markalar.length > 1) {
+              const brandsForComparison = serviceData.markalar.slice(0, 3).join(' vs ');
+              queries.push(`${serviceName} karşılaştırma ${brandsForComparison} Bodrum`);
+            }
+
+            // Add trending/seasonal queries
+            const month = new Date().getMonth();
+            if (month >= 4 && month <= 8) { // Summer season
+              queries.push(`${serviceName} yaz sezonu kampanya Bodrum ${serviceData.markalar[0]}`);
+            } else if (month >= 10 || month <= 2) { // Winter season
+              queries.push(`${serviceName} kış indirimleri Bodrum ${serviceData.markalar[0]}`);
+            }
           }
 
           // Category-based query
           if (serviceData.kategori) {
-            queries.push(`${serviceData.kategori} sistemleri Bodrum ${randomService} tavsiye`);
+            queries.push(`${serviceData.kategori} ${serviceName} Bodrum en iyi markalar tavsiye`);
           }
         }
 
         // Product focused query if available
         if (dynamicData.products && dynamicData.products.length > 0) {
           const product = dynamicData.products[0];
-          queries.push(`${product.urun_adi} özellikleri fiyat inceleme`);
+          queries.push(`${product.urun_adi} özellikleri fiyat Bodrum satış noktaları`);
         }
       }
 
@@ -304,11 +366,16 @@ export const searchAndSaveResults = inngest.createFunction(
         queries.push(fallbackTopics[topicIndex]);
       }
 
-      // Log the queries that will be searched
-      console.log("Generated search queries:", queries);
+      // Limit queries to prevent API overload (max 3 queries per run for free tier)
+      // With 4 runs per day, this gives us 12 queries per day per service
+      const limitedQueries = queries.slice(0, 3);
 
-      // Return only the first query to search (to not overwhelm the API)
-      return [queries[0]];
+      // Log the queries that will be searched
+      console.log(`Generated ${queries.length} queries, using first ${limitedQueries.length}:`, limitedQueries);
+      console.log(`Daily API usage: ~${3 * 4} requests/day = ~${3 * 4 * 30} requests/month (within 1000 free limit)`);
+
+      // Return limited queries
+      return limitedQueries;
     });
     
     interface SearchResult {
@@ -455,23 +522,8 @@ export const searchAndSaveResults = inngest.createFunction(
       return savedCount;
     });
     
-    // Step 6: Clean up old results (optional - keep only last 7 days)
-    const cleanupResult = await step.run("cleanup-old-results", async () => {
-      try {
-        const result = await sql`
-          DELETE FROM search_results 
-          WHERE created_at < NOW() - INTERVAL '7 days'
-          RETURNING id
-        `;
-        
-        console.log(`Cleaned up ${result.length} old search results`);
-        return { deletedCount: result.length };
-      } catch (error) {
-        console.error('Error cleaning up old results:', error);
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        return { deletedCount: 0, error: errorMessage };
-      }
-    });
+    // Step 6: Skip cleanup - keeping all historical data
+    console.log('Keeping all historical search data for analysis');
     
     // Step 7: Log the operation
     await step.run("log-search-operation", async () => {
@@ -499,9 +551,9 @@ export const searchAndSaveResults = inngest.createFunction(
           })},
           ${JSON.stringify({
             totalResults: savedResults.total,
-            cleanupCount: cleanupResult.deletedCount,
             timestamp: new Date().toISOString(),
-            queryType: dynamicData ? 'dynamic' : 'fallback'
+            queryType: dynamicData ? 'dynamic' : 'fallback',
+            historicalDataKept: true
           })}
         )
       `;
@@ -521,7 +573,6 @@ export const searchAndSaveResults = inngest.createFunction(
         dynamicData.products.map(p => p.urun_adi) : [],
       totalResultsSaved: savedResults.total,
       resultsByQuery: savedResults.queries,
-      oldResultsDeleted: cleanupResult.deletedCount,
       timestamp: new Date().toISOString()
     };
   }
