@@ -1966,10 +1966,8 @@ import {
 } from "./image-generation";
 
 // Import Fal.ai image generation functions
-import {
-  generateImageWithFalAI,
-  generateBulkImagesWithFalAI
-} from "./fal-ai-generation";
+// Note: generateImageWithFalAI and generateBulkImagesWithFalAI have been removed
+// Only generateImageForBlog remains in fal-ai-generation.ts
 
 // Import Vertex AI image generation functions
 import {
@@ -2000,8 +1998,6 @@ export {
   dailyImageSync,
   generateImage,
   generateBulkImages,
-  generateImageWithFalAI,
-  generateBulkImagesWithFalAI,
   // XAI functions
   generateContentWithXAI,
   generateImageWithXAI,

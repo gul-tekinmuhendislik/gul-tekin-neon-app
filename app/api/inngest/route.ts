@@ -26,8 +26,6 @@ import {
   bulkSyncHizmetlerImages,
   bulkSyncUrunlerImages,
   dailyImageSync,
-  generateImageWithFalAI,
-  generateBulkImagesWithFalAI,
   generatePromptForContent
 } from "@/lib/inngest/functions";
 import {
@@ -117,8 +115,6 @@ export const { GET, POST, PUT } = serve({
     generateMissingImages,
     scheduledImageGeneration,
     regenerateImage,
-    generateImageWithFalAI,
-    generateBulkImagesWithFalAI,
     generateImageForBlog,
     generatePromptForContent,
     testGoogleGemini,
