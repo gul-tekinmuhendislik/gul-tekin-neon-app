@@ -778,12 +778,12 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       const selectedService = services[serviceIndex];
 
-      // Generate dynamic prompt based on service
+      // Generate dynamic prompt based on service - Bodrum/Muğla region specific
       const promptVariations = [
-        `Professional ${selectedService.hizmet_adi} installation in modern building, high-quality equipment showcase`,
-        `${selectedService.hizmet_adi} system in luxury Mediterranean villa, Bodrum architecture style`,
-        `Advanced ${selectedService.hizmet_adi} technology, technical infrastructure visualization`,
-        `${selectedService.hizmet_adi} maintenance and service, professional industrial setting`
+        `Beautiful illustration of ${selectedService.hizmet_adi} in modern Bodrum style white house without roof, Aegean architecture, soft Mediterranean colors, lifestyle photography`,
+        `${selectedService.hizmet_adi} system in traditional Muğla stone house with courtyard, warm Turkish sunlight, regional architecture style`,
+        `${selectedService.hizmet_adi} installation in contemporary Milas villa, white cubic architecture, olive trees, clean aesthetic illustration`,
+        `${selectedService.hizmet_adi} integrated in Yatağan modern home, Turkish countryside setting, natural pine forest background, warm composition`
       ];
 
       // Use service description if available for more context
@@ -810,8 +810,8 @@ export const generateVertexImagesHourly = inngest.createFunction(
         basePrompt = `${enhancedContext}, ${basePrompt}`;
       }
 
-      // Add consistent style modifiers and tags
-      const finalPrompt = `${basePrompt}, professional photography, high resolution, clean modern design, no text, no logos, architectural visualization, bright daylight, tagged: ${selectedService.slug}`;
+      // Add consistent style modifiers for more artistic output
+      const finalPrompt = `${basePrompt}, beautiful composition, artistic rendering, high quality illustration, elegant and modern, no text, no logos, magazine style photography, soft natural lighting, tagged: ${selectedService.slug}`;
 
       return {
         service: selectedService.hizmet_adi,
@@ -910,6 +910,8 @@ export const generateVertexImagesHourly = inngest.createFunction(
     });
 
     // Step 5: Optional - Clean up old images (keep last 100)
+    // DISABLED: Cleanup is commented out to preserve all historical images
+    /*
     await step.run("cleanup-old-images", async () => {
       try {
         // Get images to delete (keep last 100)
@@ -940,6 +942,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         return 0;
       }
     });
+    */
 
     return {
       success: generationResult.success,
