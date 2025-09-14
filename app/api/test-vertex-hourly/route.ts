@@ -2,29 +2,27 @@ import { NextResponse } from "next/server";
 import { inngest } from "@/lib/inngest/client";
 import { sql } from "@/lib/db";
 
-// Test the 30-minute cron job manually
+// Test the 15-minute cron job manually
 export async function GET() {
   try {
-    // Trigger the 30-minute generation manually
+    // Trigger the 15-minute generation manually
     const event = await inngest.send({
-      name: "vertex-ai/30min.manual",
+      name: "vertex-ai/15min.manual",
       data: {
         manual: true
       }
     });
 
-    // Get the current hour's topic
-    const hour = new Date().getHours();
-    const topics = [
-      "Isı Pompası Sistemleri",
-      "Güneş Enerjisi",
-      "Su Arıtma Sistemleri",
-      "Klima Sistemleri",
-      "Havuz Sistemleri",
-      "Mekanik Tesisat"
-    ];
-    const topicIndex = hour % topics.length;
-    const currentTopic = topics[topicIndex];
+    // Get the last service that was generated
+    const lastGenerated = await sql`
+      SELECT metadata
+      FROM vertex_images
+      ORDER BY created_at DESC
+      LIMIT 1
+    `;
+
+    const lastServiceIndex = lastGenerated[0]?.metadata?.serviceIndex || 0;
+    const nextServiceIndex = (lastServiceIndex + 1) % 13; // 13 services total
 
     // Check recent images
     const recentImages = await sql`
@@ -36,10 +34,10 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: "30-minute generation triggered manually",
+      message: "15-minute generation triggered manually",
       eventId: event.ids[0],
-      currentHour: hour,
-      expectedTopic: currentTopic,
+      lastServiceIndex,
+      nextServiceIndex,
       recentImages: recentImages.map(img => ({
         id: img.id,
         prompt: img.prompt?.substring(0, 100) + "...",

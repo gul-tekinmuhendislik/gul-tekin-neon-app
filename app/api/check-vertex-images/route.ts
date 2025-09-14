@@ -29,14 +29,15 @@ export async function GET() {
       LIMIT 10
     `;
 
-    // Get topic distribution
-    const topicDistribution = await sql`
+    // Get service distribution
+    const serviceDistribution = await sql`
       SELECT
-        metadata->>'topic' as topic,
+        metadata->>'service' as service,
+        metadata->>'slug' as slug,
         COUNT(*) as count
       FROM vertex_images
-      WHERE metadata->>'topic' IS NOT NULL
-      GROUP BY metadata->>'topic'
+      WHERE metadata->>'service' IS NOT NULL
+      GROUP BY metadata->>'service', metadata->>'slug'
       ORDER BY count DESC
     `;
 
@@ -65,10 +66,11 @@ export async function GET() {
         status: img.status,
         createdAt: img.created_at
       })),
-      topicDistribution,
+      serviceDistribution,
       cronJobExecutions: cronLogs.map(log => ({
         status: log.status,
-        topic: log.payload?.topic,
+        service: log.payload?.service,
+        slug: log.payload?.slug,
         createdAt: log.created_at
       }))
     });
