@@ -1972,7 +1972,6 @@ import {
 // Import Vertex AI image generation functions
 import {
   generateImageWithVertexAI,
-  generateBulkImagesWithVertexAI,
   generateBlogImageWithVertexAI,
   testVertexAIConnection,
   generateVertexImagesHourly
@@ -2005,7 +2004,6 @@ export {
   generatePromptForContent,
   // Vertex AI functions
   generateImageWithVertexAI,
-  generateBulkImagesWithVertexAI,
   generateBlogImageWithVertexAI,
   testVertexAIConnection,
   generateVertexImagesHourly

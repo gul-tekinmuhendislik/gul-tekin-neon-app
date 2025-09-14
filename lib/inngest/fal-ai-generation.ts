@@ -9,68 +9,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-interface FalAIResponse {
+// Vertex AI response interface for blog image generation
+interface VertexAIResponse {
   images: Array<{
     url: string;
     width: number;
     height: number;
     content_type: string;
   }>;
-  timings?: {
-    inference: number;
-  };
-  seed?: number;
-  has_nsfw_concepts?: boolean[];
   prompt: string;
-}
-
-// Fal.ai ile resim üretme
-async function generateWithFalAI(
-  prompt: string,
-  model: string = "fal-ai/imagen4/preview/fast", // Varsayılan olarak uygun fiyatlı model
-  imageSize: string = "landscape_16_9",
-  numInferenceSteps: number = 4,
-  guidanceScale: number = 7.5,
-  numImages: number = 1,
-  enableSafetyChecker: boolean = true
-): Promise<FalAIResponse> {
-  const apiKey = process.env.FAL_AI_KEY;
-  if (!apiKey) {
-    throw new Error("FAL_AI_KEY environment variable is not set");
-  }
-
-  try {
-    // Fal.ai API endpoint
-    const apiUrl = `https://fal.run/${model}`;
-    
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Authorization": `Key ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt,
-        image_size: imageSize,
-        num_inference_steps: numInferenceSteps,
-        guidance_scale: guidanceScale,
-        num_images: numImages,
-        enable_safety_checker: enableSafetyChecker,
-        seed: Math.floor(Math.random() * 1000000)
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Fal.ai API error: ${response.status} - ${error}`);
-    }
-
-    const data: FalAIResponse = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error generating image with Fal.ai:", error);
-    throw error;
-  }
 }
 
 // Cloudinary'ye görsel yükleme
@@ -101,7 +48,7 @@ async function uploadToCloudinary(imageUrl: string, prompt: string): Promise<{ u
   }
 }
 
-// Blog için resim üretme - Fal.ai
+// Blog için resim üretme - Vertex AI
 export const generateImageForBlog = inngest.createFunction(
   { 
     id: "generate-blog-image",
@@ -110,20 +57,12 @@ export const generateImageForBlog = inngest.createFunction(
   },
   { event: "blog/image.generate.requested" },
   async ({ event, step }) => {
-    const { 
+    const {
       blogId,
-      prompt, 
-      model = "fal-ai/imagen4/preview/fast",
-      imageSize = "landscape_16_9",
-      numInferenceSteps = 4,
-      guidanceScale = 7.5
+      prompt
     } = event.data as {
       blogId: number;
       prompt: string;
-      model?: string;
-      imageSize?: string;
-      numInferenceSteps?: number;
-      guidanceScale?: number;
     };
 
     // Step 1: Blog kaydını ve prompt'u kontrol et
@@ -189,28 +128,95 @@ export const generateImageForBlog = inngest.createFunction(
       return `Modern ${blogPost.topic} installation in Mediterranean villa, professional photography, golden hour`;
     });
 
-    // Step 2: Fal.ai ile resim üret
-    const falResponse = await step.run("generate-with-fal-ai", async () => {
-      console.log(`Generating image for blog ID: ${blogId}`);
+    // Step 2: Vertex AI ile resim üret
+    const vertexResponse: VertexAIResponse = await step.run("generate-with-vertex-ai", async () => {
+      console.log(`Generating image for blog ID: ${blogId} with Vertex AI`);
       console.log(`Blog title: ${blogPost.title}`);
       console.log(`Prompt: ${finalPrompt}`);
-      
-      return await generateWithFalAI(
-        finalPrompt,
-        model,
-        imageSize,
-        numInferenceSteps,
-        guidanceScale,
-        1, // Blog için tek resim
-        true // Safety checker aktif
-      );
+
+      // Vertex AI için geçici resim üretimi
+      const { PredictionServiceClient, helpers } = await import('@google-cloud/aiplatform');
+
+      const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'gul-tekin-muhendislik';
+      const LOCATION = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
+
+      // Get credentials from environment
+      let credentials: Record<string, unknown> | undefined = undefined;
+      if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
+        const credentialsJson = Buffer.from(
+          process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
+          'base64'
+        ).toString('utf-8');
+        credentials = JSON.parse(credentialsJson);
+      }
+
+      const predictionServiceClient = new PredictionServiceClient({
+        apiEndpoint: `${LOCATION}-aiplatform.googleapis.com`,
+        credentials: credentials,
+      });
+
+      const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-generate-001`;
+
+      const instances = [
+        helpers.toValue({
+          prompt: finalPrompt,
+        })
+      ];
+
+      const parameters = helpers.toValue({
+        sampleCount: 1,
+        aspectRatio: "16:9",
+        sampleImageSize: "2k", // Upgraded from default 1k to 2k for better quality
+        safetySetting: "block_some",
+        personGeneration: "dont_allow",
+        includeRaiReason: true,
+        includeSafetyAttributes: true,
+        language: "en"
+      });
+
+      const request = {
+        endpoint,
+        instances: instances as unknown[],
+        parameters,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any;
+
+      const [response] = await predictionServiceClient.predict(request);
+
+      if (!response || !response.predictions || response.predictions.length === 0) {
+        throw new Error('No predictions returned from Vertex AI');
+      }
+
+      const prediction = response.predictions[0];
+      const structValue = prediction.structValue;
+      const fields = structValue?.fields;
+
+      if (!fields?.bytesBase64Encoded) {
+        throw new Error('No image data in Vertex AI response');
+      }
+
+      const imageBase64 = fields.bytesBase64Encoded.stringValue;
+
+      // Base64'i data URL'e çevir (Cloudinary upload için)
+      const dataUrl = `data:image/png;base64,${imageBase64}`;
+
+      // Fal.ai response formatına benzer bir yapı döndür
+      return {
+        images: [{
+          url: dataUrl,
+          width: 2048,  // 2K resolution width
+          height: 1152,  // 16:9 aspect ratio for 2K
+          content_type: 'image/png'
+        }],
+        prompt: finalPrompt
+      };
     });
 
     // Step 3: Cloudinary'ye yükle
     const uploadedImage = await step.run("upload-to-cloudinary", async () => {
-      const image = falResponse.images[0];
+      const image = vertexResponse.images[0];
       if (!image) {
-        throw new Error('No image generated by Fal.ai');
+        throw new Error('No image generated by Vertex AI');
       }
 
       try {
@@ -276,13 +282,11 @@ export const generateImageForBlog = inngest.createFunction(
           ${JSON.stringify({
             blogId: blogId,
             blogTitle: blogPost.title,
-            model: model,
-            fal_ai_url: uploadedImage.originalUrl,
-            inference_steps: numInferenceSteps,
-            guidance_scale: guidanceScale,
-            seed: falResponse.seed,
-            inference_time: falResponse.timings?.inference,
-            has_nsfw: falResponse.has_nsfw_concepts?.[0] || false
+            model: 'vertex-ai/imagen-3.0',
+            vertex_ai_url: uploadedImage.originalUrl,
+            aspect_ratio: '16:9',
+            safety_setting: 'block_some',
+            generated_with: 'vertex-ai'
           })},
           ${new Date().toISOString()}
         )
@@ -309,12 +313,9 @@ export const generateImageForBlog = inngest.createFunction(
             imageUrl: uploadedImage.cloudinaryUrl
           })},
           ${JSON.stringify({
-            model,
-            imageSize,
-            numInferenceSteps,
-            guidanceScale,
-            inferenceTime: falResponse.timings?.inference,
-            seed: falResponse.seed,
+            model: 'vertex-ai/imagen-3.0',
+            imageSize: '16:9',
+            generatedWith: 'vertex-ai',
             cloudinaryPublicId: uploadedImage.cloudinaryPublicId
           })}
         )
@@ -327,9 +328,9 @@ export const generateImageForBlog = inngest.createFunction(
       blogTitle: blogPost.title,
       imageUrl: uploadedImage.cloudinaryUrl,
       imagePrompt: finalPrompt,
-      model: model,
-      inferenceTime: falResponse.timings?.inference,
-      message: `Successfully generated and assigned image to blog post: ${blogPost.title}`
+      model: 'vertex-ai/imagen-3.0',
+      generatedWith: 'vertex-ai',
+      message: `Successfully generated and assigned image to blog post using Vertex AI: ${blogPost.title}`
     };
   }
 );

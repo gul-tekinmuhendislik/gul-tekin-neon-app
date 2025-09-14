@@ -71,7 +71,6 @@ import {
 } from "@/lib/inngest/google-business";
 import {
   generateImageWithVertexAI,
-  generateBulkImagesWithVertexAI,
   generateBlogImageWithVertexAI,
   testVertexAIConnection,
   generateVertexImagesHourly
@@ -130,7 +129,6 @@ export const { GET, POST, PUT } = serve({
     autoReplyToReviews,
     createGoogleBusinessPost,
     generateImageWithVertexAI,
-    generateBulkImagesWithVertexAI,
     generateBlogImageWithVertexAI,
     testVertexAIConnection,
     generateVertexImagesHourly
