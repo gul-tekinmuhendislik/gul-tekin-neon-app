@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { inngest } from "@/lib/inngest/client";
 import { sql } from "@/lib/db";
 
-// Test the hourly cron job manually
+// Test the 30-minute cron job manually
 export async function GET() {
   try {
-    // Trigger the hourly generation event manually
+    // Trigger the 30-minute generation manually
     const event = await inngest.send({
-      name: "vertex-ai/hourly.generate",
+      name: "vertex-ai/30min.manual",
       data: {
         manual: true
       }
@@ -36,7 +36,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      message: "Hourly generation triggered manually",
+      message: "30-minute generation triggered manually",
       eventId: event.ids[0],
       currentHour: hour,
       expectedTopic: currentTopic,

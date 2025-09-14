@@ -71,6 +71,13 @@ import {
   autoReplyToReviews,
   createGoogleBusinessPost
 } from "@/lib/inngest/google-business";
+import {
+  generateImageWithVertexAI,
+  generateBulkImagesWithVertexAI,
+  generateBlogImageWithVertexAI,
+  testVertexAIConnection,
+  generateVertexImagesHourly
+} from "@/lib/inngest/vertex-ai-generation";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -125,6 +132,11 @@ export const { GET, POST, PUT } = serve({
     syncGoogleBusinessLocations,
     syncGoogleBusinessManual,
     autoReplyToReviews,
-    createGoogleBusinessPost
+    createGoogleBusinessPost,
+    generateImageWithVertexAI,
+    generateBulkImagesWithVertexAI,
+    generateBlogImageWithVertexAI,
+    testVertexAIConnection,
+    generateVertexImagesHourly
   ],
 });

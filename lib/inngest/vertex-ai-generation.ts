@@ -723,33 +723,40 @@ export const testVertexAIConnection = inngest.createFunction(
 // Generate images with Vertex AI every 15 minutes
 export const generateVertexImagesHourly = inngest.createFunction(
   {
-    id: "generate-vertex-images-15min",
-    name: "Generate Vertex AI Images Every 15 Minutes",
+    id: "generate-vertex-images-30min",
+    name: "Generate Vertex AI Images Every 30 Minutes",
     retries: 2
   },
-  {
-    // Run every 15 minutes
-    cron: "*/15 * * * *"
-  },
+  [
+    {
+      // Run every 30 minutes to optimize budget (48 images/day)
+      cron: "*/30 * * * *"
+    },
+    {
+      // Manual trigger event
+      event: "vertex-ai/30min.manual"
+    }
+  ],
   async ({ step }) => {
-    // Step 1: Determine topic and prompt based on time (15-minute intervals)
+    // Step 1: Determine topic and prompt based on time (30-minute intervals)
     const { topic, prompt } = await step.run("determine-content-for-interval", async () => {
       const now = new Date();
       const hour = now.getHours();
       const minute = now.getMinutes();
       const day = now.getDate();
 
-      // Calculate which 15-minute interval we're in (0-95 per day)
-      const intervalIndex = (hour * 4) + Math.floor(minute / 15);
+      // Calculate which 30-minute interval we're in (0-47 per day)
+      const intervalIndex = (hour * 2) + Math.floor(minute / 30);
 
-      // Engineering topics rotation
+      // Engineering topics rotation - All 13 services from database
       const topics = [
         {
-          name: "Isı Pompası Sistemleri",
+          name: "Isı Pompaları",
           prompts: [
             "Modern heat pump installation in luxury Bodrum villa, Mediterranean architecture",
             "Energy efficient HVAC system with heat pump, technical diagram visualization",
-            "Professional heat pump maintenance and service, industrial equipment"
+            "Professional heat pump maintenance and service, industrial equipment",
+            "Mitsubishi Heavy Industries heat pump system, outdoor unit installation"
           ]
         },
         {
@@ -757,7 +764,8 @@ export const generateVertexImagesHourly = inngest.createFunction(
           prompts: [
             "Solar panel array on Mediterranean rooftop, sunset lighting, Bodrum landscape",
             "Photovoltaic system installation, technical components, professional photography",
-            "Solar energy monitoring dashboard, modern interface design"
+            "Solar energy monitoring dashboard, modern interface design",
+            "High efficiency monocrystalline solar panels, detailed close-up"
           ]
         },
         {
@@ -765,7 +773,8 @@ export const generateVertexImagesHourly = inngest.createFunction(
           prompts: [
             "Advanced water treatment facility, reverse osmosis system, industrial design",
             "Water purification plant equipment, technical infrastructure",
-            "Clean water filtration system, modern technology visualization"
+            "Clean water filtration system, modern technology visualization",
+            "UV sterilization system for water treatment, purple glow effect"
           ]
         },
         {
@@ -773,23 +782,89 @@ export const generateVertexImagesHourly = inngest.createFunction(
           prompts: [
             "VRF air conditioning system installation, modern office building",
             "Multi-split climate control units, professional HVAC installation",
-            "Smart thermostat and climate control interface, modern home automation"
+            "Smart thermostat and climate control interface, modern home automation",
+            "Ducted air conditioning system, ceiling installation view"
           ]
         },
         {
-          name: "Havuz Sistemleri",
+          name: "Akıllı Oda Termostatları",
           prompts: [
-            "Luxury swimming pool with advanced filtration, Mediterranean villa setting",
-            "Pool equipment room with pumps and filters, technical infrastructure",
-            "Infinity pool overlooking Bodrum bay, sunset ambiance"
+            "Smart room thermostat with touchscreen display, modern home interior",
+            "Wireless programmable thermostat system, energy efficiency visualization",
+            "Multi-zone temperature control dashboard, smart home integration",
+            "Digital thermostat installation on elegant wall, minimalist design"
           ]
         },
         {
-          name: "Mekanik Tesisat",
+          name: "Hidrofor Sistemleri",
           prompts: [
-            "Industrial mechanical room with piping systems, professional installation",
-            "HVAC mechanical infrastructure, technical equipment visualization",
-            "Modern building mechanical systems, 3D technical diagram"
+            "Industrial pressure booster system, stainless steel pumps and tanks",
+            "Hydrofor pump station in mechanical room, professional installation",
+            "Variable frequency drive hydrofor system, control panel display",
+            "Residential water pressure system, compact design installation"
+          ]
+        },
+        {
+          name: "Pompalar",
+          prompts: [
+            "Industrial centrifugal pump array, high-capacity water transfer",
+            "Submersible pump installation in deep well, technical cross-section",
+            "Circulation pump system for heating, energy efficient motor",
+            "High-pressure pump station, stainless steel industrial equipment"
+          ]
+        },
+        {
+          name: "Radyatör",
+          prompts: [
+            "Modern aluminum radiator in luxury home, designer heating element",
+            "Cast iron vintage radiator restoration, classic European style",
+            "Panel radiator installation with thermostatic valve, clean lines",
+            "Towel warmer radiator in modern bathroom, chrome finish"
+          ]
+        },
+        {
+          name: "Su Depoları",
+          prompts: [
+            "Stainless steel water storage tanks, industrial capacity system",
+            "Underground concrete water reservoir, technical infrastructure",
+            "Modular plastic water tanks on rooftop, Mediterranean building",
+            "Pressurized water storage system with level sensors, monitoring display"
+          ]
+        },
+        {
+          name: "Sulama Sistemleri",
+          prompts: [
+            "Automated drip irrigation system in agricultural field, sunrise",
+            "Smart garden sprinkler system, lush green lawn maintenance",
+            "Greenhouse irrigation control center, precision agriculture technology",
+            "Landscape irrigation design with multiple zones, efficient water distribution"
+          ]
+        },
+        {
+          name: "Tahliye İstasyonu",
+          prompts: [
+            "Sewage pumping station equipment, underground installation",
+            "Stormwater evacuation system, heavy-duty submersible pumps",
+            "Building basement drainage station, flood prevention system",
+            "Industrial wastewater discharge facility, treatment equipment"
+          ]
+        },
+        {
+          name: "Termosifonik Sistemler",
+          prompts: [
+            "Solar thermosiphon water heater on Mediterranean rooftop, efficient design",
+            "Natural circulation hot water system, technical diagram visualization",
+            "Passive solar water heating installation, eco-friendly technology",
+            "Thermosiphon collector array on flat roof, professional installation"
+          ]
+        },
+        {
+          name: "Yerden Isıtma Sistemleri",
+          prompts: [
+            "Underfloor heating pipe installation, precise grid pattern layout",
+            "Radiant floor heating manifold system, technical room setup",
+            "Electric underfloor heating mat installation, modern bathroom",
+            "Hydronic floor heating cross-section diagram, thermal imaging view"
           ]
         }
       ];
