@@ -605,8 +605,8 @@ export const processNewContent = inngest.createFunction(
           keywords,
           content,
           status,
-          COALESCE(created_at, createdat) as created_at,
-          COALESCE(updated_at, updatedat) as updated_at
+          created_at,
+          updated_at
         FROM generated_content
         WHERE id = ${contentId}
         LIMIT 1
