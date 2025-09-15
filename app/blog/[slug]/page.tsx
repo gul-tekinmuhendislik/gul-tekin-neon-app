@@ -2,6 +2,10 @@ import { Metadata } from 'next';
 import { sql } from '@/lib/db';
 import BlogDetailClient from './page-client';
 
+// Force dynamic rendering for blog pages since content changes frequently
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   

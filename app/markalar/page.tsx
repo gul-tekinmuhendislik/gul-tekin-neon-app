@@ -1,6 +1,10 @@
 import { getMarkalarFromNeon } from '@/lib/airtable-markalar-client';
 import Image from 'next/image';
 
+// Force dynamic rendering since brand data can change
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function MarkalarPage() {
   const markalar = await getMarkalarFromNeon();
 

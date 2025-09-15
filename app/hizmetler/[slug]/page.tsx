@@ -41,15 +41,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams() {
-  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
-  
-  return hizmetler
-    .filter((hizmet) => hizmet.slug || hizmet.seo_slug)
-    .map((hizmet) => ({
-      slug: hizmet.slug || hizmet.seo_slug,
-    }));
-}
+// Comment out static generation - use dynamic rendering instead
+// export async function generateStaticParams() {
+//   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+//
+//   return hizmetler
+//     .filter((hizmet) => hizmet.slug || hizmet.seo_slug)
+//     .map((hizmet) => ({
+//       slug: hizmet.slug || hizmet.seo_slug,
+//     }));
+// }
+
+// Force dynamic rendering for better performance and fresh data
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HizmetDetailPage({ params }: PageProps) {
   const { slug } = await params;
