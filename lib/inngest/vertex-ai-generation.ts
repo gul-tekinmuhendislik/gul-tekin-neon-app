@@ -112,8 +112,12 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
         }
       }
 
-      // Add Mediterranean Turkish architectural style elements
-      basePrompt += ", Mediterranean Turkish architecture style, traditional elements, natural lighting, clean professional photography, modern engineering aesthetics, technical illustration approach, ultra high resolution 4K, sharp details, no people, no text, no logos";
+      // Add Mediterranean Turkish architectural style elements with advanced parameters
+      const advancedParams = ", photorealistic raw style, maximum quality 2, aspect ratio 16:9";
+      const mediterraneanStyle = ", Mediterranean Turkish architecture style, traditional elements, natural lighting, clean professional photography, modern engineering aesthetics";
+      const negativeElements = ", no modern city background, no concrete blocks, no industrial zones, no northern European architecture, no pine trees, no lavender fields, no overly saturated colors, no cartoon style, no artificial lighting, no people, no text, no watermarks, no logos";
+
+      basePrompt += advancedParams + mediterraneanStyle + ", technical illustration approach, ultra high resolution 4K, sharp details" + negativeElements;
 
       return basePrompt;
     });
@@ -243,8 +247,12 @@ export const generateVertexImagesHourly = inngest.createFunction(
         basePrompt = `${enhancedContext}, ${basePrompt}`;
       }
 
-      // Add consistent Mediterranean Turkish architectural style modifiers
-      const finalPrompt = `${basePrompt}, abstract Mediterranean Turkish architecture illustration, traditional Muğla elements, red clay roof tile patterns, stone chimney geometric forms, olive grove and bougainvillea accents, technical engineering drawing style, clean professional composition, natural Mediterranean lighting, vector art style, flat design elements, 4K resolution 1920x1080 minimum, no photorealism, no text, no logos, artistic technical interpretation, vibrant Turkish Mediterranean color palette, tagged: ${selectedService.slug}`;
+      // Add consistent Mediterranean Turkish architectural style modifiers with negative prompts
+      const styleModifiers = "photorealistic raw style, maximum quality 2, aspect ratio 16:9, ultra detailed, professional photography";
+      const positiveElements = "abstract Mediterranean Turkish architecture illustration, traditional Muğla elements, red clay roof tile patterns, stone chimney geometric forms, olive grove and bougainvillea accents, technical engineering drawing style, clean professional composition, natural Mediterranean lighting";
+      const negativePrompts = "no modern city background, no concrete blocks, no industrial zones, no northern European architecture, no pine trees, no lavender fields, no overly saturated colors, no cartoon style, no artificial lighting, no text, no watermarks, no logos";
+
+      const finalPrompt = `${basePrompt}, ${styleModifiers}, ${positiveElements}, 4K resolution 1920x1080 minimum, artistic technical interpretation, vibrant Turkish Mediterranean color palette, ${negativePrompts}, tagged: ${selectedService.slug}`;
 
       return {
         service: selectedService.hizmet_adi,
