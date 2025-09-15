@@ -261,35 +261,37 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const apiKey = process.env.XAI_API_KEY;
       if (apiKey) {
         try {
-          const systemPrompt = `You are an expert at creating abstract, artistic image generation prompts for Vertex AI Imagen.
-Your task is to create prompts for engineering service visualizations.
+          const systemPrompt = `You are an expert at creating digital art and illustration prompts for Vertex AI Imagen.
+Your task is to create prompts for engineering service illustrations.
 
 STYLE REQUIREMENTS:
-- Abstract geometric illustrations (NOT photorealistic)
-- Technical engineering blueprint aesthetics
-- Mediterranean Turkish architectural elements as abstract patterns
-- Muğla red clay roof tile patterns (geometric, not literal)
-- Stone chimney shapes (simplified, abstract)
-- Olive grove textures and purple bougainvillea color gradients
-- Clean, modern, professional technical illustration style
+- Digital illustration and modern digital art style
+- Vector art and flat design aesthetics
+- Vibrant, colorful digital artwork
+- Clean, minimalist composition
+- Professional digital illustrations
+- Mediterranean Turkish color palette (turquoise, terracotta, olive green, purple)
+- Geometric shapes and patterns inspired by Muğla architecture
+- Contemporary digital art techniques
+- Stylized and artistic interpretation
 
 AVOID:
-- Photorealistic images
-- Actual buildings or real structures
+- Photorealistic images or photography
+- 3D renders or CGI
 - People, faces, human figures
 - Text, logos, watermarks
-- Modern city backgrounds
-- Concrete blocks, industrial zones
-- Northern European elements
-- Pine trees, lavender fields`;
+- Dark or gloomy atmospheres
+- Industrial or urban settings
+- Overly complex compositions
+- Blurry or low quality elements`;
 
-          const userPrompt = `Create an abstract, artistic visualization prompt for this engineering service:
+          const userPrompt = `Create a digital illustration prompt for this engineering service:
 Service Name: ${selectedService.hizmet_adi}
 Description: ${selectedService.aciklama || 'Professional engineering service'}
 Category: Technical/Engineering
 
-Generate a single prompt that creates an abstract, geometric illustration representing this service.
-Use Mediterranean Turkish design elements as abstract patterns and color schemes.
+Generate a single prompt that creates a modern digital art illustration representing this service.
+Use vibrant colors, flat design, and vector art style with Mediterranean Turkish color palette.
 Return ONLY the prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -326,32 +328,32 @@ Return ONLY the prompt, no explanations.`;
       if (!finalPrompt) {
         const description = (selectedService.aciklama || selectedService.hizmet_adi).toLowerCase();
 
-        // Generate service-specific abstract elements based on actual service data
-        let specificElements = `Abstract ${selectedService.hizmet_adi.toLowerCase()} visualization`;
+        // Generate service-specific digital illustration elements
+        let specificElements = `Digital illustration of ${selectedService.hizmet_adi.toLowerCase()}`;
 
         // Dynamic keyword detection based on service description
         const keywords = description.split(/[\s,.-]+/).filter((word: string) => word.length > 2);
 
-        // Build prompt elements based on actual service keywords
+        // Build prompt elements based on actual service keywords - digital art style
         if (keywords.some((word: string) => ['güneş', 'solar', 'photovoltaic', 'panel'].includes(word))) {
-          specificElements += ', solar energy patterns, geometric sun rays, golden gradient meshes';
+          specificElements += ', stylized sun rays, warm yellow and orange gradients, solar panel vector graphics';
         } else if (keywords.some((word: string) => ['ısı', 'heat', 'pump', 'pompa', 'ısıtma'].includes(word))) {
-          specificElements += ', thermal gradient patterns, heat flow visualization, coil spirals';
+          specificElements += ', warm color waves, heat flow illustration, stylized thermal graphics';
         } else if (keywords.some((word: string) => ['klima', 'soğutma', 'havalandırma', 'conditioning'].includes(word))) {
-          specificElements += ', air flow patterns, cooling abstractions, ventilation spirals';
+          specificElements += ', cool blue airflow illustration, minimalist cooling waves, fresh air vectors';
         } else if (keywords.some((word: string) => ['su', 'water', 'arıtma', 'filtrasyon', 'purification'].includes(word))) {
-          specificElements += ', water flow patterns, filtration membranes, crystal droplets';
+          specificElements += ', stylized water drops, clean blue gradients, filter layer illustration';
         } else if (keywords.some((word: string) => ['neon', 'tabela', 'aydınlatma', 'sign', 'lighting'].includes(word))) {
-          specificElements += ', geometric light patterns, illuminated elements, glowing circuits';
+          specificElements += ', glowing neon effects, bright color illustrations, light beam vectors';
         } else if (keywords.some((word: string) => ['baca', 'chimney', 'duman', 'smoke', 'exhaust'].includes(word))) {
-          specificElements += ', chimney geometry, airflow dynamics, ventilation abstractions';
+          specificElements += ', stylized smoke patterns, chimney silhouettes, airflow illustrations';
         } else {
-          // Use generic engineering elements with service-specific focus
-          specificElements += ', technical engineering elements, geometric precision patterns';
+          // Use generic digital art elements
+          specificElements += ', modern digital art elements, colorful vector graphics';
         }
 
-        // Create comprehensive prompt with service information
-        finalPrompt = `${specificElements}, abstract geometric illustration representing ${selectedService.hizmet_adi} engineering service, Mediterranean Turkish design elements, Muğla tile patterns, olive branch geometry, purple and terracotta gradients, technical blueprint aesthetic, clean modern illustration, no photorealism, no text, no people, no blurry, no artifacts, no oversaturated, professional technical visualization`;
+        // Create digital art style prompt
+        finalPrompt = `${specificElements}, modern digital illustration, flat design style, vector art aesthetic, vibrant Mediterranean color palette (turquoise, terracotta, olive, purple), minimalist composition, clean professional illustration, stylized artistic interpretation, no photorealism, no text, no people, no 3D, digital art style`;
 
         console.log(`Generated fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
       }
