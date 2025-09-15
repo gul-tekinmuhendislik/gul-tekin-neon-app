@@ -80,6 +80,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
       };
 
       console.log(`Generating image with Vertex AI for content ID: ${contentId}`);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const [response] = await predictionServiceClient.predict(request as any);
 
       if (!response || !response.predictions || response.predictions.length === 0) {

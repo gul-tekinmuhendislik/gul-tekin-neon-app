@@ -463,16 +463,34 @@ export const searchAndSaveResults = inngest.createFunction(
           try {
             // Check if URL already exists
             const existing = await sql`
-              SELECT id FROM search_results 
+              SELECT id FROM search_results
               WHERE result_url = ${result.url || ''}
               LIMIT 1
             `;
-            
+
             if (existing.length > 0) {
               console.log(`Skipping duplicate URL: ${result.url}`);
               continue;
             }
-            
+
+            // Extract domain from URL
+            let domain = null;
+            if (result.url) {
+              try {
+                // Use JavaScript URL parsing for domain extraction
+                const urlObj = new URL(result.url);
+                domain = urlObj.hostname;
+                // Remove 'www.' prefix if exists
+                if (domain.startsWith('www.')) {
+                  domain = domain.substring(4);
+                }
+              } catch {
+                // Fallback regex if URL parsing fails
+                const domainMatch = result.url.match(/^(?:https?:\/\/)?(?:www\.)?([^\/]+)/i);
+                domain = domainMatch ? domainMatch[1] : null;
+              }
+            }
+
             await sql`
               INSERT INTO search_results (
                 search_query,
@@ -484,7 +502,8 @@ export const searchAndSaveResults = inngest.createFunction(
                 result_published_date,
                 result_author,
                 highlights,
-                metadata
+                metadata,
+                domain
               ) VALUES (
                 ${searchData.query},
                 'auto',
@@ -500,7 +519,8 @@ export const searchAndSaveResults = inngest.createFunction(
                   summary: result.summary,
                   publishedDate: result.publishedDate,
                   savedAt: new Date().toISOString()
-                })}
+                })},
+                ${domain}
               )
               ON CONFLICT (result_url) DO NOTHING
             `;
