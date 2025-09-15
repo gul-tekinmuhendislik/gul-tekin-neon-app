@@ -99,22 +99,77 @@ export const generateImageForBlog = inngest.createFunction(
         return blogPost.image_prompt;
       }
 
-      // Hiç prompt yoksa, topic bazlı prompt üret (XAI kullanmadan)
-      console.log(`No prompt found, generating topic-based prompt for blog ${blogId}`);
+      // Hiç prompt yoksa, XAI ile dinamik prompt üret
+      console.log(`No prompt found, generating dynamic prompt with XAI for blog ${blogId}`);
 
-      // Topic bazlı Mediterranean Turkish architecture prompt
-      const topicPrompts: Record<string, string> = {
-        "Isı Pompası": "heat pump system with Mediterranean Turkish villa, traditional Muğla red clay roof tiles, stone chimneys, olive grove background",
-        "Güneş Enerjisi": "solar panels on traditional Turkish rooftop with red clay tiles, Bodrum white cubic architecture, olive trees, bougainvillea",
-        "Klima Sistemleri": "VRF system on Mediterranean building with stone walls, Turkish clay roof tiles, olive groves, bougainvillea accents",
-        "Su Arıtma": "water treatment system with Turkish stone architecture, Mediterranean garden setting, traditional chimneys",
-        "Havuz Sistemleri": "pool system with Bodrum white stone walls, Mediterranean tiles, bougainvillea cascading, olive landscape",
-        "Mekanik Tesisat": "mechanical systems with traditional Muğla architecture, red clay tiles, stone chimney details"
-      };
+      // XAI ile blog içeriğini analiz edip özel prompt üret
+      const apiKey = process.env.XAI_API_KEY;
+      if (!apiKey) {
+        // XAI yoksa fallback prompt kullan
+        console.log("XAI API key not found, using fallback prompt");
+        return `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
+      }
 
-      // Generate prompt based on topic or use fallback
-      return topicPrompts[blogPost.topic] ||
-        `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
+      try {
+        const systemPrompt = `You are an expert at creating image generation prompts for Vertex AI Imagen.
+Your task is to create a detailed, photorealistic prompt for blog post images.
+
+IMPORTANT STYLE ELEMENTS TO INCLUDE:
+- Mediterranean Turkish architecture (Bodrum/Muğla region)
+- Traditional Muğla red clay roof tiles
+- Stone chimneys and white stone walls
+- Olive groves and purple bougainvillea
+- Natural Mediterranean lighting
+- Professional architectural photography style
+- Technical engineering aesthetics
+
+AVOID:
+- Modern city backgrounds
+- Concrete blocks or industrial zones
+- Northern European architecture
+- Pine trees or lavender fields
+- Cartoon or illustration styles
+- People, text, watermarks, logos`;
+
+        const userPrompt = `Create a detailed image generation prompt for this blog post:
+Title: ${blogPost.title}
+Topic: ${blogPost.topic}
+Content Preview: ${blogPost.content?.substring(0, 500) || ''}
+
+Generate a single, detailed prompt that captures the essence of the content while incorporating Mediterranean Turkish architectural elements.
+Return ONLY the prompt, no explanations.`;
+
+        const response = await fetch("https://api.x.ai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "grok-beta",
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ],
+            temperature: 0.7,
+            max_tokens: 300
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const generatedPrompt = data.choices[0]?.message?.content?.trim();
+          if (generatedPrompt) {
+            console.log(`XAI generated prompt: ${generatedPrompt.substring(0, 100)}...`);
+            return generatedPrompt;
+          }
+        }
+      } catch (error) {
+        console.error("Error generating prompt with XAI:", error);
+      }
+
+      // Fallback prompt if XAI fails
+      return `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
     });
 
     // Step 2: Vertex AI ile resim üret
