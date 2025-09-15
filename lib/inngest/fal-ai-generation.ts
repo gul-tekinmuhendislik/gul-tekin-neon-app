@@ -24,9 +24,9 @@ interface VertexAIResponse {
 async function uploadToCloudinary(imageUrl: string, prompt: string): Promise<{ url: string; publicId: string }> {
   try {
     const result = await cloudinary.uploader.upload(imageUrl, {
-      folder: 'fal-ai-generated',
-      public_id: `fal-ai-${Date.now()}`,
-      tags: ['ai-generated', 'fal-ai'],
+      folder: 'blog-images',
+      public_id: `blog-img-${Date.now()}`,
+      tags: ['ai-generated', 'blog-content'],
       context: {
         prompt: prompt.slice(0, 200),
         generated_at: new Date().toISOString(),
@@ -131,12 +131,11 @@ AVOID:
 - Cartoon or illustration styles
 - People, text, watermarks, logos`;
 
-        const userPrompt = `Create a detailed image generation prompt for this blog post:
+        const userPrompt = `Create a concise image prompt for this blog post:
 Title: ${blogPost.title}
 Topic: ${blogPost.topic}
-Content Preview: ${blogPost.content?.substring(0, 500) || ''}
 
-Generate a single, detailed prompt that captures the essence of the content while incorporating Mediterranean Turkish architectural elements.
+Generate a brief, focused prompt (max 150 words) with Mediterranean Turkish elements.
 Return ONLY the prompt, no explanations.`;
 
         const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -152,7 +151,7 @@ Return ONLY the prompt, no explanations.`;
               { role: "user", content: userPrompt }
             ],
             temperature: 0.7,
-            max_tokens: 300
+            max_tokens: 150
           })
         });
 
