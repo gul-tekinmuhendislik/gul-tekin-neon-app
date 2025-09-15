@@ -1,4 +1,4 @@
-import { TwitterApi } from 'twitter-api-v2';
+import { TwitterApi, SendTweetV2Params } from 'twitter-api-v2';
 import { sql } from './db';
 
 // Initialize Twitter client
@@ -131,15 +131,23 @@ export async function postTweet(tweetData: TweetData): Promise<{ id: string; tex
     const client = getTwitterClient();
 
     // Prepare tweet parameters
-    const tweetParams: any = {
+    const tweetParams: SendTweetV2Params = {
       text: tweetData.text,
     };
 
     // Add media if provided
     if (tweetData.mediaIds && tweetData.mediaIds.length > 0) {
-      tweetParams.media = {
-        media_ids: tweetData.mediaIds,
-      };
+      // Twitter API v2 expects a tuple with 1-4 media IDs
+      const mediaIds = tweetData.mediaIds.slice(0, 4);
+      if (mediaIds.length === 1) {
+        tweetParams.media = { media_ids: [mediaIds[0]] };
+      } else if (mediaIds.length === 2) {
+        tweetParams.media = { media_ids: [mediaIds[0], mediaIds[1]] };
+      } else if (mediaIds.length === 3) {
+        tweetParams.media = { media_ids: [mediaIds[0], mediaIds[1], mediaIds[2]] };
+      } else if (mediaIds.length === 4) {
+        tweetParams.media = { media_ids: [mediaIds[0], mediaIds[1], mediaIds[2], mediaIds[3]] };
+      }
     }
 
     // Send tweet

@@ -415,11 +415,12 @@ Return ONLY the prompt, no explanations.`;
           language: "en"
         });
 
+        // Type assertion needed due to Vertex AI SDK typing requirements
         const request = {
           endpoint,
-          instances: instances as unknown[],
+          instances: instances as Parameters<typeof predictionServiceClient.predict>[0]['instances'],
           parameters,
-        } as any;
+        };
 
         console.log(`Generating service image with Vertex AI Fast Model for: ${service}`);
         const [response] = await predictionServiceClient.predict(request);
