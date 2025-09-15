@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { decodeAndNormalizeSlug } from '@/lib/utils/slug';
 
-export const revalidate = 3600;
+// export const revalidate = 3600;
 
 interface UrunDetailPageProps {
   params: Promise<{
