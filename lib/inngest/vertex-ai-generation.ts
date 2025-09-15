@@ -9,11 +9,204 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// [REMOVED] generateImageWithVertexAI function has been removed
-// Use generateBlogImageWithVertexAI or generateVertexImagesHourly instead
+// Handle Vertex AI image generation requests
+export const handleVertexAIGeneration = inngest.createFunction(
+  {
+    id: "handle-vertex-ai-generation",
+    name: "Handle Vertex AI Image Generation",
+    retries: 2
+  },
+  { event: "image/vertex-ai.generate.requested" },
+  async ({ event, step }) => {
+    const {
+      prompt,
+      contentId,
+      aspectRatio = "16:9",
+      numberOfImages = 1,
+      language = "en",
+      safetySetting = "block_some",
+      personGeneration = "dont_allow",
+      addWatermark = false,
+      metadata = {}
+    } = event.data;
 
-// [REMOVED] generateBulkImagesWithVertexAI function has been removed
-// Use generateVertexImagesHourly for automated bulk generation
+    // Step 1: Generate image with Vertex AI
+    const generationResult = await step.run("generate-with-vertex-ai", async () => {
+      const { PredictionServiceClient, helpers } = await import('@google-cloud/aiplatform');
+
+      const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'gul-tekin-muhendislik';
+      const LOCATION = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
+
+      // Get credentials from environment
+      let credentials: Record<string, unknown> | undefined = undefined;
+      if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
+        const credentialsJson = Buffer.from(
+          process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
+          'base64'
+        ).toString('utf-8');
+        credentials = JSON.parse(credentialsJson);
+      }
+
+      const predictionServiceClient = new PredictionServiceClient({
+        apiEndpoint: `${LOCATION}-aiplatform.googleapis.com`,
+        credentials: credentials,
+      });
+
+      // Use high-quality model for content images
+      const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-generate-002`;
+
+      const instances = [
+        helpers.toValue({
+          prompt: prompt,
+        })
+      ];
+
+      const parameters = helpers.toValue({
+        sampleCount: numberOfImages,
+        aspectRatio: aspectRatio,
+        sampleImageSize: "2k",
+        safetySetting: safetySetting,
+        personGeneration: personGeneration,
+        includeRaiReason: true,
+        includeSafetyAttributes: true,
+        addWatermark: addWatermark,
+        language: language
+      });
+
+      const request = {
+        endpoint,
+        instances: instances as unknown[],
+        parameters,
+      };
+
+      console.log(`Generating image with Vertex AI for content ID: ${contentId}`);
+      const [response] = await predictionServiceClient.predict(request);
+
+      if (!response || !response.predictions || response.predictions.length === 0) {
+        throw new Error('No predictions returned from Vertex AI');
+      }
+
+      const prediction = response.predictions[0];
+      const structValue = prediction.structValue;
+      const fields = structValue?.fields;
+
+      if (!fields?.bytesBase64Encoded) {
+        throw new Error('No image data in Vertex AI response');
+      }
+
+      const imageBase64 = fields.bytesBase64Encoded.stringValue;
+
+      return {
+        imageBase64,
+        prompt
+      };
+    });
+
+    // Step 2: Upload to Cloudinary
+    const cloudinaryResult = await step.run("upload-to-cloudinary", async () => {
+      const dataUrl = `data:image/png;base64,${generationResult.imageBase64}`;
+
+      const uploadResult = await cloudinary.uploader.upload(dataUrl, {
+        folder: contentId ? 'vertex-ai-blog' : 'vertex-ai-generated',
+        public_id: `vertex-ai-${contentId || Date.now()}`,
+        tags: ['vertex-ai', 'ai-generated', contentId ? 'blog-image' : 'general'],
+        context: {
+          prompt: prompt.slice(0, 200),
+          generated_at: new Date().toISOString(),
+          model: 'imagen-3.0-generate-002',
+          content_id: contentId || '',
+          ...metadata
+        }
+      });
+
+      return {
+        url: uploadResult.secure_url,
+        publicId: uploadResult.public_id
+      };
+    });
+
+    // Step 3: Update content if contentId provided (for blog posts)
+    if (contentId) {
+      await step.run("update-content-with-image", async () => {
+        await sql`
+          UPDATE generated_content
+          SET
+            image_url = ${cloudinaryResult.url},
+            image_prompt = ${prompt},
+            updated_at = ${new Date().toISOString()}
+          WHERE id = ${contentId}
+        `;
+      });
+    }
+
+    // Step 4: Save to vertex_images table
+    await step.run("save-to-vertex-images", async () => {
+      await sql`
+        INSERT INTO vertex_images (
+          prompt,
+          enhanced_prompt,
+          image_url,
+          cloudinary_public_id,
+          model,
+          provider,
+          aspect_ratio,
+          metadata,
+          status
+        ) VALUES (
+          ${prompt},
+          ${prompt},
+          ${cloudinaryResult.url},
+          ${cloudinaryResult.publicId},
+          'imagen-3.0-generate-002',
+          'vertex-ai',
+          ${aspectRatio},
+          ${JSON.stringify({
+            contentId: contentId || null,
+            ...metadata,
+            generatedAt: new Date().toISOString()
+          })},
+          'completed'
+        )
+      `;
+    });
+
+    // Step 5: Log event
+    await step.run("log-event", async () => {
+      await sql`
+        INSERT INTO event_logs (
+          event_name,
+          event_type,
+          status,
+          payload,
+          metadata
+        ) VALUES (
+          'vertex-ai.image.generated',
+          'image_generation',
+          'success',
+          ${JSON.stringify({
+            contentId: contentId,
+            prompt: prompt.substring(0, 500),
+            imageUrl: cloudinaryResult.url
+          })},
+          ${JSON.stringify({
+            model: 'imagen-3.0-generate-002',
+            aspectRatio: aspectRatio,
+            cloudinaryPublicId: cloudinaryResult.publicId
+          })}
+        )
+      `;
+    });
+
+    return {
+      success: true,
+      imageUrl: cloudinaryResult.url,
+      cloudinaryPublicId: cloudinaryResult.publicId,
+      contentId: contentId,
+      prompt: prompt,
+      message: `Successfully generated and uploaded image to Cloudinary`
+    };
+  }
+);
 
 // Generate image for blog post with automatic prompt generation
 export const generateBlogImageWithVertexAI = inngest.createFunction(
@@ -34,7 +227,18 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
     } = event.data;
 
     // Step 1: Get blog content and prompt
-    const blogData = await step.run("fetch-blog-and-prompt", async () => {
+    interface BlogData {
+      id: number;
+      title: string;
+      topic: string;
+      keywords: string[];
+      content: string;
+      image_prompt: string | null;
+      image_url: string | null;
+      skipGeneration?: boolean;
+    }
+
+    const blogData = await step.run("fetch-blog-and-prompt", async (): Promise<BlogData> => {
       const result = await sql`
         SELECT
           id,
@@ -53,7 +257,7 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
         throw new Error(`Blog post not found with ID: ${blogId}`);
       }
 
-      const blog = result[0];
+      const blog = result[0] as BlogData;
 
       // Check if image already exists
       if (blog.image_url && !event.data.forceRegenerate) {
@@ -431,7 +635,7 @@ Return ONLY the prompt, no explanations.`;
         const parameters = helpers.toValue({
           sampleCount: 1,
           aspectRatio: "16:9",
-          sampleImageSize: "1344", // 1344x768 for 16:9 aspect ratio (1.75:1)
+          sampleImageSize: "1k", // Using 1k for fast model
           safetySetting: "block_some",
           personGeneration: "dont_allow",
           includeRaiReason: false,

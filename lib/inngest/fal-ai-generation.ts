@@ -1,5 +1,5 @@
 import { inngest } from "./client";
-import { sql } from "@/lib/db";
+import { sql } from "../db";
 import { v2 as cloudinary } from 'cloudinary';
 
 // Configure Cloudinary
@@ -66,18 +66,28 @@ export const generateImageForBlog = inngest.createFunction(
     };
 
     // Step 1: Blog kaydını ve prompt'u kontrol et
-    const blogPost = await step.run("check-blog-post", async () => {
+    interface BlogPost {
+      id: number;
+      title: string;
+      topic: string;
+      content: string;
+      status: string;
+      prompt: string | null;
+      image_prompt: string | null;
+    }
+
+    const blogPost = await step.run("check-blog-post", async (): Promise<BlogPost> => {
       const result = await sql`
         SELECT id, title, topic, content, status, prompt, image_prompt
         FROM generated_content
         WHERE id = ${blogId}
       `;
-      
+
       if (result.length === 0) {
         throw new Error(`Blog post with ID ${blogId} not found`);
       }
-      
-      return result[0];
+
+      return result[0] as BlogPost;
     });
 
     // Step 1.5: Eğer prompt boşsa, mevcut prompt'u kullan veya XAI ile üret
@@ -210,7 +220,7 @@ Return ONLY the prompt, no explanations.`;
       const parameters = helpers.toValue({
         sampleCount: 1,
         aspectRatio: "16:9",
-        sampleImageSize: "2k", // Upgraded from default 1k to 2k for better quality
+        sampleImageSize: "2k",
         safetySetting: "block_some",
         personGeneration: "dont_allow",
         includeRaiReason: true,

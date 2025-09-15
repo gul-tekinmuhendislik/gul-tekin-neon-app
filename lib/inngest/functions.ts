@@ -1959,11 +1959,22 @@ import {
 // Note: All Fal.ai functions have been replaced with Vertex AI
 // generateImageForBlog now uses Vertex AI Imagen 3.0 despite being in fal-ai-generation.ts
 
+// Import Fal.ai generation function (actually uses Vertex AI internally)
+import { generateImageForBlog } from "./fal-ai-generation";
+
 // Import Vertex AI image generation functions
 import {
+  handleVertexAIGeneration,
   generateBlogImageWithVertexAI,
   generateVertexImagesHourly
 } from "./vertex-ai-generation";
+
+// Import Twitter functions from existing integration
+import {
+  shareBlogOnTwitter,
+  createTwitterThread,
+  autoShareNewBlogOnTwitter
+} from "./twitter-integration";
 
 // Export Markalar, Hizmetler and Urunler sync functions
 export {
@@ -1987,6 +1998,13 @@ export {
   enhanceContentWithXAI,
   generatePromptForContent,
   // Vertex AI functions
+  handleVertexAIGeneration,
   generateBlogImageWithVertexAI,
-  generateVertexImagesHourly
+  generateVertexImagesHourly,
+  // Fal.ai generation (uses Vertex AI internally)
+  generateImageForBlog,
+  // Twitter functions
+  shareBlogOnTwitter,
+  createTwitterThread,
+  autoShareNewBlogOnTwitter
 };
