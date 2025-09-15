@@ -75,12 +75,12 @@ export const handleVertexAIGeneration = inngest.createFunction(
 
       const request = {
         endpoint,
-        instances: instances as unknown[],
+        instances: instances,
         parameters,
       };
 
       console.log(`Generating image with Vertex AI for content ID: ${contentId}`);
-      const [response] = await predictionServiceClient.predict(request);
+      const [response] = await predictionServiceClient.predict(request as any);
 
       if (!response || !response.predictions || response.predictions.length === 0) {
         throw new Error('No predictions returned from Vertex AI');
