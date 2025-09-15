@@ -895,20 +895,12 @@ export const processNewContent = inngest.createFunction(
       }
       
       // ALWAYS trigger prompt and image generation for new content
-      console.log(`Triggering prompt and image generation for new content ${content.id}...`);
-      
-      // Generate prompt
-      await inngest.send({
-        name: "content/generate-prompt.xai",
-        data: {
-          contentId: content.id,
-          batchProcess: false
-        }
-      });
-      
+      console.log(`Triggering image generation for new content ${content.id}...`);
+
+      // Skip XAI prompt generation - generateImageForBlog creates its own prompt
       // Don't wait - let processes run asynchronously
-      
-      // Trigger image generation
+
+      // Trigger image generation directly
       await inngest.send({
         name: "blog/image.generate.requested",
         data: {
@@ -1228,18 +1220,10 @@ Optimized içeriği tam olarak döndür:`;
       // ALWAYS generate prompt and image, regardless of E-E-A-T score
       console.log(`E-E-A-T score: ${finalScore}, generating image prompt and image...`);
       
-      // First, generate prompt for the content
-      await inngest.send({
-        name: "content/generate-prompt.xai",
-        data: {
-          contentId: contentId,
-          batchProcess: false
-        }
-      });
-      
+      // Skip XAI prompt generation - generateImageForBlog creates its own prompt
       // Don't wait - let the processes run asynchronously
-      
-      // Then trigger blog image generation with Vertex AI
+
+      // Trigger blog image generation directly with Vertex AI
       await inngest.send({
         name: "blog/image.generate.requested",
         data: {

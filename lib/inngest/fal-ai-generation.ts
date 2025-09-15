@@ -98,34 +98,23 @@ export const generateImageForBlog = inngest.createFunction(
         console.log(`Using existing image_prompt from database for blog ${blogId}`);
         return blogPost.image_prompt;
       }
-      
-      // Hiç prompt yoksa, XAI ile üret
-      console.log(`No prompt found, triggering XAI prompt generation for blog ${blogId}`);
-      await inngest.send({
-        name: "content/generate-prompt.xai",
-        data: {
-          contentId: blogId,
-          batchProcess: false
-        }
-      });
-      
-      // XAI'nin prompt üretmesi için kısa bir süre bekle
-      await step.sleep("wait-for-xai-prompt", "10s");
-      
-      // Güncellenmiş prompt'u al
-      const updatedResult = await sql`
-        SELECT prompt, image_prompt
-        FROM generated_content
-        WHERE id = ${blogId}
-      `;
-      
-      if (updatedResult.length > 0) {
-        return updatedResult[0].prompt || updatedResult[0].image_prompt || 
-          `Modern ${blogPost.topic} installation in Mediterranean villa, professional photography, golden hour`;
-      }
-      
-      // Fallback prompt
-      return `Modern ${blogPost.topic} installation in Mediterranean villa, professional photography, golden hour`;
+
+      // Hiç prompt yoksa, topic bazlı prompt üret (XAI kullanmadan)
+      console.log(`No prompt found, generating topic-based prompt for blog ${blogId}`);
+
+      // Topic bazlı Mediterranean Turkish architecture prompt
+      const topicPrompts: Record<string, string> = {
+        "Isı Pompası": "heat pump system with Mediterranean Turkish villa, traditional Muğla red clay roof tiles, stone chimneys, olive grove background",
+        "Güneş Enerjisi": "solar panels on traditional Turkish rooftop with red clay tiles, Bodrum white cubic architecture, olive trees, bougainvillea",
+        "Klima Sistemleri": "VRF system on Mediterranean building with stone walls, Turkish clay roof tiles, olive groves, bougainvillea accents",
+        "Su Arıtma": "water treatment system with Turkish stone architecture, Mediterranean garden setting, traditional chimneys",
+        "Havuz Sistemleri": "pool system with Bodrum white stone walls, Mediterranean tiles, bougainvillea cascading, olive landscape",
+        "Mekanik Tesisat": "mechanical systems with traditional Muğla architecture, red clay tiles, stone chimney details"
+      };
+
+      // Generate prompt based on topic or use fallback
+      return topicPrompts[blogPost.topic] ||
+        `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
     });
 
     // Step 2: Vertex AI ile resim üret
@@ -238,10 +227,9 @@ export const generateImageForBlog = inngest.createFunction(
     await step.run("update-blog-with-image", async () => {
       await sql`
         UPDATE generated_content
-        SET 
+        SET
           image_url = ${uploadedImage.cloudinaryUrl},
           image_prompt = ${finalPrompt},
-          prompt = ${finalPrompt},
           updated_at = ${new Date().toISOString()}
         WHERE id = ${blogId}
       `;
