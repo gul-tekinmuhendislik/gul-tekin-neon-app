@@ -261,37 +261,41 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const apiKey = process.env.XAI_API_KEY;
       if (apiKey) {
         try {
-          const systemPrompt = `You are an expert at creating digital art and illustration prompts for Vertex AI Imagen.
+          const systemPrompt = `You are an expert at creating prompts for Vertex AI Imagen following Google's best practices.
 Your task is to create prompts for engineering service illustrations.
 
-STYLE REQUIREMENTS:
-- Digital illustration and modern digital art style
-- Vector art and flat design aesthetics
-- Vibrant, colorful digital artwork
-- Clean, minimalist composition
-- Professional digital illustrations
-- Mediterranean Turkish color palette (turquoise, terracotta, olive green, purple)
-- Geometric shapes and patterns inspired by Muğla architecture
-- Contemporary digital art techniques
-- Stylized and artistic interpretation
+PROMPT STRUCTURE (in order):
+1. Subject: Engineering service visualization
+2. Style: Digital art, illustration, vector art, flat design
+3. Environment: Mediterranean setting, minimal background
+4. Lighting: Bright, natural daylight
+5. Color: Vibrant Mediterranean palette - turquoise blue, terracotta orange, olive green, purple
+6. Mood: Professional, modern, optimistic
+7. Composition: Centered, balanced, clean
+
+REQUIREMENTS:
+- Use "digital art" or "illustration" style keywords
+- Include specific color names (not just "colorful")
+- Specify lighting conditions
+- Keep prompts concise but descriptive
+- Focus on visual elements, not concepts
 
 AVOID:
-- Photorealistic images or photography
-- 3D renders or CGI
-- People, faces, human figures
-- Text, logos, watermarks
-- Dark or gloomy atmospheres
-- Industrial or urban settings
-- Overly complex compositions
-- Blurry or low quality elements`;
+- "Photorealistic", "photo", "realistic" keywords
+- People, faces, text, logos
+- Dark or industrial themes
+- Complex technical jargon
+- Abstract conceptual descriptions`;
 
-          const userPrompt = `Create a digital illustration prompt for this engineering service:
-Service Name: ${selectedService.hizmet_adi}
+          const userPrompt = `Create a Vertex AI Imagen prompt for this service:
+Service: ${selectedService.hizmet_adi}
 Description: ${selectedService.aciklama || 'Professional engineering service'}
-Category: Technical/Engineering
 
-Generate a single prompt that creates a modern digital art illustration representing this service.
-Use vibrant colors, flat design, and vector art style with Mediterranean Turkish color palette.
+Follow this structure:
+[Subject] [Style] [Environment] [Lighting] [Color] [Mood] [Composition]
+
+Example: "Solar panels on rooftop, digital art illustration, Mediterranean villa setting, bright daylight, turquoise blue and terracotta orange colors, optimistic mood, centered composition"
+
 Return ONLY the prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -352,14 +356,14 @@ Return ONLY the prompt, no explanations.`;
           specificElements += ', modern digital art elements, colorful vector graphics';
         }
 
-        // Create digital art style prompt
-        finalPrompt = `${specificElements}, modern digital illustration, flat design style, vector art aesthetic, vibrant Mediterranean color palette (turquoise, terracotta, olive, purple), minimalist composition, clean professional illustration, stylized artistic interpretation, no photorealism, no text, no people, no 3D, digital art style`;
+        // Create Google-optimized prompt structure: Subject, Style, Environment, Lighting, Color, Mood, Composition
+        finalPrompt = `${specificElements}, digital art illustration style, Mediterranean minimalist background, bright natural daylight, turquoise blue and terracotta orange and olive green colors, professional optimistic mood, centered balanced composition, flat design vector art`;
 
         console.log(`Generated fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
       }
 
-      // Add final style modifiers
-      finalPrompt += `, aspect ratio 16:9, 4K resolution 1920x1080 minimum, professional technical illustration, tagged: ${selectedService.slug}`;
+      // Add aspect ratio only (resolution is handled by sampleImageSize parameter)
+      finalPrompt += `, 16:9 aspect ratio`;
 
       return {
         service: selectedService.hizmet_adi,
