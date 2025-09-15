@@ -3,6 +3,9 @@ import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Mekanik Tesisat',
   description: 'Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri ve mekanik tesisat hizmetleri. Muğla bölgesinde profesyonel mühendislik çözümleri.',

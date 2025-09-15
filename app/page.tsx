@@ -10,6 +10,9 @@ import DatabaseStats from "@/components/DatabaseStats";
 import { TextFlip } from "@/components/ui/text-flip";
 import { getRandomBrands } from "@/lib/get-brands";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Ana Sayfa | Gül-Tekin Mühendislik - Isı Pompası ve Enerji Sistemleri",
   description: "Muğla bölgesinde 20+ yıllık deneyimle ısı pompası, güneş enerjisi, su arıtma ve mekanik tesisat hizmetleri. ISO 9001 sertifikalı, %98 müşteri memnuniyeti.",

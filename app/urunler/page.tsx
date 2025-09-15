@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { getListingImageUrl } from "@/lib/utils/image-optimization";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata = {
   title: "Ürünler - Gül-Tekin Mühendislik",
   description: "Gül-Tekin Mühendislik olarak sunduğumuz ürünler ve çözümler",

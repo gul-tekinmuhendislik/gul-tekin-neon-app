@@ -77,7 +77,7 @@ export const syncUrunlerDaily = inngest.createFunction(
             ${JSON.stringify({
               source: 'inngest_cron',
               schedule: 'daily_3am',
-              duration_ms: 'timestamp' in syncResult ? Date.now() - new Date(syncResult.timestamp).getTime() : 0
+              duration_ms: ('timestamp' in syncResult && syncResult.timestamp) ? Date.now() - new Date(syncResult.timestamp).getTime() : 0
             })}
           )
         `;

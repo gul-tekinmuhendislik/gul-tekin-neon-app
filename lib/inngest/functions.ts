@@ -1960,14 +1960,7 @@ import {
   cloudinaryAutoTag
 } from "./cloudinary-functions";
 
-// Import Airtable image sync functions
-import {
-  syncAirtableImageToCloudinary,
-  bulkSyncMarkalarImages,
-  bulkSyncHizmetlerImages,
-  bulkSyncUrunlerImages,
-  dailyImageSync
-} from "./airtable-image-sync";
+// Airtable sync functions removed - no longer in use
 
 // Import image generation functions
 import {
@@ -2005,11 +1998,6 @@ export {
   cloudinaryDelete,
   cloudinaryOptimizeExisting,
   cloudinaryAutoTag,
-  syncAirtableImageToCloudinary,
-  bulkSyncMarkalarImages,
-  bulkSyncHizmetlerImages,
-  bulkSyncUrunlerImages,
-  dailyImageSync,
   generateImage,
   generateBulkImages,
   // XAI functions

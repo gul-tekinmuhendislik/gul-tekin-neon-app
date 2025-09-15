@@ -17,11 +17,6 @@ import {
   cloudinaryDelete,
   cloudinaryOptimizeExisting,
   cloudinaryAutoTag,
-  syncAirtableImageToCloudinary,
-  bulkSyncMarkalarImages,
-  bulkSyncHizmetlerImages,
-  bulkSyncUrunlerImages,
-  dailyImageSync,
   generatePromptForContent
 } from "@/lib/inngest/functions";
 import {
@@ -88,11 +83,6 @@ export const { GET, POST, PUT } = serve({
     cloudinaryDelete,
     cloudinaryOptimizeExisting,
     cloudinaryAutoTag,
-    syncAirtableImageToCloudinary,
-    bulkSyncMarkalarImages,
-    bulkSyncHizmetlerImages,
-    bulkSyncUrunlerImages,
-    dailyImageSync,
     generateMissingImages,
     scheduledImageGeneration,
     regenerateImage,

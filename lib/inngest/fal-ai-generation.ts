@@ -222,7 +222,7 @@ Return ONLY the prompt, no explanations.`;
       const parameters = helpers.toValue({
         sampleCount: 1,
         aspectRatio: "16:9",
-        sampleImageSize: "1k",  // Reduced from 2k to 1k to prevent oversized outputs
+        sampleImageSize: "2k",  // High quality 2k resolution
         safetySetting: "block_some",
         personGeneration: "dont_allow",
         includeRaiReason: true,
@@ -252,6 +252,9 @@ Return ONLY the prompt, no explanations.`;
       }
 
       const imageBase64 = fields.bytesBase64Encoded.stringValue;
+      if (typeof imageBase64 !== 'string' || imageBase64.length === 0) {
+        throw new Error('Vertex AI returned empty or invalid image data');
+      }
 
       // Log image size for debugging
       const imageSizeKB = Math.round(imageBase64.length * 0.75 / 1024);

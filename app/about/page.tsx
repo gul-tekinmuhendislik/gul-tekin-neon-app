@@ -7,6 +7,9 @@ import ProjectStatisticsServer from '@/components/ProjectStatisticsServer';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Hakkımızda | Gül-Tekin Mühendislik - Mekanik Tesisat',
   description: 'Muğla bölgesinde mekanik tesisat ve enerji verimliliği uzmanı. 20+ yıl deneyim, 500+ tamamlanmış proje. Solimpeks yetkili servisi.',

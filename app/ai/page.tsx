@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import ChatInterface from "../components/ChatInterface";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "AI Sohbet Asistanı",
   description: "Groq'un güçlü Llama 3.3 70B modeli ile desteklenen yapay zeka asistanı. Sorularınıza anında yanıt alın.",

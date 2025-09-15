@@ -6,6 +6,9 @@ import LocalBusinessSchema from "@/components/LocalBusinessSchema";
 import ReviewQRCode from "../components/ReviewQRCode";
 import GoogleMap from "@/components/GoogleMap";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "İletişim",
   description: "Mekanik mühendislik ve AI çözümleri için bizimle iletişime geçin. Projeleriniz için profesyonel destek alın.",

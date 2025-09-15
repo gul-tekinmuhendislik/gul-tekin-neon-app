@@ -98,7 +98,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
       const imageBase64 = fields.bytesBase64Encoded.stringValue;
 
       // Log image size for debugging
-      const imageSizeKB = Math.round(imageBase64.length * 0.75 / 1024);
+      const imageSizeKB = imageBase64 ? Math.round(imageBase64.length * 0.75 / 1024) : 0;
       console.log(`Generated image size: ${imageSizeKB} KB`);
 
       if (imageSizeKB > 5120) {

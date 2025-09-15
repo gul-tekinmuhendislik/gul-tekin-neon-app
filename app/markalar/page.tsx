@@ -29,7 +29,7 @@ export default async function MarkalarPage() {
               {(marka.cloudinary_url || marka.logo_url) ? (
                 <div className="w-full h-32 mb-4 flex items-center justify-center">
                   <Image
-                    src={marka.cloudinary_url || marka.logo_url}
+                    src={marka.cloudinary_url || marka.logo_url || ''}
                     alt={`${marka.marka_adi} logo`}
                     width={150}
                     height={150}

@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { getListingImageUrl } from '@/lib/utils/image-optimization';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Projeler - Gül-Tekin Mühendislik',
   description: 'Gül-Tekin Mühendislik olarak tamamladığımız ve devam eden projelerimiz. Muğla bölgesinde 500+ başarılı proje.',
