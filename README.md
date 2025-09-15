@@ -21,4 +21,5 @@
   - afer vercel lmit
   - Neon markalar tablosuna airtable_hizmetler_id ve airtable_faaliyet_id alanları eklendi
   - feat: Blog içerikleri için Fal.ai görsel üretimi ve Facebook entegrasyonu
+  - monday inngest calismiyor
     
