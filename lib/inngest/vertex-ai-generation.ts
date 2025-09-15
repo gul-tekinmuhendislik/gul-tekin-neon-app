@@ -81,45 +81,77 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
         return blogData.image_prompt;
       }
 
-      // Generate prompt based on blog content
-      console.log(`Generating new prompt for blog ${blogId}`);
+      // Generate dynamic prompt with XAI based on blog content
+      console.log(`Generating dynamic prompt with XAI for blog ${blogId}`);
 
-      // Create a context-aware prompt based on the blog topic - Mediterranean Turkish architecture
-      const topicPrompts: Record<string, string> = {
-        "Isı Pompası": "heat pump system with Mediterranean Turkish villa, traditional Muğla red clay roof tiles, stone chimneys, olive grove background, purple bougainvillea, technical illustration",
-        "Güneş Enerjisi": "solar panels on traditional Turkish rooftop with red clay tiles, Bodrum white cubic architecture, olive trees, bougainvillea flowers, Aegean coastal view",
-        "Klima Sistemleri": "VRF system on Mediterranean building with stone walls, Turkish clay roof tiles, olive groves, bougainvillea accents, professional engineering aesthetics",
-        "Su Arıtma": "water treatment system with Turkish stone architecture, Mediterranean garden setting, traditional chimneys, olive trees, technical drawing style",
-        "Havuz Sistemleri": "pool system with Bodrum white stone walls, Mediterranean tiles, bougainvillea cascading, olive landscape, engineering blueprint aesthetics",
-        "Mekanik Tesisat": "mechanical systems with traditional Muğla architecture, red clay tiles, stone chimney details, Mediterranean flora, technical illustration"
-      };
+      const apiKey = process.env.XAI_API_KEY;
+      if (apiKey) {
+        try {
+          const systemPrompt = `You are an expert at creating image generation prompts for Vertex AI Imagen.
+Your task is to create detailed, photorealistic prompts for blog post hero images.
 
-      let basePrompt = topicPrompts[blogData.topic] ||
-        "engineering equipment with Mediterranean Turkish architecture, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, Bodrum Turkey";
+IMPORTANT STYLE ELEMENTS TO INCLUDE:
+- Mediterranean Turkish architecture (Bodrum/Muğla region)
+- Traditional Muğla red clay roof tiles
+- Stone chimneys and white stone walls
+- Olive groves and purple bougainvillea
+- Natural Mediterranean lighting
+- Professional architectural photography style
+- Technical engineering aesthetics
+- Photorealistic raw style, maximum quality
 
-      // Add title context if available
-      if (blogData.title) {
-        const titleKeywords = blogData.title
-          .toLowerCase()
-          .replace(/[^\w\s]/g, ' ')
-          .split(' ')
-          .filter((word: string) => word.length > 4)
-          .slice(0, 3)
-          .join(' ');
+AVOID:
+- Modern city backgrounds
+- Concrete blocks or industrial zones
+- Northern European architecture
+- Pine trees or lavender fields
+- Cartoon or illustration styles
+- People, text, watermarks, logos
+- Artificial lighting
+- Overly saturated colors`;
 
-        if (titleKeywords) {
-          basePrompt = `${titleKeywords}, ${basePrompt}`;
+          const userPrompt = `Create a detailed image generation prompt for this blog post:
+Title: ${blogData.title}
+Topic: ${blogData.topic}
+Content Preview: ${blogData.content?.substring(0, 500) || ''}
+
+Generate a single, detailed prompt that captures the essence of the content while incorporating Mediterranean Turkish architectural elements.
+Focus on creating a photorealistic, professional photograph suitable for a blog hero image.
+Return ONLY the prompt, no explanations.`;
+
+          const response = await fetch("https://api.x.ai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: "grok-beta",
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+              ],
+              temperature: 0.7,
+              max_tokens: 300
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const generatedPrompt = data.choices[0]?.message?.content?.trim();
+            if (generatedPrompt) {
+              console.log(`XAI generated prompt: ${generatedPrompt.substring(0, 100)}...`);
+              return `${generatedPrompt}, aspect ratio 16:9, ultra high resolution 4K, sharp details`;
+            }
+          }
+        } catch (error) {
+          console.error("Error generating prompt with XAI:", error);
         }
       }
 
-      // Add Mediterranean Turkish architectural style elements with advanced parameters
-      const advancedParams = ", photorealistic raw style, maximum quality 2, aspect ratio 16:9";
-      const mediterraneanStyle = ", Mediterranean Turkish architecture style, traditional elements, natural lighting, clean professional photography, modern engineering aesthetics";
-      const negativeElements = ", no modern city background, no concrete blocks, no industrial zones, no northern European architecture, no pine trees, no lavender fields, no overly saturated colors, no cartoon style, no artificial lighting, no people, no text, no watermarks, no logos";
-
-      basePrompt += advancedParams + mediterraneanStyle + ", technical illustration approach, ultra high resolution 4K, sharp details" + negativeElements;
-
-      return basePrompt;
+      // Fallback to static prompt if XAI fails
+      console.log("XAI unavailable, using fallback prompt");
+      return `Modern ${blogData.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional architectural photography, natural lighting, photorealistic raw style, maximum quality 2, aspect ratio 16:9, ultra high resolution 4K, sharp details, no people, no text, no watermarks, no logos`;
     });
 
     // Step 3: Save prompt to blog if it was generated
@@ -215,44 +247,91 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       const selectedService = services[serviceIndex];
 
-      // Generate dynamic prompt based on service - Mediterranean Turkish architecture specific
-      const promptVariations = [
-        `Abstract geometric illustration of ${selectedService.hizmet_adi} concept, Mediterranean Turkish architecture elements, traditional Muğla red clay roof tiles pattern, minimalist stone chimney shapes, olive grove textures, purple bougainvillea color accents, gradient Mediterranean blues and whites, technical illustration style`,
-        `Artistic representation of ${selectedService.hizmet_adi} technology, traditional Bodrum white cubic houses abstracted, geometric stone wall patterns, turquoise Aegean sea colors, modern engineering aesthetics, clean professional design, natural lighting effects, creative visualization`,
-        `Contemporary abstract illustration showing ${selectedService.hizmet_adi} essence, simplified Milas stone architecture forms, terracotta and earth tones from clay tiles, olive tree silhouettes, bougainvillea purple gradients, technical drawing elements, modern Turkish architectural style`,
-        `Stylized conceptual art of ${selectedService.hizmet_adi} innovation, Yatağan pine forest abstract patterns, traditional stone chimney geometric shapes, Mediterranean roof tile textures, olive and bougainvillea natural elements, engineering blueprint aesthetics, professional technical illustration`
-      ];
+      // Generate dynamic prompt with XAI based on service
+      let finalPrompt = "";
 
-      // Use service description if available for more context
-      const description = selectedService.aciklama || selectedService.hizmet_adi;
+      const apiKey = process.env.XAI_API_KEY;
+      if (apiKey) {
+        try {
+          const systemPrompt = `You are an expert at creating abstract, artistic image generation prompts for Vertex AI Imagen.
+Your task is to create prompts for engineering service visualizations.
 
-      // Select a prompt variation based on current time
-      const now = new Date();
-      const promptIndex = Math.floor(now.getMinutes() / 15) % promptVariations.length;
-      let basePrompt = promptVariations[promptIndex];
+STYLE REQUIREMENTS:
+- Abstract geometric illustrations (NOT photorealistic)
+- Technical engineering blueprint aesthetics
+- Mediterranean Turkish architectural elements as abstract patterns
+- Muğla red clay roof tile patterns (geometric, not literal)
+- Stone chimney shapes (simplified, abstract)
+- Olive grove textures and purple bougainvillea color gradients
+- Clean, modern, professional technical illustration style
 
-      // Enhance prompt with description context
-      if (selectedService.aciklama && selectedService.aciklama.length > 20) {
-        // Extract key terms from Turkish description and create English prompt
-        const enhancedContext = description.toLowerCase().includes('güneş') ? 'abstract solar energy concept' :
-                               description.toLowerCase().includes('ısı pompa') ? 'stylized heat pump visualization' :
-                               description.toLowerCase().includes('klima') ? 'artistic climate control representation' :
-                               description.toLowerCase().includes('su arıt') ? 'abstract water flow patterns' :
-                               description.toLowerCase().includes('havuz') ? 'geometric pool design elements' :
-                               description.toLowerCase().includes('sulama') ? 'organic irrigation patterns' :
-                               description.toLowerCase().includes('yangın') ? 'safety system iconography' :
-                               description.toLowerCase().includes('otomasyon') ? 'smart technology symbols' :
-                               'abstract engineering concepts';
+AVOID:
+- Photorealistic images
+- Actual buildings or real structures
+- People, faces, human figures
+- Text, logos, watermarks
+- Modern city backgrounds
+- Concrete blocks, industrial zones
+- Northern European elements
+- Pine trees, lavender fields`;
 
-        basePrompt = `${enhancedContext}, ${basePrompt}`;
+          const userPrompt = `Create an abstract, artistic visualization prompt for this engineering service:
+Service Name: ${selectedService.hizmet_adi}
+Description: ${selectedService.aciklama || 'Professional engineering service'}
+Category: Technical/Engineering
+
+Generate a single prompt that creates an abstract, geometric illustration representing this service.
+Use Mediterranean Turkish design elements as abstract patterns and color schemes.
+Return ONLY the prompt, no explanations.`;
+
+          const response = await fetch("https://api.x.ai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: "grok-beta",
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+              ],
+              temperature: 0.8,
+              max_tokens: 250
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const generatedPrompt = data.choices[0]?.message?.content?.trim();
+            if (generatedPrompt) {
+              console.log(`XAI generated prompt for ${selectedService.hizmet_adi}`);
+              finalPrompt = generatedPrompt;
+            }
+          }
+        } catch (error) {
+          console.error("Error generating prompt with XAI:", error);
+        }
       }
 
-      // Add consistent Mediterranean Turkish architectural style modifiers with negative prompts
-      const styleModifiers = "photorealistic raw style, maximum quality 2, aspect ratio 16:9, ultra detailed, professional photography";
-      const positiveElements = "abstract Mediterranean Turkish architecture illustration, traditional Muğla elements, red clay roof tile patterns, stone chimney geometric forms, olive grove and bougainvillea accents, technical engineering drawing style, clean professional composition, natural Mediterranean lighting";
-      const negativePrompts = "no modern city background, no concrete blocks, no industrial zones, no northern European architecture, no pine trees, no lavender fields, no overly saturated colors, no cartoon style, no artificial lighting, no text, no watermarks, no logos";
+      // Fallback to static prompt if XAI fails or is not available
+      if (!finalPrompt) {
+        const description = selectedService.aciklama || selectedService.hizmet_adi;
+        let basePrompt = `Abstract geometric illustration of ${selectedService.hizmet_adi} concept`;
 
-      const finalPrompt = `${basePrompt}, ${styleModifiers}, ${positiveElements}, 4K resolution 1920x1080 minimum, artistic technical interpretation, vibrant Turkish Mediterranean color palette, ${negativePrompts}, tagged: ${selectedService.slug}`;
+        if (description.toLowerCase().includes('güneş')) {
+          basePrompt = `Abstract solar energy patterns, geometric sun rays, golden gradient meshes, ${basePrompt}`;
+        } else if (description.toLowerCase().includes('ısı pompa')) {
+          basePrompt = `Stylized heat flow visualization, thermal gradient patterns, ${basePrompt}`;
+        } else if (description.toLowerCase().includes('klima')) {
+          basePrompt = `Air flow patterns, cooling wave abstractions, ${basePrompt}`;
+        }
+
+        finalPrompt = `${basePrompt}, Mediterranean Turkish design elements, abstract Muğla tile patterns, geometric olive branch shapes, purple and terracotta color gradients, technical blueprint style, clean modern illustration, no photorealism, no text, no people`;
+      }
+
+      // Add final style modifiers
+      finalPrompt += `, aspect ratio 16:9, 4K resolution 1920x1080 minimum, professional technical illustration, tagged: ${selectedService.slug}`;
 
       return {
         service: selectedService.hizmet_adi,
