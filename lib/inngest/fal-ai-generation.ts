@@ -142,10 +142,10 @@ AVOID:
 - People, text, watermarks, logos`;
 
         const userPrompt = `Create a concise image prompt for this blog post:
-Title: ${blogPost.title}
-Topic: ${blogPost.topic}
+Title: ${blogPost.title.substring(0, 100)}
+Topic: ${blogPost.topic.substring(0, 50)}
 
-Generate a brief, focused prompt (max 150 words) with Mediterranean Turkish elements.
+Generate a brief, focused prompt (max 100 words) with Mediterranean Turkish elements.
 Return ONLY the prompt, no explanations.`;
 
         const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -161,7 +161,7 @@ Return ONLY the prompt, no explanations.`;
               { role: "user", content: userPrompt }
             ],
             temperature: 0.7,
-            max_tokens: 150
+            max_tokens: 120
           })
         });
 
@@ -169,8 +169,10 @@ Return ONLY the prompt, no explanations.`;
           const data = await response.json();
           const generatedPrompt = data.choices[0]?.message?.content?.trim();
           if (generatedPrompt) {
-            console.log(`XAI generated prompt: ${generatedPrompt.substring(0, 100)}...`);
-            return generatedPrompt;
+            // Limit prompt to 250 characters to prevent oversized outputs
+            const limitedPrompt = generatedPrompt.substring(0, 250);
+            console.log(`XAI generated prompt (limited): ${limitedPrompt.substring(0, 100)}...`);
+            return limitedPrompt;
           }
         }
       } catch (error) {
@@ -220,7 +222,7 @@ Return ONLY the prompt, no explanations.`;
       const parameters = helpers.toValue({
         sampleCount: 1,
         aspectRatio: "16:9",
-        sampleImageSize: "2k",
+        sampleImageSize: "1k",  // Reduced from 2k to 1k to prevent oversized outputs
         safetySetting: "block_some",
         personGeneration: "dont_allow",
         includeRaiReason: true,
@@ -251,10 +253,20 @@ Return ONLY the prompt, no explanations.`;
 
       const imageBase64 = fields.bytesBase64Encoded.stringValue;
 
+      // Log image size for debugging
+      const imageSizeKB = Math.round(imageBase64.length * 0.75 / 1024);
+      console.log(`Generated image size: ${imageSizeKB} KB`);
+
+      // Check if image is too large (over 5MB)
+      if (imageSizeKB > 5120) {
+        console.warn(`Image size (${imageSizeKB} KB) exceeds 5MB, may cause rendering issues`);
+      }
+
       // Base64'i data URL'e çevir (Cloudinary upload için)
       const dataUrl = `data:image/png;base64,${imageBase64}`;
 
       // Fal.ai response formatına benzer bir yapı döndür
+      // Limit prompt in response to prevent oversized outputs
       return {
         images: [{
           url: dataUrl,
@@ -262,7 +274,7 @@ Return ONLY the prompt, no explanations.`;
           height: 1152,  // 16:9 aspect ratio for 2K
           content_type: 'image/png'
         }],
-        prompt: finalPrompt
+        prompt: finalPrompt.substring(0, 250)  // Limit prompt size in response
       };
     });
 

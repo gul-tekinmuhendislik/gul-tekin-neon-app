@@ -64,7 +64,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
       const parameters = helpers.toValue({
         sampleCount: numberOfImages,
         aspectRatio: aspectRatio,
-        sampleImageSize: "2k",
+        sampleImageSize: "1k",  // Reduced to prevent oversized outputs
         safetySetting: safetySetting,
         personGeneration: personGeneration,
         includeRaiReason: true,
@@ -97,9 +97,17 @@ export const handleVertexAIGeneration = inngest.createFunction(
 
       const imageBase64 = fields.bytesBase64Encoded.stringValue;
 
+      // Log image size for debugging
+      const imageSizeKB = Math.round(imageBase64.length * 0.75 / 1024);
+      console.log(`Generated image size: ${imageSizeKB} KB`);
+
+      if (imageSizeKB > 5120) {
+        console.warn(`Image size (${imageSizeKB} KB) exceeds 5MB, may cause rendering issues`);
+      }
+
       return {
         imageBase64,
-        prompt
+        prompt: prompt.substring(0, 300)  // Limit prompt size in response
       };
     });
 
@@ -186,7 +194,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
           'success',
           ${JSON.stringify({
             contentId: contentId,
-            prompt: prompt.substring(0, 500),
+            prompt: prompt.substring(0, 200),
             imageUrl: cloudinaryResult.url
           })},
           ${JSON.stringify({
@@ -326,10 +334,10 @@ AVOID:
           const userPrompt = `Create a detailed image generation prompt for this blog post:
 Title: ${blogData.title}
 Topic: ${blogData.topic}
-Content Preview: ${blogData.content?.substring(0, 500) || ''}
+Content Preview: ${blogData.content?.substring(0, 300) || ''}
 
-Generate a single, detailed prompt that captures the essence of the content while incorporating Mediterranean Turkish architectural elements.
-Focus on creating a photorealistic, professional photograph suitable for a blog hero image.
+Generate a concise prompt (max 150 words) that captures the essence of the content.
+Focus on photorealistic, professional photography.
 Return ONLY the prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -345,7 +353,7 @@ Return ONLY the prompt, no explanations.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.7,
-              max_tokens: 300
+              max_tokens: 200
             })
           });
 
@@ -353,8 +361,10 @@ Return ONLY the prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              console.log(`XAI generated prompt: ${generatedPrompt.substring(0, 100)}...`);
-              return `${generatedPrompt}, aspect ratio 16:9, ultra high resolution 4K, sharp details`;
+              // Limit prompt to prevent oversized outputs
+              const limitedPrompt = generatedPrompt.substring(0, 300);
+              console.log(`XAI generated prompt (limited): ${limitedPrompt.substring(0, 100)}...`);
+              return `${limitedPrompt}, aspect ratio 16:9`;
             }
           }
         } catch (error) {
@@ -548,7 +558,7 @@ Return ONLY the detailed prompt, no explanations.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.7,
-              max_tokens: 500
+              max_tokens: 300
             })
           });
 
@@ -556,8 +566,9 @@ Return ONLY the detailed prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              console.log(`XAI generated prompt for ${selectedService.hizmet_adi}`);
-              finalPrompt = generatedPrompt;
+              // Limit prompt to prevent oversized outputs
+              finalPrompt = generatedPrompt.substring(0, 400);
+              console.log(`XAI generated prompt for ${selectedService.hizmet_adi} (limited to 400 chars)`);
             }
           }
         } catch (error) {
@@ -614,8 +625,8 @@ Return ONLY the detailed prompt, no explanations.`;
         console.log(`Generated enhanced fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
       }
 
-      // Add aspect ratio only (resolution is handled by sampleImageSize parameter)
-      finalPrompt += `, 16:9 aspect ratio`;
+      // Add aspect ratio and ensure final prompt is not too long
+      finalPrompt = finalPrompt.substring(0, 450) + `, 16:9 aspect ratio`;
 
       return {
         service: selectedService.hizmet_adi,
@@ -820,7 +831,7 @@ Return ONLY the detailed prompt, no explanations.`;
           ${JSON.stringify({
             service: service,
             slug: slug,
-            prompt: prompt.substring(0, 500),
+            prompt: prompt.substring(0, 200),
             hour: new Date().getHours(),
             serviceIndex: serviceIndex
           })},
