@@ -37,16 +37,16 @@ export async function GET() {
 
     // Save to database (optional)
     const dbResult = await sql`
-      INSERT INTO generated_images (
+      INSERT INTO vertex_images (
         prompt,
         enhanced_prompt,
         image_url,
         cloudinary_public_id,
         model,
         provider,
-        width,
-        height,
-        metadata
+        aspect_ratio,
+        metadata,
+        status
       ) VALUES (
         'Test Cloudinary upload from Vertex AI simulation',
         'Testing Cloudinary integration with responsive URLs',
@@ -54,13 +54,15 @@ export async function GET() {
         ${uploadResult.data.public_id},
         'test-model',
         'cloudinary-test',
-        ${uploadResult.data.width},
-        ${uploadResult.data.height},
+        '16:9',
         ${JSON.stringify({
           test: true,
           responsiveUrls,
+          width: uploadResult.data.width,
+          height: uploadResult.data.height,
           uploadedAt: new Date().toISOString()
-        })}
+        })},
+        'completed'
       )
       RETURNING id, image_url, cloudinary_public_id
     `;
