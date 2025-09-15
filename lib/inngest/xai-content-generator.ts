@@ -302,7 +302,7 @@ interface ContentData {
   keywords?: string[];
 }
 
-function createAdvancedPrompt(content: ContentData): PromptResult {
+async function createAdvancedPrompt(content: ContentData): Promise<PromptResult> {
   // Topic translations (Turkish -> English)
   const topicTranslations: Record<string, string> = {
     "Su Arıtma Sistemleri": "water purification systems",
@@ -344,34 +344,50 @@ function createAdvancedPrompt(content: ContentData): PromptResult {
     }
   };
 
-  // Color schemes with hex codes
-  const colorSchemes: Record<string, Record<string, string>> = {
-    "water purification": {
-      primary: "#0EA5E9 to #E0F2FE",
-      accent: "#10B981",
-      emotion: "evoking clarity, purity, and technological precision"
-    },
-    "heat pump": {
-      primary: "#F97316 to #0284C7",
-      accent: "#94A3B8",
-      emotion: "representing thermal dynamics and energy efficiency"
-    },
-    "solar panel": {
-      primary: "#FCD34D to #3B82F6",
-      accent: "#1E293B",
-      emotion: "conveying sustainable energy and innovation"
-    },
-    "neon signage": {
-      primary: "#F472B6 to #8B5CF6",
-      accent: "#0F172A",
-      emotion: "vibrant illumination and urban energy"
-    },
-    "default": {
-      primary: "#3B82F6 to #1E40AF",
-      accent: "#64748B",
-      emotion: "professional technology and reliability"
-    }
-  };
+  // Get color scheme from database
+  const topicEng = topicTranslations[content.topic] || content.topic;
+  const topicKey = topicEng.toLowerCase().replace(" systems", "").replace(" ", "_");
+
+  // Fetch color scheme from database
+  let colorScheme = await sql`
+    SELECT * FROM color_schemes
+    WHERE topic_key = ${topicKey} AND is_active = true
+    ORDER BY RANDOM()
+    LIMIT 1
+  `;
+
+  // Fallback to default if no specific scheme found
+  if (colorScheme.length === 0) {
+    colorScheme = await sql`
+      SELECT * FROM color_schemes
+      WHERE topic_key = 'default' AND is_active = true
+      LIMIT 1
+    `;
+  }
+
+  // Fallback to hardcoded if database is empty
+  let colors: { primary: string; accent: string; emotion: string };
+  if (colorScheme.length > 0) {
+    const scheme = colorScheme[0];
+    const gradientColors = scheme.primary_gradient as string[];
+    const accentColors = scheme.accent_colors as string[];
+
+    // Create gradient string from 4 colors
+    const gradientString = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
+
+    colors = {
+      primary: gradientString,
+      accent: accentColors.join(", "),
+      emotion: scheme.emotion_description || "professional technology and reliability"
+    };
+  } else {
+    // Hardcoded fallback
+    colors = {
+      primary: "#00D4FF to #FF00D4 to #D4FF00 to #FF7700",
+      accent: "#00FF88, #8800FF",
+      emotion: "universal tech aesthetic with balanced neon spectrum"
+    };
+  }
 
   // Composition rules
   const composition = {
@@ -389,13 +405,8 @@ function createAdvancedPrompt(content: ContentData): PromptResult {
     coastal: "wave patterns as decorative elements, seagull silhouettes in distance"
   };
 
-  // Determine topic
-  const topicEng = topicTranslations[content.topic] || content.topic;
-  const topicKey = topicEng.toLowerCase().replace(" systems", "").replace(" ", "_");
-
   // Select visual elements
   const visuals = visualElements[topicKey] || visualElements.default;
-  const colors = colorSchemes[topicKey] || colorSchemes.default;
 
   // Check for regional keywords
   const keywords = content.keywords || [];
@@ -525,8 +536,65 @@ export const generatePromptForContent = inngest.createFunction(
       const prompts = [];
       
       for (const content of contents) {
-        // Use advanced prompt generator
-        const advancedPrompt = createAdvancedPrompt(content as ContentData);
+        // Topic translations (inline for Inngest)
+        const topicTranslations: Record<string, string> = {
+          "Su Arıtma Sistemleri": "water purification systems",
+          "Isı Pompası": "heat pump systems",
+          "Güneş Paneli": "solar panel systems",
+          "Klima Sistemleri": "air conditioning systems",
+          "Yerden Isıtma": "underfloor heating systems",
+          "Hidrofor": "water booster systems",
+          "Neon Tabela": "neon signage systems",
+          "LED Tabela": "LED display systems"
+        };
+
+        const topicEng = topicTranslations[content.topic] || content.topic;
+        const topicKey = topicEng.toLowerCase().replace(" systems", "").replace(" ", "_");
+
+        // Fetch color scheme from database
+        let colorScheme = await sql`
+          SELECT * FROM color_schemes
+          WHERE topic_key = ${topicKey} AND is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `;
+
+        // Fallback to default if no specific scheme found
+        if (colorScheme.length === 0) {
+          colorScheme = await sql`
+            SELECT * FROM color_schemes
+            WHERE topic_key = 'default' AND is_active = true
+            LIMIT 1
+          `;
+        }
+
+        // Build color information
+        let primaryGradient = "#00D4FF to #FF00D4 to #D4FF00 to #FF7700";
+        let accentColors = "#00FF88, #8800FF";
+        let emotionDescription = "universal tech aesthetic with balanced neon spectrum";
+
+        if (colorScheme.length > 0) {
+          const scheme = colorScheme[0];
+          const gradientColors = scheme.primary_gradient as string[];
+          const accents = scheme.accent_colors as string[];
+          primaryGradient = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
+          accentColors = accents.join(", ");
+          emotionDescription = scheme.emotion_description || emotionDescription;
+        }
+
+        // Use inline prompt generation
+        const advancedPrompt = {
+          prompt: `${topicEng} hero banner illustration for technical blog, 16:9 aspect ratio (1920x1080), web-optimized with high contrast, VISUAL ELEMENTS: technical system components in exploded view, control panels with indicators, flowing energy patterns, geometric technical shapes, system flow diagram, efficiency metrics, component connections, COMPOSITION: asymmetrical balance with 60/40 visual weight distribution, primary element positioned at golden ratio intersection (left third), 30% negative space on right side for headline placement, 3-layer depth: background gradient, main illustration, foreground accents, safe area 10% from edges for responsive cropping, COLOR SCHEME: Primary gradient: ${primaryGradient}, Accent highlights: ${accentColors}, ${emotionDescription}, STYLE: Modern editorial vector illustration, Flat design with subtle gradients and glass morphism effects, Isometric technical elements mixed with organic flow, Infographic clarity with artistic sophistication, Clean geometric shapes with smooth bezier curves, Professional digital art quality, ultra-detailed, ATMOSPHERE: Universal technical aesthetic, Conveying trust, innovation, and professional expertise, Balanced between technical accuracy and visual appeal, TECHNICAL REQUIREMENTS: High resolution suitable for retina displays, Strong contrast for text overlay readability, Scalable composition for responsive design, Print-ready color profile (sRGB)`,
+          negativePrompt: "no text, no typography, no letters, no numbers, no logos, no human figures, no faces, no hands, no photorealistic elements, no photography, no cartoon style, no anime, no sketch, no pencil drawing, no cluttered composition, no busy patterns, no low contrast, no muddy colors, no oversaturation, no watermarks, no signatures, no copyright symbols, no stock photo aesthetics, no generic clip art, avoid cliché business imagery, avoid outdated design trends",
+          parameters: {
+            width: 1920,
+            height: 1080,
+            quality: "high",
+            stylePreset: "digital-art",
+            cfgScale: 7.5,
+            steps: 30
+          }
+        };
         
         // Also generate XAI-enhanced version for comparison
         const systemPrompt = `You are an expert at refining and enhancing image generation prompts. 
