@@ -84,18 +84,18 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
       // Generate prompt based on blog content
       console.log(`Generating new prompt for blog ${blogId}`);
 
-      // Create a context-aware prompt based on the blog topic
+      // Create a context-aware prompt based on the blog topic - Mediterranean Turkish architecture
       const topicPrompts: Record<string, string> = {
-        "Isı Pompası": "modern heat pump system installation in luxury Bodrum villa, professional HVAC equipment, energy efficient heating cooling technology",
-        "Güneş Enerjisi": "solar panel installation on Mediterranean rooftop, photovoltaic system in Bodrum, sustainable energy solution",
-        "Klima Sistemleri": "modern VRF air conditioning system, multi-split climate control installation, professional HVAC technology",
-        "Su Arıtma": "advanced water treatment facility, reverse osmosis purification system, industrial water filtration technology",
-        "Havuz Sistemleri": "luxury swimming pool with advanced filtration, modern pool equipment room, professional pool maintenance systems",
-        "Mekanik Tesisat": "professional mechanical installation, industrial piping systems, HVAC mechanical room equipment"
+        "Isı Pompası": "heat pump system with Mediterranean Turkish villa, traditional Muğla red clay roof tiles, stone chimneys, olive grove background, purple bougainvillea, technical illustration",
+        "Güneş Enerjisi": "solar panels on traditional Turkish rooftop with red clay tiles, Bodrum white cubic architecture, olive trees, bougainvillea flowers, Aegean coastal view",
+        "Klima Sistemleri": "VRF system on Mediterranean building with stone walls, Turkish clay roof tiles, olive groves, bougainvillea accents, professional engineering aesthetics",
+        "Su Arıtma": "water treatment system with Turkish stone architecture, Mediterranean garden setting, traditional chimneys, olive trees, technical drawing style",
+        "Havuz Sistemleri": "pool system with Bodrum white stone walls, Mediterranean tiles, bougainvillea cascading, olive landscape, engineering blueprint aesthetics",
+        "Mekanik Tesisat": "mechanical systems with traditional Muğla architecture, red clay tiles, stone chimney details, Mediterranean flora, technical illustration"
       };
 
       let basePrompt = topicPrompts[blogData.topic] ||
-        "professional engineering equipment installation, modern industrial technology, Bodrum Turkey";
+        "engineering equipment with Mediterranean Turkish architecture, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, Bodrum Turkey";
 
       // Add title context if available
       if (blogData.title) {
@@ -112,8 +112,8 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
         }
       }
 
-      // Add professional photography style
-      basePrompt += ", professional architectural photography, bright daylight, clean modern design, ultra high resolution 4K, sharp details, no people, no text, no logos";
+      // Add Mediterranean Turkish architectural style elements
+      basePrompt += ", Mediterranean Turkish architecture style, traditional elements, natural lighting, clean professional photography, modern engineering aesthetics, technical illustration approach, ultra high resolution 4K, sharp details, no people, no text, no logos";
 
       return basePrompt;
     });
@@ -211,12 +211,12 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       const selectedService = services[serviceIndex];
 
-      // Generate dynamic prompt based on service - Bodrum/Muğla region specific
+      // Generate dynamic prompt based on service - Mediterranean Turkish architecture specific
       const promptVariations = [
-        `Abstract geometric illustration of ${selectedService.hizmet_adi} concept, minimalist Bodrum architecture elements, flowing shapes, gradient Mediterranean blues and whites, artistic interpretation, stylized composition`,
-        `Artistic representation of ${selectedService.hizmet_adi} technology, abstract Muğla patterns, warm color palette, conceptual design elements, modern art style, creative visualization`,
-        `Contemporary abstract illustration showing ${selectedService.hizmet_adi} essence, simplified Milas architectural forms, pastel colors, geometric patterns, artistic interpretation, design-focused`,
-        `Stylized conceptual art of ${selectedService.hizmet_adi} innovation, abstract Yatağan landscape elements, flowing organic shapes, harmonious color composition, illustrative style`
+        `Abstract geometric illustration of ${selectedService.hizmet_adi} concept, Mediterranean Turkish architecture elements, traditional Muğla red clay roof tiles pattern, minimalist stone chimney shapes, olive grove textures, purple bougainvillea color accents, gradient Mediterranean blues and whites, technical illustration style`,
+        `Artistic representation of ${selectedService.hizmet_adi} technology, traditional Bodrum white cubic houses abstracted, geometric stone wall patterns, turquoise Aegean sea colors, modern engineering aesthetics, clean professional design, natural lighting effects, creative visualization`,
+        `Contemporary abstract illustration showing ${selectedService.hizmet_adi} essence, simplified Milas stone architecture forms, terracotta and earth tones from clay tiles, olive tree silhouettes, bougainvillea purple gradients, technical drawing elements, modern Turkish architectural style`,
+        `Stylized conceptual art of ${selectedService.hizmet_adi} innovation, Yatağan pine forest abstract patterns, traditional stone chimney geometric shapes, Mediterranean roof tile textures, olive and bougainvillea natural elements, engineering blueprint aesthetics, professional technical illustration`
       ];
 
       // Use service description if available for more context
@@ -243,8 +243,8 @@ export const generateVertexImagesHourly = inngest.createFunction(
         basePrompt = `${enhancedContext}, ${basePrompt}`;
       }
 
-      // Add consistent style modifiers for more artistic output
-      const finalPrompt = `${basePrompt}, abstract illustration, conceptual art, minimalist design, vector art style, flat design elements, creative composition, modern graphic design, 4K resolution 1920x1080 minimum, no photorealism, no text, no logos, artistic interpretation, stylized and simplified forms, vibrant color gradients, tagged: ${selectedService.slug}`;
+      // Add consistent Mediterranean Turkish architectural style modifiers
+      const finalPrompt = `${basePrompt}, abstract Mediterranean Turkish architecture illustration, traditional Muğla elements, red clay roof tile patterns, stone chimney geometric forms, olive grove and bougainvillea accents, technical engineering drawing style, clean professional composition, natural Mediterranean lighting, vector art style, flat design elements, 4K resolution 1920x1080 minimum, no photorealism, no text, no logos, artistic technical interpretation, vibrant Turkish Mediterranean color palette, tagged: ${selectedService.slug}`;
 
       return {
         service: selectedService.hizmet_adi,
