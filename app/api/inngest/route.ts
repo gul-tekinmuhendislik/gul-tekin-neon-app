@@ -33,11 +33,6 @@ import {
   autoShareNewBlogOnTwitter
 } from "@/lib/inngest/twitter-integration";
 import {
-  syncProjelerDaily,
-  syncProjelerManual,
-  syncSingleProject
-} from "@/lib/inngest/projeler-sync";
-import {
   syncUrunlerDaily,
   syncUrunlerManual
 } from "@/lib/inngest/urunler-sync";
@@ -84,9 +79,6 @@ export const { GET, POST, PUT } = serve({
     postToFacebook,
     checkAndRefreshFacebookToken,
     monitorTokenExpiry,
-    syncProjelerDaily,
-    syncProjelerManual,
-    syncSingleProject,
     syncUrunlerDaily,
     syncUrunlerManual,
     syncAnafaaliyetDaily,
