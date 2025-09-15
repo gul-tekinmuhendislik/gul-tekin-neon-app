@@ -324,18 +324,36 @@ Return ONLY the prompt, no explanations.`;
 
       // Fallback to static prompt if XAI fails or is not available
       if (!finalPrompt) {
-        const description = selectedService.aciklama || selectedService.hizmet_adi;
-        let basePrompt = `Abstract geometric illustration of ${selectedService.hizmet_adi} concept`;
+        const description = (selectedService.aciklama || selectedService.hizmet_adi).toLowerCase();
 
-        if (description.toLowerCase().includes('güneş')) {
-          basePrompt = `Abstract solar energy patterns, geometric sun rays, golden gradient meshes, ${basePrompt}`;
-        } else if (description.toLowerCase().includes('ısı pompa')) {
-          basePrompt = `Stylized heat flow visualization, thermal gradient patterns, ${basePrompt}`;
-        } else if (description.toLowerCase().includes('klima')) {
-          basePrompt = `Air flow patterns, cooling wave abstractions, ${basePrompt}`;
+        // Generate service-specific abstract elements based on actual service data
+        let specificElements = `Abstract ${selectedService.hizmet_adi.toLowerCase()} visualization`;
+
+        // Dynamic keyword detection based on service description
+        const keywords = description.split(/[\s,.-]+/).filter((word: string) => word.length > 2);
+
+        // Build prompt elements based on actual service keywords
+        if (keywords.some((word: string) => ['güneş', 'solar', 'photovoltaic', 'panel'].includes(word))) {
+          specificElements += ', solar energy patterns, geometric sun rays, golden gradient meshes';
+        } else if (keywords.some((word: string) => ['ısı', 'heat', 'pump', 'pompa', 'ısıtma'].includes(word))) {
+          specificElements += ', thermal gradient patterns, heat flow visualization, coil spirals';
+        } else if (keywords.some((word: string) => ['klima', 'soğutma', 'havalandırma', 'conditioning'].includes(word))) {
+          specificElements += ', air flow patterns, cooling abstractions, ventilation spirals';
+        } else if (keywords.some((word: string) => ['su', 'water', 'arıtma', 'filtrasyon', 'purification'].includes(word))) {
+          specificElements += ', water flow patterns, filtration membranes, crystal droplets';
+        } else if (keywords.some((word: string) => ['neon', 'tabela', 'aydınlatma', 'sign', 'lighting'].includes(word))) {
+          specificElements += ', geometric light patterns, illuminated elements, glowing circuits';
+        } else if (keywords.some((word: string) => ['baca', 'chimney', 'duman', 'smoke', 'exhaust'].includes(word))) {
+          specificElements += ', chimney geometry, airflow dynamics, ventilation abstractions';
+        } else {
+          // Use generic engineering elements with service-specific focus
+          specificElements += ', technical engineering elements, geometric precision patterns';
         }
 
-        finalPrompt = `${basePrompt}, Mediterranean Turkish design elements, abstract Muğla tile patterns, geometric olive branch shapes, purple and terracotta color gradients, technical blueprint style, clean modern illustration, no photorealism, no text, no people`;
+        // Create comprehensive prompt with service information
+        finalPrompt = `${specificElements}, abstract geometric illustration representing ${selectedService.hizmet_adi} engineering service, Mediterranean Turkish design elements, Muğla tile patterns, olive branch geometry, purple and terracotta gradients, technical blueprint aesthetic, clean modern illustration, no photorealism, no text, no people, no blurry, no artifacts, no oversaturated, professional technical visualization`;
+
+        console.log(`Generated fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
       }
 
       // Add final style modifiers
@@ -439,7 +457,13 @@ Return ONLY the prompt, no explanations.`;
 
         const imageBase64 = fields.bytesBase64Encoded.stringValue;
 
-        // Upload to Cloudinary
+        if (!imageBase64) {
+          throw new Error('Image Base64 data is empty');
+        }
+
+        console.log(`Generated image size: ${Math.round(imageBase64.length * 0.75 / 1024)} KB`);
+
+        // Upload to Cloudinary with error handling
         const { v2: cloudinary } = await import('cloudinary');
         cloudinary.config({
           cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -447,20 +471,30 @@ Return ONLY the prompt, no explanations.`;
           api_secret: process.env.CLOUDINARY_API_SECRET,
         });
 
-        const uploadResult = await cloudinary.uploader.upload(
-          `data:image/png;base64,${imageBase64}`,
-          {
-            folder: 'vertex-ai-services',
-            public_id: `service-${slug}-${Date.now()}`,
-            tags: ['vertex-ai', 'service-image', 'fast-model', slug],
-            context: {
-              prompt: prompt.slice(0, 200),
-              service: service,
-              model: 'imagen-3.0-fast-generate-001',
-              generated_at: new Date().toISOString()
+        console.log(`Uploading to Cloudinary for service: ${service}`);
+
+        let uploadResult;
+        try {
+          uploadResult = await cloudinary.uploader.upload(
+            `data:image/png;base64,${imageBase64}`,
+            {
+              folder: 'vertex-ai-services',
+              public_id: `service-${slug}-${Date.now()}`,
+              tags: ['vertex-ai', 'service-image', 'fast-model', slug],
+              context: {
+                prompt: prompt.slice(0, 200),
+                service: service,
+                model: 'imagen-3.0-fast-generate-001',
+                generated_at: new Date().toISOString()
+              }
             }
-          }
-        );
+          );
+
+          console.log(`Cloudinary upload successful: ${uploadResult.secure_url}`);
+        } catch (cloudinaryError) {
+          console.error(`Cloudinary upload failed for service ${service}:`, cloudinaryError);
+          throw new Error(`Cloudinary upload failed: ${cloudinaryError instanceof Error ? cloudinaryError.message : 'Unknown error'}`);
+        }
 
         // Save to database
         await sql`
