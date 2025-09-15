@@ -54,10 +54,6 @@ jest.mock('groq-sdk', () => {
 });
 jest.mock('../../facebook-api');
 jest.mock('exa-js');
-jest.mock('../hizmetler-sync', () => ({
-  syncHizmetlerDaily: jest.fn(),
-  syncHizmetlerManual: jest.fn()
-}));
 jest.mock('../../airtable-markalar-client', () => ({
   getAirtableBase: jest.fn(),
   syncMarkalarToNeon: jest.fn()
