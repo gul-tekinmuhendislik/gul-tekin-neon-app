@@ -466,42 +466,74 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const apiKey = process.env.XAI_API_KEY;
       if (apiKey) {
         try {
-          const systemPrompt = `You are an expert at creating prompts for Vertex AI Imagen following Google's best practices.
-Your task is to create prompts for engineering service illustrations.
+          const systemPrompt = `You are an expert at creating highly detailed, visually rich prompts for Vertex AI Imagen 3.0 following Google's best practices.
+Your task is to create sophisticated prompts for engineering service hero banner illustrations with 16:9 aspect ratio.
 
-PROMPT STRUCTURE (in order):
-1. Subject: Engineering service visualization
-2. Style: Digital art, illustration, vector art, flat design
-3. Environment: Mediterranean setting, minimal background
-4. Lighting: Bright, natural daylight
-5. Color: Vibrant Mediterranean palette - turquoise blue, terracotta orange, olive green, purple
-6. Mood: Professional, modern, optimistic
-7. Composition: Centered, balanced, clean
+ADVANCED PROMPT STRUCTURE:
+1. PRIMARY SUBJECT: Detailed technical visualization with specific components
+2. VISUAL ELEMENTS:
+   - Concrete: Physical components, machinery, systems
+   - Abstract: Energy flows, data streams, particle effects
+   - Technical: Diagrams, cross-sections, measurement indicators
+3. STYLE: Modern editorial vector illustration, flat design with gradients, glass morphism, isometric elements
+4. COMPOSITION:
+   - 60/40 asymmetrical balance
+   - Golden ratio focal points
+   - 30% negative space for text overlay
+   - 3-layer depth (background gradient, main illustration, foreground accents)
+5. COLOR SCHEME:
+   - Primary gradient transitions
+   - Hex color specifications
+   - Complementary accent colors
+   - Emotional color psychology
+6. LIGHTING: Multi-source lighting with specific directions and intensities
+7. ATMOSPHERE: Regional elements (Mediterranean, Bodrum, coastal)
+8. TECHNICAL SPECS: High resolution, retina-ready, strong contrast for readability
 
 REQUIREMENTS:
-- Use "digital art" or "illustration" style keywords
-- Include specific color names (not just "colorful")
-- Specify lighting conditions
-- Keep prompts concise but descriptive
-- Focus on visual elements, not concepts
+- Create rich, multi-layered descriptions
+- Use 2025 trending hex colors:
+  * Ethereal Blues: #A8DAEF, #B4E0F0, #7FC8E8
+  * Creamy Pastels: #FFE4E1, #FFF0E5, #F5E6D3
+  * Burnt Orange: #CC5500, #E65100, #FF6F00
+  * Seafoam Green: #93E9BE, #A7F3D0, #86EFAC
+  * Rich Burgundy: #722F37, #800020, #4A0E15
+  * Eggplant: #614051, #563C5C, #4B384C
+- Include technical details and measurements
+- Specify material properties (glass, metal, translucent)
+- Add particle effects and energy visualizations
+- Include subtle background patterns
+- Specify exact positioning (left third, upper right, etc.)
 
 AVOID:
-- "Photorealistic", "photo", "realistic" keywords
-- People, faces, text, logos
-- Dark or industrial themes
-- Complex technical jargon
-- Abstract conceptual descriptions`;
+- Generic descriptions
+- Vague color terms
+- Simple compositions
+- Text, logos, watermarks
+- Human figures, faces
+- Photorealistic style
+- Stock photo aesthetics`;
 
-          const userPrompt = `Create a Vertex AI Imagen prompt for this service:
-Service: ${selectedService.hizmet_adi}
-Description: ${selectedService.aciklama || 'Professional engineering service'}
+          const userPrompt = `Create an advanced Vertex AI Imagen 3.0 prompt for this engineering service hero banner:
 
-Follow this structure:
-[Subject] [Style] [Environment] [Lighting] [Color] [Mood] [Composition]
+SERVICE: ${selectedService.hizmet_adi}
+DESCRIPTION: ${selectedService.aciklama || 'Professional engineering service'}
+ASPECT RATIO: 16:9 (1920x1080)
+PURPOSE: Blog hero banner with text overlay capability
 
-Example: "Solar panels on rooftop, digital art illustration, Mediterranean villa setting, bright daylight, turquoise blue and terracotta orange colors, optimistic mood, centered composition"
+Generate a sophisticated, multi-layered prompt with:
+1. Detailed technical components specific to ${selectedService.hizmet_adi}
+2. Energy flow visualizations and particle effects
+3. Specific hex color gradients
+4. Complex composition with depth layers
+5. Regional Mediterranean/Bodrum elements
+6. Glass morphism and modern design effects
 
-Return ONLY the prompt, no explanations.`;
+Example structure:
+"[Detailed subject with components], [specific visual elements], [style details], [precise color scheme with hex codes], [complex composition rules], [lighting setup], [atmospheric elements], [technical specifications]"
+
+Create a prompt that is visually rich, technically accurate, and optimized for hero banner use.
+Return ONLY the detailed prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
             method: "POST",
@@ -515,8 +547,8 @@ Return ONLY the prompt, no explanations.`;
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
               ],
-              temperature: 0.8,
-              max_tokens: 250
+              temperature: 0.7,
+              max_tokens: 500
             })
           });
 
@@ -533,38 +565,53 @@ Return ONLY the prompt, no explanations.`;
         }
       }
 
-      // Fallback to static prompt if XAI fails or is not available
+      // Fallback to enhanced static prompt if XAI fails or is not available
       if (!finalPrompt) {
         const description = (selectedService.aciklama || selectedService.hizmet_adi).toLowerCase();
-
-        // Generate service-specific digital illustration elements
-        let specificElements = `Digital illustration of ${selectedService.hizmet_adi.toLowerCase()}`;
 
         // Dynamic keyword detection based on service description
         const keywords = description.split(/[\s,.-]+/).filter((word: string) => word.length > 2);
 
-        // Build prompt elements based on actual service keywords - digital art style
+        // Enhanced service-specific elements with detailed descriptions
+        let primarySubject = "";
+        let visualElements = "";
+        let colorScheme = "";
+
         if (keywords.some((word: string) => ['güneş', 'solar', 'photovoltaic', 'panel'].includes(word))) {
-          specificElements += ', stylized sun rays, warm yellow and orange gradients, solar panel vector graphics';
+          primarySubject = 'photovoltaic solar panel array with visible silicon cell grid';
+          visualElements = 'sun rays transforming into electrical circuits, particle energy flow visualization, inverter unit with LED indicators';
+          colorScheme = 'gradient from #FF6F00 burnt orange to #A8DAEF ethereal blue, with #93E9BE seafoam green accents';
         } else if (keywords.some((word: string) => ['ısı', 'heat', 'pump', 'pompa', 'ısıtma'].includes(word))) {
-          specificElements += ', warm color waves, heat flow illustration, stylized thermal graphics';
+          primarySubject = 'heat pump system with copper coil spirals and compressor unit cutaway';
+          visualElements = 'temperature gradient waves flowing between hot and cold zones, refrigerant cycle visualization, efficiency meter display';
+          colorScheme = 'gradient from #CC5500 burnt orange to #7FC8E8 ethereal blue, with #FFE4E1 creamy pastel highlights';
         } else if (keywords.some((word: string) => ['klima', 'soğutma', 'havalandırma', 'conditioning'].includes(word))) {
-          specificElements += ', cool blue airflow illustration, minimalist cooling waves, fresh air vectors';
+          primarySubject = 'modern air conditioning unit with visible airflow patterns';
+          visualElements = 'cool air particle streams, temperature control interface, fresh air circulation vectors';
+          colorScheme = 'gradient from #B4E0F0 ethereal blue to #93E9BE seafoam green, with #FFF0E5 creamy pastel accents';
         } else if (keywords.some((word: string) => ['su', 'water', 'arıtma', 'filtrasyon', 'purification'].includes(word))) {
-          specificElements += ', stylized water drops, clean blue gradients, filter layer illustration';
+          primarySubject = 'multi-stage water filtration system with transparent chambers';
+          visualElements = 'water molecules transforming from dark to crystal clear, sediment layer visualization, reverse osmosis membrane cross-section';
+          colorScheme = 'gradient from #7FC8E8 ethereal blue to #A7F3D0 seafoam green, with #F5E6D3 creamy beige highlights';
         } else if (keywords.some((word: string) => ['neon', 'tabela', 'aydınlatma', 'sign', 'lighting'].includes(word))) {
-          specificElements += ', glowing neon effects, bright color illustrations, light beam vectors';
+          primarySubject = 'glowing neon tubes forming geometric patterns';
+          visualElements = 'luminous gas particles flowing through glass tubes, electric arc visualization, transformer unit diagram';
+          colorScheme = 'gradient from #614051 eggplant to #E65100 burnt orange, with #A8DAEF ethereal blue glow effects';
         } else if (keywords.some((word: string) => ['baca', 'chimney', 'duman', 'smoke', 'exhaust'].includes(word))) {
-          specificElements += ', stylized smoke patterns, chimney silhouettes, airflow illustrations';
+          primarySubject = 'industrial chimney system with filtration components';
+          visualElements = 'smoke particle filtration process, airflow direction indicators, emission control visualization';
+          colorScheme = 'gradient from #4B384C eggplant gray to #FFE4E1 misty rose, with #86EFAC fresh mint accents';
         } else {
-          // Use generic digital art elements
-          specificElements += ', modern digital art elements, colorful vector graphics';
+          // Enhanced generic elements with 2025 trending colors
+          primarySubject = `professional ${selectedService.hizmet_adi.toLowerCase()} system components`;
+          visualElements = 'technical flow diagrams, efficiency metrics visualization, component connection paths';
+          colorScheme = 'gradient from #722F37 rich burgundy to #B4E0F0 ethereal blue, with #93E9BE seafoam accent';
         }
 
-        // Create Google-optimized prompt structure: Subject, Style, Environment, Lighting, Color, Mood, Composition
-        finalPrompt = `${specificElements}, digital art illustration style, Mediterranean minimalist background, bright natural daylight, turquoise blue and terracotta orange and olive green colors, professional optimistic mood, centered balanced composition, flat design vector art`;
+        // Build enhanced fallback prompt with rich details
+        finalPrompt = `${primarySubject}, ${visualElements}, modern editorial vector illustration, flat design with glass morphism effects, isometric technical elements, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
 
-        console.log(`Generated fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
+        console.log(`Generated enhanced fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
       }
 
       // Add aspect ratio only (resolution is handled by sampleImageSize parameter)
