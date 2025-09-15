@@ -906,8 +906,7 @@ export const processNewContent = inngest.createFunction(
         }
       });
       
-      // Wait a bit for prompt to be generated
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      // Don't wait - let processes run asynchronously
       
       // Trigger image generation
       await inngest.send({
@@ -928,22 +927,20 @@ export const processNewContent = inngest.createFunction(
       };
     });
     
-    // Step 10: Trigger Facebook post after image generation
+    // Step 10: Trigger Facebook post (without waiting for image)
     await step.run("trigger-facebook-post-for-new-content", async () => {
       console.log(`Scheduling Facebook post for new content ${content.id}...`);
-      
-      // Wait for image to be generated
-      await step.sleep("wait-for-image-before-facebook", "90s");
-      
-      // Trigger Facebook post
+
+      // Don't wait here - let the Facebook post handler check for image
+      // The postToFacebook function already has logic to wait for image
       await inngest.send({
         name: "social/facebook.post",
         data: {
           contentId: content.id,
-          immediate: true
+          immediate: false // Let it handle timing internally
         }
       });
-      
+
       return { facebookPostScheduled: true };
     });
     
@@ -1241,8 +1238,7 @@ Optimized içeriği tam olarak döndür:`;
         }
       });
       
-      // Wait a bit for prompt to be generated
-      await step.sleep("wait-for-prompt", "5s");
+      // Don't wait - let the processes run asynchronously
       
       // Then trigger blog image generation with Fal.ai
       await inngest.send({
@@ -1265,25 +1261,23 @@ Optimized içeriği tam olarak döndür:`;
       };
     });
     
-    // Step 7: Trigger Facebook post (wait for image first)
+    // Step 7: Trigger Facebook post (async, no waiting)
     await step.run("trigger-facebook-post", async () => {
       const finalScore = newAnalysis?.overallScore || eeatAnalysis?.overallScore || 0;
-      
+
       // ALWAYS post to Facebook after optimization and image generation
       console.log(`Triggering Facebook post for content ${contentId} (Score: ${finalScore})...`);
-      
-      // Wait longer for image to be generated and uploaded
-      await step.sleep("wait-for-image-generation", "60s");
-      
+
+      // Don't wait - the Facebook handler will manage timing
       await inngest.send({
         name: "social/facebook.post",
         data: {
           contentId: contentId,
-          immediate: true // Post immediately after image is ready
+          immediate: false // Let the handler manage timing
         }
       });
-      
-      return { 
+
+      return {
         facebookPostTriggered: true,
         eeatScore: finalScore
       };
