@@ -1,32 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { inngest } from "./client";
 import { sql } from "../db";
-import { uploadToCloudinary, getResponsiveImageUrls } from "../cloudinary";
-import { PredictionServiceClient, helpers } from '@google-cloud/aiplatform';
-
-// Initialize Vertex AI client
-const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'gul-tekin-muhendislik';
-const LOCATION = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
-
-// Get credentials from environment
-let credentials: any = undefined;
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
-  // Decode base64 credentials for Vercel deployment
-  const credentialsJson = Buffer.from(
-    process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
-    'base64'
-  ).toString('utf-8');
-  credentials = JSON.parse(credentialsJson);
-}
-
-// Vertex AI Prediction Service Client
-const predictionServiceClient = new PredictionServiceClient({
-  apiEndpoint: `${LOCATION}-aiplatform.googleapis.com`,
-  credentials: credentials, // Use decoded credentials if available
-});
-
-// Imagen model endpoint
-const IMAGEN_MODEL = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-generate-001`;
 
 // [REMOVED] generateImageWithVertexAI function has been removed
 // Use generateBlogImageWithVertexAI or generateVertexImagesHourly instead
