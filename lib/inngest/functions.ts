@@ -11,7 +11,6 @@ import {
   extractOGData, 
   saveFacebookPost 
 } from "../facebook-api";
-import { syncMarkalarDaily, syncMarkalarManual } from "./markalar-sync";
 import { 
   generateContentWithXAI, 
   generateImageWithXAI, 
@@ -1968,9 +1967,7 @@ import {
 } from "./vertex-ai-generation";
 
 // Export Markalar, Hizmetler and Urunler sync functions
-export { 
-  syncMarkalarDaily, 
-  syncMarkalarManual,
+export {
   syncHizmetlerDaily,
   syncHizmetlerManual,
   syncUrunlerDaily,
