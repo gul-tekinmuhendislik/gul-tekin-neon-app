@@ -302,6 +302,7 @@ interface ContentData {
   keywords?: string[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function createAdvancedPrompt(content: ContentData): Promise<PromptResult> {
   // Topic translations (Turkish -> English)
   const topicTranslations: Record<string, string> = {
