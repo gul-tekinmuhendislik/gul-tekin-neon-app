@@ -425,7 +425,7 @@ Return ONLY the prompt, no explanations.`;
         const parameters = helpers.toValue({
           sampleCount: 1,
           aspectRatio: "16:9",
-          sampleImageSize: "1024x1024", // Smaller size for fast model
+          sampleImageSize: "1920", // 1920x1080 for 16:9 aspect ratio
           safetySetting: "block_some",
           personGeneration: "dont_allow",
           includeRaiReason: false,
