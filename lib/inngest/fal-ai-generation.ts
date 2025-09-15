@@ -199,7 +199,8 @@ Return ONLY the prompt, no explanations.`;
         credentials: credentials,
       });
 
-      const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-generate-001`;
+      // Use high-quality model for blog images (better quality, higher cost)
+      const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-generate-002`;
 
       const instances = [
         helpers.toValue({

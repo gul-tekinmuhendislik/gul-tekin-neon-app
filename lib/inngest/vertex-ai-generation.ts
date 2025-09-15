@@ -1,5 +1,13 @@
 import { inngest } from "./client";
 import { sql } from "../db";
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // [REMOVED] generateImageWithVertexAI function has been removed
 // Use generateBlogImageWithVertexAI or generateVertexImagesHourly instead
@@ -204,17 +212,17 @@ Return ONLY the prompt, no explanations.`;
 // [REMOVED] testVertexAIConnection function has been removed
 // Vertex AI connection is tested automatically in production functions
 
-// Generate images with Vertex AI every 15 minutes
+// Generate images with Vertex AI every 10 minutes using fast model
 export const generateVertexImagesHourly = inngest.createFunction(
   {
-    id: "generate-vertex-images-15min",
-    name: "Generate Vertex AI Images Every 15 Minutes",
+    id: "generate-vertex-images-10min",
+    name: "Generate Vertex AI Images Every 10 Minutes (Fast Model)",
     retries: 2
   },
   [
     {
-      // Run every 15 minutes (96 images/day)
-      cron: "*/15 * * * *"
+      // Run every 10 minutes (144 images/day) - using fast model for cost optimization
+      cron: "*/10 * * * *"
     },
     {
       // Manual trigger event
@@ -343,13 +351,13 @@ Return ONLY the prompt, no explanations.`;
 
     // Step 2: Check if similar image was generated recently
     await step.run("check-recent-generation", async () => {
-      const fifteenMinutesAgo = new Date();
-      fifteenMinutesAgo.setMinutes(fifteenMinutesAgo.getMinutes() - 15);
+      const tenMinutesAgo = new Date();
+      tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
 
       const recent = await sql`
         SELECT id, prompt, created_at
         FROM vertex_images
-        WHERE created_at > ${fifteenMinutesAgo}
+        WHERE created_at > ${tenMinutesAgo}
           AND status = 'completed'
         ORDER BY created_at DESC
         LIMIT 1
@@ -363,36 +371,139 @@ Return ONLY the prompt, no explanations.`;
       return recent.length > 0;
     });
 
-    // Step 3: Generate image with Vertex AI
-    const generationResult = await step.run("trigger-vertex-generation", async () => {
+    // Step 3: Generate image with Vertex AI using FAST model for cost optimization
+    const generationResult = await step.run("generate-with-fast-vertex-ai", async () => {
       try {
-        // Send generation event with service metadata
-        await inngest.send({
-          name: "image/vertex-ai.generate.requested",
-          data: {
+        // Import Vertex AI modules
+        const { PredictionServiceClient, helpers } = await import('@google-cloud/aiplatform');
+
+        const PROJECT_ID = process.env.GOOGLE_CLOUD_PROJECT || 'gul-tekin-muhendislik';
+        const LOCATION = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
+
+        // Get credentials from environment
+        let credentials: Record<string, unknown> | undefined = undefined;
+        if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
+          const credentialsJson = Buffer.from(
+            process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64,
+            'base64'
+          ).toString('utf-8');
+          credentials = JSON.parse(credentialsJson);
+        }
+
+        const predictionServiceClient = new PredictionServiceClient({
+          apiEndpoint: `${LOCATION}-aiplatform.googleapis.com`,
+          credentials: credentials,
+        });
+
+        // Use FAST model for service images (cheaper, faster)
+        const endpoint = `projects/${PROJECT_ID}/locations/${LOCATION}/publishers/google/models/imagen-3.0-fast-generate-001`;
+
+        const instances = [
+          helpers.toValue({
             prompt: prompt,
-            aspectRatio: "16:9", // Landscape for web display
-            numberOfImages: 1,
-            language: "en",
-            safetySetting: "block_some",
-            personGeneration: "dont_allow",
-            addWatermark: false,
-            metadata: {
+          })
+        ];
+
+        const parameters = helpers.toValue({
+          sampleCount: 1,
+          aspectRatio: "16:9",
+          sampleImageSize: "1024x1024", // Smaller size for fast model
+          safetySetting: "block_some",
+          personGeneration: "dont_allow",
+          includeRaiReason: false,
+          includeSafetyAttributes: false,
+          language: "en"
+        });
+
+        const request = {
+          endpoint,
+          instances: instances as unknown[],
+          parameters,
+        } as any;
+
+        console.log(`Generating service image with Vertex AI Fast Model for: ${service}`);
+        const [response] = await predictionServiceClient.predict(request);
+
+        if (!response || !response.predictions || response.predictions.length === 0) {
+          throw new Error('No predictions returned from Vertex AI Fast Model');
+        }
+
+        const prediction = response.predictions[0];
+        const structValue = prediction.structValue;
+        const fields = structValue?.fields;
+
+        if (!fields?.bytesBase64Encoded) {
+          throw new Error('No image data in Vertex AI response');
+        }
+
+        const imageBase64 = fields.bytesBase64Encoded.stringValue;
+
+        // Upload to Cloudinary
+        const { v2: cloudinary } = await import('cloudinary');
+        cloudinary.config({
+          cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+          api_key: process.env.CLOUDINARY_API_KEY,
+          api_secret: process.env.CLOUDINARY_API_SECRET,
+        });
+
+        const uploadResult = await cloudinary.uploader.upload(
+          `data:image/png;base64,${imageBase64}`,
+          {
+            folder: 'vertex-ai-services',
+            public_id: `service-${slug}-${Date.now()}`,
+            tags: ['vertex-ai', 'service-image', 'fast-model', slug],
+            context: {
+              prompt: prompt.slice(0, 200),
               service: service,
-              slug: slug,
-              serviceIndex: serviceIndex
+              model: 'imagen-3.0-fast-generate-001',
+              generated_at: new Date().toISOString()
             }
           }
-        });
+        );
+
+        // Save to database
+        await sql`
+          INSERT INTO vertex_images (
+            prompt,
+            enhanced_prompt,
+            image_url,
+            cloudinary_public_id,
+            model,
+            provider,
+            aspect_ratio,
+            metadata,
+            status
+          ) VALUES (
+            ${prompt},
+            ${prompt},
+            ${uploadResult.secure_url},
+            ${uploadResult.public_id},
+            'imagen-3.0-fast-generate-001',
+            'vertex-ai',
+            '16:9',
+            ${JSON.stringify({
+              service: service,
+              slug: slug,
+              serviceIndex: serviceIndex,
+              cost: 0.022, // Fast model cost
+              generatedAt: new Date().toISOString()
+            })},
+            'completed'
+          )
+        `;
 
         return {
           success: true,
+          imageUrl: uploadResult.secure_url,
+          cloudinaryPublicId: uploadResult.public_id,
           prompt: prompt,
           service: service,
-          slug: slug
+          slug: slug,
+          model: 'imagen-3.0-fast-generate-001',
+          cost: 0.022
         };
       } catch (error) {
-        console.error("Error triggering Vertex AI generation:", error);
+        console.error("Error generating with Vertex AI Fast Model:", error);
         return {
           success: false,
           error: error instanceof Error ? error.message : String(error)
@@ -401,7 +512,7 @@ Return ONLY the prompt, no explanations.`;
     });
 
     // Step 4: Log the generation
-    await step.run("log-15min-generation", async () => {
+    await step.run("log-10min-generation", async () => {
       await sql`
         INSERT INTO event_logs (
           event_name,
@@ -410,7 +521,7 @@ Return ONLY the prompt, no explanations.`;
           payload,
           metadata
         ) VALUES (
-          'vertex-ai.15min.generation',
+          'vertex-ai.10min.generation',
           'cron',
           ${generationResult.success ? 'completed' : 'failed'},
           ${JSON.stringify({
