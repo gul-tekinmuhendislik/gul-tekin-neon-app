@@ -603,9 +603,12 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       // Get related products for variation
       const relatedProducts = await sql`
-        SELECT DISTINCT u.urun_adi, u.kategori
-        FROM urunler u
-        WHERE u.kategori = ${selectedService.kategori || selectedService.hizmet_adi}
+        SELECT u.urun_adi, u.kategori
+        FROM (
+          SELECT DISTINCT urun_adi, kategori
+          FROM urunler
+          WHERE kategori = ${selectedService.kategori || selectedService.hizmet_adi}
+        ) u
         ORDER BY RANDOM()
         LIMIT 3
       `;
