@@ -2,6 +2,12 @@ import { inngest } from "./client";
 import { sql } from "../db";
 import { v2 as cloudinary } from 'cloudinary';
 
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+  [key: string]: unknown;
+}
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -122,7 +128,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
       const imageBuffer = Buffer.from(generationResult.imageBase64, 'base64');
 
       // Upload using stream for better memory efficiency
-      const uploadResult = await new Promise<any>((resolve, reject) => {
+      const uploadResult = await new Promise<CloudinaryUploadResult>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
             folder: contentId ? 'vertex-ai-blog' : 'vertex-ai-generated',
@@ -142,8 +148,10 @@ export const handleVertexAIGeneration = inngest.createFunction(
             if (error) {
               console.error('Cloudinary upload error:', error);
               reject(error);
+            } else if (result) {
+              resolve(result as CloudinaryUploadResult);
             } else {
-              resolve(result);
+              reject(new Error('Upload failed: No result returned'));
             }
           }
         );
@@ -993,7 +1001,7 @@ Return ONLY the detailed prompt, no explanations.`;
           const imageBuffer = Buffer.from(imageBase64, 'base64');
 
           // Upload using stream method
-          uploadResult = await new Promise<any>((resolve, reject) => {
+          uploadResult = await new Promise<CloudinaryUploadResult>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
               {
                 folder: 'vertex-ai-services',
@@ -1012,8 +1020,10 @@ Return ONLY the detailed prompt, no explanations.`;
                 if (error) {
                   console.error('Cloudinary stream upload error:', error);
                   reject(error);
+                } else if (result) {
+                  resolve(result as CloudinaryUploadResult);
                 } else {
-                  resolve(result);
+                  reject(new Error('Upload failed: No result returned'));
                 }
               }
             );
