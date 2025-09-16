@@ -107,7 +107,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
 
       return {
         imageBase64,
-        prompt: prompt.substring(0, 300)  // Limit prompt size in response
+        prompt: prompt.substring(0, 1000)  // Increased limit for response
       };
     });
 
@@ -306,38 +306,106 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
       console.log(`Generating dynamic prompt with XAI for blog ${blogId}`);
 
       const apiKey = process.env.XAI_API_KEY;
+      console.log(`XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
+
       if (apiKey) {
         try {
-          const systemPrompt = `You are an expert at creating image generation prompts for Vertex AI Imagen.
-Your task is to create detailed, photorealistic prompts for blog post hero images.
+          // Extract key technical terms from content
+          const keywords = blogData.keywords || [];
 
-IMPORTANT STYLE ELEMENTS TO INCLUDE:
-- Mediterranean Turkish architecture (Bodrum/Muğla region)
-- Traditional Muğla red clay roof tiles
-- Stone chimneys and white stone walls
-- Olive groves and purple bougainvillea
-- Natural Mediterranean lighting
-- Professional architectural photography style
-- Technical engineering aesthetics
-- Photorealistic raw style, maximum quality
+          // Determine visual style based on topic and content
+          const topicLower = blogData.topic.toLowerCase();
+          let visualStyle = '';
+          let colorPalette = '';
+          let composition = '';
+          let technicalElements = '';
 
-AVOID:
-- Modern city backgrounds
-- Concrete blocks or industrial zones
-- Northern European architecture
-- Pine trees or lavender fields
-- Cartoon or illustration styles
-- People, text, watermarks, logos
-- Artificial lighting
-- Overly saturated colors`;
+          // Dynamic style selection based on content
+          if (topicLower.includes('güneş') || topicLower.includes('solar')) {
+            visualStyle = 'bright sunny day, golden hour lighting, solar panels gleaming';
+            colorPalette = 'warm oranges, deep blues, metallic silver';
+            composition = 'aerial drone view of rooftop installation';
+            technicalElements = 'photovoltaic cells, inverters, mounting rails, electrical meters';
+          } else if (topicLower.includes('ısı pompa') || topicLower.includes('heat pump')) {
+            visualStyle = 'modern technical cutaway illustration, x-ray vision effect';
+            colorPalette = 'cool blues transitioning to warm reds, thermal gradient';
+            composition = 'split-screen showing indoor comfort and outdoor unit';
+            technicalElements = 'compressor unit, refrigerant pipes, heat exchanger coils';
+          } else if (topicLower.includes('klima') || topicLower.includes('air')) {
+            visualStyle = 'clean minimalist interior, soft natural lighting';
+            colorPalette = 'crisp whites, soft grays, accent of sky blue';
+            composition = 'modern living room with sleek AC unit';
+            technicalElements = 'air flow visualization, temperature zones, control panel';
+          } else if (topicLower.includes('su arıtma') || topicLower.includes('water')) {
+            visualStyle = 'crystal clear water, transparency effects, refraction';
+            colorPalette = 'aqua blues, pure whites, stainless steel metallic';
+            composition = 'cross-section view of filtration stages';
+            technicalElements = 'filter chambers, RO membrane, UV sterilizer, flow indicators';
+          } else {
+            // Random variation for other topics
+            const variations = [
+              {
+                visualStyle: 'industrial chic, dramatic lighting, high contrast',
+                colorPalette: 'deep blacks, electric blues, copper accents',
+                composition: 'dynamic diagonal composition, rule of thirds'
+              },
+              {
+                visualStyle: 'futuristic tech lab, neon accents, glass and steel',
+                colorPalette: 'cyberpunk purples, neon greens, chrome silver',
+                composition: 'isometric 3D view, technical blueprint overlay'
+              },
+              {
+                visualStyle: 'eco-friendly green tech, natural materials, organic shapes',
+                colorPalette: 'forest greens, earth browns, sky blues',
+                composition: 'harmonious blend of technology and nature'
+              }
+            ];
+            const randomVar = variations[Math.floor(Math.random() * variations.length)];
+            visualStyle = randomVar.visualStyle;
+            colorPalette = randomVar.colorPalette;
+            composition = randomVar.composition;
+            technicalElements = 'precision engineering components, digital displays, sensor arrays';
+          }
 
-          const userPrompt = `Create a detailed image generation prompt for this blog post:
+          // Add time-based variations
+          const hour = new Date().getHours();
+          const timeOfDay = hour < 12 ? 'morning light' : hour < 17 ? 'afternoon sun' : 'golden hour';
+
+          // Add seasonal variations
+          const month = new Date().getMonth();
+          const season = month < 3 ? 'winter atmosphere' : month < 6 ? 'spring freshness' : month < 9 ? 'summer vibrancy' : 'autumn warmth';
+
+          const systemPrompt = `You are an expert at creating diverse, creative image generation prompts for Vertex AI Imagen.
+Your task is to create unique, varied prompts that avoid repetition while maintaining professional quality.
+
+IMPORTANT GUIDELINES:
+- Create COMPLETELY DIFFERENT visual styles for each prompt
+- Vary between: photorealistic, technical illustration, architectural visualization, infographic style
+- Mix different perspectives: aerial, close-up, wide angle, isometric, cross-section
+- Use diverse color palettes and moods
+- Include specific technical details relevant to the topic
+- Incorporate dynamic elements and energy
+- Be creative and avoid clichés
+
+VISUAL STYLE CONTEXT:
+- Suggested style: ${visualStyle}
+- Color palette: ${colorPalette}
+- Composition: ${composition}
+- Time: ${timeOfDay}
+- Season: ${season}
+- Technical elements: ${technicalElements}
+
+Mix and match these elements creatively. Don't use all of them - pick what works best.`;
+
+          const userPrompt = `Create a unique, creative image generation prompt for this blog post:
 Title: ${blogData.title}
 Topic: ${blogData.topic}
-Content Preview: ${blogData.content?.substring(0, 300) || ''}
+Keywords: ${keywords.join(', ')}
+Content Preview: ${blogData.content?.substring(0, 500) || ''}
 
-Generate a concise prompt (max 150 words) that captures the essence of the content.
-Focus on photorealistic, professional photography.
+Important: Make this prompt DIFFERENT from typical engineering visuals. Be creative!
+Include specific technical details from the content.
+Vary the style - don't always use photorealistic. Try technical illustrations, infographics, or artistic interpretations.
 Return ONLY the prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -352,8 +420,8 @@ Return ONLY the prompt, no explanations.`;
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
               ],
-              temperature: 0.7,
-              max_tokens: 200
+              temperature: 0.85,  // Increased for more creativity
+              max_tokens: 300     // Increased for more detailed prompts
             })
           });
 
@@ -361,20 +429,57 @@ Return ONLY the prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              // Limit prompt to prevent oversized outputs
-              const limitedPrompt = generatedPrompt.substring(0, 300);
-              console.log(`XAI generated prompt (limited): ${limitedPrompt.substring(0, 100)}...`);
+              // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
+              const limitedPrompt = generatedPrompt.substring(0, 800);
+              console.log(`XAI generated prompt (limited to 800 chars): ${limitedPrompt.substring(0, 150)}...`);
               return `${limitedPrompt}, aspect ratio 16:9`;
             }
           }
         } catch (error) {
           console.error("Error generating prompt with XAI:", error);
+          console.log("XAI error details:", error instanceof Error ? error.message : error);
         }
+      } else {
+        console.warn("⚠️ XAI_API_KEY not found in environment variables!");
+        console.log("To enable XAI prompt generation, add XAI_API_KEY to your .env file");
       }
 
-      // Fallback to static prompt if XAI fails
-      console.log("XAI unavailable, using fallback prompt");
-      return `Modern ${blogData.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional architectural photography, natural lighting, photorealistic raw style, maximum quality 2, aspect ratio 16:9, ultra high resolution 4K, sharp details, no people, no text, no watermarks, no logos`;
+      // Enhanced dynamic fallback prompt if XAI fails
+      console.log("Using enhanced dynamic fallback prompt (XAI unavailable)");
+
+      // Create varied fallback prompts based on topic
+      const topicLower = blogData.topic.toLowerCase();
+      const randomSeed = Math.random();
+
+      // Array of diverse visual styles
+      const visualStyles = [
+        'ultra-modern minimalist design, glass and steel architecture',
+        'technical blueprint style illustration, CAD drawing aesthetic',
+        'photorealistic industrial photography, dramatic lighting',
+        'isometric 3D visualization, clean vector graphics',
+        'futuristic sci-fi concept art, holographic displays',
+        'elegant architectural visualization, sunset golden hour',
+        'high-tech laboratory environment, clean room aesthetic',
+        'eco-friendly green building, sustainable design'
+      ];
+
+      const selectedStyle = visualStyles[Math.floor(randomSeed * visualStyles.length)];
+
+      // Topic-specific elements
+      let technicalFocus = '';
+      if (topicLower.includes('güneş') || topicLower.includes('solar')) {
+        technicalFocus = 'solar panel arrays, photovoltaic technology, energy meters';
+      } else if (topicLower.includes('ısı') || topicLower.includes('heat')) {
+        technicalFocus = 'heat pump systems, thermal dynamics visualization, efficiency gauges';
+      } else if (topicLower.includes('klima') || topicLower.includes('climate')) {
+        technicalFocus = 'HVAC systems, air flow patterns, temperature control interfaces';
+      } else if (topicLower.includes('su') || topicLower.includes('water')) {
+        technicalFocus = 'water treatment systems, filtration technology, flow diagrams';
+      } else {
+        technicalFocus = 'advanced engineering systems, digital control panels, IoT sensors';
+      }
+
+      return `${selectedStyle}, ${technicalFocus}, professional ${blogData.topic} visualization, cutting-edge technology showcase, dynamic composition, vibrant color scheme, aspect ratio 16:9, high resolution, no people, no text, no watermarks`;
     });
 
     // Step 3: Save prompt to blog if it was generated
@@ -470,10 +575,66 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       const selectedService = services[serviceIndex];
 
+      // Check recently used prompts to avoid repetition
+      const recentPrompts = await sql`
+        SELECT prompt, enhanced_prompt
+        FROM vertex_images
+        WHERE metadata->>'service' = ${selectedService.hizmet_adi}
+          AND created_at > NOW() - INTERVAL '48 hours'
+        ORDER BY created_at DESC
+        LIMIT 5
+      `;
+
+      console.log(`[10min Generation] Found ${recentPrompts.length} recent prompts for ${selectedService.hizmet_adi}`);
+
+      // Get related brands for this service for more variation
+      const relatedBrands = await sql`
+        SELECT DISTINCT m.marka_adi, m.aciklama
+        FROM markalar m
+        WHERE EXISTS (
+          SELECT 1 FROM hizmetler h
+          WHERE h.id = ${selectedService.id}
+            AND m.airtable_hizmetler_id::text LIKE '%' || h.id || '%'
+        )
+        LIMIT 5
+      `;
+
+      console.log(`[10min Generation] Found ${relatedBrands.length} related brands for service`);
+
+      // Get related products for variation
+      const relatedProducts = await sql`
+        SELECT DISTINCT u.urun_adi, u.kategori
+        FROM urunler u
+        WHERE u.kategori = ${selectedService.kategori || selectedService.hizmet_adi}
+        ORDER BY RANDOM()
+        LIMIT 3
+      `;
+
+      console.log(`[10min Generation] Found ${relatedProducts.length} related products`);
+
+      // Get dynamic color scheme from database
+      const topicKey = selectedService.slug?.replace(/-/g, '_') || 'default';
+      const colorScheme = await sql`
+        SELECT name, primary_gradient, accent_colors, emotion_description
+        FROM color_schemes
+        WHERE (topic_key = ${topicKey} OR topic_key = 'default')
+          AND is_active = true
+        ORDER BY
+          CASE WHEN topic_key = ${topicKey} THEN 0 ELSE 1 END,
+          RANDOM()
+        LIMIT 1
+      `;
+
+      const selectedColorScheme = colorScheme[0];
+      console.log(`[10min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
+
       // Generate dynamic prompt with XAI based on service
       let finalPrompt = "";
 
       const apiKey = process.env.XAI_API_KEY;
+      console.log(`[10min Generation] XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
+      console.log(`[10min Generation] Generating prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
+
       if (apiKey) {
         try {
           const systemPrompt = `You are an expert at creating highly detailed, visually rich prompts for Vertex AI Imagen 3.0 following Google's best practices.
@@ -491,11 +652,14 @@ ADVANCED PROMPT STRUCTURE:
    - Golden ratio focal points
    - 30% negative space for text overlay
    - 3-layer depth (background gradient, main illustration, foreground accents)
-5. COLOR SCHEME:
+5. COLOR SCHEME: ${selectedColorScheme ? `
+   - Primary colors: ${JSON.stringify(selectedColorScheme.primary_gradient)}
+   - Accent colors: ${JSON.stringify(selectedColorScheme.accent_colors)}
+   - Emotion: ${selectedColorScheme.emotion_description}` : `
    - Primary gradient transitions
    - Hex color specifications
    - Complementary accent colors
-   - Emotional color psychology
+   - Emotional color psychology`}
 6. LIGHTING: Multi-source lighting with specific directions and intensities
 7. ATMOSPHERE: Regional elements (Mediterranean, Bodrum, coastal)
 8. TECHNICAL SPECS: High resolution, retina-ready, strong contrast for readability
@@ -524,25 +688,62 @@ AVOID:
 - Photorealistic style
 - Stock photo aesthetics`;
 
-          const userPrompt = `Create an advanced Vertex AI Imagen 3.0 prompt for this engineering service hero banner:
+          // Dynamic context from database
+          const brandsContext = relatedBrands.length > 0
+            ? `Related brands: ${relatedBrands.map(b => b.marka_adi).join(', ')}`
+            : '';
+
+          const productsContext = relatedProducts.length > 0
+            ? `Related products: ${relatedProducts.map(p => p.urun_adi).join(', ')}`
+            : '';
+
+          // Create variation seed to ensure different prompts
+          const variationSeed = new Date().getTime() % 10;
+          const variationStyles = [
+            'ultra-modern minimalist, clean lines, negative space',
+            'technical blueprint style, CAD wireframe aesthetics',
+            'photorealistic product showcase, studio lighting',
+            'isometric 3D illustration, vibrant gradients',
+            'futuristic holographic display, neon accents',
+            'architectural visualization, golden hour lighting',
+            'industrial design showcase, dramatic shadows',
+            'eco-friendly green technology, organic shapes',
+            'high-tech laboratory, clean room environment',
+            'abstract geometric patterns, bold color blocks'
+          ];
+
+          const selectedVariation = variationStyles[variationSeed];
+
+          // Check if any recent prompts exist and create exclusion context
+          const avoidElements = recentPrompts.length > 0
+            ? `IMPORTANT: Create something DIFFERENT from these recent prompts: ${recentPrompts[0].prompt?.substring(0, 150)}...`
+            : '';
+
+          const userPrompt = `Create a UNIQUE and CREATIVE Vertex AI Imagen 3.0 prompt for this engineering service hero banner:
 
 SERVICE: ${selectedService.hizmet_adi}
 DESCRIPTION: ${selectedService.aciklama || 'Professional engineering service'}
+${brandsContext}
+${productsContext}
+VARIATION STYLE: ${selectedVariation}
+COLOR PALETTE: ${selectedColorScheme ? `${selectedColorScheme.name} - ${selectedColorScheme.emotion_description}
+Primary Gradient: ${JSON.stringify(selectedColorScheme.primary_gradient)}
+Accent Colors: ${JSON.stringify(selectedColorScheme.accent_colors)}` : 'Use creative neon colors'}
 ASPECT RATIO: 16:9 (1920x1080)
 PURPOSE: Blog hero banner with text overlay capability
 
-Generate a sophisticated, multi-layered prompt with:
-1. Detailed technical components specific to ${selectedService.hizmet_adi}
-2. Energy flow visualizations and particle effects
-3. Specific hex color gradients
-4. Complex composition with depth layers
-5. Regional Mediterranean/Bodrum elements
-6. Glass morphism and modern design effects
+${avoidElements}
 
-Example structure:
-"[Detailed subject with components], [specific visual elements], [style details], [precise color scheme with hex codes], [complex composition rules], [lighting setup], [atmospheric elements], [technical specifications]"
+Generate a sophisticated, UNIQUE prompt that includes:
+1. Specific technical components for ${selectedService.hizmet_adi}
+${relatedBrands.length > 0 ? `2. Feature equipment from brands like ${relatedBrands[0].marka_adi}` : ''}
+${relatedProducts.length > 0 ? `3. Include products such as ${relatedProducts[0].urun_adi}` : ''}
+4. Use variation style: ${selectedVariation}
+5. MUST use these specific colors: ${selectedColorScheme ? JSON.stringify(selectedColorScheme.primary_gradient) : 'neon colors'}
+6. Unique composition and perspective
+7. Fresh visual metaphors and elements
 
-Create a prompt that is visually rich, technically accurate, and optimized for hero banner use.
+IMPORTANT: Be creative and avoid generic descriptions. Make this prompt distinctly different.
 Return ONLY the detailed prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -566,14 +767,22 @@ Return ONLY the detailed prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              // Limit prompt to prevent oversized outputs
-              finalPrompt = generatedPrompt.substring(0, 400);
-              console.log(`XAI generated prompt for ${selectedService.hizmet_adi} (limited to 400 chars)`);
+              // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
+              finalPrompt = generatedPrompt.substring(0, 900);
+              console.log(`[10min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
+              console.log(`[10min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
+            } else {
+              console.log(`[10min Generation] ⚠️ XAI returned empty prompt`);
             }
+          } else {
+            console.log(`[10min Generation] ❌ XAI API request failed with status: ${response.status}`);
           }
         } catch (error) {
-          console.error("Error generating prompt with XAI:", error);
+          console.error("[10min Generation] Error generating prompt with XAI:", error);
+          console.log("[10min Generation] XAI error details:", error instanceof Error ? error.message : error);
         }
+      } else {
+        console.warn("[10min Generation] ⚠️ XAI_API_KEY not found in environment variables!");
       }
 
       // Fallback to enhanced static prompt if XAI fails or is not available
@@ -586,47 +795,56 @@ Return ONLY the detailed prompt, no explanations.`;
         // Enhanced service-specific elements with detailed descriptions
         let primarySubject = "";
         let visualElements = "";
+
+        // Use database color scheme if available, otherwise fallback
         let colorScheme = "";
+        if (selectedColorScheme) {
+          const colors = selectedColorScheme.primary_gradient as string[];
+          colorScheme = `gradient from ${colors[0]} to ${colors[1]}, accent colors ${colors[2]} and ${colors[3]}`;
+        } else {
+          colorScheme = "";
+        }
 
         if (keywords.some((word: string) => ['güneş', 'solar', 'photovoltaic', 'panel'].includes(word))) {
           primarySubject = 'photovoltaic solar panel array with visible silicon cell grid';
           visualElements = 'sun rays transforming into electrical circuits, particle energy flow visualization, inverter unit with LED indicators';
-          colorScheme = 'gradient from #FF6F00 burnt orange to #A8DAEF ethereal blue, with #93E9BE seafoam green accents';
+          if (!selectedColorScheme) colorScheme = 'gradient from #FF6F00 burnt orange to #A8DAEF ethereal blue, with #93E9BE seafoam green accents';
         } else if (keywords.some((word: string) => ['ısı', 'heat', 'pump', 'pompa', 'ısıtma'].includes(word))) {
           primarySubject = 'heat pump system with copper coil spirals and compressor unit cutaway';
           visualElements = 'temperature gradient waves flowing between hot and cold zones, refrigerant cycle visualization, efficiency meter display';
-          colorScheme = 'gradient from #CC5500 burnt orange to #7FC8E8 ethereal blue, with #FFE4E1 creamy pastel highlights';
+          if (!selectedColorScheme) colorScheme = 'gradient from #CC5500 burnt orange to #7FC8E8 ethereal blue, with #FFE4E1 creamy pastel highlights';
         } else if (keywords.some((word: string) => ['klima', 'soğutma', 'havalandırma', 'conditioning'].includes(word))) {
           primarySubject = 'modern air conditioning unit with visible airflow patterns';
           visualElements = 'cool air particle streams, temperature control interface, fresh air circulation vectors';
-          colorScheme = 'gradient from #B4E0F0 ethereal blue to #93E9BE seafoam green, with #FFF0E5 creamy pastel accents';
+          if (!selectedColorScheme) colorScheme = 'gradient from #B4E0F0 ethereal blue to #93E9BE seafoam green, with #FFF0E5 creamy pastel accents';
         } else if (keywords.some((word: string) => ['su', 'water', 'arıtma', 'filtrasyon', 'purification'].includes(word))) {
           primarySubject = 'multi-stage water filtration system with transparent chambers';
           visualElements = 'water molecules transforming from dark to crystal clear, sediment layer visualization, reverse osmosis membrane cross-section';
-          colorScheme = 'gradient from #7FC8E8 ethereal blue to #A7F3D0 seafoam green, with #F5E6D3 creamy beige highlights';
+          if (!selectedColorScheme) colorScheme = 'gradient from #7FC8E8 ethereal blue to #A7F3D0 seafoam green, with #F5E6D3 creamy beige highlights';
         } else if (keywords.some((word: string) => ['neon', 'tabela', 'aydınlatma', 'sign', 'lighting'].includes(word))) {
           primarySubject = 'glowing neon tubes forming geometric patterns';
           visualElements = 'luminous gas particles flowing through glass tubes, electric arc visualization, transformer unit diagram';
-          colorScheme = 'gradient from #614051 eggplant to #E65100 burnt orange, with #A8DAEF ethereal blue glow effects';
+          if (!selectedColorScheme) colorScheme = 'gradient from #614051 eggplant to #E65100 burnt orange, with #A8DAEF ethereal blue glow effects';
         } else if (keywords.some((word: string) => ['baca', 'chimney', 'duman', 'smoke', 'exhaust'].includes(word))) {
           primarySubject = 'industrial chimney system with filtration components';
           visualElements = 'smoke particle filtration process, airflow direction indicators, emission control visualization';
-          colorScheme = 'gradient from #4B384C eggplant gray to #FFE4E1 misty rose, with #86EFAC fresh mint accents';
+          if (!selectedColorScheme) colorScheme = 'gradient from #4B384C eggplant gray to #FFE4E1 misty rose, with #86EFAC fresh mint accents';
         } else {
           // Enhanced generic elements with 2025 trending colors
           primarySubject = `professional ${selectedService.hizmet_adi.toLowerCase()} system components`;
           visualElements = 'technical flow diagrams, efficiency metrics visualization, component connection paths';
-          colorScheme = 'gradient from #722F37 rich burgundy to #B4E0F0 ethereal blue, with #93E9BE seafoam accent';
+          if (!selectedColorScheme) colorScheme = 'gradient from #722F37 rich burgundy to #B4E0F0 ethereal blue, with #93E9BE seafoam accent';
         }
 
         // Build enhanced fallback prompt with rich details
         finalPrompt = `${primarySubject}, ${visualElements}, modern editorial vector illustration, flat design with glass morphism effects, isometric technical elements, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
 
-        console.log(`Generated enhanced fallback prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
+        console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
+        console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
-      // Add aspect ratio and ensure final prompt is not too long
-      finalPrompt = finalPrompt.substring(0, 450) + `, 16:9 aspect ratio`;
+      // Add aspect ratio - Vertex AI can handle up to 2048 chars safely
+      finalPrompt = finalPrompt.substring(0, 1000) + `, 16:9 aspect ratio`;
 
       return {
         service: selectedService.hizmet_adi,
