@@ -111,21 +111,45 @@ export const handleVertexAIGeneration = inngest.createFunction(
       };
     });
 
-    // Step 2: Upload to Cloudinary
+    // Step 2: Upload to Cloudinary using Buffer stream
     const cloudinaryResult = await step.run("upload-to-cloudinary", async () => {
-      const dataUrl = `data:image/png;base64,${generationResult.imageBase64}`;
+      // Validate base64 data exists
+      if (!generationResult.imageBase64) {
+        throw new Error('No image data to upload');
+      }
 
-      const uploadResult = await cloudinary.uploader.upload(dataUrl, {
-        folder: contentId ? 'vertex-ai-blog' : 'vertex-ai-generated',
-        public_id: `vertex-ai-${contentId || Date.now()}`,
-        tags: ['vertex-ai', 'ai-generated', contentId ? 'blog-image' : 'general'],
-        context: {
-          prompt: prompt.slice(0, 200),
-          generated_at: new Date().toISOString(),
-          model: 'imagen-3.0-generate-002',
-          content_id: contentId || '',
-          ...metadata
-        }
+      // Convert base64 to buffer
+      const imageBuffer = Buffer.from(generationResult.imageBase64, 'base64');
+
+      // Upload using stream for better memory efficiency
+      const uploadResult = await new Promise<any>((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: contentId ? 'vertex-ai-blog' : 'vertex-ai-generated',
+            public_id: `vertex-ai-${contentId || Date.now()}`,
+            resource_type: 'image',
+            format: 'png',
+            tags: ['vertex-ai', 'ai-generated', contentId ? 'blog-image' : 'general'],
+            context: {
+              prompt: prompt.slice(0, 200),
+              generated_at: new Date().toISOString(),
+              model: 'imagen-3.0-generate-002',
+              content_id: contentId || '',
+              ...metadata
+            }
+          },
+          (error, result) => {
+            if (error) {
+              console.error('Cloudinary upload error:', error);
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+
+        // Write buffer to stream
+        uploadStream.end(imageBuffer);
       });
 
       return {
@@ -965,20 +989,38 @@ Return ONLY the detailed prompt, no explanations.`;
 
         let uploadResult;
         try {
-          uploadResult = await cloudinary.uploader.upload(
-            `data:image/png;base64,${imageBase64}`,
-            {
-              folder: 'vertex-ai-services',
-              public_id: `service-${slug}-${Date.now()}`,
-              tags: ['vertex-ai', 'service-image', 'fast-model', slug],
-              context: {
-                prompt: prompt.slice(0, 200),
-                service: service,
-                model: 'imagen-3.0-fast-generate-001',
-                generated_at: new Date().toISOString()
+          // Convert base64 to buffer for more efficient upload
+          const imageBuffer = Buffer.from(imageBase64, 'base64');
+
+          // Upload using stream method
+          uploadResult = await new Promise<any>((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              {
+                folder: 'vertex-ai-services',
+                public_id: `service-${slug}-${Date.now()}`,
+                resource_type: 'image',
+                format: 'png',
+                tags: ['vertex-ai', 'service-image', 'fast-model', slug],
+                context: {
+                  prompt: prompt.slice(0, 200),
+                  service: service,
+                  model: 'imagen-3.0-fast-generate-001',
+                  generated_at: new Date().toISOString()
+                }
+              },
+              (error, result) => {
+                if (error) {
+                  console.error('Cloudinary stream upload error:', error);
+                  reject(error);
+                } else {
+                  resolve(result);
+                }
               }
-            }
-          );
+            );
+
+            // Write buffer to stream and close
+            uploadStream.end(imageBuffer);
+          });
 
           console.log(`Cloudinary upload successful: ${uploadResult.secure_url}`);
         } catch (cloudinaryError) {
