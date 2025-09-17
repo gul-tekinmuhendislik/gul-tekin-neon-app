@@ -471,7 +471,7 @@ IMPORTANT GUIDELINES:
 DATABASE-DRIVEN ELEMENTS TO INCORPORATE:
 REGIONAL THEME: ${selectedRegion ? `${selectedRegion.region_name}
 - Visual elements: ${selectedRegion.visual_elements}
-- Cultural motifs: ${selectedRegion.cultural_motifs}` : 'Mediterranean coastal'}
+- Cultural motifs: ${selectedRegion.cultural_motifs}` : 'Modern technical environment'}
 
 COLOR SCHEME: ${selectedColorScheme ? `${selectedColorScheme.name}
 - Primary gradient: ${JSON.stringify(selectedColorScheme.primary_gradient)}
@@ -582,7 +582,7 @@ Return ONLY the prompt, no explanations.`;
       // Build enhanced fallback prompt using database elements
       const regionalElements = selectedRegion
         ? `${selectedRegion.visual_elements}, ${selectedRegion.cultural_motifs}, `
-        : 'Mediterranean coastal background, ';
+        : 'modern technical background, clean engineering environment, ';
 
       const colorElements = selectedColorScheme
         ? `gradient from ${selectedColorScheme.primary_gradient[0]} to ${selectedColorScheme.primary_gradient[1]}, accent colors ${selectedColorScheme.accent_colors[0]} and ${selectedColorScheme.accent_colors[1]}, `
