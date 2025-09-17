@@ -687,6 +687,21 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const selectedStylePreset = stylePreset[0];
       console.log(`[10min Generation] Using style preset: ${selectedStylePreset?.name || 'default'}`);
 
+      // Get negative prompts from database
+      const negativePrompts = await sql`
+        SELECT prompt_text, severity
+        FROM negative_prompts
+        WHERE is_active = true
+        ORDER BY severity DESC
+      `;
+
+      // Combine negative prompts into a single string
+      const negativePromptText = negativePrompts
+        .map(np => np.prompt_text)
+        .join(', ');
+
+      console.log(`[10min Generation] Using ${negativePrompts.length} negative prompts`);
+
       // Generate dynamic prompt with XAI based on service
       let finalPrompt = "";
 
@@ -745,14 +760,16 @@ REQUIREMENTS:
 - Include subtle background patterns
 - Specify exact positioning (left third, upper right, etc.)
 
-AVOID:
-- Generic descriptions
+NEGATIVE PROMPTS (MUST AVOID):
+${negativePromptText ? negativePromptText : `- Generic descriptions
 - Vague color terms
 - Simple compositions
 - Text, logos, watermarks
 - Human figures, faces
 - Photorealistic style
-- Stock photo aesthetics`;
+- Stock photo aesthetics`}
+
+IMPORTANT: The final prompt should NOT include any of the negative elements above.`;
 
           // Dynamic context from database
           const brandsContext = relatedBrands.length > 0
@@ -832,6 +849,9 @@ STYLE PRESET: ${selectedStylePreset ? `${selectedStylePreset.name}
 
 ASPECT RATIO: 16:9 (1920x1080)
 PURPOSE: Blog hero banner with text overlay capability
+
+NEGATIVE ELEMENTS TO AVOID:
+${negativePromptText || 'no text, no logos, no human figures, no photorealistic style'}
 
 ${avoidElements}
 
@@ -965,14 +985,29 @@ Return ONLY the detailed prompt, no explanations.`;
           ? `, ${selectedStylePreset.main_style}, ${selectedStylePreset.atmosphere}, ${selectedStylePreset.render_style} rendering`
           : '';
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability`;
+        // Add negative prompts to fallback
+        const negativeElements = negativePromptText
+          ? `, ${negativePromptText}`
+          : ', no text, no typography, no logos, no watermarks, no human figures, no faces, no photorealistic style';
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
-      // Add aspect ratio - Vertex AI can handle up to 2048 chars safely
-      finalPrompt = finalPrompt.substring(0, 1500) + `, 16:9 aspect ratio`;
+      // Add aspect ratio and negative prompts if not already included
+      if (!finalPrompt.includes('no text') && !finalPrompt.includes('no logo')) {
+        // Add negative prompts to the end if XAI didn't include them
+        const negativeAppend = negativePromptText
+          ? `, ${negativePromptText}`
+          : ', no text, no logos, no watermarks, no human figures';
+
+        finalPrompt = finalPrompt.substring(0, 1300) + negativeAppend + `, 16:9 aspect ratio`;
+      } else {
+        // XAI already included negative prompts
+        finalPrompt = finalPrompt.substring(0, 1500) + `, 16:9 aspect ratio`;
+      }
 
       return {
         service: selectedService.hizmet_adi,
