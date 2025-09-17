@@ -776,6 +776,18 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const selectedStylePreset = stylePreset[0];
       console.log(`[10min Generation] Using style preset: ${selectedStylePreset?.name || 'default'}`);
 
+      // Get random regional theme from database
+      const regionalTheme = await sql`
+        SELECT region_name, visual_elements, cultural_motifs
+        FROM regional_themes
+        WHERE is_active = true
+        ORDER BY RANDOM()
+        LIMIT 1
+      `;
+
+      const selectedRegion = regionalTheme[0];
+      console.log(`[10min Generation] Using regional theme: ${selectedRegion?.region_name || 'default'}`);
+
       // Get negative prompts from database
       const negativePrompts = await sql`
         SELECT prompt_text, severity
@@ -1079,7 +1091,12 @@ Return ONLY the detailed prompt, no explanations.`;
           ? `, ${negativePromptText}`
           : ', no text, no typography, no logos, no watermarks, no human figures, no faces, no photorealistic style';
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
+        // Use regional theme background if available, otherwise clean tech background
+        const backgroundElement = selectedRegion && selectedRegion.visual_elements
+          ? selectedRegion.visual_elements.substring(0, 100)
+          : 'clean technical background, modern engineering environment';
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
