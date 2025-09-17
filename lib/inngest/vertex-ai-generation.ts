@@ -663,6 +663,30 @@ export const generateVertexImagesHourly = inngest.createFunction(
       const selectedColorScheme = colorScheme[0];
       console.log(`[10min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
 
+      // Get random composition rule from database
+      const compositionRule = await sql`
+        SELECT name, layout_type, layout_description, focal_point, spacing_rules, depth_layers, margin_rules
+        FROM composition_rules
+        WHERE is_active = true
+        ORDER BY RANDOM()
+        LIMIT 1
+      `;
+
+      const selectedComposition = compositionRule[0];
+      console.log(`[10min Generation] Using composition rule: ${selectedComposition?.name || 'default'}`);
+
+      // Get random style preset from database
+      const stylePreset = await sql`
+        SELECT name, main_style, effects, render_style, atmosphere, technical_specs
+        FROM style_presets
+        WHERE is_active = true
+        ORDER BY RANDOM()
+        LIMIT 1
+      `;
+
+      const selectedStylePreset = stylePreset[0];
+      console.log(`[10min Generation] Using style preset: ${selectedStylePreset?.name || 'default'}`);
+
       // Generate dynamic prompt with XAI based on service
       let finalPrompt = "";
 
@@ -684,11 +708,16 @@ ADVANCED PROMPT STRUCTURE:
    - Abstract: Energy flows, data streams, particle effects
    - Technical: Diagrams, cross-sections, measurement indicators
 3. STYLE: MUST incorporate the provided variation style creatively
-4. COMPOSITION:
+4. COMPOSITION: ${selectedComposition ? `
+   - Layout: ${selectedComposition.layout_type} - ${selectedComposition.layout_description}
+   - Focal point: ${selectedComposition.focal_point}
+   - Spacing: ${selectedComposition.spacing_rules}
+   - Depth: ${selectedComposition.depth_layers}
+   - Margins: ${selectedComposition.margin_rules}` : `
    - 60/40 asymmetrical balance
    - Golden ratio focal points
    - 30% negative space for text overlay
-   - 3-layer depth (background gradient, main illustration, foreground accents)
+   - 3-layer depth (background gradient, main illustration, foreground accents)`}
 5. COLOR SCHEME: ${selectedColorScheme ? `
    - Primary colors: ${JSON.stringify(selectedColorScheme.primary_gradient)}
    - Accent colors: ${JSON.stringify(selectedColorScheme.accent_colors)}
@@ -785,10 +814,22 @@ SERVICE: ${selectedService.hizmet_adi}
 DESCRIPTION: ${selectedService.aciklama || 'Professional engineering service'}
 ${brandsContext}
 ${productsContext}
+
+CREATIVE ELEMENTS FROM DATABASE:
 VARIATION STYLE: ${selectedVariation}
 COLOR PALETTE: ${selectedColorScheme ? `${selectedColorScheme.name} - ${selectedColorScheme.emotion_description}
 Primary Gradient: ${JSON.stringify(selectedColorScheme.primary_gradient)}
 Accent Colors: ${JSON.stringify(selectedColorScheme.accent_colors)}` : 'Use creative neon colors'}
+COMPOSITION RULE: ${selectedComposition ? `${selectedComposition.name}
+- Layout: ${selectedComposition.layout_type}
+- Focal Point: ${selectedComposition.focal_point}
+- Depth Layers: ${selectedComposition.depth_layers}` : 'Dynamic composition'}
+STYLE PRESET: ${selectedStylePreset ? `${selectedStylePreset.name}
+- Main Style: ${selectedStylePreset.main_style}
+- Effects: ${JSON.stringify(selectedStylePreset.effects)}
+- Render: ${selectedStylePreset.render_style}
+- Atmosphere: ${selectedStylePreset.atmosphere}` : 'Modern technical style'}
+
 ASPECT RATIO: 16:9 (1920x1080)
 PURPOSE: Blog hero banner with text overlay capability
 
@@ -914,7 +955,17 @@ Return ONLY the detailed prompt, no explanations.`;
         const fallbackStyleIndex = (new Date().getMinutes() + serviceIndex) % fallbackStyleVariations.length;
         const selectedFallbackStyle = fallbackStyleVariations[fallbackStyleIndex];
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
+        // Build composition details from database or use defaults
+        const compositionDetails = selectedComposition
+          ? `${selectedComposition.layout_type} composition, ${selectedComposition.focal_point}, ${selectedComposition.depth_layers}, ${selectedComposition.spacing_rules}`
+          : '60/40 asymmetrical composition with golden ratio focal point, 3-layer depth with background gradient and foreground accents';
+
+        // Include style preset details if available
+        const stylePresetDetails = selectedStylePreset
+          ? `, ${selectedStylePreset.main_style}, ${selectedStylePreset.atmosphere}, ${selectedStylePreset.render_style} rendering`
+          : '';
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
