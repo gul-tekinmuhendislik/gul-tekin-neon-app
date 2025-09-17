@@ -453,7 +453,7 @@ Return ONLY the prompt, no explanations.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.85,  // Increased for more creativity
-              max_tokens: 300     // Increased for more detailed prompts
+              max_tokens: 600     // Increased for longer, more detailed prompts
             })
           });
 
@@ -462,8 +462,8 @@ Return ONLY the prompt, no explanations.`;
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
               // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
-              const limitedPrompt = generatedPrompt.substring(0, 800);
-              console.log(`XAI generated prompt (limited to 800 chars): ${limitedPrompt.substring(0, 150)}...`);
+              const limitedPrompt = generatedPrompt.substring(0, 1500);
+              console.log(`XAI generated prompt (limited to 1500 chars): ${limitedPrompt.substring(0, 150)}...`);
               return `${limitedPrompt}, aspect ratio 16:9`;
             }
           }
@@ -675,13 +675,15 @@ export const generateVertexImagesHourly = inngest.createFunction(
           const systemPrompt = `You are an expert at creating highly detailed, visually rich prompts for Vertex AI Imagen 3.0 following Google's best practices.
 Your task is to create sophisticated prompts for engineering service hero banner illustrations with 16:9 aspect ratio.
 
+IMPORTANT: Each prompt MUST use a DIFFERENT visual style from the variation style provided.
+
 ADVANCED PROMPT STRUCTURE:
 1. PRIMARY SUBJECT: Detailed technical visualization with specific components
 2. VISUAL ELEMENTS:
    - Concrete: Physical components, machinery, systems
    - Abstract: Energy flows, data streams, particle effects
    - Technical: Diagrams, cross-sections, measurement indicators
-3. STYLE: Modern editorial vector illustration, flat design with gradients, glass morphism, isometric elements
+3. STYLE: MUST incorporate the provided variation style creatively
 4. COMPOSITION:
    - 60/40 asymmetrical balance
    - Golden ratio focal points
@@ -732,19 +734,42 @@ AVOID:
             ? `Related products: ${relatedProducts.map(p => p.urun_adi).join(', ')}`
             : '';
 
-          // Create variation seed to ensure different prompts
-          const variationSeed = new Date().getTime() % 10;
+          // Create variation seed to ensure different prompts - using minutes and service index for more variety
+          const now = new Date();
+          const variationSeed = (now.getMinutes() + now.getHours() + serviceIndex) % 30;
+
+          // Expanded variation styles - 30 different styles for better variety
           const variationStyles = [
-            'ultra-modern minimalist, clean lines, negative space',
-            'technical blueprint style, CAD wireframe aesthetics',
-            'photorealistic product showcase, studio lighting',
-            'isometric 3D illustration, vibrant gradients',
-            'futuristic holographic display, neon accents',
-            'architectural visualization, golden hour lighting',
-            'industrial design showcase, dramatic shadows',
-            'eco-friendly green technology, organic shapes',
-            'high-tech laboratory, clean room environment',
-            'abstract geometric patterns, bold color blocks'
+            'ultra-modern minimalist, clean lines, negative space, helvetica aesthetic',
+            'technical blueprint style, CAD wireframe aesthetics, engineering precision',
+            'photorealistic 3D render, octane render quality, ray tracing, cinematic lighting',
+            'isometric 3D illustration, vibrant gradients, low poly style',
+            'futuristic holographic display, neon accents, cyberpunk atmosphere',
+            'architectural visualization, golden hour lighting, photorealistic materials',
+            'industrial design showcase, dramatic shadows, product photography style',
+            'eco-friendly green technology, organic shapes, nature integration',
+            'high-tech laboratory, clean room environment, sterile aesthetic',
+            'abstract geometric patterns, bold color blocks, bauhaus inspired',
+            'watercolor illustration, soft edges, artistic interpretation',
+            'retro-futuristic style, 80s aesthetic, synthwave colors',
+            'flat design with depth, material design principles, subtle shadows',
+            'technical cutaway view, exploded diagram, component visualization',
+            'art deco inspired, geometric patterns, luxury aesthetic',
+            'japanese minimalism, zen aesthetic, wabi-sabi elements',
+            'scandinavian design, hygge atmosphere, natural materials',
+            'brutalist architecture style, concrete textures, monolithic forms',
+            'Memphis design movement, playful geometry, vibrant patterns',
+            'swiss design style, grid-based layout, typography focus',
+            'vaporwave aesthetic, surreal elements, pastel gradients',
+            'constructivist style, dynamic angles, revolutionary aesthetic',
+            'art nouveau inspired, flowing organic lines, ornamental details',
+            'digital glitch art, data visualization, matrix aesthetic',
+            'parametric design, algorithmic patterns, computational geometry',
+            'biomimicry design, nature-inspired forms, organic technology',
+            'deconstructivist style, fragmented forms, dynamic chaos',
+            'neo-brutalism, raw materials, bold typography elements',
+            'maximalist design, rich details, layered complexity',
+            'photomontage style, collage elements, mixed media aesthetic'
           ];
 
           const selectedVariation = variationStyles[variationSeed];
@@ -794,7 +819,7 @@ Return ONLY the detailed prompt, no explanations.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.7,
-              max_tokens: 300
+              max_tokens: 600
             })
           });
 
@@ -803,7 +828,7 @@ Return ONLY the detailed prompt, no explanations.`;
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
               // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
-              finalPrompt = generatedPrompt.substring(0, 900);
+              finalPrompt = generatedPrompt.substring(0, 1500);
               console.log(`[10min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
               console.log(`[10min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
             } else {
@@ -871,15 +896,32 @@ Return ONLY the detailed prompt, no explanations.`;
           if (!selectedColorScheme) colorScheme = 'gradient from #722F37 rich burgundy to #B4E0F0 ethereal blue, with #93E9BE seafoam accent';
         }
 
-        // Build enhanced fallback prompt with rich details
-        finalPrompt = `${primarySubject}, ${visualElements}, modern editorial vector illustration, flat design with glass morphism effects, isometric technical elements, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
+        // Build enhanced fallback prompt with rich details - using dynamic style variation
+        const fallbackStyleVariations = [
+          'modern editorial vector illustration, flat design with glass morphism effects',
+          'photorealistic 3D render with depth of field, cinematic composition',
+          'technical blueprint style illustration, precise line work, CAD aesthetic',
+          'isometric pixel art style, retro gaming aesthetic, vibrant colors',
+          'watercolor and ink illustration, artistic brush strokes, organic flow',
+          'art deco inspired design, geometric patterns, metallic accents',
+          'brutalist design approach, bold shapes, high contrast elements',
+          'minimalist japanese ink wash, negative space, zen composition',
+          'cyberpunk neon aesthetic, holographic elements, dark atmosphere',
+          'scandinavian flat design, pastel colors, cozy atmosphere'
+        ];
+
+        // Use time-based selection for fallback style too
+        const fallbackStyleIndex = (new Date().getMinutes() + serviceIndex) % fallbackStyleVariations.length;
+        const selectedFallbackStyle = fallbackStyleVariations[fallbackStyleIndex];
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
       // Add aspect ratio - Vertex AI can handle up to 2048 chars safely
-      finalPrompt = finalPrompt.substring(0, 1000) + `, 16:9 aspect ratio`;
+      finalPrompt = finalPrompt.substring(0, 1500) + `, 16:9 aspect ratio`;
 
       return {
         service: selectedService.hizmet_adi,
