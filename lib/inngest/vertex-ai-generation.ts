@@ -70,7 +70,7 @@ export const handleVertexAIGeneration = inngest.createFunction(
       const parameters = helpers.toValue({
         sampleCount: numberOfImages,
         aspectRatio: aspectRatio,
-        sampleImageSize: "1k",  // Reduced to prevent oversized outputs
+        sampleImageSize: "2k",  // Higher resolution for better quality
         safetySetting: safetySetting,
         personGeneration: personGeneration,
         includeRaiReason: true,
@@ -653,17 +653,17 @@ Return ONLY the prompt, no explanations.`;
 // [REMOVED] testVertexAIConnection function has been removed
 // Vertex AI connection is tested automatically in production functions
 
-// Generate images with Vertex AI every 10 minutes using fast model
+// Generate images with Vertex AI every 5 minutes using fast model
 export const generateVertexImagesHourly = inngest.createFunction(
   {
-    id: "generate-vertex-images-10min",
-    name: "Generate Vertex AI Images Every 10 Minutes (Fast Model)",
+    id: "generate-vertex-images-5min",
+    name: "Generate Vertex AI Images Every 5 Minutes (Fast Model)",
     retries: 2
   },
   [
     {
-      // Run every 10 minutes (144 images/day) - using fast model for cost optimization
-      cron: "*/10 * * * *"
+      // Run every 5 minutes (288 images/day) - using fast model for cost optimization
+      cron: "*/5 * * * *"
     },
     {
       // Manual trigger event
@@ -1164,7 +1164,7 @@ Return ONLY the detailed prompt, no explanations.`;
         const parameters = helpers.toValue({
           sampleCount: 1,
           aspectRatio: "16:9",
-          sampleImageSize: "1k", // Using 1k for fast model
+          sampleImageSize: "2k", // Higher resolution for better quality
           safetySetting: "block_some",
           personGeneration: "dont_allow",
           includeRaiReason: false,
