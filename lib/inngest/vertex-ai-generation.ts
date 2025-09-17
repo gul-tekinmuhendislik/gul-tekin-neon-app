@@ -394,59 +394,29 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
           // Extract key technical terms from content
           const keywords = blogData.keywords || [];
 
-          // Determine visual style based on topic and content
+          // Use database-driven styles instead of hardcoded ones
           const topicLower = blogData.topic.toLowerCase();
-          let visualStyle = '';
-          let colorPalette = '';
-          let composition = '';
           let technicalElements = '';
 
-          // Dynamic style selection based on content
+          // Only define technical elements based on topic, everything else comes from database
           if (topicLower.includes('güneş') || topicLower.includes('solar')) {
-            visualStyle = 'bright sunny day, golden hour lighting, solar panels gleaming';
-            colorPalette = 'warm oranges, deep blues, metallic silver';
-            composition = 'aerial drone view of rooftop installation';
             technicalElements = 'photovoltaic cells, inverters, mounting rails, electrical meters';
           } else if (topicLower.includes('ısı pompa') || topicLower.includes('heat pump')) {
-            visualStyle = 'modern technical cutaway illustration, x-ray vision effect';
-            colorPalette = 'cool blues transitioning to warm reds, thermal gradient';
-            composition = 'split-screen showing indoor comfort and outdoor unit';
             technicalElements = 'compressor unit, refrigerant pipes, heat exchanger coils';
           } else if (topicLower.includes('klima') || topicLower.includes('air')) {
-            visualStyle = 'clean minimalist interior, soft natural lighting';
-            colorPalette = 'crisp whites, soft grays, accent of sky blue';
-            composition = 'modern living room with sleek AC unit';
             technicalElements = 'air flow visualization, temperature zones, control panel';
           } else if (topicLower.includes('su arıtma') || topicLower.includes('water')) {
-            visualStyle = 'crystal clear water, transparency effects, refraction';
-            colorPalette = 'aqua blues, pure whites, stainless steel metallic';
-            composition = 'cross-section view of filtration stages';
             technicalElements = 'filter chambers, RO membrane, UV sterilizer, flow indicators';
           } else {
-            // Random variation for other topics
-            const variations = [
-              {
-                visualStyle: 'industrial chic, dramatic lighting, high contrast',
-                colorPalette: 'deep blacks, electric blues, copper accents',
-                composition: 'dynamic diagonal composition, rule of thirds'
-              },
-              {
-                visualStyle: 'futuristic tech lab, neon accents, glass and steel',
-                colorPalette: 'cyberpunk purples, neon greens, chrome silver',
-                composition: 'isometric 3D view, technical blueprint overlay'
-              },
-              {
-                visualStyle: 'eco-friendly green tech, natural materials, organic shapes',
-                colorPalette: 'forest greens, earth browns, sky blues',
-                composition: 'harmonious blend of technology and nature'
-              }
-            ];
-            const randomVar = variations[Math.floor(Math.random() * variations.length)];
-            visualStyle = randomVar.visualStyle;
-            colorPalette = randomVar.colorPalette;
-            composition = randomVar.composition;
             technicalElements = 'precision engineering components, digital displays, sensor arrays';
           }
+
+          // Use database values for visual style, color palette, and composition
+          const visualStyle = selectedStylePreset?.main_style || 'modern technical illustration';
+          const colorPalette = selectedColorScheme
+            ? `${selectedColorScheme.name} palette`
+            : 'dynamic color scheme';
+          const composition = selectedComposition?.layout_type || 'balanced composition';
 
           // Add time-based variations
           const hour = new Date().getHours();
