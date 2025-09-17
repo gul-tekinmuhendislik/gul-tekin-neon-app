@@ -337,6 +337,55 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
       // Generate dynamic prompt with XAI based on blog content
       console.log(`Generating dynamic prompt with XAI for blog ${blogId}`);
 
+      // Fetch random elements from database tables for variety
+      const [regionalTheme, colorScheme, compositionRule, stylePreset, negativePrompts] = await Promise.all([
+        sql`
+          SELECT region_name, visual_elements, cultural_motifs, keywords
+          FROM regional_themes
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT name, primary_gradient, accent_colors, emotion_description
+          FROM color_schemes
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT name, layout_type, focal_point, depth_layers, spacing_rules
+          FROM composition_rules
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT name, main_style, effects, render_style, atmosphere
+          FROM style_presets
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT prompt_text
+          FROM negative_prompts
+          WHERE is_active = true
+          ORDER BY severity DESC
+        `
+      ]);
+
+      const selectedRegion = regionalTheme[0];
+      const selectedColorScheme = colorScheme[0];
+      const selectedComposition = compositionRule[0];
+      const selectedStylePreset = stylePreset[0];
+      const negativePromptText = negativePrompts.map(np => np.prompt_text).join(', ');
+
+      console.log(`[Blog Generation] Using region: ${selectedRegion?.region_name || 'default'}`);
+      console.log(`[Blog Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
+      console.log(`[Blog Generation] Using composition: ${selectedComposition?.name || 'default'}`);
+      console.log(`[Blog Generation] Using style preset: ${selectedStylePreset?.name || 'default'}`);
+
       const apiKey = process.env.XAI_API_KEY;
       console.log(`XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
 
@@ -419,15 +468,34 @@ IMPORTANT GUIDELINES:
 - Incorporate dynamic elements and energy
 - Be creative and avoid clichés
 
-VISUAL STYLE CONTEXT:
-- Suggested style: ${visualStyle}
-- Color palette: ${colorPalette}
-- Composition: ${composition}
-- Time: ${timeOfDay}
-- Season: ${season}
-- Technical elements: ${technicalElements}
+DATABASE-DRIVEN ELEMENTS TO INCORPORATE:
+REGIONAL THEME: ${selectedRegion ? `${selectedRegion.region_name}
+- Visual elements: ${selectedRegion.visual_elements}
+- Cultural motifs: ${selectedRegion.cultural_motifs}` : 'Mediterranean coastal'}
 
-Mix and match these elements creatively. Don't use all of them - pick what works best.`;
+COLOR SCHEME: ${selectedColorScheme ? `${selectedColorScheme.name}
+- Primary gradient: ${JSON.stringify(selectedColorScheme.primary_gradient)}
+- Accent colors: ${JSON.stringify(selectedColorScheme.accent_colors)}
+- Emotion: ${selectedColorScheme.emotion_description}` : colorPalette}
+
+COMPOSITION: ${selectedComposition ? `${selectedComposition.name}
+- Layout: ${selectedComposition.layout_type}
+- Focal point: ${selectedComposition.focal_point}
+- Depth: ${selectedComposition.depth_layers}` : composition}
+
+STYLE PRESET: ${selectedStylePreset ? `${selectedStylePreset.name}
+- Main style: ${selectedStylePreset.main_style}
+- Effects: ${JSON.stringify(selectedStylePreset.effects)}
+- Atmosphere: ${selectedStylePreset.atmosphere}` : visualStyle}
+
+NEGATIVE ELEMENTS TO AVOID:
+${negativePromptText || 'no text, no logos, no human figures'}
+
+Time: ${timeOfDay}
+Season: ${season}
+Technical elements: ${technicalElements}
+
+Mix and match these elements creatively. Ensure the prompt is unique and sophisticated.`;
 
           const userPrompt = `Create a unique, creative image generation prompt for this blog post:
 Title: ${blogData.title}
@@ -479,7 +547,7 @@ Return ONLY the prompt, no explanations.`;
       // Enhanced dynamic fallback prompt if XAI fails
       console.log("Using enhanced dynamic fallback prompt (XAI unavailable)");
 
-      // Create varied fallback prompts based on topic
+      // Create varied fallback prompts based on topic and database elements
       const topicLower = blogData.topic.toLowerCase();
       const randomSeed = Math.random();
 
@@ -511,7 +579,28 @@ Return ONLY the prompt, no explanations.`;
         technicalFocus = 'advanced engineering systems, digital control panels, IoT sensors';
       }
 
-      return `${selectedStyle}, ${technicalFocus}, professional ${blogData.topic} visualization, cutting-edge technology showcase, dynamic composition, vibrant color scheme, aspect ratio 16:9, high resolution, no people, no text, no watermarks`;
+      // Build enhanced fallback prompt using database elements
+      const regionalElements = selectedRegion
+        ? `${selectedRegion.visual_elements}, ${selectedRegion.cultural_motifs}, `
+        : 'Mediterranean coastal background, ';
+
+      const colorElements = selectedColorScheme
+        ? `gradient from ${selectedColorScheme.primary_gradient[0]} to ${selectedColorScheme.primary_gradient[1]}, accent colors ${selectedColorScheme.accent_colors[0]} and ${selectedColorScheme.accent_colors[1]}, `
+        : 'vibrant color scheme, ';
+
+      const compositionElements = selectedComposition
+        ? `${selectedComposition.layout_type} composition, ${selectedComposition.focal_point}, ${selectedComposition.depth_layers}, `
+        : 'dynamic composition, ';
+
+      const styleElements = selectedStylePreset
+        ? `${selectedStylePreset.main_style}, ${selectedStylePreset.atmosphere}, ${selectedStylePreset.render_style} rendering, `
+        : `${selectedStyle}, `;
+
+      const negativeElements = negativePromptText
+        ? `, ${negativePromptText}`
+        : ', no people, no text, no watermarks';
+
+      return `${technicalFocus}, ${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, aspect ratio 16:9, high resolution${negativeElements}`;
     });
 
     // Step 3: Save prompt to blog if it was generated
