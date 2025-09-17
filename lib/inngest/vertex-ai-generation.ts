@@ -447,6 +447,13 @@ IMPORTANT GUIDELINES:
 - Incorporate dynamic elements and energy
 - Be creative and avoid clichés
 
+MANDATORY QUALITY MODIFIERS (Always include these):
+- ultra high quality, extremely detailed, sharp focus
+- 4K resolution, HDR, photorealistic details
+- crisp edges, professional photography, studio quality
+- perfect clarity, hyperdetailed, intricate details
+- masterpiece quality, award winning, professional grade
+
 DATABASE-DRIVEN ELEMENTS TO INCORPORATE:
 REGIONAL THEME: ${selectedRegion ? `${selectedRegion.region_name}
 - Visual elements: ${selectedRegion.visual_elements}
@@ -586,7 +593,10 @@ Return ONLY the prompt, no explanations.`;
         ? `, ${negativePromptText}`
         : ', no people, no text, no watermarks';
 
-      return `${technicalFocus}, ${visualElementsForFallback}${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, aspect ratio 16:9, high resolution${negativeElements}`;
+      // Quality modifiers for sharp, professional images
+      const qualityModifiers = 'ultra high quality, extremely detailed, sharp focus, 4K resolution, HDR, photorealistic details, crisp edges, professional photography, studio quality, perfect clarity, hyperdetailed, intricate details';
+
+      return `${technicalFocus}, ${visualElementsForFallback}${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, ${qualityModifiers}, aspect ratio 16:9${negativeElements}`;
     });
 
     // Step 3: Save prompt to blog if it was generated
@@ -843,6 +853,12 @@ ADVANCED PROMPT STRUCTURE:
 6. LIGHTING: Multi-source lighting with specific directions and intensities
 7. ATMOSPHERE: Regional elements (Mediterranean, Bodrum, coastal)
 8. TECHNICAL SPECS: High resolution, retina-ready, strong contrast for readability
+9. QUALITY REQUIREMENTS: ALWAYS include these quality modifiers:
+   - ultra high quality, extremely detailed, sharp focus
+   - 4K resolution, HDR, photorealistic details
+   - crisp edges, professional photography, studio quality
+   - perfect clarity, hyperdetailed, intricate details
+   - masterpiece quality, award winning, professional grade
 
 REQUIREMENTS:
 - Create rich, multi-layered descriptions
@@ -1099,7 +1115,10 @@ Return ONLY the detailed prompt, no explanations.`;
           ? `${visualElementsDescriptions}, `
           : '';
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${visualElementsAddition}${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
+        // Quality modifiers for sharp, professional images
+        const qualityModifiers = 'ultra high quality, extremely detailed, sharp focus, 4K resolution, HDR, photorealistic details, crisp edges, professional photography, studio quality, perfect clarity, hyperdetailed, intricate details';
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${visualElementsAddition}${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, ${qualityModifiers}, high contrast for readability${negativeElements}`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
