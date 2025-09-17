@@ -338,7 +338,7 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
       console.log(`Generating dynamic prompt with XAI for blog ${blogId}`);
 
       // Fetch random elements from database tables for variety
-      const [regionalTheme, colorScheme, compositionRule, stylePreset, negativePrompts] = await Promise.all([
+      const [regionalTheme, colorScheme, compositionRule, stylePreset, negativePrompts, visualElements] = await Promise.all([
         sql`
           SELECT region_name, visual_elements, cultural_motifs, keywords
           FROM regional_themes
@@ -372,6 +372,13 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
           FROM negative_prompts
           WHERE is_active = true
           ORDER BY severity DESC
+        `,
+        sql`
+          SELECT name, description, element_type
+          FROM visual_elements
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 3
         `
       ]);
 
@@ -380,11 +387,13 @@ export const generateBlogImageWithVertexAI = inngest.createFunction(
       const selectedComposition = compositionRule[0];
       const selectedStylePreset = stylePreset[0];
       const negativePromptText = negativePrompts.map(np => np.prompt_text).join(', ');
+      const visualElementsText = visualElements.map(ve => ve.description).join(', ');
 
       console.log(`[Blog Generation] Using region: ${selectedRegion?.region_name || 'default'}`);
       console.log(`[Blog Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
       console.log(`[Blog Generation] Using composition: ${selectedComposition?.name || 'default'}`);
       console.log(`[Blog Generation] Using style preset: ${selectedStylePreset?.name || 'default'}`);
+      console.log(`[Blog Generation] Using ${visualElements.length} visual elements`);
 
       const apiKey = process.env.XAI_API_KEY;
       console.log(`XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
@@ -457,6 +466,9 @@ STYLE PRESET: ${selectedStylePreset ? `${selectedStylePreset.name}
 - Main style: ${selectedStylePreset.main_style}
 - Effects: ${JSON.stringify(selectedStylePreset.effects)}
 - Atmosphere: ${selectedStylePreset.atmosphere}` : visualStyle}
+
+VISUAL ELEMENTS TO INCLUDE:
+${visualElementsText || 'technical components, modern engineering systems'}
 
 NEGATIVE ELEMENTS TO AVOID:
 ${negativePromptText || 'no text, no logos, no human figures'}
@@ -554,6 +566,10 @@ Return ONLY the prompt, no explanations.`;
         ? `${selectedRegion.visual_elements}, ${selectedRegion.cultural_motifs}, `
         : 'modern technical background, clean engineering environment, ';
 
+      const visualElementsForFallback = visualElementsText
+        ? `${visualElementsText}, `
+        : '';
+
       const colorElements = selectedColorScheme
         ? `gradient from ${selectedColorScheme.primary_gradient[0]} to ${selectedColorScheme.primary_gradient[1]}, accent colors ${selectedColorScheme.accent_colors[0]} and ${selectedColorScheme.accent_colors[1]}, `
         : 'vibrant color scheme, ';
@@ -570,7 +586,7 @@ Return ONLY the prompt, no explanations.`;
         ? `, ${negativePromptText}`
         : ', no people, no text, no watermarks';
 
-      return `${technicalFocus}, ${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, aspect ratio 16:9, high resolution${negativeElements}`;
+      return `${technicalFocus}, ${visualElementsForFallback}${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, aspect ratio 16:9, high resolution${negativeElements}`;
     });
 
     // Step 3: Save prompt to blog if it was generated
@@ -757,6 +773,18 @@ export const generateVertexImagesHourly = inngest.createFunction(
 
       const selectedRegion = regionalTheme[0];
       console.log(`[10min Generation] Using regional theme: ${selectedRegion?.region_name || 'default'}`);
+
+      // Get random visual elements from database
+      const randomVisualElements = await sql`
+        SELECT name, description, element_type
+        FROM visual_elements
+        WHERE is_active = true
+        ORDER BY RANDOM()
+        LIMIT 3
+      `;
+
+      const visualElementsDescriptions = randomVisualElements.map(ve => ve.description).join(', ');
+      console.log(`[10min Generation] Using ${randomVisualElements.length} visual elements`);
 
       // Get negative prompts from database
       const negativePrompts = await sql`
@@ -1066,7 +1094,12 @@ Return ONLY the detailed prompt, no explanations.`;
           ? selectedRegion.visual_elements.substring(0, 100)
           : 'clean technical background, modern engineering environment';
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
+        // Add visual elements from database
+        const visualElementsAddition = visualElementsDescriptions
+          ? `${visualElementsDescriptions}, `
+          : '';
+
+        finalPrompt = `${primarySubject}, ${visualElements}, ${visualElementsAddition}${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, high contrast for readability${negativeElements}`;
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
