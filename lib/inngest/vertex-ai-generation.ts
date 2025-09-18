@@ -518,9 +518,9 @@ Return ONLY the prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
-              const limitedPrompt = generatedPrompt.substring(0, 1500);
-              console.log(`XAI generated prompt (limited to 1500 chars): ${limitedPrompt.substring(0, 150)}...`);
+              // Limited to 1200 chars for optimal Vertex AI performance
+              const limitedPrompt = generatedPrompt.substring(0, 1200);
+              console.log(`XAI generated prompt (limited to 1200 chars): ${limitedPrompt.substring(0, 150)}...`);
               return `${limitedPrompt}, aspect ratio 16:9`;
             }
           }
@@ -593,10 +593,17 @@ Return ONLY the prompt, no explanations.`;
         ? `, ${negativePromptText}`
         : ', no people, no text, no watermarks';
 
-      // Quality modifiers for sharp, professional images
-      const qualityModifiers = 'ultra high quality, extremely detailed, sharp focus, 4K resolution, HDR, photorealistic details, crisp edges, professional photography, studio quality, perfect clarity, hyperdetailed, intricate details';
+      // Quality modifiers for sharp, professional images (shortened for character limit)
+      const qualityModifiers = 'ultra high quality, sharp focus, 4K resolution, photorealistic';
 
-      return `${technicalFocus}, ${visualElementsForFallback}${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, ${qualityModifiers}, aspect ratio 16:9${negativeElements}`;
+      // Build the fallback prompt
+      const fallbackPrompt = `${technicalFocus}, ${visualElementsForFallback}${styleElements}${regionalElements}${colorElements}${compositionElements}professional ${blogData.topic} visualization, cutting-edge technology showcase, ${qualityModifiers}, aspect ratio 16:9${negativeElements}`;
+
+      // Apply same 1200 character limit as XAI prompts
+      const limitedFallback = fallbackPrompt.substring(0, 1200);
+      console.log(`Fallback prompt (limited to 1200 chars): ${limitedFallback.substring(0, 150)}...`);
+
+      return limitedFallback;
     });
 
     // Step 3: Save prompt to blog if it was generated
