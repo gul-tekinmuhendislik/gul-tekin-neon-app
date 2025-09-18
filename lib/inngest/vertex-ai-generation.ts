@@ -510,7 +510,7 @@ Return ONLY the prompt, no explanations.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.85,  // Increased for more creativity
-              max_tokens: 600     // Increased for longer, more detailed prompts
+              max_tokens: 800     // Increased for richer, more detailed prompts before truncation
             })
           });
 
@@ -1001,8 +1001,8 @@ Return ONLY the detailed prompt, no explanations.`;
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
               ],
-              temperature: 0.7,
-              max_tokens: 600
+              temperature: 0.85,  // Higher for more creative variety
+              max_tokens: 800     // Increased for richer prompts before 1200 char truncation
             })
           });
 
@@ -1010,8 +1010,8 @@ Return ONLY the detailed prompt, no explanations.`;
             const data = await response.json();
             const generatedPrompt = data.choices[0]?.message?.content?.trim();
             if (generatedPrompt) {
-              // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
-              finalPrompt = generatedPrompt.substring(0, 1500);
+              // Limited to 1200 chars for optimal Vertex AI performance
+              finalPrompt = generatedPrompt.substring(0, 1200);
               console.log(`[10min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
               console.log(`[10min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
             } else {
@@ -1122,27 +1122,35 @@ Return ONLY the detailed prompt, no explanations.`;
           ? `${visualElementsDescriptions}, `
           : '';
 
-        // Quality modifiers for sharp, professional images
-        const qualityModifiers = 'ultra high quality, extremely detailed, sharp focus, 4K resolution, HDR, photorealistic details, crisp edges, professional photography, studio quality, perfect clarity, hyperdetailed, intricate details';
+        // Shortened quality modifiers to save characters
+        const qualityModifiers = 'ultra high quality, sharp focus, 4K resolution, photorealistic';
 
-        finalPrompt = `${primarySubject}, ${visualElements}, ${visualElementsAddition}${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, ${qualityModifiers}, high contrast for readability${negativeElements}`;
+        // Build fallback prompt with all components
+        const fallbackPrompt = `${primarySubject}, ${visualElements}, ${visualElementsAddition}${selectedFallbackStyle}${stylePresetDetails}, ${backgroundElement}, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, ${compositionDetails}, 30% negative space for text overlay, ${qualityModifiers}, high contrast for readability${negativeElements}`;
+
+        // Apply 1200 char limit to fallback
+        finalPrompt = fallbackPrompt.substring(0, 1200);
 
         console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
+        console.log(`[10min Generation] Fallback prompt length: ${finalPrompt.length} chars`);
         console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
-      // Add aspect ratio and negative prompts if not already included
+      // Add aspect ratio and apply 1200 char limit
       if (!finalPrompt.includes('no text') && !finalPrompt.includes('no logo')) {
-        // Add negative prompts to the end if XAI didn't include them
+        // Add negative prompts but keep within limit
         const negativeAppend = negativePromptText
-          ? `, ${negativePromptText}`
-          : ', no text, no logos, no watermarks, no human figures';
+          ? `, ${negativePromptText.substring(0, 100)}`  // Limit negative prompts
+          : ', no text, no logos, no watermarks';
 
-        finalPrompt = finalPrompt.substring(0, 1300) + negativeAppend + `, 16:9 aspect ratio`;
+        finalPrompt = finalPrompt.substring(0, 1100) + negativeAppend + `, 16:9 aspect ratio`;
       } else {
-        // XAI already included negative prompts
-        finalPrompt = finalPrompt.substring(0, 1500) + `, 16:9 aspect ratio`;
+        // XAI already included negative prompts - just add aspect ratio
+        finalPrompt = finalPrompt.substring(0, 1180) + `, 16:9 aspect ratio`;
       }
+
+      // Final safety check - ensure total is under 1200
+      finalPrompt = finalPrompt.substring(0, 1200);
 
       return {
         service: selectedService.hizmet_adi,

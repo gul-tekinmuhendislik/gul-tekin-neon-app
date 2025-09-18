@@ -187,7 +187,7 @@ Be creative and vary the style. Return ONLY the prompt.`;
                 { role: "user", content: userPrompt }
               ],
               temperature: 0.85,  // Higher for more variety
-              max_tokens: 600
+              max_tokens: 800     // Increased for richer prompts before 1200 char truncation
             })
           });
 
