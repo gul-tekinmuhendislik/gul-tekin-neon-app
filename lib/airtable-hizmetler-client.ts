@@ -7,6 +7,7 @@ export async function getHizmetlerFromNeon(): Promise<Hizmet[]> {
       SELECT
         id,
         hizmet_adi,
+        kategori,
         slug,
         seo_slug,
         aciklama,
@@ -20,7 +21,7 @@ export async function getHizmetlerFromNeon(): Promise<Hizmet[]> {
         updated_time
       FROM hizmetler
       WHERE aktif = true
-      ORDER BY hizmet_adi
+      ORDER BY kategori, hizmet_adi
     `;
 
     return result as Hizmet[];
@@ -36,6 +37,7 @@ export async function getHizmetById(id: string): Promise<Hizmet | null> {
       SELECT
         id,
         hizmet_adi,
+        kategori,
         slug,
         seo_slug,
         aciklama,
