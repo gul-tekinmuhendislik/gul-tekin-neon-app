@@ -556,26 +556,66 @@ Return ONLY the prompt, no explanations.`;
 // [REMOVED] testVertexAIConnection function has been removed
 // Vertex AI connection is tested automatically in production functions
 
-// Generate images with Vertex AI every 10 minutes using fast model
+// Generate images with Vertex AI every 5 minutes using fast model
 export const generateVertexImagesHourly = inngest.createFunction(
   {
-    id: "generate-vertex-images-10min",
-    name: "Generate Vertex AI Images Every 10 Minutes (Fast Model)",
+    id: "generate-vertex-images-5min",
+    name: "Generate Vertex AI Images Every 5 Minutes (Fast Model)",
     retries: 2
   },
   [
     {
-      // Run every 10 minutes (144 images/day) - using fast model for cost optimization
-      cron: "*/10 * * * *"
+      // Run every 5 minutes (288 images/day) - using fast model for cost optimization
+      cron: "*/5 * * * *"
     },
     {
       // Manual trigger event
-      event: "vertex-ai/15min.manual"
+      event: "vertex-ai/5min.manual"
     }
   ],
   async ({ step }) => {
-    // Step 1: Get services from database and determine next service
-    const { service, prompt, slug, serviceIndex } = await step.run("determine-service-and-prompt", async () => {
+    // Step 1: Get services from database and determine next service with location
+    const { service, prompt, slug, serviceIndex, location, locationIndex } = await step.run("determine-service-and-prompt", async () => {
+      // Bodrum and surrounding area locations
+      const locations = [
+        // Bodrum Peninsula - Main Districts
+        { name: "Bodrum Merkez", description: "historic marina district with castle views" },
+        { name: "Gümbet", description: "vibrant beach resort area" },
+        { name: "Bitez", description: "tranquil bay with citrus groves" },
+        { name: "Ortakent", description: "traditional village with long sandy beach" },
+        { name: "Turgutreis", description: "sunset coast with modern marina" },
+        { name: "Yalıkavak", description: "luxury marina and windmill views" },
+        { name: "Gündoğan", description: "peaceful bay surrounded by hills" },
+        { name: "Göltürkbükü", description: "exclusive twin bays area" },
+        { name: "Türkbükü", description: "upscale seaside resort" },
+        { name: "Gölköy", description: "hidden cove with crystal waters" },
+        { name: "Torba", description: "quiet bay with olive groves" },
+        { name: "Güvercinlik", description: "family-friendly coastal town" },
+        { name: "Yalıçiftlik", description: "authentic village by the sea" },
+        { name: "Kızılağaç", description: "rural area with vineyards" },
+        { name: "Mumcular", description: "mountain village with panoramic views" },
+        { name: "Mazı", description: "secluded bay with ancient ruins" },
+        { name: "Akyarlar", description: "windsurfing paradise" },
+        { name: "Kadıkalesi", description: "historic peninsula with ancient harbor" },
+        { name: "Gümüşlük", description: "artistic village on ancient Myndos" },
+
+        // Milas Region
+        { name: "Milas Merkez", description: "historic city with Ottoman architecture" },
+        { name: "Ören", description: "long beach town with thermal springs" },
+        { name: "Güllük", description: "fishing port with island views" },
+        { name: "Boğaziçi", description: "lakeside town near airport" },
+
+        // Muğla Province Coastal
+        { name: "Didim", description: "resort town with ancient Temple of Apollo" },
+        { name: "Altınkum", description: "golden beach resort area" },
+        { name: "Akbük", description: "serene bay with pine forests" },
+        { name: "Datça", description: "peninsula town with almonds and olives" },
+        { name: "Marmaris", description: "major yacht harbor with castle" },
+        { name: "İçmeler", description: "beach resort near Marmaris" },
+        { name: "Fethiye", description: "turquoise coast with lycian tombs" },
+        { name: "Göcek", description: "exclusive yacht destination" }
+      ];
+
       // Get all services from database
       const services = await sql`
         SELECT id, hizmet_adi, slug, aciklama
@@ -583,7 +623,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         ORDER BY id
       `;
 
-      // Get the last generated image to determine next service
+      // Get the last generated image to determine next service and location
       const lastImage = await sql`
         SELECT metadata
         FROM vertex_images
@@ -592,12 +632,24 @@ export const generateVertexImagesHourly = inngest.createFunction(
       `;
 
       let serviceIndex = 0;
-      if (lastImage.length > 0 && lastImage[0].metadata?.serviceIndex !== undefined) {
+      let locationIndex = 0;
+
+      if (lastImage.length > 0 && lastImage[0].metadata) {
         // Get next service in sequence
-        serviceIndex = (lastImage[0].metadata.serviceIndex + 1) % services.length;
+        if (lastImage[0].metadata.serviceIndex !== undefined) {
+          serviceIndex = (lastImage[0].metadata.serviceIndex + 1) % services.length;
+        }
+        // Get next location in sequence
+        if (lastImage[0].metadata.locationIndex !== undefined) {
+          locationIndex = (lastImage[0].metadata.locationIndex + 1) % locations.length;
+        } else {
+          // Random start if no previous location index
+          locationIndex = Math.floor(Math.random() * locations.length);
+        }
       }
 
       const selectedService = services[serviceIndex];
+      const selectedLocation = locations[locationIndex];
 
       // Check recently used prompts to avoid repetition
       const recentPrompts = await sql`
@@ -609,7 +661,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 5
       `;
 
-      console.log(`[10min Generation] Found ${recentPrompts.length} recent prompts for ${selectedService.hizmet_adi}`);
+      console.log(`[5min Generation] Found ${recentPrompts.length} recent prompts for ${selectedService.hizmet_adi}`);
 
       // Get related brands for this service for more variation
       const relatedBrands = await sql`
@@ -623,7 +675,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 5
       `;
 
-      console.log(`[10min Generation] Found ${relatedBrands.length} related brands for service`);
+      console.log(`[5min Generation] Found ${relatedBrands.length} related brands for service`);
 
       // Get related products for variation
       const relatedProducts = await sql`
@@ -637,7 +689,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 3
       `;
 
-      console.log(`[10min Generation] Found ${relatedProducts.length} related products`);
+      console.log(`[5min Generation] Found ${relatedProducts.length} related products`);
 
       // Get dynamic color scheme from database
       const topicKey = selectedService.slug?.replace(/-/g, '_') || 'default';
@@ -653,14 +705,15 @@ export const generateVertexImagesHourly = inngest.createFunction(
       `;
 
       const selectedColorScheme = colorScheme[0];
-      console.log(`[10min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
+      console.log(`[5min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
+      console.log(`[5min Generation] Selected location: ${selectedLocation.name} - ${selectedLocation.description}`);
 
-      // Generate dynamic prompt with XAI based on service
+      // Generate dynamic prompt with XAI based on service and location
       let finalPrompt = "";
 
       const apiKey = process.env.XAI_API_KEY;
-      console.log(`[10min Generation] XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
-      console.log(`[10min Generation] Generating prompt for service: ${selectedService.hizmet_adi} (index: ${serviceIndex})`);
+      console.log(`[5min Generation] XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
+      console.log(`[5min Generation] Generating prompt for service: ${selectedService.hizmet_adi} in ${selectedLocation.name} (index: ${serviceIndex})`);
 
       if (apiKey) {
         try {
@@ -688,7 +741,7 @@ ADVANCED PROMPT STRUCTURE:
    - Complementary accent colors
    - Emotional color psychology`}
 6. LIGHTING: Multi-source lighting with specific directions and intensities
-7. ATMOSPHERE: Regional elements (Mediterranean, Bodrum, coastal)
+7. ATMOSPHERE: Location-specific regional elements (Mediterranean coastal architecture)
 8. TECHNICAL SPECS: High resolution, retina-ready, strong contrast for readability
 
 REQUIREMENTS:
@@ -749,6 +802,7 @@ AVOID:
           const userPrompt = `Create a UNIQUE and CREATIVE Vertex AI Imagen 3.0 prompt for this engineering service hero banner:
 
 SERVICE: ${selectedService.hizmet_adi}
+LOCATION: ${selectedLocation.name} - ${selectedLocation.description}
 DESCRIPTION: ${selectedService.aciklama || 'Professional engineering service'}
 ${brandsContext}
 ${productsContext}
@@ -762,15 +816,17 @@ PURPOSE: Blog hero banner with text overlay capability
 ${avoidElements}
 
 Generate a sophisticated, UNIQUE prompt that includes:
-1. Specific technical components for ${selectedService.hizmet_adi}
-${relatedBrands.length > 0 ? `2. Feature equipment from brands like ${relatedBrands[0].marka_adi}` : ''}
-${relatedProducts.length > 0 ? `3. Include products such as ${relatedProducts[0].urun_adi}` : ''}
-4. Use variation style: ${selectedVariation}
-5. MUST use these specific colors: ${selectedColorScheme ? JSON.stringify(selectedColorScheme.primary_gradient) : 'neon colors'}
-6. Unique composition and perspective
-7. Fresh visual metaphors and elements
+1. Specific technical components for ${selectedService.hizmet_adi} installation in ${selectedLocation.name}
+2. Background elements featuring ${selectedLocation.description} atmosphere
+${relatedBrands.length > 0 ? `3. Feature equipment from brands like ${relatedBrands[0].marka_adi}` : ''}
+${relatedProducts.length > 0 ? `4. Include products such as ${relatedProducts[0].urun_adi}` : ''}
+5. Use variation style: ${selectedVariation}
+6. MUST use these specific colors: ${selectedColorScheme ? JSON.stringify(selectedColorScheme.primary_gradient) : 'neon colors'}
+7. Integrate location-specific architectural or landscape elements
+8. Unique composition and perspective showcasing the local environment
 
 IMPORTANT: Be creative and avoid generic descriptions. Make this prompt distinctly different.
+Include specific location details that make it clear this is in ${selectedLocation.name}.
 Return ONLY the detailed prompt, no explanations.`;
 
           const response = await fetch("https://api.x.ai/v1/chat/completions", {
@@ -796,100 +852,79 @@ Return ONLY the detailed prompt, no explanations.`;
             if (generatedPrompt) {
               // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
               finalPrompt = generatedPrompt.substring(0, 900);
-              console.log(`[10min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
-              console.log(`[10min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
+              console.log(`[5min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
+              console.log(`[5min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
             } else {
-              console.log(`[10min Generation] ⚠️ XAI returned empty prompt`);
+              console.log(`[5min Generation] ⚠️ XAI returned empty prompt`);
             }
           } else {
-            console.log(`[10min Generation] ❌ XAI API request failed with status: ${response.status}`);
+            console.log(`[5min Generation] ❌ XAI API request failed with status: ${response.status}`);
           }
         } catch (error) {
-          console.error("[10min Generation] Error generating prompt with XAI:", error);
-          console.log("[10min Generation] XAI error details:", error instanceof Error ? error.message : error);
+          console.error("[5min Generation] Error generating prompt with XAI:", error);
+          console.log("[5min Generation] XAI error details:", error instanceof Error ? error.message : error);
         }
       } else {
-        console.warn("[10min Generation] ⚠️ XAI_API_KEY not found in environment variables!");
+        console.warn("[5min Generation] ⚠️ XAI_API_KEY not found in environment variables!");
       }
 
-      // Fallback to enhanced static prompt if XAI fails or is not available
+      // Dynamic fallback if XAI fails - create random creative prompts
       if (!finalPrompt) {
+        // TEMPORARY: Commenting out static fallback prompts to force more dynamic generation
+        // TODO: Re-enable with better dynamic generation after testing
+
+        /*
+        // Static fallback code - DISABLED for testing
         const description = (selectedService.aciklama || selectedService.hizmet_adi).toLowerCase();
+        ... [previous fallback code] ...
+        */
 
-        // Dynamic keyword detection based on service description
-        const keywords = description.split(/[\s,.-]+/).filter((word: string) => word.length > 2);
+        // Simple dynamic fallback with high randomization
+        const styles = [
+          "futuristic holographic visualization",
+          "abstract geometric art style",
+          "minimalist line art illustration",
+          "vibrant gradient mesh design",
+          "isometric 3D technical drawing",
+          "neon glow cyberpunk aesthetic",
+          "watercolor artistic interpretation",
+          "retro-futuristic poster design"
+        ];
 
-        // Enhanced service-specific elements with detailed descriptions
-        let primarySubject = "";
-        let visualElements = "";
+        const randomStyle = styles[Math.floor(Math.random() * styles.length)];
+        const randomColor1 = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
+        const randomColor2 = `#${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}`;
 
-        // Use database color scheme if available, otherwise fallback
-        let colorScheme = "";
-        if (selectedColorScheme) {
-          const colors = selectedColorScheme.primary_gradient as string[];
-          colorScheme = `gradient from ${colors[0]} to ${colors[1]}, accent colors ${colors[2]} and ${colors[3]}`;
-        } else {
-          colorScheme = "";
-        }
+        // Very simple prompt to encourage AI creativity
+        finalPrompt = `${selectedService.hizmet_adi} technology in ${selectedLocation.name}, ${randomStyle}, gradient from ${randomColor1} to ${randomColor2}, ${selectedLocation.description} environment, creative interpretation, 16:9 aspect ratio`;
 
-        if (keywords.some((word: string) => ['güneş', 'solar', 'photovoltaic', 'panel'].includes(word))) {
-          primarySubject = 'photovoltaic solar panel array with visible silicon cell grid';
-          visualElements = 'sun rays transforming into electrical circuits, particle energy flow visualization, inverter unit with LED indicators';
-          if (!selectedColorScheme) colorScheme = 'gradient from #FF6F00 burnt orange to #A8DAEF ethereal blue, with #93E9BE seafoam green accents';
-        } else if (keywords.some((word: string) => ['ısı', 'heat', 'pump', 'pompa', 'ısıtma'].includes(word))) {
-          primarySubject = 'heat pump system with copper coil spirals and compressor unit cutaway';
-          visualElements = 'temperature gradient waves flowing between hot and cold zones, refrigerant cycle visualization, efficiency meter display';
-          if (!selectedColorScheme) colorScheme = 'gradient from #CC5500 burnt orange to #7FC8E8 ethereal blue, with #FFE4E1 creamy pastel highlights';
-        } else if (keywords.some((word: string) => ['klima', 'soğutma', 'havalandırma', 'conditioning'].includes(word))) {
-          primarySubject = 'modern air conditioning unit with visible airflow patterns';
-          visualElements = 'cool air particle streams, temperature control interface, fresh air circulation vectors';
-          if (!selectedColorScheme) colorScheme = 'gradient from #B4E0F0 ethereal blue to #93E9BE seafoam green, with #FFF0E5 creamy pastel accents';
-        } else if (keywords.some((word: string) => ['su', 'water', 'arıtma', 'filtrasyon', 'purification'].includes(word))) {
-          primarySubject = 'multi-stage water filtration system with transparent chambers';
-          visualElements = 'water molecules transforming from dark to crystal clear, sediment layer visualization, reverse osmosis membrane cross-section';
-          if (!selectedColorScheme) colorScheme = 'gradient from #7FC8E8 ethereal blue to #A7F3D0 seafoam green, with #F5E6D3 creamy beige highlights';
-        } else if (keywords.some((word: string) => ['neon', 'tabela', 'aydınlatma', 'sign', 'lighting'].includes(word))) {
-          primarySubject = 'glowing neon tubes forming geometric patterns';
-          visualElements = 'luminous gas particles flowing through glass tubes, electric arc visualization, transformer unit diagram';
-          if (!selectedColorScheme) colorScheme = 'gradient from #614051 eggplant to #E65100 burnt orange, with #A8DAEF ethereal blue glow effects';
-        } else if (keywords.some((word: string) => ['baca', 'chimney', 'duman', 'smoke', 'exhaust'].includes(word))) {
-          primarySubject = 'industrial chimney system with filtration components';
-          visualElements = 'smoke particle filtration process, airflow direction indicators, emission control visualization';
-          if (!selectedColorScheme) colorScheme = 'gradient from #4B384C eggplant gray to #FFE4E1 misty rose, with #86EFAC fresh mint accents';
-        } else {
-          // Enhanced generic elements with 2025 trending colors
-          primarySubject = `professional ${selectedService.hizmet_adi.toLowerCase()} system components`;
-          visualElements = 'technical flow diagrams, efficiency metrics visualization, component connection paths';
-          if (!selectedColorScheme) colorScheme = 'gradient from #722F37 rich burgundy to #B4E0F0 ethereal blue, with #93E9BE seafoam accent';
-        }
-
-        // Build enhanced fallback prompt with rich details
-        finalPrompt = `${primarySubject}, ${visualElements}, modern editorial vector illustration, flat design with glass morphism effects, isometric technical elements, Mediterranean coastal background with subtle wave patterns, bright multi-directional lighting with soft shadows, ${colorScheme}, professional and innovative atmosphere, 60/40 asymmetrical composition with golden ratio focal point, 30% negative space on right side for text overlay, 3-layer depth with background gradient and foreground accents, high contrast for readability`;
-
-        console.log(`[10min Generation] Using enhanced fallback prompt for service: ${selectedService.hizmet_adi}`);
-        console.log(`[10min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
+        console.log(`[5min Generation] Using simple dynamic fallback for: ${selectedService.hizmet_adi} in ${selectedLocation.name}`);
+        console.log(`[5min Generation] Style: ${randomStyle}, Colors: ${randomColor1} to ${randomColor2}`);
+        console.log(`[5min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
-      // Add aspect ratio - Vertex AI can handle up to 2048 chars safely
-      finalPrompt = finalPrompt.substring(0, 1000) + `, 16:9 aspect ratio`;
+      // Add aspect ratio and location tag - Vertex AI can handle up to 2048 chars safely
+      finalPrompt = finalPrompt.substring(0, 1000) + `, ${selectedLocation.name} location, 16:9 aspect ratio`;
 
       return {
         service: selectedService.hizmet_adi,
         prompt: finalPrompt,
         slug: selectedService.slug,
-        serviceIndex: serviceIndex
+        serviceIndex: serviceIndex,
+        location: selectedLocation,
+        locationIndex: locationIndex
       };
     });
 
     // Step 2: Check if similar image was generated recently
     await step.run("check-recent-generation", async () => {
-      const tenMinutesAgo = new Date();
-      tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
+      const fiveMinutesAgo = new Date();
+      fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
 
       const recent = await sql`
         SELECT id, prompt, created_at
         FROM vertex_images
-        WHERE created_at > ${tenMinutesAgo}
+        WHERE created_at > ${fiveMinutesAgo}
           AND status = 'completed'
         ORDER BY created_at DESC
         LIMIT 1
@@ -1052,6 +1087,9 @@ Return ONLY the detailed prompt, no explanations.`;
               service: service,
               slug: slug,
               serviceIndex: serviceIndex,
+              location: location.name,
+              locationDescription: location.description,
+              locationIndex: locationIndex,
               cost: 0.022, // Fast model cost
               generatedAt: new Date().toISOString()
             })},
@@ -1079,7 +1117,7 @@ Return ONLY the detailed prompt, no explanations.`;
     });
 
     // Step 4: Log the generation
-    await step.run("log-10min-generation", async () => {
+    await step.run("log-5min-generation", async () => {
       await sql`
         INSERT INTO event_logs (
           event_name,
@@ -1088,15 +1126,17 @@ Return ONLY the detailed prompt, no explanations.`;
           payload,
           metadata
         ) VALUES (
-          'vertex-ai.10min.generation',
+          'vertex-ai.5min.generation',
           'cron',
           ${generationResult.success ? 'completed' : 'failed'},
           ${JSON.stringify({
             service: service,
             slug: slug,
+            location: location.name,
             prompt: prompt.substring(0, 200),
             hour: new Date().getHours(),
-            serviceIndex: serviceIndex
+            serviceIndex: serviceIndex,
+            locationIndex: locationIndex
           })},
           ${JSON.stringify({
             success: generationResult.success,
@@ -1146,10 +1186,11 @@ Return ONLY the detailed prompt, no explanations.`;
       success: generationResult.success,
       service: service,
       slug: slug,
+      location: location.name,
       prompt: prompt,
       timestamp: new Date().toISOString(),
       message: generationResult.success
-        ? `15-minute interval image generation triggered for ${service} (${slug})`
+        ? `5-minute interval image generation triggered for ${service} in ${location.name} (${slug})`
         : `Failed to generate image: ${'error' in generationResult ? generationResult.error : 'Unknown error'}`
     };
   }

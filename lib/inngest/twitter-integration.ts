@@ -113,7 +113,7 @@ export const shareBlogOnTwitter = inngest.createFunction(
       }
 
       // Blog başlığından tweet metni oluştur
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai.gul-tekinmuhendislik.com';
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://gul-tekinmuhendislik.com';
       const blogUrl = `${baseUrl}/blog/${blogPost.slug}`;
 
       // Tweet karakter limiti 280, URL için yer bırak (Twitter URL'leri 23 karakter sayar)
