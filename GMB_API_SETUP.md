@@ -56,11 +56,11 @@
 
 `.env.local` dosyanıza aşağıdaki değişkenleri ekleyin:
 
-```env
-# Google My Business API Configuration
-GOOGLE_SERVICE_ACCOUNT_KEY_PATH=./service-account-key.json
+# Google Business Profile API Configuration (OAuth 2.0)
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REFRESH_TOKEN=...
 NEXT_PUBLIC_ENABLE_GMB=true
-```
 
 ## 7. API'yi Test Etme
 

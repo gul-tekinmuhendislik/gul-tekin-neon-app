@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, BookOpen, Facebook, MessageCircle, Instagram, MapPin, Github, Star } from "lucide-react";
+import DynamicFooterLinks from "./DynamicFooterLinks";
 
 export default function Footer() {
   return (
@@ -69,80 +69,7 @@ export default function Footer() {
                 ebartan.dev
               </a>
             </div>
-            <div className="flex items-center gap-4">
-              <a 
-                href="https://ai.gul-tekinmuhendislik.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-                aria-label="Gül-Tekin Mühendislik Web Sitesi"
-              >
-                <Globe className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://gultekinmuhendislik.substack.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-                aria-label="Gül-Tekin Mühendislik Blog"
-              >
-                <BookOpen className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://www.facebook.com/gultekinbodrum" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-                aria-label="Gül-Tekin Mühendislik Facebook"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://www.instagram.com/gultekinmuhendislik48/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-pink-600 transition-colors"
-                aria-label="Gül-Tekin Mühendislik Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://wa.me/905323177859" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-green-600 transition-colors"
-                aria-label="Gül-Tekin Mühendislik WhatsApp"
-              >
-                <MessageCircle className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://share.google/XnDMvkV4bTVtWo6BV" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-red-600 transition-colors"
-                aria-label="Gül-Tekin Mühendislik Google Maps"
-              >
-                <MapPin className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://github.com/gul-tekinmuhendislik" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-                aria-label="Gül-Tekin Mühendislik GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a 
-                href="https://g.page/r/Cd6nGRPdggFxEBE/review" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-yellow-500 transition-colors"
-                aria-label="Google'da Değerlendir - Gül-Tekin Mühendislik"
-              >
-                <Star className="w-5 h-5" />
-              </a>
-            </div>
+            <DynamicFooterLinks />
           </div>
         </div>
       </div>

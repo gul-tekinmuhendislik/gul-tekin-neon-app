@@ -7,11 +7,11 @@ import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
 import WebPages from "@/components/WebPages";
 import DatabaseStats from "@/components/DatabaseStats";
-import { TextFlip } from "@/components/ui/text-flip";
+import ServiceLocations from "@/components/ServiceLocations";
 import { getRandomBrands } from "@/lib/get-brands";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const dynamic = 'force-static';
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Ana Sayfa | Gül-Tekin Mühendislik - Isı Pompası ve Enerji Sistemleri",
@@ -57,11 +57,8 @@ export default async function Home() {
         backgroundColor="white"
         className="flex items-center flex-col justify-center px-2 md:px-10 py-8 md:py-12 lg:py-16 w-full min-h-[50vh] md:min-h-[60vh]"
         baseHue={120}
-        particleCount={150}
-        enableWaves={true}
-        waveColors={["#00E599", "#3b82f6", "#8b5cf6"]}
-        waveOpacity={0.15}
-        waveSpeed={0.001}
+        particleCount={50}
+        enableWaves={false}
         enableSnowflakes={false}
       >
         <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 md:max-w-lg md:px-0 lg:max-w-xl">
@@ -97,12 +94,7 @@ export default async function Home() {
             <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
               <p className="inline">
                 Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
-                <TextFlip 
-                  words={brandNames}
-                  duration={4000}
-                  randomCount={6}
-                  className="text-[#00E599] font-semibold inline-flex"
-                />
+                <span className="text-[#00E599] font-semibold">{brandNames[0] || "Daikin"}</span>
                 {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
               </p>
             </div>
@@ -143,6 +135,7 @@ export default async function Home() {
       </Vortex>
       <LogoCloud />
       <DatabaseStats />
+      <ServiceLocations />
       <IntegrationsSection />
       <WebPages />
       <Testimonials />

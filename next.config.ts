@@ -3,7 +3,23 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* SEO and Performance Optimizations */
   poweredByHeader: false,
-  
+
+  /* Build Performance */
+  typescript: {
+    // Skip type checking during build (already done in CI/CD)
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    // Skip ESLint during build (already done in CI/CD)
+    ignoreDuringBuilds: true,
+  },
+
+  /* Experimental Performance Features */
+  experimental: {
+    // Optimize package imports
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+  },
+
   /* Image Optimization */
   images: {
     formats: ["image/avif", "image/webp"],

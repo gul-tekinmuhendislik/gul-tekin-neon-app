@@ -92,8 +92,7 @@ export const Vortex = ({
     initParticles();
 
     const animate = () => {
-      ctx.fillStyle = backgroundColor === "transparent" ? "rgba(255, 255, 255, 0.05)" : backgroundColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw wavy background
       if (enableWaves) {
@@ -122,7 +121,7 @@ export const Vortex = ({
         waveTime.current += waveSpeed;
       }
 
-      particlesRef.current.forEach((particle, index) => {
+      particlesRef.current.forEach((particle) => {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
@@ -161,21 +160,7 @@ export const Vortex = ({
         ctx.fillStyle = particle.color;
         ctx.fill();
 
-        // Draw connections
-        particlesRef.current.slice(index + 1).forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 100})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
+        // Connections disabled for performance
       });
 
       animationRef.current = requestAnimationFrame(animate);

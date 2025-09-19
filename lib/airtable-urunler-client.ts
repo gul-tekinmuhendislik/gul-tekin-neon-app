@@ -19,6 +19,8 @@ export interface Urun {
   ozellikler?: string;
   agirlik?: number;
   boyutlar?: string;
+  hizmet_id?: string;
+  hizmet_adi?: string;
   airtable_created_time?: Date;
   synced_at?: Date;
   updated_at?: Date;
@@ -223,6 +225,75 @@ export async function getUrunlerByCategoryFromNeon(kategori: string): Promise<Ur
     })) as Urun[];
   } catch (error) {
     console.error('Error fetching urunler by category from Neon:', error);
+    throw error;
+  }
+}
+
+/**
+ * Get urunler by hizmet_id from the Neon database
+ * @param hizmetId - The service ID
+ * @returns Promise<Urun[]>
+ */
+export async function getUrunlerByHizmetIdFromNeon(hizmetId: string): Promise<Urun[]> {
+  try {
+    const result = await sql`
+      SELECT
+        id,
+        urun_adi,
+        slug,
+        aciklama,
+        fiyat,
+        kategori,
+        marka,
+        sku,
+        stokta,
+        etiketler,
+        gorsel_url,
+        cloudinary_url,
+        cloudinary_public_id,
+        aktif,
+        siralama_no,
+        ozellikler,
+        agirlik,
+        boyutlar,
+        hizmet_id,
+        hizmet_adi,
+        airtable_created_time,
+        synced_at,
+        updated_at
+      FROM urunler
+      WHERE hizmet_id = ${hizmetId} AND aktif = true
+      ORDER BY siralama_no ASC, urun_adi ASC
+      LIMIT 12
+    `;
+
+    return result.map((row) => ({
+      id: row.id,
+      urun_adi: row.urun_adi,
+      slug: row.slug,
+      aciklama: row.aciklama,
+      fiyat: row.fiyat ? parseFloat(row.fiyat) : undefined,
+      kategori: row.kategori,
+      marka: row.marka,
+      sku: row.sku,
+      stokta: row.stokta || false,
+      etiketler: row.etiketler || [],
+      gorsel_url: row.gorsel_url,
+      cloudinary_url: row.cloudinary_url,
+      cloudinary_public_id: row.cloudinary_public_id,
+      aktif: row.aktif || true,
+      siralama_no: row.siralama_no,
+      ozellikler: row.ozellikler,
+      agirlik: row.agirlik ? parseFloat(row.agirlik) : undefined,
+      boyutlar: row.boyutlar,
+      hizmet_id: row.hizmet_id,
+      hizmet_adi: row.hizmet_adi,
+      airtable_created_time: row.airtable_created_time,
+      synced_at: row.synced_at,
+      updated_at: row.updated_at,
+    })) as Urun[];
+  } catch (error) {
+    console.error('Error fetching urunler by hizmet_id from Neon:', error);
     throw error;
   }
 }

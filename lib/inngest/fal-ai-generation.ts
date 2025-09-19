@@ -74,11 +74,12 @@ export const generateImageForBlog = inngest.createFunction(
       status: string;
       prompt: string | null;
       image_prompt: string | null;
+      keywords?: string[] | null;
     }
 
     const blogPost = await step.run("check-blog-post", async (): Promise<BlogPost> => {
       const result = await sql`
-        SELECT id, title, topic, content, status, prompt, image_prompt
+        SELECT id, title, topic, content, status, prompt, image_prompt, keywords
         FROM generated_content
         WHERE id = ${blogId}
       `;
@@ -109,78 +110,120 @@ export const generateImageForBlog = inngest.createFunction(
         return blogPost.image_prompt;
       }
 
-      // Hiç prompt yoksa, XAI ile dinamik prompt üret
-      console.log(`No prompt found, generating dynamic prompt with XAI for blog ${blogId}`);
+      // Hiç prompt yoksa, gelişmiş sistem ile dinamik prompt üret
+      console.log(`No prompt found, generating dynamic prompt with advanced system for blog ${blogId}`);
+
+      // Fetch random elements from database tables for variety
+      const [regionalTheme, colorScheme, stylePreset, negativePrompts] = await Promise.all([
+        sql`
+          SELECT region_name, visual_elements, cultural_motifs
+          FROM regional_themes
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT name, primary_gradient, accent_colors
+          FROM color_schemes
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT name, main_style, atmosphere
+          FROM style_presets
+          WHERE is_active = true
+          ORDER BY RANDOM()
+          LIMIT 1
+        `,
+        sql`
+          SELECT prompt_text
+          FROM negative_prompts
+          WHERE is_active = true
+          ORDER BY severity DESC
+          LIMIT 5
+        `
+      ]);
+
+      const selectedRegion = regionalTheme[0];
+      const selectedColor = colorScheme[0];
+      const selectedStyle = stylePreset[0];
+      const negativeText = negativePrompts.map(np => np.prompt_text).join(', ').substring(0, 100);
 
       // XAI ile blog içeriğini analiz edip özel prompt üret
       const apiKey = process.env.XAI_API_KEY;
-      if (!apiKey) {
-        // XAI yoksa fallback prompt kullan
-        console.log("XAI API key not found, using fallback prompt");
-        return `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
-      }
 
-      try {
-        const systemPrompt = `You are an expert at creating image generation prompts for Vertex AI Imagen.
-Your task is to create a detailed, photorealistic prompt for blog post images.
+      if (apiKey) {
+        try {
+          // Dynamic system prompt using database elements
+          const systemPrompt = `You are an expert at creating diverse image prompts for Vertex AI.
+Create unique, varied prompts avoiding repetition.
 
-IMPORTANT STYLE ELEMENTS TO INCLUDE:
-- Mediterranean Turkish architecture (Bodrum/Muğla region)
-- Traditional Muğla red clay roof tiles
-- Stone chimneys and white stone walls
-- Olive groves and purple bougainvillea
-- Natural Mediterranean lighting
-- Professional architectural photography style
-- Technical engineering aesthetics
+USE THESE RANDOM ELEMENTS (mix creatively):
+${selectedRegion ? `Region: ${selectedRegion.region_name} - ${selectedRegion.visual_elements}` : ''}
+${selectedColor ? `Colors: ${selectedColor.name} - ${selectedColor.primary_gradient}` : ''}
+${selectedStyle ? `Style: ${selectedStyle.main_style} - ${selectedStyle.atmosphere}` : ''}
 
-AVOID:
-- Modern city backgrounds
-- Concrete blocks or industrial zones
-- Northern European architecture
-- Pine trees or lavender fields
-- Cartoon or illustration styles
-- People, text, watermarks, logos`;
+QUALITY: ultra high quality, sharp focus, 4K resolution, photorealistic
+AVOID: ${negativeText || 'text, logos, people'}`;
 
-        const userPrompt = `Create a concise image prompt for this blog post:
+          const userPrompt = `Create a unique image prompt for:
 Title: ${blogPost.title.substring(0, 100)}
-Topic: ${blogPost.topic.substring(0, 50)}
+Topic: ${blogPost.topic}
+Keywords: ${blogPost.keywords?.slice(0, 5).join(', ') || ''}
 
-Generate a brief, focused prompt (max 100 words) with Mediterranean Turkish elements.
-Return ONLY the prompt, no explanations.`;
+Be creative and vary the style. Return ONLY the prompt.`;
 
-        const response = await fetch("https://api.x.ai/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${apiKey}`
-          },
-          body: JSON.stringify({
-            model: "grok-beta",
-            messages: [
-              { role: "system", content: systemPrompt },
-              { role: "user", content: userPrompt }
-            ],
-            temperature: 0.7,
-            max_tokens: 120
-          })
-        });
+          const response = await fetch("https://api.x.ai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: "grok-beta",
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+              ],
+              temperature: 0.85,  // Higher for more variety
+              max_tokens: 800     // Increased for richer prompts before 1200 char truncation
+            })
+          });
 
-        if (response.ok) {
-          const data = await response.json();
-          const generatedPrompt = data.choices[0]?.message?.content?.trim();
-          if (generatedPrompt) {
-            // Limit prompt to 250 characters to prevent oversized outputs
-            const limitedPrompt = generatedPrompt.substring(0, 250);
-            console.log(`XAI generated prompt (limited): ${limitedPrompt.substring(0, 100)}...`);
-            return limitedPrompt;
+          if (response.ok) {
+            const data = await response.json();
+            const generatedPrompt = data.choices[0]?.message?.content?.trim();
+            if (generatedPrompt) {
+              // Use 1200 char limit like vertex-ai-generation.ts
+              const limitedPrompt = generatedPrompt.substring(0, 1200);
+              console.log(`XAI generated prompt (1200 chars): ${limitedPrompt.substring(0, 150)}...`);
+              return `${limitedPrompt}, aspect ratio 16:9`;
+            }
           }
+        } catch (error) {
+          console.error("Error generating prompt with XAI:", error);
         }
-      } catch (error) {
-        console.error("Error generating prompt with XAI:", error);
       }
 
-      // Fallback prompt if XAI fails
-      return `Modern ${blogPost.topic} installation in Mediterranean Turkish villa, Muğla red clay roof tiles, stone chimneys, olive groves, purple bougainvillea, professional photography`;
+      // Enhanced fallback using database elements
+      const topicLower = blogPost.topic.toLowerCase();
+      let technicalFocus = 'modern engineering system';
+
+      if (topicLower.includes('güneş') || topicLower.includes('solar')) {
+        technicalFocus = 'solar panel arrays on Mediterranean rooftop';
+      } else if (topicLower.includes('ısı') || topicLower.includes('heat')) {
+        technicalFocus = 'heat pump system in elegant setting';
+      } else if (topicLower.includes('klima')) {
+        technicalFocus = 'climate control system visualization';
+      } else if (topicLower.includes('su')) {
+        technicalFocus = 'water treatment facility, modern design';
+      }
+
+      const fallbackPrompt = `${technicalFocus}, ${selectedStyle?.main_style || 'photorealistic'}, ${selectedRegion?.visual_elements || 'technical background'}, ${selectedColor?.name || 'vibrant'} color scheme, ultra high quality, 4K, sharp focus, aspect ratio 16:9, ${negativeText || 'no text, no logos'}`;
+
+      // Apply 1200 char limit to fallback too
+      return fallbackPrompt.substring(0, 1200);
     });
 
     // Step 2: Vertex AI ile resim üret

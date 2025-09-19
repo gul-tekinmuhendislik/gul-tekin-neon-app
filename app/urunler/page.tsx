@@ -541,22 +541,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   </p>
                 )}
                 
-                {/* Price and Stock */}
+                {/* Stock Status and Detail Button */}
                 <div className="mt-4 flex items-center justify-between">
-                  {product.fiyat && product.fiyat > 0 && (
-                    <span className="text-lg font-bold text-gray-900">
-                      ₺{product.fiyat.toLocaleString('tr-TR')}
-                    </span>
-                  )}
                   {product.stokta !== undefined && (
                     <span className={`text-xs px-2 py-1 rounded-full ${
-                      product.stokta 
+                      product.stokta
                         ? 'bg-green-100 text-green-700'
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
                       {product.stokta ? 'Stokta' : 'Stok Dışı'}
                     </span>
                   )}
+                  <span className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
+                    Detaylar
+                    <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
                 </div>
               </div>
             </Link>

@@ -79,13 +79,21 @@ export const defaultMetadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
-      { url: '/logo.png', type: 'image/png' },
+      { url: '/logo.png', type: 'image/png', sizes: '32x32' },
+      { url: '/logo.png', type: 'image/png', sizes: '16x16' },
     ],
+    shortcut: '/logo.png',
     apple: '/logo.png',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/logo.png',
-    },
+    other: [
+      {
+        rel: 'apple-touch-icon-precomposed',
+        url: '/logo.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        url: '/logo.png',
+      },
+    ],
   },
 };
