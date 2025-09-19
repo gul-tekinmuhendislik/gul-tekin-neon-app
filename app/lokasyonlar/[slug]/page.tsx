@@ -55,25 +55,89 @@ export default function LokasyonDetayPage() {
   const [hizmetler, setHizmetler] = useState<Hizmet[]>([]);
   const [mahalleler, setMahalleler] = useState<Mahalle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (slug) {
-      fetchLokasyonDetay();
-    }
+    const fetchData = async () => {
+      if (slug) {
+        try {
+          // Validate slug
+          if (!slug || typeof slug !== 'string' || slug.trim() === '') {
+            throw new Error('Geçersiz lokasyon bilgisi');
+          }
+
+          // Encode slug for URL safety
+          const encodedSlug = encodeURIComponent(slug);
+          const response = await fetch(`/api/lokasyonlar/${encodedSlug}`);
+
+          // Check if response is OK
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            const errorMessage = errorData.error || `Lokasyon bulunamadı (${response.status})`;
+            throw new Error(errorMessage);
+          }
+
+          const data = await response.json();
+
+          if (!data.lokasyon) {
+            throw new Error('Lokasyon bilgisi alınamadı');
+          }
+
+          setLokasyon(data.lokasyon);
+          setHizmetler(data.hizmetler || []);
+          setMahalleler(data.mahalleler || []);
+          setError(null); // Clear any previous errors
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Lokasyon detayı yüklenemedi';
+          console.error('Lokasyon detayı yüklenemedi:', error);
+          setError(errorMessage);
+          setLokasyon(null);
+          setHizmetler([]);
+          setMahalleler([]);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
   }, [slug]);
 
   const fetchLokasyonDetay = async () => {
     try {
-      const response = await fetch(`/api/lokasyonlar/${slug}`);
+      // Validate slug
+      if (!slug || typeof slug !== 'string' || slug.trim() === '') {
+        throw new Error('Geçersiz lokasyon bilgisi');
+      }
+
+      // Encode slug for URL safety
+      const encodedSlug = encodeURIComponent(slug);
+      const response = await fetch(`/api/lokasyonlar/${encodedSlug}`);
+
+      // Check if response is OK
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || `Lokasyon bulunamadı (${response.status})`;
+        throw new Error(errorMessage);
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        setLokasyon(data.lokasyon);
-        setHizmetler(data.hizmetler || []);
-        setMahalleler(data.mahalleler || []);
+      if (!data.lokasyon) {
+        throw new Error('Lokasyon bilgisi alınamadı');
       }
+
+      setLokasyon(data.lokasyon);
+      setHizmetler(data.hizmetler || []);
+      setMahalleler(data.mahalleler || []);
+      setError(null); // Clear any previous errors
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Lokasyon detayı yüklenemedi';
       console.error('Lokasyon detayı yüklenemedi:', error);
+      setError(errorMessage);
+      setLokasyon(null);
+      setHizmetler([]);
+      setMahalleler([]);
     } finally {
       setLoading(false);
     }
@@ -90,14 +154,41 @@ export default function LokasyonDetayPage() {
     );
   }
 
-  if (!lokasyon) {
+  if (error || !lokasyon) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Lokasyon Bulunamadı</h2>
-          <Link href="/lokasyonlar" className="text-blue-600 hover:underline">
-            Tüm Lokasyonlara Dön
-          </Link>
+        <div className="text-center max-w-md mx-auto p-6">
+          <div className="mb-6">
+            <svg className="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {error ? 'Bir Hata Oluştu' : 'Lokasyon Bulunamadı'}
+          </h2>
+          {error && (
+            <p className="text-gray-600 mb-6">
+              {error}
+            </p>
+          )}
+          <div className="space-y-3">
+            <Link
+              href="/lokasyonlar"
+              className="inline-block w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Tüm Lokasyonlara Dön
+            </Link>
+            <button
+              onClick={() => {
+                setError(null);
+                setLoading(true);
+                fetchLokasyonDetay();
+              }}
+              className="inline-block w-full px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Tekrar Dene
+            </button>
+          </div>
         </div>
       </div>
     );
