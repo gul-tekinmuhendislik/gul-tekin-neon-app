@@ -102,13 +102,6 @@ async function setupColorSchemes() {
         primary_gradient: ["#00E5FF", "#00B4D8", "#FF6B9D", "#FFC75F"],
         accent_colors: ["#95E1D3", "#F38181"],
         emotion_description: 'Mediterranean vibes with turquoise sea and sunset neons'
-      },
-      {
-        name: 'Industrial Neon',
-        topic_key: 'industrial',
-        primary_gradient: ["#FFB700", "#FF6B00", "#00D9FF", "#0099CC"],
-        accent_colors: ["#FF0055", "#00FF99"],
-        emotion_description: 'Industrial strength with warning orange and safety blue neons'
       }
     ];
 

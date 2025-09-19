@@ -1,4 +1,4 @@
-import { getMarkalarFromNeon } from '@/lib/airtable-markalar-client';
+import { getMarkalariNeon } from '@/lib/airtable-markalar-client';
 import Image from 'next/image';
 
 // Force dynamic rendering since brand data can change
@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function MarkalarPage() {
-  const markalar = await getMarkalarFromNeon();
+  const markalar = await getMarkalariNeon();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">

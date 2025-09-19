@@ -142,13 +142,7 @@ INSERT INTO regional_themes (region_name, region_key, visual_elements, cultural_
  'olive tree branches, ancient stone patterns, rural landscape hints',
  'traditional carpet motifs, terracotta accents, agricultural elements',
  '{"harvest": "golden wheat fields", "spring": "olive blossoms"}'::jsonb,
- '["milas", "söke", "didim"]'::jsonb),
-
-('Industrial Zone', 'industrial',
- 'factory silhouettes, warehouse structures, logistics elements',
- 'warning stripes, safety symbols, industrial equipment',
- '{"day": "busy productive atmosphere", "night": "illuminated facilities"}'::jsonb,
- '["sanayi", "osb", "fabrika"]'::jsonb);
+ '["milas", "söke", "didim"]'::jsonb);
 
 -- Insert negative prompts
 INSERT INTO negative_prompts (category, prompt_text, severity) VALUES
@@ -158,7 +152,11 @@ INSERT INTO negative_prompts (category, prompt_text, severity) VALUES
 ('people', 'no human figures, no faces, no hands, no body parts', 2),
 ('composition', 'no cluttered, no busy patterns, no chaotic layout, no overlapping text areas', 2),
 ('color', 'no muddy colors, no oversaturation, no low contrast, no color bleeding', 1),
-('generic', 'no stock photo aesthetics, no generic clip art, no cliché imagery', 1);
+('generic', 'no stock photo aesthetics, no generic clip art, no cliché imagery', 1),
+('industrial', 'no factory buildings, no industrial plants, no manufacturing facilities, no warehouses, no smokestacks', 3),
+('facilities', 'no water treatment plants, no sewage facilities, no industrial complexes, no refinery structures', 3),
+('machinery', 'no heavy machinery, no industrial equipment, no factory machines, no production lines, no conveyor belts', 2),
+('infrastructure', 'no industrial pipes, no storage tanks, no silos, no industrial scaffolding, no utility poles', 2);
 
 -- Create indexes for better performance
 CREATE INDEX idx_visual_elements_topic ON visual_elements(topic_key);

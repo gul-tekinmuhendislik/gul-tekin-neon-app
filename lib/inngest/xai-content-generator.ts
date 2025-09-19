@@ -366,29 +366,23 @@ async function createAdvancedPrompt(content: ContentData): Promise<PromptResult>
     `;
   }
 
-  // Fallback to hardcoded if database is empty
-  let colors: { primary: string; accent: string; emotion: string };
-  if (colorScheme.length > 0) {
-    const scheme = colorScheme[0];
-    const gradientColors = scheme.primary_gradient as string[];
-    const accentColors = scheme.accent_colors as string[];
-
-    // Create gradient string from 4 colors
-    const gradientString = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
-
-    colors = {
-      primary: gradientString,
-      accent: accentColors.join(", "),
-      emotion: scheme.emotion_description || "professional technology and reliability"
-    };
-  } else {
-    // Hardcoded fallback
-    colors = {
-      primary: "#00D4FF to #FF00D4 to #D4FF00 to #FF7700",
-      accent: "#00FF88, #8800FF",
-      emotion: "universal tech aesthetic with balanced neon spectrum"
-    };
+  // Process color scheme from database
+  if (colorScheme.length === 0) {
+    throw new Error(`No color scheme found for topic: ${topicKey}`);
   }
+
+  const scheme = colorScheme[0];
+  const gradientColors = scheme.primary_gradient as string[];
+  const accentColors = scheme.accent_colors as string[];
+
+  // Create gradient string from 4 colors
+  const gradientString = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
+
+  const colors = {
+    primary: gradientString,
+    accent: accentColors.join(", "),
+    emotion: scheme.emotion_description || "professional technology and reliability"
+  };
 
   // Composition rules
   const composition = {
@@ -418,7 +412,7 @@ async function createAdvancedPrompt(content: ContentData): Promise<PromptResult>
   // Build main prompt
   const mainPrompt = `
     ${topicEng} hero banner illustration for technical blog,
-    16:9 aspect ratio (1920x1080), web-optimized with high contrast,
+    16:9 aspect ratio (1408x768), web-optimized with high contrast,
     
     VISUAL ELEMENTS:
     ${visuals.concrete},
@@ -453,8 +447,7 @@ async function createAdvancedPrompt(content: ContentData): Promise<PromptResult>
     TECHNICAL REQUIREMENTS:
     High resolution suitable for retina displays,
     Strong contrast for text overlay readability,
-    Scalable composition for responsive design,
-    Print-ready color profile (sRGB)
+    Scalable composition for responsive design
   `.trim();
 
   // Negative prompt
@@ -467,15 +460,21 @@ async function createAdvancedPrompt(content: ContentData): Promise<PromptResult>
     no low contrast, no muddy colors, no oversaturation,
     no watermarks, no signatures, no copyright symbols,
     no stock photo aesthetics, no generic clip art,
-    avoid cliché business imagery, avoid outdated design trends
+    avoid cliché business imagery, avoid outdated design trends,
+    no factory buildings, no industrial plants, no manufacturing facilities,
+    no warehouses, no smokestacks, no water treatment plants,
+    no sewage facilities, no industrial complexes, no refinery structures,
+    no heavy machinery, no factory machines, no production lines,
+    no conveyor belts, no industrial pipes, no storage tanks,
+    no silos, no industrial scaffolding, no utility poles
   `.trim();
 
   return {
     prompt: mainPrompt.split('\n').map(line => line.trim()).filter(line => line).join(' '),
     negativePrompt: negativePrompt.split('\n').map(line => line.trim()).filter(line => line).join(' '),
     parameters: {
-      width: 1920,
-      height: 1080,
+      width: 1408,
+      height: 768,
       quality: "high",
       stylePreset: "digital-art",
       cfgScale: 7.5,
@@ -570,26 +569,25 @@ export const generatePromptForContent = inngest.createFunction(
         }
 
         // Build color information
-        let primaryGradient = "#00D4FF to #FF00D4 to #D4FF00 to #FF7700";
-        let accentColors = "#00FF88, #8800FF";
-        let emotionDescription = "universal tech aesthetic with balanced neon spectrum";
-
-        if (colorScheme.length > 0) {
-          const scheme = colorScheme[0];
-          const gradientColors = scheme.primary_gradient as string[];
-          const accents = scheme.accent_colors as string[];
-          primaryGradient = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
-          accentColors = accents.join(", ");
-          emotionDescription = scheme.emotion_description || emotionDescription;
+        if (colorScheme.length === 0) {
+          console.error(`No color scheme found for topic: ${topicKey}`);
+          continue; // Skip this content if no color scheme
         }
+
+        const scheme = colorScheme[0];
+        const gradientColors = scheme.primary_gradient as string[];
+        const accents = scheme.accent_colors as string[];
+        const primaryGradient = `${gradientColors[0]} to ${gradientColors[1]} to ${gradientColors[2]} to ${gradientColors[3]}`;
+        const accentColors = accents.join(", ");
+        const emotionDescription = scheme.emotion_description || "professional technology and reliability";
 
         // Use inline prompt generation
         const advancedPrompt = {
-          prompt: `${topicEng} hero banner illustration for technical blog, 16:9 aspect ratio (1920x1080), web-optimized with high contrast, VISUAL ELEMENTS: technical system components in exploded view, control panels with indicators, flowing energy patterns, geometric technical shapes, system flow diagram, efficiency metrics, component connections, COMPOSITION: asymmetrical balance with 60/40 visual weight distribution, primary element positioned at golden ratio intersection (left third), 30% negative space on right side for headline placement, 3-layer depth: background gradient, main illustration, foreground accents, safe area 10% from edges for responsive cropping, COLOR SCHEME: Primary gradient: ${primaryGradient}, Accent highlights: ${accentColors}, ${emotionDescription}, STYLE: Modern editorial vector illustration, Flat design with subtle gradients and glass morphism effects, Isometric technical elements mixed with organic flow, Infographic clarity with artistic sophistication, Clean geometric shapes with smooth bezier curves, Professional digital art quality, ultra-detailed, ATMOSPHERE: Universal technical aesthetic, Conveying trust, innovation, and professional expertise, Balanced between technical accuracy and visual appeal, TECHNICAL REQUIREMENTS: High resolution suitable for retina displays, Strong contrast for text overlay readability, Scalable composition for responsive design, Print-ready color profile (sRGB)`,
-          negativePrompt: "no text, no typography, no letters, no numbers, no logos, no human figures, no faces, no hands, no photorealistic elements, no photography, no cartoon style, no anime, no sketch, no pencil drawing, no cluttered composition, no busy patterns, no low contrast, no muddy colors, no oversaturation, no watermarks, no signatures, no copyright symbols, no stock photo aesthetics, no generic clip art, avoid cliché business imagery, avoid outdated design trends",
+          prompt: `${topicEng} hero banner illustration for technical blog, 16:9 aspect ratio (1408x768), web-optimized with high contrast, VISUAL ELEMENTS: technical system components in exploded view, control panels with indicators, flowing energy patterns, geometric technical shapes, system flow diagram, efficiency metrics, component connections, COMPOSITION: asymmetrical balance with 60/40 visual weight distribution, primary element positioned at golden ratio intersection (left third), 30% negative space on right side for headline placement, 3-layer depth: background gradient, main illustration, foreground accents, safe area 10% from edges for responsive cropping, COLOR SCHEME: Primary gradient: ${primaryGradient}, Accent highlights: ${accentColors}, ${emotionDescription}, STYLE: Modern editorial vector illustration, Flat design with subtle gradients and glass morphism effects, Isometric technical elements mixed with organic flow, Infographic clarity with artistic sophistication, Clean geometric shapes with smooth bezier curves, Professional digital art quality, ultra-detailed, ATMOSPHERE: Universal technical aesthetic, Conveying trust, innovation, and professional expertise, Balanced between technical accuracy and visual appeal, TECHNICAL REQUIREMENTS: High resolution suitable for retina displays, Strong contrast for text overlay readability, Scalable composition for responsive design`,
+          negativePrompt: "no text, no typography, no letters, no numbers, no logos, no human figures, no faces, no hands, no photorealistic elements, no photography, no cartoon style, no anime, no sketch, no pencil drawing, no cluttered composition, no busy patterns, no low contrast, no muddy colors, no oversaturation, no watermarks, no signatures, no copyright symbols, no stock photo aesthetics, no generic clip art, avoid cliché business imagery, avoid outdated design trends, no factory buildings, no industrial plants, no manufacturing facilities, no warehouses, no smokestacks, no water treatment plants, no sewage facilities, no industrial complexes, no refinery structures, no heavy machinery, no factory machines, no production lines, no conveyor belts, no industrial pipes, no storage tanks, no silos, no industrial scaffolding, no utility poles",
           parameters: {
-            width: 1920,
-            height: 1080,
+            width: 1408,
+            height: 768,
             quality: "high",
             stylePreset: "digital-art",
             cfgScale: 7.5,

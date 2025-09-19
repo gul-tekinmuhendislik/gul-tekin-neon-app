@@ -1946,10 +1946,7 @@ export const monitorTokenExpiry = inngest.createFunction(
   }
 );
 
-// Import Hizmetler sync functions
 
-// Import Urunler sync functions
-import { syncUrunlerDaily, syncUrunlerManual } from "./urunler-sync";
 
 // Import Cloudinary functions
 import {
@@ -1991,8 +1988,6 @@ import {
 
 // Export Markalar, Hizmetler and Urunler sync functions
 export {
-  syncUrunlerDaily,
-  syncUrunlerManual,
   cloudinaryUpload,
   cloudinaryTransform,
   cloudinaryDelete,

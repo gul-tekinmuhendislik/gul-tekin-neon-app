@@ -76,13 +76,7 @@ INSERT INTO color_schemes (name, topic_key, primary_gradient, accent_colors, emo
 ('Bodrum Neon', 'bodrum_special',
  '["#00E5FF", "#00B4D8", "#FF6B9D", "#FFC75F"]'::jsonb,
  '["#95E1D3", "#F38181"]'::jsonb,
- 'Mediterranean vibes with turquoise sea and sunset neons'),
-
--- Special: Industrial Neon
-('Industrial Neon', 'industrial',
- '["#FFB700", "#FF6B00", "#00D9FF", "#0099CC"]'::jsonb,
- '["#FF0055", "#00FF99"]'::jsonb,
- 'Industrial strength with warning orange and safety blue neons');
+ 'Mediterranean vibes with turquoise sea and sunset neons');
 
 -- Function to get random active color scheme
 CREATE OR REPLACE FUNCTION get_random_color_scheme(topic_input VARCHAR DEFAULT NULL)

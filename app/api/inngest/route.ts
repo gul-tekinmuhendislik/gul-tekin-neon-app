@@ -27,14 +27,15 @@ import {
   createTwitterThread,
   autoShareNewBlogOnTwitter
 } from "@/lib/inngest/twitter-integration";
-import {
-  syncUrunlerDaily,
-  syncUrunlerManual
-} from "@/lib/inngest/urunler-sync";
-import {
-  syncAnafaaliyetDaily,
-  syncAnafaaliyetManual
-} from "@/lib/inngest/anafaaliyet-sync";
+// Airtable sync removed - data now managed directly in Neon
+// import {
+//   syncUrunlerDaily,
+//   syncUrunlerManual
+// } from "@/lib/inngest/urunler-sync";
+// import {
+//   syncAnafaaliyetDaily,
+//   syncAnafaaliyetManual
+// } from "@/lib/inngest/anafaaliyet-sync";
 import {
   generateMissingImages,
   scheduledImageGeneration,
@@ -74,10 +75,11 @@ export const { GET, POST, PUT } = serve({
     postToFacebook,
     checkAndRefreshFacebookToken,
     monitorTokenExpiry,
-    syncUrunlerDaily,
-    syncUrunlerManual,
-    syncAnafaaliyetDaily,
-    syncAnafaaliyetManual,
+    // Airtable sync functions removed
+    // syncUrunlerDaily,
+    // syncUrunlerManual,
+    // syncAnafaaliyetDaily,
+    // syncAnafaaliyetManual,
     cloudinaryUpload,
     cloudinaryTransform,
     cloudinaryDelete,
