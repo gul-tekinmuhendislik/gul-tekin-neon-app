@@ -7,6 +7,7 @@ import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
 import WebPages from "@/components/WebPages";
 import DatabaseStats from "@/components/DatabaseStats";
+import ServiceLocations from "@/components/ServiceLocations";
 import { getRandomBrands } from "@/lib/get-brands";
 
 export const dynamic = 'force-static';
@@ -134,6 +135,7 @@ export default async function Home() {
       </Vortex>
       <LogoCloud />
       <DatabaseStats />
+      <ServiceLocations />
       <IntegrationsSection />
       <WebPages />
       <Testimonials />

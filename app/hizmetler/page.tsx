@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Image from 'next/image';
+import ServiceLocations from '@/components/ServiceLocations';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -44,14 +45,16 @@ export default async function HizmetlerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
+    <>
+      <ServiceLocations />
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             Hizmetlerimiz
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Muğla bölgesinde, 20 yıllık deneyimimiz ile mekanik tesisat, 
+            Muğla bölgesinde, 20 yıllık deneyimimiz ile mekanik tesisat,
             enerji sistemleri ve su arıtma konularında profesyonel çözümler sunuyoruz.
           </p>
         </div>
@@ -113,9 +116,9 @@ export default async function HizmetlerPage() {
                       </div>
                     )}
                     
-                    {hizmet.seo_slug && (
+                    {hizmet.slug && (
                       <a
-                        href={`/hizmetler/${hizmet.seo_slug}`}
+                        href={`/hizmetler/${hizmet.slug}`}
                         className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium group/link"
                       >
                         Detaylı Bilgi
@@ -209,5 +212,6 @@ export default async function HizmetlerPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

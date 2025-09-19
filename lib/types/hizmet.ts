@@ -12,7 +12,6 @@ export interface Hizmet {
   urunler?: string[];
   seo_title?: string;
   seo_description?: string;
-  seo_slug?: string;
   slug?: string;
   seo_index?: number;
   created_at?: Date;

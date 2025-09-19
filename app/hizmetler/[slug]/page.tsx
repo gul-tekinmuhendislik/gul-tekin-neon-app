@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
+import { getUrunlerByHizmetIdFromNeon } from '@/lib/airtable-urunler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,7 +15,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
-  const hizmet = hizmetler.find((h) => h.slug === slug || h.seo_slug === slug);
+  const hizmet = hizmetler.find((h) => h.slug === slug);
   
   if (!hizmet) {
     return {
@@ -59,11 +60,14 @@ export const revalidate = 0;
 export default async function HizmetDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
-  const hizmet = hizmetler.find((h) => h.slug === slug || h.seo_slug === slug);
-  
+  const hizmet = hizmetler.find((h) => h.slug === slug);
+
   if (!hizmet) {
     notFound();
   }
+
+  // Get related products for this service
+  const ilgiliUrunler = await getUrunlerByHizmetIdFromNeon(hizmet.id);
 
   // Find related services from same category
   const relatedServices = hizmetler
@@ -218,6 +222,84 @@ export default async function HizmetDetailPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* Related Products */}
+        {ilgiliUrunler.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              İlgili Ürünler
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {ilgiliUrunler.map((urun) => (
+                <div
+                  key={urun.id}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                >
+                  {(urun.cloudinary_url || urun.gorsel_url) ? (
+                    <div className="h-48 overflow-hidden bg-gray-100">
+                      <Image
+                        src={urun.cloudinary_url || urun.gorsel_url!}
+                        alt={urun.urun_adi}
+                        width={300}
+                        height={200}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <svg className="w-16 h-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">
+                      {urun.urun_adi}
+                    </h3>
+                    {urun.marka && (
+                      <p className="text-sm text-blue-600 mb-2">{urun.marka}</p>
+                    )}
+                    {urun.aciklama && (
+                      <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                        {urun.aciklama}
+                      </p>
+                    )}
+                    <div className="flex items-center justify-between">
+                      {urun.fiyat && (
+                        <span className="text-lg font-bold text-green-600">
+                          ₺{urun.fiyat.toLocaleString('tr-TR')}
+                        </span>
+                      )}
+                      {urun.stokta !== undefined && (
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          urun.stokta
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-red-100 text-red-700'
+                        }`}>
+                          {urun.stokta ? 'Stokta' : 'Tükendi'}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {ilgiliUrunler.length >= 12 && (
+              <div className="text-center mt-6">
+                <Link
+                  href={`/urunler?hizmet=${hizmet.slug}`}
+                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Tüm Ürünleri Görüntüle
+                  <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Related Services */}
         {relatedServices.length > 0 && (
           <div className="mt-12">
@@ -228,7 +310,7 @@ export default async function HizmetDetailPage({ params }: PageProps) {
               {relatedServices.map((related) => (
                 <Link
                   key={related.id}
-                  href={`/hizmetler/${related.slug || related.seo_slug}`}
+                  href={`/hizmetler/${related.slug}`}
                   className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
                 >
                   {(related.cloudinary_url || related.resim_url) && (
