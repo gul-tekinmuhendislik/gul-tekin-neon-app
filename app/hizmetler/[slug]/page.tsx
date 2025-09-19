@@ -263,12 +263,7 @@ export default async function HizmetDetailPage({ params }: PageProps) {
                         {urun.aciklama}
                       </p>
                     )}
-                    <div className="flex items-center justify-between">
-                      {urun.fiyat && (
-                        <span className="text-lg font-bold text-green-600">
-                          ₺{urun.fiyat.toLocaleString('tr-TR')}
-                        </span>
-                      )}
+                    <div className="flex items-center justify-between mt-3">
                       {urun.stokta !== undefined && (
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           urun.stokta
@@ -278,6 +273,12 @@ export default async function HizmetDetailPage({ params }: PageProps) {
                           {urun.stokta ? 'Stokta' : 'Tükendi'}
                         </span>
                       )}
+                      <button className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
+                        Detaylar
+                        <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
                 </div>
