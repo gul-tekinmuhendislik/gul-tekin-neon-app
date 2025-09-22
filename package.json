@@ -24,7 +24,7 @@
     "cloudinary": "^2.7.0",
     "clsx": "^2.1.1",
     "exa-js": "^1.9.3",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.18",
     "googleapis": "^159.0.0",
     "groq-sdk": "^0.32.0",
     "inngest": "^3.40.2",
