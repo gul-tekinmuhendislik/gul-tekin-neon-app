@@ -23,5 +23,5 @@
   - feat: Blog içerikleri için Fal.ai görsel üretimi ve Facebook entegrasyonu
   - monday inngest calismiyor
   - tuesday clear mainpage error loading
-  - 
+  - fix: Lokasyonlar detay sayfası ve blog pagination
     
