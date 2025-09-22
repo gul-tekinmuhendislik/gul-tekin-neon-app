@@ -226,15 +226,6 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
                 <p className="text-sm text-gray-500 mb-4">SKU: {urun.sku}</p>
               )}
               
-              {/* Price */}
-              {urun.fiyat && urun.fiyat > 0 && (
-                <div className="mb-6">
-                  <span className="text-3xl font-bold text-gray-900">
-                    ₺{urun.fiyat.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </span>
-                  <span className="text-sm text-gray-500 ml-2">KDV Dahil</span>
-                </div>
-              )}
               
               {/* Stock Status */}
               {urun.stokta !== undefined && (
@@ -389,11 +380,6 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
                     <h3 className="font-semibold text-gray-900 mt-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
                       {product.urun_adi}
                     </h3>
-                    {product.fiyat && product.fiyat > 0 && (
-                      <p className="text-lg font-bold text-gray-900 mt-2">
-                        ₺{product.fiyat.toLocaleString('tr-TR')}
-                      </p>
-                    )}
                   </div>
                 </Link>
               ))}
