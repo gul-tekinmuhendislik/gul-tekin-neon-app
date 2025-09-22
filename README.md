@@ -24,4 +24,5 @@
   - monday inngest calismiyor
   - tuesday clear mainpage error loading
   - fix: Lokasyonlar detay sayfası ve blog pagination
+  - feat: Add SEO schema components and improvements
     
