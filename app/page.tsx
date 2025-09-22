@@ -10,8 +10,8 @@ import DatabaseStats from "@/components/DatabaseStats";
 import ServiceLocations from "@/components/ServiceLocations";
 import { getRandomBrands } from "@/lib/get-brands";
 
-export const dynamic = 'force-static';
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Ana Sayfa | Gül-Tekin Mühendislik - Isı Pompası ve Enerji Sistemleri",

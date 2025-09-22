@@ -74,10 +74,102 @@ export default async function HizmetDetailPage({ params }: PageProps) {
     .filter((h) => h.kategori === hizmet.kategori && h.id !== hizmet.id)
     .slice(0, 3);
 
+  // Service Schema Markup
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": hizmet.hizmet_adi,
+    "description": hizmet.aciklama || `${hizmet.hizmet_adi} hizmeti`,
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "Gül-Tekin Mühendislik",
+      "url": "https://gul-tekinmuhendislik.com",
+      "telephone": "+902522117171",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bodrum",
+        "addressRegion": "Muğla",
+        "addressCountry": "TR"
+      },
+      "priceRange": "₺₺₺"
+    },
+    "url": `https://gul-tekinmuhendislik.com/hizmetler/${slug}`,
+    "category": hizmet.kategori,
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": {
+        "@type": "GeoCoordinates",
+        "latitude": "37.0343",
+        "longitude": "27.4305"
+      },
+      "geoRadius": "100000"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": `${hizmet.hizmet_adi} Ürün ve Hizmetleri`,
+      "itemListElement": hizmet.urunler?.map((urun: string) => ({
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Product",
+          "name": urun
+        }
+      })) || []
+    }
+  };
+
+  // FAQ Schema for service page
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `${hizmet.hizmet_adi} hizmeti nedir?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": hizmet.aciklama || `Gül-Tekin Mühendislik olarak ${hizmet.hizmet_adi} konusunda profesyonel hizmet sunuyoruz.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `${hizmet.hizmet_adi} hizmeti hangi bölgelerde veriliyor?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bodrum, Yalıkavak, Turgutreis, Gümüşlük, Gündoğan ve Muğla'nın tüm ilçelerinde hizmet veriyoruz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Keşif ücreti alıyor musunuz?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hayır, keşif hizmetimiz tamamen ücretsizdir. Projeniz için size en uygun çözümü sunmak için yerinde inceleme yapıyoruz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `${hizmet.hizmet_adi} için garanti veriyor musunuz?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Evet, tüm işlerimizde 2 yıl işçilik garantisi ve üretici garantisi sunuyoruz. Kullandığımız malzemeler TSE ve CE standartlarına uygundur."
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <div className="container mx-auto px-4 py-8">
+          {/* Breadcrumb */}
         <nav className="flex mb-8 text-sm">
           <Link href="/" className="text-gray-500 hover:text-gray-700">
             Ana Sayfa
@@ -346,5 +438,6 @@ export default async function HizmetDetailPage({ params }: PageProps) {
         )}
       </div>
     </div>
+  </>
   );
 }

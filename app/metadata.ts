@@ -78,22 +78,8 @@ export const defaultMetadata: Metadata = {
     canonical: siteConfig.url,
   },
   icons: {
-    icon: [
-      { url: '/logo.png', type: 'image/png', sizes: '32x32' },
-      { url: '/logo.png', type: 'image/png', sizes: '16x16' },
-    ],
-    shortcut: '/logo.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
     apple: '/logo.png',
-    other: [
-      {
-        rel: 'apple-touch-icon-precomposed',
-        url: '/logo.png',
-      },
-      {
-        rel: 'icon',
-        type: 'image/png',
-        url: '/logo.png',
-      },
-    ],
   },
 };

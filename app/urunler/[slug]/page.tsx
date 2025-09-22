@@ -147,17 +147,98 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
   const { slug } = await params;
   const decodedSlug = decodeAndNormalizeSlug(slug);
   const urun = await getUrunBySlug(decodedSlug);
-  
+
   if (!urun) {
     notFound();
   }
-  
+
   const relatedProducts = urun.kategori ? await getRelatedProducts(urun.kategori, decodedSlug) : [];
+
+  // Product Schema Markup
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": urun.urun_adi,
+    "description": urun.aciklama || `${urun.urun_adi} - ${urun.kategori} kategorisinde kaliteli ürün`,
+    "image": urun.cloudinary_url || urun.gorsel_url || "https://gul-tekinmuhendislik.com/logo.png",
+    "brand": {
+      "@type": "Brand",
+      "name": urun.marka || "Gül-Tekin Mühendislik"
+    },
+    "sku": urun.sku || `GTM-${urun.id}`,
+    "category": urun.kategori,
+    "url": `https://gul-tekinmuhendislik.com/urunler/${slug}`,
+    "availability": urun.stokta ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "Gül-Tekin Mühendislik",
+      "url": "https://gul-tekinmuhendislik.com",
+      "telephone": "+902522117171",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bodrum",
+        "addressRegion": "Muğla",
+        "addressCountry": "TR"
+      }
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": urun.stokta ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "priceCurrency": "TRY",
+      "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      "seller": {
+        "@type": "Organization",
+        "name": "Gül-Tekin Mühendislik"
+      },
+      "url": `https://gul-tekinmuhendislik.com/urunler/${slug}`
+    }
+  };
+
+  // FAQ Schema for product page
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `${urun.urun_adi} nasıl temin edilir?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ürünlerimizi telefon, WhatsApp veya iletişim formu üzerinden talep ederek temin edebilirsiniz. Size en uygun fiyat ve teslimat seçeneklerini sunuyoruz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `${urun.urun_adi} garanti süresi nedir?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tüm ürünlerimizde üretici garantisi geçerlidir. Garanti süresi ürüne göre değişmektedir. Detaylı bilgi için bizimle iletişime geçebilirsiniz."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Montaj hizmeti veriyor musunuz?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Evet, Muğla ve çevre illerde profesyonel montaj hizmeti sunuyoruz. Uzman ekibimiz ürünlerinizi standartlara uygun şekilde monte eder."
+        }
+      }
+    ]
+  };
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm mb-6">
           <Link href="/" className="text-gray-500 hover:text-gray-700">
             Ana Sayfa
@@ -388,5 +469,6 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
         )}
       </div>
     </div>
+  </>
   );
 }

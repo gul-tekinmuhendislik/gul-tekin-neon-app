@@ -6,15 +6,6 @@ global.Request = jest.fn();
 global.Response = jest.fn();
 global.fetch = jest.fn();
 
-// Mock Airtable
-jest.mock('airtable', () => ({
-  __esModule: true,
-  default: {
-    base: jest.fn(() => ({
-      table: jest.fn()
-    }))
-  }
-}));
 
 // Mock all dependencies before importing functions  
 jest.mock('../../db', () => ({
