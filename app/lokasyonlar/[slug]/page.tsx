@@ -41,7 +41,6 @@ interface Mahalle {
   mahalle_adi: string;
   slug?: string;
   aciklama?: string;
-  nufus?: number;
   posta_kodu?: string;
   aktif: boolean;
   sira?: number;
@@ -290,11 +289,6 @@ export default function LokasyonDetayPage() {
                   </h3>
                   {mahalle.posta_kodu && (
                     <p className="text-xs text-gray-500 mt-1">{mahalle.posta_kodu}</p>
-                  )}
-                  {mahalle.nufus && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Nüfus: {mahalle.nufus.toLocaleString('tr-TR')}
-                    </p>
                   )}
                 </motion.div>
               ))}

@@ -29,8 +29,8 @@ export async function GET(
   context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const params = await context.params;
-    const { slug } = params;
+    const resolvedParams = await context.params;
+    const { slug } = resolvedParams;
 
     // Lokasyon bilgilerini al
     const [lokasyon] = await sql`
@@ -110,7 +110,6 @@ export async function GET(
         mahalle_adi,
         slug,
         aciklama,
-        nufus,
         posta_kodu,
         aktif,
         sira
