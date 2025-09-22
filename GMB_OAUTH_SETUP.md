@@ -13,7 +13,7 @@ Google My Business API'nin yeni versiyonları, Service Account yerine OAuth 2.0 
 5. **Name**: GMB OAuth Client
 6. **Authorized redirect URIs** ekleyin:
    - Development: `http://localhost:3000/api/google/callback`
-   - Production: `https://ai.gul-tekinmuhendislik.com/api/google/callback`
+   - Production: `https://gul-tekinmuhendislik.com/api/google/callback`
 7. **Create** tıklayın
 8. Client ID ve Client Secret'ı kopyalayın
 
@@ -101,6 +101,6 @@ GET /api/google-my-business/oauth?action=locations&accountId=accounts/xxxxx
    - `GOOGLE_CLIENT_SECRET`
 
 2. Google Cloud Console'da production URL'lerini ekleyin:
-   - Authorized redirect URI: `https://ai.gul-tekinmuhendislik.com/api/google/callback`
+   - Authorized redirect URI: `https://gul-tekinmuhendislik.com/api/google/callback`
 
 3. OAuth consent screen'i production'a alın (Google review gerekebilir)

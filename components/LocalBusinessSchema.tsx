@@ -2,10 +2,10 @@ export default function LocalBusinessSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": "https://ai.gul-tekinmuhendislik.com/#business",
+    "@id": "https://gul-tekinmuhendislik.com/#business",
     "name": "Gül-Tekin Mühendislik",
-    "image": "https://ai.gul-tekinmuhendislik.com/logo.png",
-    "url": "https://ai.gul-tekinmuhendislik.com",
+    "image": "https://gul-tekinmuhendislik.com/logo.png",
+    "url": "https://gul-tekinmuhendislik.com",
     "telephone": "+902523850000",
     "priceRange": "$$",
     "address": {

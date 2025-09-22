@@ -29,15 +29,15 @@ export default function BlogArticleSchema({
     "author": {
       "@type": "Organization",
       "name": author,
-      "url": "https://ai.gul-tekinmuhendislik.com"
+      "url": "https://gul-tekinmuhendislik.com"
     },
     "publisher": {
       "@type": "Organization",
       "name": "Gül-Tekin Mühendislik",
-      "url": "https://ai.gul-tekinmuhendislik.com",
+      "url": "https://gul-tekinmuhendislik.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://ai.gul-tekinmuhendislik.com/assets/logo.svg"
+        "url": "https://gul-tekinmuhendislik.com/assets/logo.svg"
       }
     },
     "datePublished": datePublished,

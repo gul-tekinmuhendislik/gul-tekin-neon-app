@@ -21,8 +21,8 @@ export async function GET() {
     'http://localhost:3000/api/search-console/callback',
 
     // Production (ai.gul-tekinmuhendislik.com)
-    'https://ai.gul-tekinmuhendislik.com/api/google/callback',
-    'https://ai.gul-tekinmuhendislik.com/api/search-console/callback',
+    'https://gul-tekinmuhendislik.com/api/google/callback',
+    'https://gul-tekinmuhendislik.com/api/search-console/callback',
 
     // Production (gul-tekinmuhendislik.com) - ana domain için
     'https://gul-tekinmuhendislik.com/api/google/callback',

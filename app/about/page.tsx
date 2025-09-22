@@ -39,10 +39,10 @@ export default async function AboutPage() {
     "@graph": [
       {
         "@type": "LocalBusiness",
-        "@id": "https://ai.gul-tekinmuhendislik.com/#business",
+        "@id": "https://gul-tekinmuhendislik.com/#business",
         "name": "Gül-Tekin Mühendislik",
         "description": "Muğla bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
-        "url": "https://ai.gul-tekinmuhendislik.com",
+        "url": "https://gul-tekinmuhendislik.com",
         "telephone": "+90 252 386 35 54",
         "email": "info@gul-tekinmuhendislik.com",
         "address": {
@@ -135,12 +135,12 @@ export default async function AboutPage() {
         "name": "Gül-Tekin Mühendislik",
         "serviceType": "Mekanik Tesisat ve Enerji Sistemleri",
         "provider": {
-          "@id": "https://ai.gul-tekinmuhendislik.com/#business"
+          "@id": "https://gul-tekinmuhendislik.com/#business"
         }
       },
       {
         "@type": "Organization",
-        "@id": "https://ai.gul-tekinmuhendislik.com/#organization",
+        "@id": "https://gul-tekinmuhendislik.com/#organization",
         "name": "Gül-Tekin Mühendislik",
         "legalName": "GÜL-TEKİN SIHHİ TESİSAT, MÜHENDİSLİK, İNŞAAT, TAAHÜT, EMLAK, TURİZM, ENERJİ KAYNAKLARI, GIDA, İTHALAT İHRACAT TİCARET VE SANAYİ LİMİTED ŞİRKETİ",
         "sameAs": [
@@ -150,7 +150,7 @@ export default async function AboutPage() {
         ],
         "logo": {
           "@type": "ImageObject",
-          "url": "https://ai.gul-tekinmuhendislik.com/logo.png",
+          "url": "https://gul-tekinmuhendislik.com/logo.png",
           "width": 200,
           "height": 50
         },

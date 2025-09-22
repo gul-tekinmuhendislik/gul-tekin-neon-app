@@ -142,7 +142,7 @@ export default function BlogDetailClient() {
         datePublished={post.created_at}
         dateModified={post.updated_at}
         image={post.image_url || post.image}
-        url={`https://ai.gul-tekinmuhendislik.com/blog/${post.slug}`}
+        url={`https://gul-tekinmuhendislik.com/blog/${post.slug}`}
         keywords={post.keywords}
       />
       <div className="container mx-auto px-4 py-16 max-w-4xl">

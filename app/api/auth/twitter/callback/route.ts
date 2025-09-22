@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       grant_type: 'authorization_code',
       client_id: process.env.TWITTER_OAUTH2_CLIENT_ID!,
       redirect_uri: process.env.NODE_ENV === 'production'
-        ? 'https://ai.gul-tekinmuhendislik.com/api/auth/twitter/callback'
+        ? 'https://gul-tekinmuhendislik.com/api/auth/twitter/callback'
         : 'http://localhost:3000/api/auth/twitter/callback',
       code_verifier: 'challenge', // PKCE için gerekli
     });

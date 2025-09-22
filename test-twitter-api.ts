@@ -87,7 +87,7 @@ async function testTwitterAPI() {
     console.log("\n5. Testing tweet composition...");
     if (readyContent.length > 0) {
       const testContent = readyContent[0];
-      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ai.gul-tekinmuhendislik.com';
+      const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://gul-tekinmuhendislik.com';
       const blogUrl = `${baseUrl}/blog/${testContent.slug}`;
 
       // Prepare tweet text

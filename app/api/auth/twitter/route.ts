@@ -13,7 +13,7 @@ export async function GET() {
 
   // OAuth 2.0 parametreleri
   const redirectUri = process.env.NODE_ENV === 'production'
-    ? 'https://ai.gul-tekinmuhendislik.com/api/auth/twitter/callback'
+    ? 'https://gul-tekinmuhendislik.com/api/auth/twitter/callback'
     : 'http://localhost:3000/api/auth/twitter/callback';
 
   // State parametresi (CSRF koruması için)

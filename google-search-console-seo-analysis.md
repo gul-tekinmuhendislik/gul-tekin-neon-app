@@ -1,7 +1,7 @@
 # GÜL-TEKİN MÜHENDİSLİK - GOOGLE SEARCH CONSOLE SEO ANALİZ RAPORU
 
 **Tarih:** 11 Eylül 2025  
-**Web Sitesi:** https://ai.gul-tekinmuhendislik.com  
+**Web Sitesi:** https://gul-tekinmuhendislik.com  
 **Analiz Türü:** Kapsamlı SEO ve Search Console Değerlendirmesi
 
 ---

@@ -83,13 +83,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${proje.proje_adi} - Gül-Tekin Mühendislik`,
     description: proje.aciklama ? proje.aciklama.substring(0, 160).replace(/\*\*/g, '') : `${proje.proje_adi} projesi detayları. ${proje.mahalle}, ${proje.ilce}`,
     alternates: {
-      canonical: `https://ai.gul-tekinmuhendislik.com/projeler/${slug}`,
+      canonical: `https://gul-tekinmuhendislik.com/projeler/${slug}`,
     },
     openGraph: {
       title: proje.proje_adi,
       description: proje.aciklama ? proje.aciklama.substring(0, 160).replace(/\*\*/g, '') : `${proje.proje_adi} projesi detayları`,
       images: proje.cloudinary_url || proje.airtable_resim_url ? [proje.cloudinary_url || proje.airtable_resim_url] : [],
-      url: `https://ai.gul-tekinmuhendislik.com/projeler/${slug}`,
+      url: `https://gul-tekinmuhendislik.com/projeler/${slug}`,
       type: 'website',
     }
   };

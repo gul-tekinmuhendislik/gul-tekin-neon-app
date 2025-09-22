@@ -86,7 +86,7 @@ async function generateImageWithOpenRouter(prompt: string): Promise<string> {
       headers: {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://ai.gul-tekinmuhendislik.com",
+        "HTTP-Referer": "https://gul-tekinmuhendislik.com",
         "X-Title": "Gül-Tekin Mühendislik AI"
       },
       body: JSON.stringify({

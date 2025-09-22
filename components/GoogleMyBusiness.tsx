@@ -6,7 +6,9 @@ export default function GoogleMyBusiness() {
   const businessInfo = {
     name: "Gül-Tekin Mühendislik",
     address: "Yalıkavak, Bodrum, Muğla, Türkiye",
-    phone: "+90 252 385 0000",
+    phone: "0252 386 35 54",
+    fax: "0252 386 41 34",
+    email: "info@gul-tekinmuhendislik.com",
     rating: 5.0,
     reviewCount: 12,
     openNow: true,

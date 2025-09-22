@@ -45,13 +45,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: post.meta_description || `${post.title} hakkında detaylı bilgi`,
       keywords: post.keywords?.join(', '),
       alternates: {
-        canonical: `https://ai.gul-tekinmuhendislik.com/blog/${slug}`,
+        canonical: `https://gul-tekinmuhendislik.com/blog/${slug}`,
       },
       openGraph: {
         title: post.meta_title || post.title,
         description: post.meta_description,
         type: 'article',
-        url: `https://ai.gul-tekinmuhendislik.com/blog/${slug}`,
+        url: `https://gul-tekinmuhendislik.com/blog/${slug}`,
         images: ogImages,
       },
       twitter: {
