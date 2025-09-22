@@ -17,7 +17,6 @@ interface Hizmet {
   id: string;
   hizmet_adi: string;
   aciklama?: string;
-  kategori?: string;
   slug?: string;
   resim_url?: string;
   cloudinary_url?: string;
@@ -62,7 +61,6 @@ export async function GET(
         h.id,
         h.hizmet_adi,
         h.aciklama,
-        h.kategori,
         h.slug,
         h.resim_url,
         h.cloudinary_url,

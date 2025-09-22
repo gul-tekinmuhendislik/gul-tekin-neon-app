@@ -16,7 +16,7 @@ async function getRandomPartners(): Promise<Partner[]> {
       WHERE aktif = true 
         AND (cloudinary_url IS NOT NULL OR logo_url IS NOT NULL)
       ORDER BY RANDOM()
-      LIMIT 12
+      LIMIT 8
     `;
     
     return result.map(row => ({
@@ -57,13 +57,13 @@ export async function LogoCloud() {
           <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-8 md:gap-x-16">
             {partners.map((partner) => (
               <li key={partner.name}>
-                <div className="flex items-center justify-center h-16 w-40 relative grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100">
+                <div className="flex items-center justify-center h-24 w-56 relative transition-all duration-300 opacity-80 hover:opacity-100">
                   <Image
                     alt={`${partner.name} - Gül-Tekin Mühendislik çözüm ortağı`}
                     src={partner.logo}
                     className="h-full w-full object-contain"
-                    width={160}
-                    height={64}
+                    width={224}
+                    height={96}
                     priority
                     unoptimized={partner.logo.includes('cloudinary')}
                   />
