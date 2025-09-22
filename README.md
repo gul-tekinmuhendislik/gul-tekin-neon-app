@@ -25,4 +25,5 @@
   - tuesday clear mainpage error loading
   - fix: Lokasyonlar detay sayfası ve blog pagination
   - feat: Add SEO schema components and improvements
+  - fix: Ürün detay sayfasından fiyat gösterimini kaldır ve favicon
     
