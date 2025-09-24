@@ -558,21 +558,21 @@ Return ONLY the prompt, no explanations.`;
 // [REMOVED] testVertexAIConnection function has been removed
 // Vertex AI connection is tested automatically in production functions
 
-// Generate images with Vertex AI every 5 minutes using fast model
+// Generate images with Vertex AI every 15 minutes using fast model
 export const generateVertexImagesHourly = inngest.createFunction(
   {
-    id: "generate-vertex-images-5min",
-    name: "Generate Vertex AI Images Every 5 Minutes (Fast Model)",
+    id: "generate-vertex-images-15min",
+    name: "Generate Vertex AI Images Every 15 Minutes (Fast Model)",
     retries: 2
   },
   [
     {
-      // Run every 5 minutes (288 images/day) - using fast model for cost optimization
-      cron: "*/5 * * * *"
+      // Run every 15 minutes (96 images/day) - using fast model for cost optimization
+      cron: "*/15 * * * *"
     },
     {
       // Manual trigger event
-      event: "vertex-ai/5min.manual"
+      event: "vertex-ai/15min.manual"
     }
   ],
   async ({ step }) => {
@@ -663,7 +663,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 5
       `;
 
-      console.log(`[5min Generation] Found ${recentPrompts.length} recent prompts for ${selectedService.hizmet_adi}`);
+      console.log(`[15min Generation] Found ${recentPrompts.length} recent prompts for ${selectedService.hizmet_adi}`);
 
       // Get related brands for this service for more variation
       const relatedBrands = await sql`
@@ -677,7 +677,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 5
       `;
 
-      console.log(`[5min Generation] Found ${relatedBrands.length} related brands for service`);
+      console.log(`[15min Generation] Found ${relatedBrands.length} related brands for service`);
 
       // Get related products for variation
       const relatedProducts = await sql`
@@ -691,7 +691,7 @@ export const generateVertexImagesHourly = inngest.createFunction(
         LIMIT 3
       `;
 
-      console.log(`[5min Generation] Found ${relatedProducts.length} related products`);
+      console.log(`[15min Generation] Found ${relatedProducts.length} related products`);
 
       // Get dynamic color scheme from database
       const topicKey = selectedService.slug?.replace(/-/g, '_') || 'default';
@@ -707,15 +707,15 @@ export const generateVertexImagesHourly = inngest.createFunction(
       `;
 
       const selectedColorScheme = colorScheme[0];
-      console.log(`[5min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
-      console.log(`[5min Generation] Selected location: ${selectedLocation.name} - ${selectedLocation.description}`);
+      console.log(`[15min Generation] Using color scheme: ${selectedColorScheme?.name || 'default'}`);
+      console.log(`[15min Generation] Selected location: ${selectedLocation.name} - ${selectedLocation.description}`);
 
       // Generate dynamic prompt with XAI based on service and location
       let finalPrompt = "";
 
       const apiKey = process.env.XAI_API_KEY;
-      console.log(`[5min Generation] XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
-      console.log(`[5min Generation] Generating prompt for service: ${selectedService.hizmet_adi} in ${selectedLocation.name} (index: ${serviceIndex})`);
+      console.log(`[15min Generation] XAI API Key status: ${apiKey ? 'Found' : 'NOT FOUND - will use fallback'}`);
+      console.log(`[15min Generation] Generating prompt for service: ${selectedService.hizmet_adi} in ${selectedLocation.name} (index: ${serviceIndex})`);
 
       if (apiKey) {
         try {
@@ -854,20 +854,20 @@ Return ONLY the detailed prompt, no explanations.`;
             if (generatedPrompt) {
               // Increased limit for better prompt quality (Vertex AI can handle up to 2048 chars)
               finalPrompt = generatedPrompt.substring(0, 900);
-              console.log(`[5min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
-              console.log(`[5min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
+              console.log(`[15min Generation] ✅ XAI prompt generated successfully for ${selectedService.hizmet_adi}`);
+              console.log(`[15min Generation] Prompt preview (first 200 chars): ${finalPrompt.substring(0, 200)}...`);
             } else {
-              console.log(`[5min Generation] ⚠️ XAI returned empty prompt`);
+              console.log(`[15min Generation] ⚠️ XAI returned empty prompt`);
             }
           } else {
-            console.log(`[5min Generation] ❌ XAI API request failed with status: ${response.status}`);
+            console.log(`[15min Generation] ❌ XAI API request failed with status: ${response.status}`);
           }
         } catch (error) {
-          console.error("[5min Generation] Error generating prompt with XAI:", error);
-          console.log("[5min Generation] XAI error details:", error instanceof Error ? error.message : error);
+          console.error("[15min Generation] Error generating prompt with XAI:", error);
+          console.log("[15min Generation] XAI error details:", error instanceof Error ? error.message : error);
         }
       } else {
-        console.warn("[5min Generation] ⚠️ XAI_API_KEY not found in environment variables!");
+        console.warn("[15min Generation] ⚠️ XAI_API_KEY not found in environment variables!");
       }
 
       // Dynamic fallback if XAI fails - create random creative prompts
@@ -900,9 +900,9 @@ Return ONLY the detailed prompt, no explanations.`;
         // Very simple prompt to encourage AI creativity
         finalPrompt = `${selectedService.hizmet_adi} technology in ${selectedLocation.name}, ${randomStyle}, gradient from ${randomColor1} to ${randomColor2}, ${selectedLocation.description} environment, creative interpretation, 16:9 aspect ratio`;
 
-        console.log(`[5min Generation] Using simple dynamic fallback for: ${selectedService.hizmet_adi} in ${selectedLocation.name}`);
-        console.log(`[5min Generation] Style: ${randomStyle}, Colors: ${randomColor1} to ${randomColor2}`);
-        console.log(`[5min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
+        console.log(`[15min Generation] Using simple dynamic fallback for: ${selectedService.hizmet_adi} in ${selectedLocation.name}`);
+        console.log(`[15min Generation] Style: ${randomStyle}, Colors: ${randomColor1} to ${randomColor2}`);
+        console.log(`[15min Generation] Fallback reason: ${!apiKey ? 'No API key' : 'XAI generation failed'}`);
       }
 
       // Add aspect ratio and location tag - Vertex AI can handle up to 2048 chars safely
