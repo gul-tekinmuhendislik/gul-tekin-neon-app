@@ -15,8 +15,8 @@ export async function getMarkalariNeon(): Promise<Marka[]> {
         kategori,
         aktif,
         yetkili_servis,
-        created_time,
-        updated_time
+        airtable_created_time,
+        updated_at
       FROM markalar
       WHERE aktif = true
       ORDER BY marka_adi
@@ -43,8 +43,8 @@ export async function getMarkaById(id: string): Promise<Marka | null> {
         kategori,
         aktif,
         yetkili_servis,
-        created_time,
-        updated_time
+        airtable_created_time,
+        updated_at
       FROM markalar
       WHERE id = ${id} AND aktif = true
       LIMIT 1

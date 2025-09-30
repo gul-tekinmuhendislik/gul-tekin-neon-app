@@ -14,8 +14,8 @@ export async function getUrunlerByHizmetIdFromNeon(hizmetId: string): Promise<Ur
         cloudinary_url,
         stokta,
         hizmet_id,
-        created_time,
-        updated_time
+        airtable_created_time,
+        updated_at
       FROM urunler
       WHERE hizmet_id = ${hizmetId}
       ORDER BY urun_adi
@@ -41,8 +41,8 @@ export async function getUrunById(id: string): Promise<Urun | null> {
         cloudinary_url,
         stokta,
         hizmet_id,
-        created_time,
-        updated_time
+        airtable_created_time,
+        updated_at
       FROM urunler
       WHERE id = ${id}
       LIMIT 1

@@ -17,10 +17,9 @@ export async function getHizmetlerFromNeon(): Promise<Hizmet[]> {
         urunler,
         seo_title,
         seo_description,
-        seo_slug,
         aktif,
-        created_time,
-        updated_time
+        airtable_modified,
+        updated_at
       FROM hizmetler
       WHERE aktif = true
       ORDER BY hizmet_adi
@@ -49,10 +48,9 @@ export async function getHizmetById(id: string): Promise<Hizmet | null> {
         urunler,
         seo_title,
         seo_description,
-        seo_slug,
         aktif,
-        created_time,
-        updated_time
+        airtable_modified,
+        updated_at
       FROM hizmetler
       WHERE id = ${id} AND aktif = true
       LIMIT 1
