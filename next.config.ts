@@ -85,11 +85,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: "/dikeysudepolari",
-        destination: "/urunler/dikey-su-depolari",
-        permanent: true,
-      },
-      {
         source: "/hidrofor",
         destination: "/urunler/hidrofor",
         permanent: true,
@@ -127,21 +122,6 @@ const nextConfig: NextConfig = {
       {
         source: "/suisiticilari",
         destination: "/urunler/su-isiticilari",
-        permanent: true,
-      },
-      {
-        source: "/bodrum-hidrofor-sistemleri",
-        destination: "/lokasyonlar/bodrum",
-        permanent: true,
-      },
-      {
-        source: "/bodrum-yelkenci-su-depolari",
-        destination: "/lokasyonlar/bodrum",
-        permanent: true,
-      },
-      {
-        source: "/yelkenci-su-depolari-bodrum",
-        destination: "/lokasyonlar/bodrum",
         permanent: true,
       },
     ];

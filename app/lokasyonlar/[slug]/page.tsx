@@ -259,37 +259,50 @@ export default function LokasyonDetayPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
             >
-              {mahalleler.map((mahalle, index) => (
-                <motion.div
-                  key={mahalle.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.02 }}
-                  className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer"
-                >
-                  <div className="text-blue-500 mb-2">
-                    <svg
-                      className="w-8 h-8 mx-auto group-hover:scale-110 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+              {mahalleler.map((mahalle, index) => {
+                const mahalleSlug = mahalle.slug || mahalle.mahalle_adi.toLowerCase()
+                  .replace(/ı/g, 'i')
+                  .replace(/ğ/g, 'g')
+                  .replace(/ü/g, 'u')
+                  .replace(/ş/g, 's')
+                  .replace(/ö/g, 'o')
+                  .replace(/ç/g, 'c')
+                  .replace(/\s+/g, '-')
+                  .replace(/[^a-z0-9-]/g, '');
+
+                return (
+                  <Link key={mahalle.id} href={`/lokasyonlar/${slug}/${mahalleSlug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: index * 0.02 }}
+                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-                    {mahalle.mahalle_adi}
-                  </h3>
-                  {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
-                    <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
-                  )}
-                </motion.div>
-              ))}
+                      <div className="text-blue-500 mb-2">
+                        <svg
+                          className="w-8 h-8 mx-auto group-hover:scale-110 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                        {mahalle.mahalle_adi}
+                      </h3>
+                      {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
+                        <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
+                      )}
+                    </motion.div>
+                  </Link>
+                );
+              })}
             </motion.div>
 
             {mahalleler.length > 0 && (
