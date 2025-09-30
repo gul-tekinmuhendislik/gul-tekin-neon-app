@@ -78,6 +78,72 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      // Eski URL'lerden yeni URL'lere yönlendirmeler
+      {
+        source: "/yataysudepolari",
+        destination: "/urunler/yatay-su-depolari",
+        permanent: true,
+      },
+      {
+        source: "/dikeysudepolari",
+        destination: "/urunler/dikey-su-depolari",
+        permanent: true,
+      },
+      {
+        source: "/hidrofor",
+        destination: "/urunler/hidrofor",
+        permanent: true,
+      },
+      {
+        source: "/pompa",
+        destination: "/urunler/pompa",
+        permanent: true,
+      },
+      {
+        source: "/suaritma",
+        destination: "/hizmetler/su-aritma",
+        permanent: true,
+      },
+      {
+        source: "/hizmetlerimiz",
+        destination: "/hizmetler",
+        permanent: true,
+      },
+      {
+        source: "/projelerimiz",
+        destination: "/projeler",
+        permanent: true,
+      },
+      {
+        source: "/iletisim",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/hakkimizda",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/suisiticilari",
+        destination: "/urunler/su-isiticilari",
+        permanent: true,
+      },
+      {
+        source: "/bodrum-hidrofor-sistemleri",
+        destination: "/lokasyonlar/bodrum",
+        permanent: true,
+      },
+      {
+        source: "/bodrum-yelkenci-su-depolari",
+        destination: "/lokasyonlar/bodrum",
+        permanent: true,
+      },
+      {
+        source: "/yelkenci-su-depolari-bodrum",
+        destination: "/lokasyonlar/bodrum",
+        permanent: true,
+      },
     ];
   },
 };

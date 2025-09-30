@@ -108,12 +108,10 @@ export async function GET(
         mahalle_adi,
         slug,
         aciklama,
-        posta_kodu,
-        aktif,
-        sira
+        proje_sayisi
       FROM mahalleler
-      WHERE ilce_id = ${lokasyon.id} AND aktif = true
-      ORDER BY sira ASC, mahalle_adi ASC
+      WHERE ilce_id = ${lokasyon.id}
+      ORDER BY mahalle_adi ASC
     `;
 
     return NextResponse.json({

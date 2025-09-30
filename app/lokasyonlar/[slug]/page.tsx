@@ -41,9 +41,7 @@ interface Mahalle {
   mahalle_adi: string;
   slug?: string;
   aciklama?: string;
-  posta_kodu?: string;
-  aktif: boolean;
-  sira?: number;
+  proje_sayisi?: number;
 }
 
 export default function LokasyonDetayPage() {
@@ -287,8 +285,8 @@ export default function LokasyonDetayPage() {
                   <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
                     {mahalle.mahalle_adi}
                   </h3>
-                  {mahalle.posta_kodu && (
-                    <p className="text-xs text-gray-500 mt-1">{mahalle.posta_kodu}</p>
+                  {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
+                    <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
                   )}
                 </motion.div>
               ))}
