@@ -7,24 +7,78 @@ import ServiceLocations from '@/components/ServiceLocations';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Mekanik Tesisat',
-  description: 'Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri ve mekanik tesisat hizmetleri. Muğla bölgesinde profesyonel mühendislik çözümleri.',
-  keywords: 'ısı pompası, güneş enerjisi sistemleri, su arıtma, yerden ısıtma, VRF klima, hidrofor, sulama sistemleri, mekanik tesisat, termosifonik sistem, radyatör, Muğla, Bodrum, Yalıkavak',
-  openGraph: {
-    title: 'Hizmetlerimiz | Gül-Tekin Mühendislik',
-    description: 'Enerji verimli ve çevre dostu mühendislik çözümleri. Isıtma, soğutma, su arıtma ve enerji sistemleri.',
-    type: 'website',
-    locale: 'tr_TR',
-    siteName: 'Gül-Tekin Mühendislik',
-  },
-  alternates: {
-    canonical: '/hizmetler',
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+
+  return {
+    title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Mekanik Tesisat',
+    description: `${hizmetler.length} farklı kategoride profesyonel hizmet: Isı pompaları, güneş enerjisi, su arıtma, yerden ısıtma, klima sistemleri. Muğla bölgesinde 20+ yıl deneyim.`,
+    keywords: hizmetler.map(h => h.hizmet_adi).join(', ') + ', mekanik tesisat, Muğla, Bodrum, Yalıkavak',
+    openGraph: {
+      title: 'Hizmetlerimiz | Gül-Tekin Mühendislik',
+      description: 'Enerji verimli ve çevre dostu mühendislik çözümleri. Isıtma, soğutma, su arıtma ve enerji sistemleri.',
+      type: 'website',
+      locale: 'tr_TR',
+      siteName: 'Gül-Tekin Mühendislik',
+    },
+    alternates: {
+      canonical: '/hizmetler',
+    },
+  };
+}
 
 export default async function HizmetlerPage() {
   const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+
+  // BreadcrumbList Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://gul-tekinmuhendislik.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Hizmetler",
+        "item": "https://gul-tekinmuhendislik.com/hizmetler"
+      }
+    ]
+  };
+
+  // Service Catalog Schema
+  const serviceCatalogSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Gül-Tekin Mühendislik Hizmetleri",
+    "description": "Mekanik tesisat, enerji sistemleri ve su arıtma konularında profesyonel çözümler",
+    "numberOfItems": hizmetler.length,
+    "itemListElement": hizmetler.map((hizmet, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Service",
+        "name": hizmet.hizmet_adi,
+        "description": hizmet.aciklama || hizmet.hizmet_adi,
+        "image": hizmet.cloudinary_url || hizmet.resim_url,
+        "url": `https://gul-tekinmuhendislik.com/hizmetler/${hizmet.slug}`,
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Gül-Tekin Mühendislik",
+          "telephone": "+902522117171"
+        },
+        "serviceType": hizmet.kategori,
+        "areaServed": {
+          "@type": "State",
+          "name": "Muğla"
+        }
+      }
+    }))
+  };
 
   // Group services by category
   const groupedServices = hizmetler.reduce((acc: Record<string, Hizmet[]>, hizmet) => {
@@ -46,6 +100,14 @@ export default async function HizmetlerPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceCatalogSchema) }}
+      />
       <ServiceLocations />
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-16">
