@@ -271,12 +271,16 @@ export default function LokasyonDetayPage() {
                   .replace(/[^a-z0-9-]/g, '');
 
                 return (
-                  <Link key={mahalle.id} href={`/lokasyonlar/${slug}/${mahalleSlug}`}>
+                  <Link
+                    key={mahalle.id}
+                    href={`/lokasyonlar/${slug}/${mahalleSlug}`}
+                    className="block"
+                  >
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: index * 0.02 }}
-                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer"
+                      className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer hover:scale-105 border-2 border-transparent hover:border-blue-400"
                     >
                       <div className="text-blue-500 mb-2">
                         <svg
@@ -293,12 +297,18 @@ export default function LokasyonDetayPage() {
                           />
                         </svg>
                       </div>
-                      <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                      <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors text-sm">
                         {mahalle.mahalle_adi}
                       </h3>
                       {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
                         <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
                       )}
+                      <div className="mt-2 flex items-center justify-center text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-xs font-medium">Detayları Gör</span>
+                        <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
                     </motion.div>
                   </Link>
                 );
@@ -388,21 +398,13 @@ export default function LokasyonDetayPage() {
                             {hizmet.urunler.map((urun) => (
                               <div key={urun.id} className="flex items-center text-xs text-gray-600">
                                 {urun.cloudinary_url && (
-                                  <img 
-                                    src={urun.cloudinary_url} 
+                                  <img
+                                    src={urun.cloudinary_url}
                                     alt={urun.urun_adi}
                                     className="w-6 h-6 rounded-full object-cover mr-2"
                                   />
                                 )}
                                 <span className="truncate">{urun.urun_adi}</span>
-                                {urun.fiyat && (
-                                  <span className="ml-auto font-medium text-blue-600">
-                                    {typeof urun.fiyat === 'number' 
-                                      ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(urun.fiyat)
-                                      : urun.fiyat
-                                    }
-                                  </span>
-                                )}
                               </div>
                             ))}
                           </div>
