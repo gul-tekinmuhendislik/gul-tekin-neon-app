@@ -56,3 +56,31 @@ export async function getMarkaById(id: string): Promise<Marka | null> {
     return null;
   }
 }
+
+export async function getMarkaBySlug(slug: string): Promise<Marka | null> {
+  try {
+    const result = await sql`
+      SELECT
+        id,
+        marka_adi,
+        slug,
+        aciklama,
+        website,
+        logo_url,
+        cloudinary_url,
+        kategori,
+        aktif,
+        yetkili_servis,
+        airtable_created_time,
+        updated_at
+      FROM markalar
+      WHERE slug = ${slug} AND aktif = true
+      LIMIT 1
+    `;
+
+    return result[0] as Marka || null;
+  } catch (error) {
+    console.error('Error fetching marka by slug from Neon:', error);
+    return null;
+  }
+}

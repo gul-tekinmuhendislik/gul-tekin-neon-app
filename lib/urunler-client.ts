@@ -54,3 +54,32 @@ export async function getUrunById(id: string): Promise<Urun | null> {
     return null;
   }
 }
+
+export async function getUrunlerByMarka(markaAdi: string): Promise<Urun[]> {
+  try {
+    const result = await sql`
+      SELECT
+        id,
+        urun_adi,
+        slug,
+        aciklama,
+        marka,
+        gorsel_url,
+        cloudinary_url,
+        stokta,
+        hizmet_id,
+        hizmet_adi,
+        kategori,
+        airtable_created_time,
+        updated_at
+      FROM urunler
+      WHERE LOWER(marka) = LOWER(${markaAdi})
+      ORDER BY urun_adi
+    `;
+
+    return result as Urun[];
+  } catch (error) {
+    console.error('Error fetching urunler by marka from Neon:', error);
+    return [];
+  }
+}

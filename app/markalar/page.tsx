@@ -1,5 +1,6 @@
 import { getMarkalariNeon } from '@/lib/markalar-client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Metadata } from 'next';
 
 // Force dynamic rendering since brand data can change
@@ -142,8 +143,9 @@ export default async function MarkalarPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {markalar.map((marka) => (
-              <div
+              <Link
                 key={marka.id}
+                href={`/markalar/${marka.slug || marka.id}`}
                 className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center justify-center group"
               >
                 {(marka.cloudinary_url || marka.logo_url) ? (
@@ -179,7 +181,7 @@ export default async function MarkalarPage() {
                     Yetkili Servis
                   </span>
                 )}
-              </div>
+              </Link>
             ))}
           </div>
 
