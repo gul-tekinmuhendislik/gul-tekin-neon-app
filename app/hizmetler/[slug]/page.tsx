@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
-import { getUrunlerByHizmetIdFromNeon } from '@/lib/airtable-urunler-client';
+import { getHizmetlerFromNeon } from '@/lib/hizmetler-client';
+import { getUrunlerByHizmetIdFromNeon } from '@/lib/urunler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Link from 'next/link';
 import Image from 'next/image';

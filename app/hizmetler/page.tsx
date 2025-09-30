@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getHizmetlerFromNeon } from '@/lib/airtable-hizmetler-client';
+import { getHizmetlerFromNeon } from '@/lib/hizmetler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Image from 'next/image';
 import ServiceLocations from '@/components/ServiceLocations';

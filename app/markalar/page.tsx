@@ -1,4 +1,4 @@
-import { getMarkalariNeon } from '@/lib/airtable-markalar-client';
+import { getMarkalariNeon } from '@/lib/markalar-client';
 import Image from 'next/image';
 
 // Force dynamic rendering since brand data can change
