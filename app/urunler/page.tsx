@@ -346,7 +346,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   if (products.length === 0 && currentPage === 1) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Ürünlerimiz</h1>
         <p className="text-gray-600">Aradığınız kriterlere uygun ürün bulunamadı.</p>
       </div>
     );
@@ -355,10 +354,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Ürünlerimiz</h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Gül-Tekin Mühendislik olarak, sektörün önde gelen markalarının kaliteli ürünlerini sizlere sunuyoruz.
-        </p>
         
         {/* Filters and Search */}
         <div className="mb-8 p-4 bg-gray-50 rounded-lg">

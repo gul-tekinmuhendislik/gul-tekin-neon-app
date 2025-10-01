@@ -9,6 +9,8 @@ import WebPages from "@/components/WebPages";
 import DatabaseStats from "@/components/DatabaseStats";
 import ServiceLocations from "@/components/ServiceLocations";
 import { getRandomBrands } from "@/lib/get-brands";
+import { FlipWords } from "@/components/ui/flip-words";
+import { sql } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -31,7 +33,6 @@ export const metadata: Metadata = {
 
 const DATA = {
   title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
-  subtitle: "<span class='text-blue-600 font-semibold'>20+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>500+ Proje</span>",
   description:
     "Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
   button: {
@@ -49,8 +50,35 @@ const DATA = {
   footerLinks: [],
 };
 
+async function getProjectCount() {
+  try {
+    const result = await sql`
+      SELECT COUNT(*) as count FROM projeler_gul_tekin WHERE aktif = true
+    `;
+    return Number(result[0]?.count || 0);
+  } catch (error) {
+    console.error('Error fetching project count:', error);
+    return 500; // fallback
+  }
+}
+
+async function getLocationCount() {
+  try {
+    const result = await sql`
+      SELECT COUNT(*) as count FROM hizmet_lokasyonlari WHERE aktif = true
+    `;
+    return Number(result[0]?.count || 0);
+  } catch (error) {
+    console.error('Error fetching location count:', error);
+    return 4; // fallback
+  }
+}
+
 export default async function Home() {
   const brandNames = await getRandomBrands(3);
+  const projectCount = await getProjectCount();
+  const locationCount = await getLocationCount();
+  const subtitle = `<span class='text-blue-600 font-semibold'>25+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>${projectCount}+ Proje</span> • <span class='text-purple-600 font-semibold'>${locationCount} Lokasyon</span>`;
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <Vortex
@@ -85,18 +113,16 @@ export default async function Home() {
               className="text-3xl font-semibold leading-none tracking-tighter text-gray-900 md:text-4xl md:leading-none lg:text-5xl lg:leading-none"
               dangerouslySetInnerHTML={{ __html: DATA.title }}
             />
-            {DATA.subtitle && (
-              <p
-                className="mt-2 text-sm md:text-base text-gray-600"
-                dangerouslySetInnerHTML={{ __html: DATA.subtitle }}
-              />
-            )}
+            <p
+              className="mt-2 text-sm md:text-base text-gray-600"
+              dangerouslySetInnerHTML={{ __html: subtitle }}
+            />
             <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
-              <p className="inline">
+              <div className="inline">
                 Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
-                <span className="text-[#00E599] font-semibold">{brandNames[0] || "Daikin"}</span>
+                <FlipWords words={brandNames.length > 0 ? brandNames : ["Daikin", "Vaillant", "Bosch"]} duration={3000} className="text-[#00E599] font-semibold" />
                 {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
-              </p>
+              </div>
             </div>
             {DATA.emergencyBanner && (
               <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center gap-2">

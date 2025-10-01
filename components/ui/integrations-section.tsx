@@ -199,9 +199,9 @@ export function IntegrationsSection() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Hizmetler
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
+          <div className="mt-4 text-lg text-gray-600">
             Profesyonel <FlipWords words={services} duration={3000} className="text-[#00E599] font-semibold" /> çözümleri ile evinizin enerji verimliliğini ve konforunu artırıyoruz.
-          </p>
+          </div>
         </div>
 
         <div className="relative mt-12 flex w-full max-w-6xl flex-col items-center justify-center overflow-hidden rounded-lg border bg-white md:shadow-xl mx-auto py-8">

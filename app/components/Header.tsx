@@ -74,9 +74,9 @@ export default function Header() {
               />
             </Link>
           </div>
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-4 lg:space-x-6">
             {loading ? (
-              <div className="flex space-x-8">
+              <div className="flex space-x-4 lg:space-x-6">
                 <div className="h-4 w-20 bg-gray-300 animate-pulse rounded"></div>
                 <div className="h-4 w-20 bg-gray-300 animate-pulse rounded"></div>
                 <div className="h-4 w-20 bg-gray-300 animate-pulse rounded"></div>
@@ -87,7 +87,7 @@ export default function Header() {
                   key={item.id}
                   href={item.href}
                   target={item.target || '_self'}
-                  className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors"
+                  className="text-gray-700 hover:text-gray-900 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
                 >
                   {item.title}
                 </Link>
