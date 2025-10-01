@@ -143,9 +143,10 @@ export default async function MarkalarPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {markalar.map((marka) => (
+              marka.slug ? (
               <Link
                 key={marka.id}
-                href={`/markalar/${marka.slug || marka.id}`}
+                href={`/markalar/${marka.slug}`}
                 className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center justify-center group"
               >
                 {(marka.cloudinary_url || marka.logo_url) ? (
@@ -182,6 +183,7 @@ export default async function MarkalarPage() {
                   </span>
                 )}
               </Link>
+              ) : null
             ))}
           </div>
 

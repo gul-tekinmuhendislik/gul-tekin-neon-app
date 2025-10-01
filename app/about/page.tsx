@@ -375,7 +375,7 @@ export default async function AboutPage() {
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">🌐</span>
-                ai.gul-tekinmuhendislik.com
+                gul-tekinmuhendislik.com
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">⏰</span>
