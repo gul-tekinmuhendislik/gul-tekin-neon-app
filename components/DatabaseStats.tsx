@@ -1,4 +1,5 @@
 import { sql } from '@/lib/db';
+import Link from 'next/link';
 
 async function getDatabaseStats() {
   try {
@@ -49,7 +50,8 @@ export default async function DatabaseStats() {
       icon: "🏢",
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50",
-      description: "Çalıştığımız markalar"
+      description: "Çalıştığımız markalar",
+      href: "/markalar"
     },
     {
       title: "Hizmetler",
@@ -57,7 +59,8 @@ export default async function DatabaseStats() {
       icon: "🛠️",
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50",
-      description: "Sunduğumuz hizmetler"
+      description: "Sunduğumuz hizmetler",
+      href: "/hizmetler"
     },
     {
       title: "Projeler",
@@ -65,7 +68,8 @@ export default async function DatabaseStats() {
       icon: "🏗️",
       color: "from-purple-500 to-purple-600",
       bgColor: "bg-purple-50",
-      description: "Tamamlanan projeler"
+      description: "Tamamlanan projeler",
+      href: "/projeler"
     },
     {
       title: "Ürünler",
@@ -73,7 +77,8 @@ export default async function DatabaseStats() {
       icon: "📦",
       color: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50",
-      description: "Ürün çeşitliliği"
+      description: "Ürün çeşitliliği",
+      href: "/urunler"
     }
   ];
 
@@ -92,9 +97,10 @@ export default async function DatabaseStats() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {statCards.map((stat, index) => (
-              <div
+              <Link
                 key={index}
-                className={`relative ${stat.bgColor} rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group overflow-hidden`}
+                href={stat.href}
+                className={`relative ${stat.bgColor} rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group overflow-hidden cursor-pointer block`}
               >
                 {/* Background decoration */}
                 <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${stat.color} opacity-10 rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-500`}></div>
@@ -116,7 +122,7 @@ export default async function DatabaseStats() {
                     {stat.description}
                   </p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
