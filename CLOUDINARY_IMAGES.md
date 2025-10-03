@@ -24,26 +24,48 @@
    - Public ID: `gul-tekin/varmeks/varmeks-varm-boost-series-2`
    - Kaynak: Varmeks website
 
-### Varmeks Genel Görseller
-1. **varmeks-general-1**
-   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759514998/gul-tekin/varmeks/varmeks-general-1.png
-   - Public ID: `gul-tekin/varmeks/varmeks-general-1`
+### Varm Silent Pool Series
+1. **varmeks-silent-pool-1**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515962/gul-tekin/varmeks/varmeks-silent-pool-1.png
+   - Public ID: `gul-tekin/varmeks/varmeks-silent-pool-1`
+   - Kaynak: Solimpeks
+   - Kullanım: 8 Silent Pool ürünü
 
-2. **varmeks-general-2**
-   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759514999/gul-tekin/varmeks/varmeks-general-2.jpg
-   - Public ID: `gul-tekin/varmeks/varmeks-general-2`
+2. **varmeks-silent-pool-2**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515963/gul-tekin/varmeks/varmeks-silent-pool-2.png
+   - Public ID: `gul-tekin/varmeks/varmeks-silent-pool-2`
+   - Kaynak: Solimpeks
 
-3. **varmeks-general-3**
-   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759514999/gul-tekin/varmeks/varmeks-general-3.png
-   - Public ID: `gul-tekin/varmeks/varmeks-general-3`
+### Varm Commercial Pool Series
+1. **varmeks-commercial-pool-1**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515965/gul-tekin/varmeks/varmeks-commercial-pool-1.png
+   - Public ID: `gul-tekin/varmeks/varmeks-commercial-pool-1`
+   - Kaynak: Solimpeks
+   - Kullanım: 6 Commercial Pool ürünü
 
-4. **varmeks-general-4**
-   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515001/gul-tekin/varmeks/varmeks-general-4.png
-   - Public ID: `gul-tekin/varmeks/varmeks-general-4`
+2. **varmeks-commercial-pool-2**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515966/gul-tekin/varmeks/varmeks-commercial-pool-2.png
+   - Public ID: `gul-tekin/varmeks/varmeks-commercial-pool-2`
+   - Kaynak: Solimpeks
 
-5. **varmeks-general-5**
-   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515002/gul-tekin/varmeks/varmeks-general-5.png
-   - Public ID: `gul-tekin/varmeks/varmeks-general-5`
+3. **varmeks-commercial-pool-3**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515967/gul-tekin/varmeks/varmeks-commercial-pool-3.png
+   - Public ID: `gul-tekin/varmeks/varmeks-commercial-pool-3`
+   - Kaynak: Solimpeks
+
+### Varm Commercial Duo Series
+1. **varmeks-commercial-duo-1**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png
+   - Public ID: `gul-tekin/varmeks/varmeks-commercial-duo-1`
+   - Kaynak: Varmeks website
+   - Kullanım: 2 Commercial Duo ürünü
+
+### Varm ALL Series (Hot Water Tanks)
+1. **varmeks-all-series-1**
+   - URL: https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515969/gul-tekin/varmeks/varmeks-all-series-1.png
+   - Public ID: `gul-tekin/varmeks/varmeks-all-series-1`
+   - Kaynak: Varmeks website
+   - Kullanım: 3 ALL Series sıcak su deposu
 
 ---
 
@@ -69,18 +91,29 @@
 
 ## Özet
 
-- **Toplam Varmeks Görseli:** 9 adet
-- **Toplam LG Görseli:** 3 adet
-- **Toplam:** 12 adet ürün görseli
+- **Varmeks UP Series:** 2 görsel (4 ürün)
+- **Varmeks BOOST Series:** 2 görsel (4 ürün)
+- **Varmeks SILENT POOL:** 2 görsel (8 ürün)
+- **Varmeks COMMERCIAL POOL:** 3 görsel (6 ürün)
+- **Varmeks COMMERCIAL DUO:** 1 görsel (2 ürün)
+- **Varmeks ALL Series:** 1 görsel (3 ürün)
+- **LG Therma V:** 3 görsel (7 ürün)
 
-## Sıradaki Adımlar
+**Toplam:** 14 görsel ile 34 ürün
 
-1. ✅ Resimleri Cloudinary'ye yükle
-2. ⏳ Veritabanındaki Varmeks ve LG ürünlerine bu Cloudinary URL'lerini ekle
-3. ⏳ Web sitesinde resimlerin görüntülendiğini test et
+## Tamamlanan Adımlar
 
-## Veritabanı Güncelleme Önerisi
+1. ✅ Varmeks ve LG ürün resimlerini araştırma
+2. ✅ Tüm resimleri Cloudinary'ye yükleme
+3. ✅ Veritabanındaki tüm ürünleri doğru resimlerle güncelleme
+4. ✅ Her ürün serisine özel doğru ürün resmini atama
 
-Varmeks ürünleri için genel bir görseli (örn: `varmeks-varm-up-series-1`) kullanabilir veya her ürün için özel görsel atayabilirsiniz.
+## Ürün-Resim Eşleştirmesi
 
-LG ürünleri için `lg-therma-v-monobloc-1` veya `lg-therma-v-monobloc-3` kullanılabilir.
+- **VARM UP** ürünleri → `varmeks-varm-up-series-1.png`
+- **VARM BOOST** ürünleri → `varmeks-varm-boost-series-1.png`
+- **VARM SILENT POOL** ürünleri → `varmeks-silent-pool-1.png`
+- **VARM COMMERCIAL POOL** ürünleri → `varmeks-commercial-pool-1.png`
+- **VARM COMMERCIAL DUO** ürünleri → `varmeks-commercial-duo-1.png`
+- **VARM ALL** sıcak su depoları → `varmeks-all-series-1.png`
+- **LG** tüm ürünler → `lg-therma-v-monobloc-1.jpg`
