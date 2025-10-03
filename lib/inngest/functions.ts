@@ -1979,12 +1979,8 @@ import {
   generateVertexImagesHourly
 } from "./vertex-ai-generation";
 
-// Import Twitter functions from existing integration
-import {
-  shareBlogOnTwitter,
-  createTwitterThread,
-  autoShareNewBlogOnTwitter
-} from "./twitter-integration";
+// Twitter functions now imported from twitter-functions.ts instead
+// (twitter-integration.ts disabled to prevent duplicate tweets)
 
 // Export Markalar, Hizmetler and Urunler sync functions
 export {
@@ -2005,9 +2001,6 @@ export {
   generateBlogImageWithVertexAI,
   generateVertexImagesHourly,
   // Fal.ai generation (uses Vertex AI internally)
-  generateImageForBlog,
-  // Twitter functions
-  shareBlogOnTwitter,
-  createTwitterThread,
-  autoShareNewBlogOnTwitter
+  generateImageForBlog
+  // Twitter functions moved to twitter-functions.ts
 };

@@ -24,9 +24,9 @@ import {
 } from "@/lib/inngest/fal-ai-generation";
 import {
   shareBlogOnTwitter,
-  createTwitterThread,
-  autoShareNewBlogOnTwitter
-} from "@/lib/inngest/twitter-integration";
+  bulkShareOnTwitter,
+  monitorTwitterHealth
+} from "@/lib/inngest/twitter-functions";
 // Airtable sync removed - data now managed directly in Neon
 // import {
 //   syncUrunlerDaily,
@@ -96,8 +96,8 @@ export const { GET, POST, PUT } = serve({
     batchGenerateWithGemini,
     suggestImageWithGemini,
     shareBlogOnTwitter,
-    createTwitterThread,
-    autoShareNewBlogOnTwitter,
+    bulkShareOnTwitter,
+    monitorTwitterHealth,
     syncGoogleBusinessLocations,
     syncGoogleBusinessManual,
     autoReplyToReviews,
