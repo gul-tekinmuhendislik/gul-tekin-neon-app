@@ -37,7 +37,11 @@ async function getHeatPumps(): Promise<Product[]> {
         )
         AND slug IS NOT NULL
       ORDER BY
-        CASE WHEN marka ILIKE '%solimpeks%' THEN 1 ELSE 2 END,
+        CASE
+          WHEN marka ILIKE '%varmeks%' THEN 1
+          WHEN marka ILIKE '%lg%' THEN 2
+          ELSE 3
+        END,
         urun_adi
       LIMIT 4
     `;

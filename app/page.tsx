@@ -8,6 +8,8 @@ import Testimonials from "@/components/Testimonials";
 import DatabaseStats from "@/components/DatabaseStats";
 import ServiceLocations from "@/components/ServiceLocations";
 import HeatPumps from "@/components/HeatPumps";
+import VarmeksProducts from "@/components/VarmeksProducts";
+import LGProducts from "@/components/LGProducts";
 import { getRandomBrands } from "@/lib/get-brands";
 import { FlipWords } from "@/components/ui/flip-words";
 import { sql } from '@/lib/db';
@@ -160,6 +162,8 @@ export default async function Home() {
         </div>
       </Vortex>
       <LogoCloud />
+      <VarmeksProducts />
+      <LGProducts />
       <HeatPumps />
       <DatabaseStats />
       <ServiceLocations />
