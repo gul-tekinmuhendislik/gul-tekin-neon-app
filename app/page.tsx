@@ -7,6 +7,7 @@ import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
 import DatabaseStats from "@/components/DatabaseStats";
 import ServiceLocations from "@/components/ServiceLocations";
+import HeatPumps from "@/components/HeatPumps";
 import { getRandomBrands } from "@/lib/get-brands";
 import { FlipWords } from "@/components/ui/flip-words";
 import { sql } from '@/lib/db';
@@ -159,6 +160,7 @@ export default async function Home() {
         </div>
       </Vortex>
       <LogoCloud />
+      <HeatPumps />
       <DatabaseStats />
       <ServiceLocations />
       <IntegrationsSection />
