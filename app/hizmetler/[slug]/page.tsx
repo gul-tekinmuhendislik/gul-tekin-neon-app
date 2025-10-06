@@ -232,24 +232,6 @@ export default async function HizmetDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Ürünler */}
-            {hizmet.urunler && hizmet.urunler.length > 0 && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  Ürünlerimiz
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {hizmet.urunler.map((urun: string, index: number) => (
-                    <span
-                      key={index}
-                      className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm"
-                    >
-                      {urun}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Sidebar */}
