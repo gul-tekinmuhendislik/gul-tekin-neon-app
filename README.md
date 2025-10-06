@@ -25,6 +25,7 @@
   - tuesday clear mainpage error loading
   - fix: Lokasyonlar detay sayfası ve blog pagination
   - feat: Add SEO schema components and improvements
+  - feat: Link brand logos to brand detail pages in factory tour
   - fix: Ürün detay sayfasından fiyat gösterimini kaldır ve favicon
   - add content
   - Fabrika gezisi galeri sayfası (/fabrika-gezisi)
