@@ -2039,12 +2039,12 @@
     "@types/node" "*"
     form-data "^4.0.4"
 
-"@types/node@*", "@types/node@>=13.7.0":
-  version "24.5.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.5.2.tgz#52ceb83f50fe0fcfdfbd2a9fab6db2e9e7ef6446"
-  integrity sha512-FYxk1I7wPv3K2XBaoyH2cTnocQEu8AOZ60hPbsyukMPLv5/5qr7V1i8PLHdl6Zf87I+xZXFvPCXYjiTFq+YSDQ==
+"@types/node@*", "@types/node@>=13.7.0", "@types/node@^24":
+  version "24.7.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.7.0.tgz#a34c9f0d3401db396782e440317dd5d8373c286f"
+  integrity sha512-IbKooQVqUBrlzWTi79E8Fw78l8k1RNtlDDNWsFZs7XonuQSJ8oNYfEeclhprUldXISRMLzBpILuKgPlIxm+/Yw==
   dependencies:
-    undici-types "~7.12.0"
+    undici-types "~7.14.0"
 
 "@types/node@^18.11.18":
   version "18.19.124"
@@ -2052,13 +2052,6 @@
   integrity sha512-hY4YWZFLs3ku6D2Gqo3RchTd9VRCcrjqp/I0mmohYeUVA5Y8eCXKJEasHxLAJVZRJuQogfd1GiJ9lgogBgKeuQ==
   dependencies:
     undici-types "~5.26.4"
-
-"@types/node@^20":
-  version "20.19.13"
-  resolved "https://registry.npmjs.org/@types/node/-/node-20.19.13.tgz"
-  integrity sha512-yCAeZl7a0DxgNVteXFHt9+uyFbqXGy/ShC4BlcHkoE0AfGXYv/BUiplV72DjMYXHDBXFjhvr6DD1NiRVfB4j8g==
-  dependencies:
-    undici-types "~6.21.0"
 
 "@types/node@^22.10.5", "@types/node@^22.15.30":
   version "22.18.1"
@@ -6870,10 +6863,10 @@ undici-types@~6.21.0:
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz"
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
 
-undici-types@~7.12.0:
-  version "7.12.0"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.12.0.tgz#15c5c7475c2a3ba30659529f5cdb4674b622fafb"
-  integrity sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ==
+undici-types@~7.14.0:
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.14.0.tgz#4c037b32ca4d7d62fae042174604341588bc0840"
+  integrity sha512-QQiYxHuyZ9gQUIrmPo3IA+hUl4KYk8uSA7cHrcKd/l3p1OTpZcM0Tbp9x7FAtXdAYhlasd60ncPpgu6ihG6TOA==
 
 universalify@^0.2.0:
   version "0.2.0"
