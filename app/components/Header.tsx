@@ -12,12 +12,14 @@ interface MenuItem {
   order_index: number;
   icon?: string;
   target?: string;
+  children?: MenuItem[];
 }
 
 export default function Header() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openSubmenu, setOpenSubmenu] = useState<number | null>(null);
 
   useEffect(() => {
     async function fetchMenuItems() {
@@ -52,9 +54,9 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-gray-100 border-b border-gray-200 relative overflow-hidden">
+    <header className="w-full bg-gray-100 border-b border-gray-200 relative z-[9999]">
       <Sparkles
-        className="absolute inset-0"
+        className="absolute inset-0 z-0"
         particleColor="#9CA3AF"
         particleDensity={60}
         minSize={0.3}
@@ -83,14 +85,53 @@ export default function Header() {
               </div>
             ) : (
               menuItems.map((item) => (
-                <Link
+                <div
                   key={item.id}
-                  href={item.href}
-                  target={item.target || '_self'}
-                  className="text-gray-700 hover:text-gray-900 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap"
+                  className="relative z-[10000] group"
+                  onMouseEnter={() => item.children && setOpenSubmenu(item.id)}
+                  onMouseLeave={() => setOpenSubmenu(null)}
                 >
-                  {item.title}
-                </Link>
+                  {item.children ? (
+                    <div className="text-gray-700 hover:text-gray-900 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-1 cursor-pointer">
+                      <span>{item.title}</span>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      target={item.target || '_self'}
+                      className="text-gray-700 hover:text-gray-900 px-2 py-2 text-sm font-medium transition-colors whitespace-nowrap flex items-center gap-1"
+                    >
+                      {item.title}
+                    </Link>
+                  )}
+                  {item.children && openSubmenu === item.id && (
+                    <div className="absolute top-full left-0 mt-1 bg-white shadow-xl rounded-md border border-gray-200 py-2 min-w-[200px] z-[10001]">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.id}
+                          href={child.href}
+                          target={child.target || '_self'}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        >
+                          {child.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))
             )}
           </nav>
@@ -127,15 +168,55 @@ export default function Header() {
                 </div>
               ) : (
                 menuItems.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    target={item.target || '_self'}
-                    className="block text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 text-base font-medium transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.title}
-                  </Link>
+                  <div key={item.id}>
+                    {item.children ? (
+                      <div>
+                        <button
+                          onClick={() => setOpenSubmenu(openSubmenu === item.id ? null : item.id)}
+                          className="w-full flex items-center justify-between text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 text-base font-medium transition-colors"
+                        >
+                          <span>{item.title}</span>
+                          <svg
+                            className={`w-4 h-4 transition-transform ${openSubmenu === item.id ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                        {openSubmenu === item.id && (
+                          <div className="pl-6 space-y-1">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.id}
+                                href={child.href}
+                                target={child.target || '_self'}
+                                className="block text-gray-600 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 text-sm transition-colors"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                {child.title}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        target={item.target || '_self'}
+                        className="block text-gray-700 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 text-base font-medium transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.title}
+                      </Link>
+                    )}
+                  </div>
                 ))
               )}
             </div>
