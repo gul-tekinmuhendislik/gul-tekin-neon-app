@@ -121,10 +121,10 @@ async function getProducts(
           airtable_created_time,
           updated_at
         FROM urunler
-        WHERE kategori = ${kategori} 
+        WHERE kategori = ${kategori}
           AND marka = ${marka}
           AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -146,7 +146,7 @@ async function getProducts(
           updated_at
         FROM urunler
         WHERE kategori = ${kategori} AND marka = ${marka}
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -169,7 +169,7 @@ async function getProducts(
         FROM urunler
         WHERE kategori = ${kategori}
           AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -192,7 +192,7 @@ async function getProducts(
         FROM urunler
         WHERE marka = ${marka}
           AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -214,7 +214,7 @@ async function getProducts(
           updated_at
         FROM urunler
         WHERE kategori = ${kategori}
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -236,7 +236,7 @@ async function getProducts(
           updated_at
         FROM urunler
         WHERE marka = ${marka}
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -258,7 +258,7 @@ async function getProducts(
           updated_at
         FROM urunler
         WHERE LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'})
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
@@ -279,7 +279,7 @@ async function getProducts(
           airtable_created_time,
           updated_at
         FROM urunler
-        ORDER BY kategori, urun_adi
+        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
         LIMIT ${PRODUCTS_PER_PAGE}
         OFFSET ${offset}
       `;
