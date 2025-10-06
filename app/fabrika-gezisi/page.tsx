@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface FactoryImage {
@@ -112,6 +113,36 @@ export default function FabrikaGezisiPage() {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
+            {/* Brand Logos */}
+            <div className="flex items-center justify-center gap-8 mb-8">
+              <Link
+                href="/#varmeks-products"
+                className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-[92px] flex items-center"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png"
+                  alt="Varmeks - Isı pompası üreticisi"
+                  width={150}
+                  height={60}
+                  className="object-contain"
+                  unoptimized
+                />
+              </Link>
+              <Link
+                href="/solimpeks-isi-pompalari"
+                className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-[92px] flex items-center"
+              >
+                <Image
+                  src="https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759745039/Solimpeks_Online_ost19m.png"
+                  alt="Solimpeks - Güneş enerjisi sistemleri üreticisi"
+                  width={150}
+                  height={60}
+                  className="object-contain"
+                  unoptimized
+                />
+              </Link>
+            </div>
+
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Varmeks & Solimpeks Fabrika Gezisi
             </h1>
@@ -145,7 +176,7 @@ export default function FabrikaGezisiPage() {
                 <div className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
                   <Image
                     src={image.thumbnailUrl}
-                    alt={`Fabrika gezisi fotoğrafı ${index + 1}`}
+                    alt={`Varmeks ve Solimpeks fabrika gezisi - Isı pompası, kombi ve güneş enerjisi üretim tesisleri fotoğrafı ${index + 1}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -260,7 +291,7 @@ export default function FabrikaGezisiPage() {
             >
               <Image
                 src={selectedImage.fullUrl}
-                alt="Fabrika gezisi fotoğrafı"
+                alt="Varmeks ve Solimpeks fabrika gezisi - Isı pompası, kombi ve güneş enerjisi sistemleri üretim tesisleri"
                 fill
                 className="object-contain"
                 sizes="100vw"

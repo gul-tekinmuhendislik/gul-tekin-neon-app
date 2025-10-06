@@ -10,12 +10,9 @@ cloudinary.config({
 
 export async function GET() {
   try {
-    // Fetch images from the factory tour folder
-    const result = await cloudinary.api.resources({
-      type: 'upload',
-      prefix: 'factory-tour', // This is the folder name in Cloudinary
-      max_results: 100,
-      resource_type: 'image'
+    // Fetch images from the factory tour folder using asset_folder
+    const result = await cloudinary.api.resources_by_asset_folder('varmeks-solimpeks', {
+      max_results: 100
     });
 
     const images = result.resources.map((resource: any) => ({
