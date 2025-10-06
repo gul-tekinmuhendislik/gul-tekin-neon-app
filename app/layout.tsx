@@ -38,18 +38,11 @@ export default function RootLayout({
 
   return (
     <html lang="tr" className={inter.variable}>
-      <head>
-        {/* Google Site Verification - Replace with your actual verification code */}
-        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="/logo.png" />
+      <body className="flex flex-col min-h-screen">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className="flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow">
           {children}
