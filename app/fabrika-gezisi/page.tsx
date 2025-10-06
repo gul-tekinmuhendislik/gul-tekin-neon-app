@@ -16,15 +16,43 @@ interface FactoryImage {
   createdAt: string;
 }
 
+interface Brand {
+  marka_adi: string;
+  slug: string;
+  cloudinary_url: string;
+}
+
 export default function FabrikaGezisiPage() {
   const [images, setImages] = useState<FactoryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<FactoryImage | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [brands, setBrands] = useState<Brand[]>([]);
 
   useEffect(() => {
     fetchImages();
+    fetchBrands();
   }, []);
+
+  const fetchBrands = async () => {
+    try {
+      // Hardcoded brand data for performance
+      setBrands([
+        {
+          marka_adi: 'Varmeks',
+          slug: 'warmeks',
+          cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png'
+        },
+        {
+          marka_adi: 'Solimpeks',
+          slug: 'solimpeks',
+          cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759745039/Solimpeks_Online_ost19m.png'
+        }
+      ]);
+    } catch (err) {
+      console.error('Error setting brands:', err);
+    }
+  };
 
   const fetchImages = async () => {
     try {
@@ -115,32 +143,22 @@ export default function FabrikaGezisiPage() {
           >
             {/* Brand Logos */}
             <div className="flex items-center justify-center gap-8 mb-8">
-              <Link
-                href="/#varmeks-products"
-                className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-[92px] flex items-center"
-              >
-                <Image
-                  src="https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png"
-                  alt="Varmeks - Isı pompası üreticisi"
-                  width={150}
-                  height={60}
-                  className="object-contain"
-                  unoptimized
-                />
-              </Link>
-              <Link
-                href="/solimpeks-isi-pompalari"
-                className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-[92px] flex items-center"
-              >
-                <Image
-                  src="https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759745039/Solimpeks_Online_ost19m.png"
-                  alt="Solimpeks - Güneş enerjisi sistemleri üreticisi"
-                  width={150}
-                  height={60}
-                  className="object-contain"
-                  unoptimized
-                />
-              </Link>
+              {brands.map((brand) => (
+                <Link
+                  key={brand.slug}
+                  href={`/markalar/${brand.slug}`}
+                  className="bg-white rounded-lg p-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 h-[92px] flex items-center"
+                >
+                  <Image
+                    src={brand.cloudinary_url}
+                    alt={`${brand.marka_adi} - Yetkili bayii`}
+                    width={150}
+                    height={60}
+                    className="object-contain"
+                    unoptimized
+                  />
+                </Link>
+              ))}
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
