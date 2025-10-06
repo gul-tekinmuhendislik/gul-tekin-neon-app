@@ -27,4 +27,5 @@
   - feat: Add SEO schema components and improvements
   - fix: Ürün detay sayfasından fiyat gösterimini kaldır ve favicon
   - add content
+  - Fabrika gezisi galeri sayfası (/fabrika-gezisi)
     
