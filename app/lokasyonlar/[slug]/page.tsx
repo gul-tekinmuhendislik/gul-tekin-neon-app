@@ -319,14 +319,37 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
           <div className="max-w-5xl mx-auto mb-16">
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
-                {lokasyon.ilce_adi} Bölgesinde Profesyonel Mühendislik Hizmetleri
+                {lokasyon.ilce_adi} Su Deposu, Hidrofor, Isı Pompası ve Tesisat Hizmetleri
               </h2>
-              <div className="text-gray-700 leading-relaxed space-y-3">
-                <p>
+              <div className="text-gray-700 leading-relaxed space-y-4">
+                <p className="text-lg">
                   <strong>Gül-Tekin Mühendislik</strong> olarak {lokasyon.ilce_adi} ve {mahalleler.length} mahallesinde
-                  kapsamlı tesisat, su deposu, hidrofor ve ısı pompası hizmetleri sunuyoruz. Uzman ekibimizle
-                  {hizmetler.length}+ farklı mühendislik hizmeti ile yanınızdayız.
+                  <strong> su deposu kurulumu, hidrofor montajı, ısı pompası servisi</strong> ve kapsamlı tesisat hizmetleri sunuyoruz.
+                  Uzman mühendis kadromuz ve deneyimli teknik ekibimizle {hizmetler.length}+ farklı mühendislik hizmeti ile yanınızdayız.
                 </p>
+
+                <div className="bg-white/50 rounded-xl p-6 my-4">
+                  <h3 className="font-bold text-gray-900 mb-3 text-lg">{lokasyon.ilce_adi} Bölgesinde Sunduğumuz Ana Hizmetler:</h3>
+                  <ul className="space-y-2 text-gray-800">
+                    <li className="flex items-start">
+                      <span className="text-blue-600 mr-2">✓</span>
+                      <span><strong>Su Deposu:</strong> Polietilen, paslanmaz ve betonarme su deposu kurulumu, bakım ve onarım</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 mr-2">✓</span>
+                      <span><strong>Hidrofor:</strong> Hidrofor sistemi kurulumu, tamir ve periyodik bakım hizmetleri</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 mr-2">✓</span>
+                      <span><strong>Isı Pompası:</strong> Hava kaynaklı ve toprak kaynaklı ısı pompası montajı ve servisi</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 mr-2">✓</span>
+                      <span><strong>Tesisat İşleri:</strong> Su tesisatı, doğalgaz tesisatı, sıhhi tesisat ve mekanik tesisat</span>
+                    </li>
+                  </ul>
+                </div>
+
                 <div className="grid md:grid-cols-2 gap-3 mt-4">
                   <div className="flex items-start">
                     <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -357,87 +380,15 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </div>
           </div>
 
-          {/* Mahalleler */}
-          {mahalleler.length > 0 && (
-            <div className="mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
-                {lokasyon.ilce_adi} Mahallelerinde Tesisat ve Mühendislik Hizmetleri
-              </h2>
-              <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-                {lokasyon.ilce_adi} bölgesinde {mahalleler.length} mahallede su deposu kurulumu, hidrofor sistemi,
-                ısı pompası montajı ve tesisat hizmetleri sunuyoruz. Bölgenize özel hizmet detayları için mahalle seçiniz.
-              </p>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {mahalleler.map((mahalle) => {
-                  const mahalleSlug = mahalle.slug || mahalle.mahalle_adi.toLowerCase()
-                    .replace(/ı/g, 'i')
-                    .replace(/ğ/g, 'g')
-                    .replace(/ü/g, 'u')
-                    .replace(/ş/g, 's')
-                    .replace(/ö/g, 'o')
-                    .replace(/ç/g, 'c')
-                    .replace(/\s+/g, '-')
-                    .replace(/[^a-z0-9-]/g, '');
-
-                  return (
-                    <Link
-                      key={mahalle.id}
-                      href={`/lokasyonlar/${slug}/${mahalleSlug}`}
-                      className="block"
-                    >
-                      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer hover:scale-105 border-2 border-transparent hover:border-blue-400">
-                        <div className="text-blue-500 mb-2">
-                          <svg
-                            className="w-8 h-8 mx-auto group-hover:scale-110 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                            />
-                          </svg>
-                        </div>
-                        <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors text-sm">
-                          {mahalle.mahalle_adi}
-                        </h3>
-                        {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
-                          <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
-                        )}
-                        <div className="mt-2 flex items-center justify-center text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="text-xs font-medium">Detayları Gör</span>
-                          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {mahalleler.length > 0 && (
-                <div className="mt-8 text-center">
-                  <p className="text-gray-600">
-                    <span className="font-semibold text-blue-600">{mahalleler.length}</span> mahallede hizmet veriyoruz
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Hizmetler */}
-          <div className="mb-12">
+          {/* Hizmetler - ÖNCELİKLİ BÖLÜM */}
+          <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
-              {lokasyon.ilce_adi} Bölgesinde Sunduğumuz Tesisat ve Mühendislik Hizmetleri
+              {lokasyon.ilce_adi} Bölgesinde Sunduğumuz Tüm Hizmetler
             </h2>
             <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-              {lokasyon.ilce_adi}'da su deposu kurulumu, hidrofor montajı, ısı pompası servisi ve tesisat işleri için
-              profesyonel çözümler sunuyoruz. Tüm hizmetlerimiz için detaylı bilgi alın.
+              {lokasyon.ilce_adi}'da <strong>su deposu kurulumu</strong>, <strong>hidrofor montajı</strong>,
+              <strong> ısı pompası servisi</strong> ve <strong>tesisat işleri</strong> için profesyonel çözümler sunuyoruz.
+              Tüm hizmetlerimiz için detaylı bilgi alın ve hemen teklif isteyin.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -519,6 +470,80 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
               </div>
             )}
           </div>
+
+          {/* Mahalleler - ALTTA */}
+          {mahalleler.length > 0 && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
+                {lokasyon.ilce_adi} Mahallelerinde Hizmet Veriyoruz
+              </h2>
+              <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+                {lokasyon.ilce_adi} bölgesinde <strong>{mahalleler.length} mahallede</strong> su deposu kurulumu,
+                hidrofor sistemi, ısı pompası montajı ve tesisat hizmetleri sunuyoruz.
+                Mahallenize özel hizmet detayları için aşağıdan seçim yapabilirsiniz.
+              </p>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                {mahalleler.map((mahalle) => {
+                  const mahalleSlug = mahalle.slug || mahalle.mahalle_adi.toLowerCase()
+                    .replace(/ı/g, 'i')
+                    .replace(/ğ/g, 'g')
+                    .replace(/ü/g, 'u')
+                    .replace(/ş/g, 's')
+                    .replace(/ö/g, 'o')
+                    .replace(/ç/g, 'c')
+                    .replace(/\s+/g, '-')
+                    .replace(/[^a-z0-9-]/g, '');
+
+                  return (
+                    <Link
+                      key={mahalle.id}
+                      href={`/lokasyonlar/${slug}/${mahalleSlug}`}
+                      className="block"
+                    >
+                      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-4 text-center group hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100 cursor-pointer hover:scale-105 border-2 border-transparent hover:border-blue-400">
+                        <div className="text-blue-500 mb-2">
+                          <svg
+                            className="w-8 h-8 mx-auto group-hover:scale-110 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                            />
+                          </svg>
+                        </div>
+                        <h3 className="font-semibold text-gray-800 group-hover:text-blue-700 transition-colors text-sm">
+                          {mahalle.mahalle_adi}
+                        </h3>
+                        {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
+                          <p className="text-xs text-gray-500 mt-1">{mahalle.proje_sayisi} proje</p>
+                        )}
+                        <div className="mt-2 flex items-center justify-center text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-xs font-medium">Detayları Gör</span>
+                          <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+
+              {mahalleler.length > 0 && (
+                <div className="mt-8 text-center">
+                  <p className="text-gray-600">
+                    <span className="font-semibold text-blue-600">{mahalleler.length}</span> mahallede hizmet veriyoruz
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* İletişim CTA */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center text-white">
