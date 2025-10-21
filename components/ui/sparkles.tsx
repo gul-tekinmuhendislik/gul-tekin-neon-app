@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React, { useId, useMemo, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 interface SparklesProps {
@@ -26,6 +26,27 @@ export const SparklesCore = (props: SparklesProps) => {
   } = props;
   const genratedId = useId();
   const internalId = id || genratedId;
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const particles = useMemo(() => {
+    if (!isMounted) return [];
+
+    const density = particleDensity || 50;
+    const min = minSize || 1;
+    const max = maxSize || 3;
+
+    return [...Array(density)].map(() => ({
+      cx: Math.random() * 100,
+      cy: Math.random() * 100,
+      r: Math.random() * (max - min) + min,
+      animationDelay: Math.random() * 3,
+      animationDuration: Math.random() * 3 + 2,
+    }));
+  }, [isMounted, particleDensity, minSize, maxSize]);
 
   return (
     <div className={cn("relative", className)}>
@@ -60,18 +81,18 @@ export const SparklesCore = (props: SparklesProps) => {
             <feGaussianBlur stdDeviation="1" />
           </filter>
         </defs>
-        {[...Array(particleDensity || 50)].map((_, index) => (
+        {particles.map((particle, index) => (
           <circle
             key={index}
-            cx={`${Math.random() * 100}%`}
-            cy={`${Math.random() * 100}%`}
-            r={Math.random() * (maxSize || 3 - (minSize || 1)) + (minSize || 1)}
+            cx={`${particle.cx}%`}
+            cy={`${particle.cy}%`}
+            r={particle.r}
             fill={`url(#${internalId}-gradient)`}
             filter={`url(#${internalId}-filter)`}
             className="animate-sparkle"
             style={{
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
+              animationDelay: `${particle.animationDelay}s`,
+              animationDuration: `${particle.animationDuration}s`,
             }}
           />
         ))}

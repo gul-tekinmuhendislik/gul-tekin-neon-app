@@ -103,13 +103,13 @@ async function getLokasyonData(slug: string) {
               AND aktif = true
               LIMIT 5
             `;
-            return { ...hizmet, urunler };
+            return { ...hizmet, urunler: urunler as Urun[] } as Hizmet;
           } catch (error) {
             console.error(`Hizmet ID ${hizmet.id} için ürünler yüklenirken hata:`, error);
-            return { ...hizmet, urunler: [] };
+            return { ...hizmet, urunler: [] as Urun[] } as Hizmet;
           }
         }
-        return { ...hizmet, urunler: [] };
+        return { ...hizmet, urunler: [] as Urun[] } as Hizmet;
       })
     );
 
@@ -150,17 +150,45 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
 
   const { lokasyon, mahalleler, hizmetler } = data;
 
+  // Hizmet isimlerini topla (ilk 8 hizmet)
+  const hizmetIsimleri = hizmetler.slice(0, 8).map(h => h.hizmet_adi).join(', ');
+
+  // Mahalle isimlerini topla (ilk 6 mahalle)
+  const mahalleIsimleri = mahalleler.slice(0, 6).map(m => m.mahalle_adi).join(', ');
+
+  const title = `${lokasyon.ilce_adi} ${lokasyon.il || 'Muğla'} - Su Deposu, Hidrofor, Isı Pompası, Tesisat Hizmetleri | Gül-Tekin Mühendislik`;
+
+  const description = lokasyon.aciklama ||
+    `${lokasyon.ilce_adi} ve çevresinde ${hizmetler.length}+ profesyonel mühendislik hizmeti: ${hizmetIsimleri}. ${mahalleler.length} mahallede uzman ekip ile kurulum, bakım ve servis. ${mahalleIsimleri} bölgelerinde 7/24 destek.`;
+
   return {
-    title: `${lokasyon.ilce_adi} ${lokasyon.il ? lokasyon.il : ''} - Su Deposu, Hidrofor, Isı Pompası | Gül-Tekin Mühendislik`,
-    description: lokasyon.aciklama || `${lokasyon.ilce_adi} bölgesinde su deposu, hidrofor, ısı pompası ve tesisat hizmetleri. ${mahalleler.length} mahallede profesyonel kurulum ve servis.`,
+    title,
+    description,
+    keywords: [
+      `${lokasyon.ilce_adi} su deposu`,
+      `${lokasyon.ilce_adi} hidrofor`,
+      `${lokasyon.ilce_adi} ısı pompası`,
+      `${lokasyon.ilce_adi} tesisat`,
+      `${lokasyon.ilce_adi} mühendislik`,
+      ...hizmetler.slice(0, 10).map(h => `${lokasyon.ilce_adi} ${h.hizmet_adi.toLowerCase()}`),
+      ...mahalleler.slice(0, 5).map(m => `${m.mahalle_adi} tesisat`)
+    ],
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
     },
     openGraph: {
-      title: `${lokasyon.ilce_adi} - Gül-Tekin Mühendislik Hizmetleri`,
-      description: lokasyon.aciklama || `${lokasyon.ilce_adi} bölgesinde mühendislik hizmetleri`,
+      title: `${lokasyon.ilce_adi} Tesisat, Su Deposu, Hidrofor Hizmetleri - Gül-Tekin Mühendislik`,
+      description,
       images: lokasyon.resim_url ? [lokasyon.resim_url] : [],
       url: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+      type: 'website',
+      locale: 'tr_TR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${lokasyon.ilce_adi} Mühendislik Hizmetleri`,
+      description,
+      images: lokasyon.resim_url ? [lokasyon.resim_url] : [],
     }
   };
 }
@@ -187,10 +215,33 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
       "addressRegion": lokasyon.il || "Muğla",
       "addressCountry": "TR"
     },
-    "areaServed": {
+    "areaServed": mahalleler.length > 0 ? mahalleler.map(m => ({
+      "@type": "City",
+      "name": `${m.mahalle_adi}, ${lokasyon.ilce_adi}`
+    })) : {
       "@type": "City",
       "name": lokasyon.ilce_adi
-    }
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Mühendislik Hizmetleri",
+      "itemListElement": hizmetler.slice(0, 15).map((hizmet, index) => ({
+        "@type": "Offer",
+        "position": index + 1,
+        "itemOffered": {
+          "@type": "Service",
+          "name": hizmet.hizmet_adi,
+          "description": hizmet.aciklama || `${lokasyon.ilce_adi} bölgesinde ${hizmet.hizmet_adi} hizmeti`,
+          "areaServed": {
+            "@type": "City",
+            "name": lokasyon.ilce_adi
+          }
+        }
+      }))
+    },
+    "priceRange": "$$",
+    "telephone": "+90-252-313-40-13",
+    "image": lokasyon.resim_url || "https://gul-tekinmuhendislik.com/logo.png"
   };
 
   const breadcrumbSchema = {
@@ -264,12 +315,58 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </div>
           )}
 
+          {/* Hizmet Özeti SEO */}
+          <div className="max-w-5xl mx-auto mb-16">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+                {lokasyon.ilce_adi} Bölgesinde Profesyonel Mühendislik Hizmetleri
+              </h2>
+              <div className="text-gray-700 leading-relaxed space-y-3">
+                <p>
+                  <strong>Gül-Tekin Mühendislik</strong> olarak {lokasyon.ilce_adi} ve {mahalleler.length} mahallesinde
+                  kapsamlı tesisat, su deposu, hidrofor ve ısı pompası hizmetleri sunuyoruz. Uzman ekibimizle
+                  {hizmetler.length}+ farklı mühendislik hizmeti ile yanınızdayız.
+                </p>
+                <div className="grid md:grid-cols-2 gap-3 mt-4">
+                  <div className="flex items-start">
+                    <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Profesyonel kurulum ve montaj hizmetleri</span>
+                  </div>
+                  <div className="flex items-start">
+                    <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Düzenli bakım ve servis desteği</span>
+                  </div>
+                  <div className="flex items-start">
+                    <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Garantili işçilik ve malzeme</span>
+                  </div>
+                  <div className="flex items-start">
+                    <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>7/24 acil müdahale hizmeti</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Mahalleler */}
           {mahalleler.length > 0 && (
             <div className="mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-                {lokasyon.ilce_adi} Mahalleleri
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
+                {lokasyon.ilce_adi} Mahallelerinde Tesisat ve Mühendislik Hizmetleri
               </h2>
+              <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+                {lokasyon.ilce_adi} bölgesinde {mahalleler.length} mahallede su deposu kurulumu, hidrofor sistemi,
+                ısı pompası montajı ve tesisat hizmetleri sunuyoruz. Bölgenize özel hizmet detayları için mahalle seçiniz.
+              </p>
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {mahalleler.map((mahalle) => {
@@ -335,9 +432,13 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
 
           {/* Hizmetler */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              {lokasyon.ilce_adi} Bölgesinde Sunduğumuz Hizmetler
+            <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
+              {lokasyon.ilce_adi} Bölgesinde Sunduğumuz Tesisat ve Mühendislik Hizmetleri
             </h2>
+            <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
+              {lokasyon.ilce_adi}'da su deposu kurulumu, hidrofor montajı, ısı pompası servisi ve tesisat işleri için
+              profesyonel çözümler sunuyoruz. Tüm hizmetlerimiz için detaylı bilgi alın.
+            </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {hizmetler.map((hizmet) => (
