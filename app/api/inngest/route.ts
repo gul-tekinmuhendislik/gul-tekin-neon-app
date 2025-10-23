@@ -1,12 +1,10 @@
 import { serve } from "inngest/next";
 import { inngest } from "@/lib/inngest/client";
-import { 
-  helloWorld, 
+import {
+  helloWorld,
   sendWelcomeEmail,
   processDataSync,
   logEventToDatabase,
-  searchAndSaveResults,
-  generateEngineeringContent,
   processNewContent,
   applyEEATOptimizations,
   postToFacebook,
@@ -57,8 +55,8 @@ import {
   createGoogleBusinessPost
 } from "@/lib/inngest/google-business";
 import {
-  generateBlogImageWithVertexAI,
-  generateVertexImagesHourly
+  generateBlogImageWithVertexAI
+  // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
 } from "@/lib/inngest/vertex-ai-generation";
 
 export const { GET, POST, PUT } = serve({
@@ -68,8 +66,6 @@ export const { GET, POST, PUT } = serve({
     sendWelcomeEmail,
     processDataSync,
     logEventToDatabase,
-    searchAndSaveResults,
-    generateEngineeringContent,
     processNewContent,
     applyEEATOptimizations,
     postToFacebook,
@@ -102,7 +98,7 @@ export const { GET, POST, PUT } = serve({
     syncGoogleBusinessManual,
     autoReplyToReviews,
     createGoogleBusinessPost,
-    generateBlogImageWithVertexAI,
-    generateVertexImagesHourly
+    generateBlogImageWithVertexAI
+    // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
   ],
 });
