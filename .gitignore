@@ -48,3 +48,5 @@ next-env.d.ts
 # Google Service Account Key
 service-account-key.json
 *.json
+
+/lib/generated/prisma
