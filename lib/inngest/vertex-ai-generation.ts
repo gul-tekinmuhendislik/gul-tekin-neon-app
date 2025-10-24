@@ -553,12 +553,3 @@ Return ONLY the prompt, no explanations.`;
     };
   }
 );
-
-// Test Vertex AI connection
-// [REMOVED] testVertexAIConnection function has been removed
-// Vertex AI connection is tested automatically in production functions
-
-// [REMOVED] generateVertexImagesHourly function
-// Reason: Vertex AI access no longer available
-// Date: 2025-10-23
-// Previous: Generated images every 15 minutes with Vertex AI Fast Model
