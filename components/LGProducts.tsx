@@ -25,7 +25,9 @@ async function getLGProducts() {
         aciklama,
         cloudinary_url
       FROM urunler
-      WHERE marka = 'LG' AND (stokta = true OR stokta IS NULL)
+      WHERE marka = 'LG'
+        AND anasayfa_goster = true
+        AND (stokta = true OR stokta IS NULL)
       ORDER BY updated_at DESC
       LIMIT 6
     `;
