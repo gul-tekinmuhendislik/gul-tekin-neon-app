@@ -25,7 +25,9 @@ async function getVarmeksProducts() {
         aciklama,
         cloudinary_url
       FROM urunler
-      WHERE marka = 'Varmeks' AND (stokta = true OR stokta IS NULL)
+      WHERE marka = 'Varmeks'
+        AND anasayfa_goster = true
+        AND (stokta = true OR stokta IS NULL)
       ORDER BY updated_at DESC
       LIMIT 6
     `;
