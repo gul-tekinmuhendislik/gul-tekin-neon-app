@@ -49,12 +49,6 @@ import {
   suggestImageWithGemini
 } from "@/lib/inngest/gemini-image-generation";
 import {
-  syncGoogleBusinessLocations,
-  syncGoogleBusinessManual,
-  autoReplyToReviews,
-  createGoogleBusinessPost
-} from "@/lib/inngest/google-business";
-import {
   generateBlogImageWithVertexAI
   // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
 } from "@/lib/inngest/vertex-ai-generation";
@@ -94,10 +88,6 @@ export const { GET, POST, PUT } = serve({
     shareBlogOnTwitter,
     bulkShareOnTwitter,
     monitorTwitterHealth,
-    syncGoogleBusinessLocations,
-    syncGoogleBusinessManual,
-    autoReplyToReviews,
-    createGoogleBusinessPost,
     generateBlogImageWithVertexAI
     // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
   ],
