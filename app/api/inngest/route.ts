@@ -34,11 +34,7 @@ import {
 //   syncAnafaaliyetDaily,
 //   syncAnafaaliyetManual
 // } from "@/lib/inngest/anafaaliyet-sync";
-import {
-  generateMissingImages,
-  scheduledImageGeneration,
-  regenerateImage
-} from "@/lib/inngest/image-generator";
+// Image generator functions removed - no longer in use
 import {
   testGoogleGemini,
   generateContentWithGemini
@@ -75,9 +71,6 @@ export const { GET, POST, PUT } = serve({
     cloudinaryDelete,
     cloudinaryOptimizeExisting,
     cloudinaryAutoTag,
-    generateMissingImages,
-    scheduledImageGeneration,
-    regenerateImage,
     generateImageForBlog,
     generatePromptForContent,
     testGoogleGemini,
