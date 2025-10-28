@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -44,51 +44,59 @@ interface Urun {
 async function getLokasyonHizmetData(lokasyonSlug: string, hizmetSlug: string) {
   try {
     // Lokasyon bilgilerini al
-    const [lokasyon] = await sql<Lokasyon[]>`
-      SELECT id, ilce_adi, slug, il, aciklama, resim_url
-      FROM hizmet_lokasyonlari
-      WHERE slug = ${lokasyonSlug} AND aktif = true
-    `;
+    const lokasyon = await prisma.hizmet_lokasyonlari.findFirst({
+      where: {
+        slug: lokasyonSlug,
+        aktif: true
+      }
+    });
 
     if (!lokasyon) {
       return null;
     }
 
     // Hizmet bilgilerini al
-    const [hizmet] = await sql<Hizmet[]>`
-      SELECT id, hizmet_adi, aciklama, slug, resim_url, cloudinary_url, kategori
-      FROM hizmetler
-      WHERE slug = ${hizmetSlug} AND aktif = true
-    `;
+    const hizmet = await prisma.hizmetler.findFirst({
+      where: {
+        slug: hizmetSlug,
+        aktif: true
+      }
+    });
 
     if (!hizmet) {
       return null;
     }
 
     // Bu hizmete ait ürünleri al
-    const urunler = await sql<Urun[]>`
-      SELECT
-        u.id,
-        u.urun_adi,
-        u.kategori,
-        u.marka,
-        u.cloudinary_url,
-        u.aciklama,
-        u.ozellikler
-      FROM urunler u
-      WHERE u.aktif = true
-        AND (
-          u.kategori ILIKE ${`%${hizmet.hizmet_adi}%`}
-          OR u.urun_adi ILIKE ${`%${hizmet.hizmet_adi}%`}
-          OR ${hizmet.id} = ANY(
-            SELECT unnest(urunler)
-            FROM hizmetler
-            WHERE id = ${hizmet.id}
+    // Kategori veya ürün adında hizmet adı geçenler + hizmetin urunler listesindekiler
+    const urunler = await prisma.urunler.findMany({
+      where: {
+        aktif: true,
+        OR: [
+          {
+            kategori: {
+              contains: hizmet.hizmet_adi,
+              mode: 'insensitive'
+            }
+          },
+          {
+            urun_adi: {
+              contains: hizmet.hizmet_adi,
+              mode: 'insensitive'
+            }
+          },
+          ...(hizmet.urunler && Array.isArray(hizmet.urunler) && hizmet.urunler.length > 0
+            ? [{ id: { in: hizmet.urunler as string[] } }]
+            : []
           )
-        )
-      ORDER BY u.sira ASC, u.urun_adi ASC
-      LIMIT 50
-    `;
+        ]
+      },
+      orderBy: [
+        { sira: 'asc' },
+        { urun_adi: 'asc' }
+      ],
+      take: 50
+    });
 
     return {
       lokasyon,

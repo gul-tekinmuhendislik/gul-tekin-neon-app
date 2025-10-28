@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -52,79 +52,59 @@ interface Mahalle {
 async function getLokasyonData(slug: string) {
   try {
     // Lokasyon bilgilerini al
-    const [lokasyon] = await sql<Lokasyon[]>`
-      SELECT
-        id,
-        ilce_adi,
-        slug,
-        il,
-        aciklama,
-        resim_url,
-        aktif,
-        sira
-      FROM hizmet_lokasyonlari
-      WHERE slug = ${slug} AND aktif = true
-    `;
+    const lokasyon = await prisma.hizmet_lokasyonlari.findFirst({
+      where: {
+        slug: slug,
+        aktif: true
+      }
+    });
 
     if (!lokasyon) {
       return null;
     }
 
     // Hizmetleri al
-    const hizmetlerResult = await sql<Hizmet[]>`
-      SELECT
-        h.id,
-        h.hizmet_adi,
-        h.aciklama,
-        h.slug,
-        h.resim_url,
-        h.cloudinary_url,
-        h.urunler,
-        h.kategori
-      FROM hizmetler h
-      WHERE h.aktif = true
-      ORDER BY h.seo_index ASC, h.hizmet_adi ASC
-    `;
+    const hizmetlerResult = await prisma.hizmetler.findMany({
+      where: {
+        aktif: true
+      },
+      orderBy: [
+        { seo_index: 'asc' },
+        { hizmet_adi: 'asc' }
+      ]
+    });
 
     // Her hizmet için ürünleri al
     const hizmetler = await Promise.all(
       hizmetlerResult.map(async (hizmet) => {
         if (hizmet.urunler && Array.isArray(hizmet.urunler) && hizmet.urunler.length > 0) {
           try {
-            const urunler = await sql<Urun[]>`
-              SELECT
-                id,
-                urun_adi,
-                kategori,
-                marka,
-                cloudinary_url
-              FROM urunler
-              WHERE id = ANY(${hizmet.urunler}::text[])
-              AND aktif = true
-              LIMIT 5
-            `;
-            return { ...hizmet, urunler: urunler as Urun[] } as Hizmet;
+            const urunler = await prisma.urunler.findMany({
+              where: {
+                id: { in: hizmet.urunler as string[] },
+                aktif: true
+              },
+              take: 5
+            });
+            return { ...hizmet, urunler } as any;
           } catch (error) {
             console.error(`Hizmet ID ${hizmet.id} için ürünler yüklenirken hata:`, error);
-            return { ...hizmet, urunler: [] as Urun[] } as Hizmet;
+            return { ...hizmet, urunler: [] } as any;
           }
         }
-        return { ...hizmet, urunler: [] as Urun[] } as Hizmet;
+        return { ...hizmet, urunler: [] } as any;
       })
     );
 
     // Mahalleleri al
-    const mahalleler = await sql<Mahalle[]>`
-      SELECT
-        id,
-        mahalle_adi,
-        slug,
-        aciklama,
-        proje_sayisi
-      FROM mahalleler
-      WHERE ilce_id = ${lokasyon.id}
-      ORDER BY mahalle_adi ASC
-    `;
+    const mahalleler = await prisma.mahalleler.findMany({
+      where: {
+        ilce_id: lokasyon.id
+      },
+      orderBy: {
+        mahalle_adi: 'asc'
+      }
+    });
 
     return {
       lokasyon,
