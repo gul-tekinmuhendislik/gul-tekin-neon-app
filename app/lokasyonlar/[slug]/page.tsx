@@ -373,7 +373,7 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {hizmetler.map((hizmet) => (
-                <Link key={hizmet.id} href={`/lokasyonlar/${slug}/${hizmet.slug}`}>
+                <Link key={hizmet.id} href={`/lokasyonlar/${slug}/hizmet/${hizmet.slug}`}>
                   <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     {(hizmet.cloudinary_url || hizmet.resim_url) ? (
                       <div className="relative w-full h-48">

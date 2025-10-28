@@ -8,7 +8,7 @@ export const revalidate = 3600;
 interface LokasyonHizmetPageProps {
   params: Promise<{
     slug: string;
-    hizmet: string;
+    hizmet_slug: string;
   }>;
 }
 
@@ -110,7 +110,7 @@ async function getLokasyonHizmetData(lokasyonSlug: string, hizmetSlug: string) {
 }
 
 export async function generateMetadata({ params }: LokasyonHizmetPageProps) {
-  const { slug, hizmet: hizmetSlug } = await params;
+  const { slug, hizmet_slug: hizmetSlug } = await params;
   const data = await getLokasyonHizmetData(slug, hizmetSlug);
 
   if (!data) {
@@ -139,13 +139,13 @@ export async function generateMetadata({ params }: LokasyonHizmetPageProps) {
       ...urunler.slice(0, 5).map(u => `${lokasyon.ilce_adi} ${u.urun_adi.toLowerCase()}`),
     ],
     alternates: {
-      canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${hizmetSlug}`,
+      canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/hizmet/${hizmetSlug}`,
     },
     openGraph: {
       title: `${lokasyon.ilce_adi} ${hizmet.hizmet_adi} - Gül-Tekin Mühendislik`,
       description,
       images: hizmet.cloudinary_url || hizmet.resim_url ? [hizmet.cloudinary_url || hizmet.resim_url || ''] : [],
-      url: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${hizmetSlug}`,
+      url: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/hizmet/${hizmetSlug}`,
       type: 'website',
       locale: 'tr_TR',
     },
@@ -159,7 +159,7 @@ export async function generateMetadata({ params }: LokasyonHizmetPageProps) {
 }
 
 export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageProps) {
-  const { slug, hizmet: hizmetSlug } = await params;
+  const { slug, hizmet_slug: hizmetSlug } = await params;
   const data = await getLokasyonHizmetData(slug, hizmetSlug);
 
   if (!data) {
@@ -218,7 +218,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
         "@type": "ListItem",
         "position": 4,
         "name": hizmet.hizmet_adi,
-        "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${hizmetSlug}`
+        "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/hizmet/${hizmetSlug}`
       }
     ]
   };
