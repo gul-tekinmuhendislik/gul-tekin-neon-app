@@ -1,4 +1,4 @@
-import { sql } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
@@ -12,98 +12,57 @@ interface MahallePageProps {
   }>;
 }
 
-interface Mahalle {
-  id: number;
-  mahalle_adi: string;
-  slug: string;
-  aciklama?: string;
-  proje_sayisi?: number;
-  ilce_id: number;
-}
-
-interface Lokasyon {
-  id: number;
-  ilce_adi: string;
-  slug: string;
-  il?: string;
-}
-
-interface Urun {
-  id: string;
-  urun_adi: string;
-  kategori?: string;
-  marka?: string;
-  cloudinary_url?: string;
-}
-
-interface Hizmet {
-  id: string;
-  hizmet_adi: string;
-  aciklama?: string;
-  kategori?: string;
-  slug?: string;
-  resim_url?: string;
-  cloudinary_url?: string;
-  urunler?: Urun[];
-}
+// Prisma types are used directly
 
 async function getMahalleData(ilceSlug: string, mahalleSlug: string) {
   try {
     // İlçeyi bul
-    const [lokasyon] = await sql<Lokasyon[]>`
-      SELECT id, ilce_adi, slug, il
-      FROM hizmet_lokasyonlari
-      WHERE slug = ${ilceSlug} AND aktif = true
-    `;
+    const lokasyon = await prisma.hizmet_lokasyonlari.findFirst({
+      where: {
+        slug: ilceSlug,
+        aktif: true
+      }
+    });
 
     if (!lokasyon) {
       return null;
     }
 
     // Mahalleyi bul
-    const [mahalle] = await sql<Mahalle[]>`
-      SELECT id, mahalle_adi, slug, aciklama, proje_sayisi, ilce_id
-      FROM mahalleler
-      WHERE ilce_id = ${lokasyon.id} AND slug = ${mahalleSlug}
-    `;
+    const mahalle = await prisma.mahalleler.findFirst({
+      where: {
+        ilce_id: lokasyon.id,
+        slug: mahalleSlug
+      }
+    });
 
     if (!mahalle) {
       return null;
     }
 
     // Hizmetleri al
-    const hizmetlerResult = await sql<Hizmet[]>`
-      SELECT
-        h.id,
-        h.hizmet_adi,
-        h.aciklama,
-        h.slug,
-        h.resim_url,
-        h.cloudinary_url,
-        h.urunler,
-        h.kategori
-      FROM hizmetler h
-      WHERE h.aktif = true
-      ORDER BY h.seo_index ASC, h.hizmet_adi ASC
-    `;
+    const hizmetlerResult = await prisma.hizmetler.findMany({
+      where: {
+        aktif: true
+      },
+      orderBy: [
+        { seo_index: 'asc' },
+        { hizmet_adi: 'asc' }
+      ]
+    });
 
     // Her hizmet için ürünleri al
     const hizmetler = await Promise.all(
       hizmetlerResult.map(async (hizmet) => {
         if (hizmet.urunler && Array.isArray(hizmet.urunler) && hizmet.urunler.length > 0) {
           try {
-            const urunler = await sql<Urun[]>`
-              SELECT
-                id,
-                urun_adi,
-                kategori,
-                marka,
-                cloudinary_url
-              FROM urunler
-              WHERE id = ANY(${hizmet.urunler}::text[])
-              AND aktif = true
-              LIMIT 5
-            `;
+            const urunler = await prisma.urunler.findMany({
+              where: {
+                id: { in: hizmet.urunler as string[] },
+                aktif: true
+              },
+              take: 5
+            });
             return { ...hizmet, urunler };
           } catch (error) {
             console.error(`Hizmet ID ${hizmet.id} için ürünler yüklenirken hata:`, error);
@@ -249,7 +208,7 @@ export default async function MahallePage({ params }: MahallePageProps) {
             <p className="text-xl text-gray-600 max-w-3xl">
               {mahalle.aciklama || `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde profesyonel su sistemleri kurulumu ve bakım hizmetleri sunuyoruz.`}
             </p>
-            {mahalle.proje_sayisi !== undefined && mahalle.proje_sayisi > 0 && (
+            {mahalle.proje_sayisi && mahalle.proje_sayisi > 0 && (
               <p className="text-lg text-blue-600 mt-4 font-semibold">
                 {mahalle.proje_sayisi} proje tamamlandı
               </p>
@@ -264,13 +223,13 @@ export default async function MahallePage({ params }: MahallePageProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {hizmetler.map((hizmet) => (
-                <Link key={hizmet.id} href={`/hizmetler/${hizmet.slug}`}>
+                <Link key={hizmet.id} href={`/hizmetler/${hizmet.slug || hizmet.id}`}>
                   <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     {(hizmet.cloudinary_url || hizmet.resim_url) ? (
                       <div className="relative w-full h-48">
                         <Image
-                          src={hizmet.cloudinary_url || hizmet.resim_url || ''}
-                          alt={hizmet.hizmet_adi}
+                          src={(hizmet.cloudinary_url || hizmet.resim_url) as string}
+                          alt={hizmet.hizmet_adi || 'Hizmet'}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -316,8 +275,8 @@ export default async function MahallePage({ params }: MahallePageProps) {
                               <div key={urun.id} className="flex items-center text-xs text-gray-600">
                                 {urun.cloudinary_url && (
                                   <Image
-                                    src={urun.cloudinary_url}
-                                    alt={urun.urun_adi}
+                                    src={urun.cloudinary_url as string}
+                                    alt={urun.urun_adi || 'Ürün'}
                                     width={24}
                                     height={24}
                                     className="rounded-full object-cover mr-2"
