@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { decodeAndNormalizeSlug } from '@/lib/utils/slug';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
-import { generateProductAltText } from '@/lib/seo-utils';
+import { generateProductAltText, generateRatingSchema } from '@/lib/seo-utils';
 
 // export const revalidate = 3600;
 

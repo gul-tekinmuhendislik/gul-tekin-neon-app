@@ -124,6 +124,17 @@ const nextConfig: NextConfig = {
         destination: "/urunler/su-isiticilari",
         permanent: true,
       },
+      // SEO 404 Fixes (28 Ekim 2025)
+      {
+        source: "/hizmetler/hidrofor",
+        destination: "/hizmetler/hidrofor-sistemleri",
+        permanent: true,
+      },
+      {
+        source: "/urunler/varmeks-isi-pompasi-12-kw",
+        destination: "/urunler/varmeks-varm-boost-11kw-isi-pompasi",
+        permanent: true,
+      },
     ];
   },
 };

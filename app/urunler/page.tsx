@@ -6,11 +6,6 @@ import { getListingImageUrl } from "@/lib/utils/image-optimization";
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export const metadata = {
-  title: "Ürünler - Gül-Tekin Mühendislik",
-  description: "Gül-Tekin Mühendislik olarak sunduğumuz ürünler ve çözümler",
-};
-
 interface Product {
   id: string;
   urun_adi: string;
@@ -34,6 +29,51 @@ interface ProductsPageProps {
     marka?: string;
     search?: string;
   }>;
+}
+
+export async function generateMetadata({ searchParams }: ProductsPageProps) {
+  const params = await searchParams || {};
+  const currentPage = parseInt(params.page || '1');
+  const selectedCategory = params.kategori;
+  const selectedBrand = params.marka;
+  const searchQuery = params.search;
+
+  // Build query string for URLs
+  const queryParams = new URLSearchParams();
+  if (currentPage > 1) queryParams.set('page', currentPage.toString());
+  if (selectedCategory) queryParams.set('kategori', selectedCategory);
+  if (selectedBrand) queryParams.set('marka', selectedBrand);
+  if (searchQuery) queryParams.set('search', searchQuery);
+
+  const queryString = queryParams.toString();
+  const baseUrl = 'https://gul-tekinmuhendislik.com/urunler';
+  const canonicalUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+  // Build title with page number
+  let title = "Ürünler - Gül-Tekin Mühendislik";
+  if (currentPage > 1) {
+    title = `Ürünler (Sayfa ${currentPage}) - Gül-Tekin Mühendislik`;
+  }
+  if (selectedCategory) {
+    title = `${selectedCategory} Ürünleri${currentPage > 1 ? ` (Sayfa ${currentPage})` : ''} - Gül-Tekin Mühendislik`;
+  }
+
+  // Build description with page number
+  let description = "Gül-Tekin Mühendislik olarak sunduğumuz ürünler ve çözümler. Isı pompaları, güneş enerjisi sistemleri, su arıtma ve mekanik tesisat ürünleri.";
+  if (currentPage > 1) {
+    description = `Ürünlerimiz sayfa ${currentPage}. Isı pompaları, güneş enerjisi, su arıtma sistemleri ve daha fazlası.`;
+  }
+  if (selectedCategory) {
+    description = `${selectedCategory} kategorisindeki ürünlerimiz${currentPage > 1 ? ` - Sayfa ${currentPage}` : ''}. Kaliteli ve güvenilir çözümler.`;
+  }
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  };
 }
 
 const PRODUCTS_PER_PAGE = 24;
@@ -350,10 +390,29 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       </div>
     );
   }
-  
+
+  // Build pagination link URLs for rel next/prev
+  const buildPaginationUrl = (page: number) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('page', page.toString());
+    if (selectedCategory) queryParams.set('kategori', selectedCategory);
+    if (selectedBrand) queryParams.set('marka', selectedBrand);
+    if (searchQuery) queryParams.set('search', searchQuery);
+    return `https://gul-tekinmuhendislik.com/urunler?${queryParams.toString()}`;
+  };
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-7xl mx-auto">
+    <>
+      {/* SEO Pagination Links */}
+      {currentPage > 1 && (
+        <link rel="prev" href={buildPaginationUrl(currentPage - 1)} />
+      )}
+      {currentPage < totalPages && (
+        <link rel="next" href={buildPaginationUrl(currentPage + 1)} />
+      )}
+
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto">
         
         {/* Filters and Search */}
         <div className="mb-8 p-4 bg-gray-50 rounded-lg">
@@ -660,5 +719,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         )}
       </div>
     </div>
+    </>
   );
 }
