@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { validateMetaDescription, validateAltText } from '@/lib/seo-utils';
+import { validateMetaDescription, validateAltText, createTitle } from '@/lib/seo-utils';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 
 export const revalidate = 3600;
@@ -100,7 +100,7 @@ export async function generateMetadata({ params }: MahallePageProps) {
   const { mahalle, lokasyon } = data;
 
   return {
-    title: `${mahalle.mahalle_adi} ${lokasyon.ilce_adi} - Su Deposu, Hidrofor, Pompa | Gül-Tekin Mühendislik`,
+    title: createTitle(`${mahalle.mahalle_adi} ${lokasyon.ilce_adi} Tesisat`),
     description: validateMetaDescription(
       mahalle.aciklama || undefined,
       `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde su deposu, hidrofor, ısı pompası ve tesisat hizmetleri. Profesyonel kurulum ve servis.`,

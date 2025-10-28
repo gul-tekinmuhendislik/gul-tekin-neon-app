@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { createTitle } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
@@ -124,7 +125,7 @@ export async function generateMetadata({ params }: LokasyonHizmetPageProps) {
   const { lokasyon, hizmet, urunler } = data;
 
   const hizmetAdi = hizmet.hizmet_adi || 'Hizmet';
-  const title = `${lokasyon.ilce_adi} ${hizmetAdi} - ${urunler.length} Ürün ve Çözüm | Gül-Tekin Mühendislik`;
+  const title = createTitle(`${lokasyon.ilce_adi} ${hizmetAdi}`);
 
   const description = hizmet.aciklama ||
     `${lokasyon.ilce_adi} bölgesinde ${hizmetAdi} hizmeti için ${urunler.length} farklı ürün ve çözüm. Profesyonel kurulum, montaj, bakım ve servis hizmetleri. ${lokasyon.il || 'Muğla'} genelinde uzman ekip ile 7/24 destek.`;

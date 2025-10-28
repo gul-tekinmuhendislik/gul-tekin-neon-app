@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { createTitle } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
@@ -137,7 +138,7 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
   // Mahalle isimlerini topla (ilk 6 mahalle)
   const mahalleIsimleri = mahalleler.slice(0, 6).map(m => m.mahalle_adi).join(', ');
 
-  const title = `${lokasyon.ilce_adi} ${lokasyon.il || 'Muğla'} - Su Deposu, Hidrofor, Isı Pompası, Tesisat Hizmetleri | Gül-Tekin Mühendislik`;
+  const title = createTitle(`${lokasyon.ilce_adi} Tesisat Hizmetleri`);
 
   const description = lokasyon.aciklama ||
     `${lokasyon.ilce_adi} ve çevresinde ${hizmetler.length}+ profesyonel mühendislik hizmeti: ${hizmetIsimleri}. ${mahalleler.length} mahallede uzman ekip ile kurulum, bakım ve servis. ${mahalleIsimleri} bölgelerinde 7/24 destek.`;

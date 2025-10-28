@@ -326,3 +326,107 @@ export function generateBrandAltText(
   const altText = parts.join(' ');
   return altText.length > 125 ? altText.substring(0, 122) + '...' : altText;
 }
+
+/**
+ * Optimize page title for SEO (50-60 characters ideal)
+ */
+export function optimizeTitle(title: string, maxLength: number = 60): string {
+  if (title.length <= maxLength) {
+    return title;
+  }
+
+  // Try to cut at word boundary
+  const truncated = title.substring(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+
+  if (lastSpace > maxLength - 15) {
+    return truncated.substring(0, lastSpace).trim();
+  }
+
+  return truncated.trim() + '...';
+}
+
+/**
+ * Create concise title with brand suffix
+ */
+export function createTitle(
+  mainTitle: string,
+  includeBrand: boolean = true,
+  brandName: string = 'Gül-Tekin'
+): string {
+  const MAX_LENGTH = 60;
+
+  if (!includeBrand) {
+    return optimizeTitle(mainTitle, MAX_LENGTH);
+  }
+
+  const withBrand = `${mainTitle} | ${brandName}`;
+
+  if (withBrand.length <= MAX_LENGTH) {
+    return withBrand;
+  }
+
+  // If too long, shorten main title to fit brand
+  const availableForMain = MAX_LENGTH - ` | ${brandName}`.length;
+  const shortenedMain = optimizeTitle(mainTitle, availableForMain);
+
+  return `${shortenedMain} | ${brandName}`;
+}
+
+/**
+ * Generate FAQ Schema for services/products
+ */
+export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+}
+
+/**
+ * Generate HowTo Schema for installation/setup guides
+ */
+export function generateHowToSchema(
+  name: string,
+  description: string,
+  steps: Array<{ name: string; text: string; image?: string }>
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": name,
+    "description": description,
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.name,
+      "text": step.text,
+      "image": step.image
+    }))
+  };
+}
+
+/**
+ * Generate AggregateRating Schema for products/services
+ */
+export function generateRatingSchema(
+  ratingValue: number,
+  reviewCount: number,
+  bestRating: number = 5
+) {
+  return {
+    "@type": "AggregateRating",
+    "ratingValue": ratingValue,
+    "reviewCount": reviewCount,
+    "bestRating": bestRating,
+    "worstRating": 1
+  };
+}
