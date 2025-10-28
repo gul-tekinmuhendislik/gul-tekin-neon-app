@@ -253,3 +253,76 @@ export function validateAltText(
 
   return cleanFileName || 'Görsel';
 }
+
+/**
+ * Generate SEO-optimized alt text for product images
+ */
+export function generateProductAltText(
+  productName: string,
+  brand?: string,
+  category?: string,
+  location?: string
+): string {
+  const parts: string[] = [];
+
+  if (location) parts.push(location);
+  if (brand) parts.push(brand);
+  parts.push(productName);
+  if (category) parts.push(category);
+
+  const altText = parts.join(' - ');
+  return altText.length > 125 ? altText.substring(0, 122) + '...' : altText;
+}
+
+/**
+ * Generate SEO-optimized alt text for service images
+ */
+export function generateServiceAltText(
+  serviceName: string,
+  location?: string,
+  action?: string
+): string {
+  const parts: string[] = [];
+
+  if (location) parts.push(location);
+  parts.push(serviceName);
+  if (action) parts.push(action);
+
+  const altText = parts.join(' ');
+  return altText.length > 125 ? altText.substring(0, 122) + '...' : altText;
+}
+
+/**
+ * Generate SEO-optimized alt text for project images
+ */
+export function generateProjectAltText(
+  projectName: string,
+  location?: string,
+  index?: number
+): string {
+  const parts: string[] = [];
+
+  if (location) parts.push(location);
+  parts.push(projectName);
+  if (index !== undefined) parts.push(`görsel ${index + 1}`);
+  else parts.push('projesi');
+
+  const altText = parts.join(' ');
+  return altText.length > 125 ? altText.substring(0, 122) + '...' : altText;
+}
+
+/**
+ * Generate SEO-optimized alt text for brand/logo images
+ */
+export function generateBrandAltText(
+  brandName: string,
+  context?: string
+): string {
+  const parts: string[] = [brandName];
+
+  if (context) parts.push(context);
+  else parts.push('logo');
+
+  const altText = parts.join(' ');
+  return altText.length > 125 ? altText.substring(0, 122) + '...' : altText;
+}

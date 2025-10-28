@@ -76,6 +76,10 @@ export const defaultMetadata: Metadata = {
   },
   alternates: {
     canonical: siteConfig.url,
+    languages: {
+      'tr-TR': siteConfig.url,
+      'x-default': siteConfig.url,
+    },
   },
   icons: {
     icon: '/favicon.ico',

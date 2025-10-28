@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import BlogArticleSchema from "@/components/BlogArticleSchema";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
 interface BlogPost {
   id: number;
@@ -136,6 +137,13 @@ export default function BlogDetailClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Blog', url: '/blog' },
+          { name: post.title, url: `/blog/${post.slug}` }
+        ]}
+      />
       <BlogArticleSchema
         title={post.title}
         description={post.meta_description || post.title}

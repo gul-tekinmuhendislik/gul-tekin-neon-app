@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { validateMetaDescription, validateAltText } from '@/lib/seo-utils';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 
 export const revalidate = 3600;
 
@@ -107,6 +108,10 @@ export async function generateMetadata({ params }: MahallePageProps) {
     ),
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
+      languages: {
+        'tr-TR': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
+        'x-default': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
+      },
     },
     openGraph: {
       title: `${mahalle.mahalle_adi} ${lokasyon.ilce_adi} - Gül-Tekin Mühendislik`,
@@ -127,37 +132,6 @@ export default async function MahallePage({ params }: MahallePageProps) {
   const { mahalle, lokasyon, hizmetler } = data;
 
   // Schema markup
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Ana Sayfa",
-        "item": "https://gul-tekinmuhendislik.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Lokasyonlar",
-        "item": "https://gul-tekinmuhendislik.com/lokasyonlar"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": lokasyon.ilce_adi,
-        "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": mahalle.mahalle_adi,
-        "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`
-      }
-    ]
-  };
-
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -174,9 +148,13 @@ export default async function MahallePage({ params }: MahallePageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Lokasyonlar', url: '/lokasyonlar' },
+          { name: lokasyon.ilce_adi, url: `/lokasyonlar/${slug}` },
+          { name: mahalle.mahalle_adi, url: `/lokasyonlar/${slug}/${mahalleSlug}` }
+        ]}
       />
       <script
         type="application/ld+json"

@@ -4,6 +4,8 @@ import { getMarkalariNeon, getMarkaBySlug } from '@/lib/markalar-client';
 import { getUrunlerByMarka } from '@/lib/urunler-client';
 import Image from 'next/image';
 import Link from 'next/link';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { generateBrandAltText, generateProductAltText } from '@/lib/seo-utils';
 
 interface PageProps {
   params: Promise<{
@@ -42,6 +44,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     alternates: {
       canonical: `/markalar/${slug}`,
+      languages: {
+        'tr-TR': `/markalar/${slug}`,
+        'x-default': `/markalar/${slug}`,
+      },
     },
   };
 }
@@ -55,32 +61,6 @@ export default async function MarkaDetailPage({ params }: PageProps) {
   }
 
   const urunler = await getUrunlerByMarka(marka.marka_adi);
-
-  // BreadcrumbList Schema
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Ana Sayfa",
-        "item": "https://gul-tekinmuhendislik.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Markalar",
-        "item": "https://gul-tekinmuhendislik.com/markalar"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": marka.marka_adi,
-        "item": `https://gul-tekinmuhendislik.com/markalar/${slug}`
-      }
-    ]
-  };
 
   // Brand Schema
   const brandSchema = {
@@ -121,9 +101,12 @@ export default async function MarkaDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Markalar', url: '/markalar' },
+          { name: marka.marka_adi, url: `/markalar/${slug}` }
+        ]}
       />
       <script
         type="application/ld+json"
@@ -170,7 +153,7 @@ export default async function MarkaDetailPage({ params }: PageProps) {
                 {(marka.cloudinary_url || marka.logo_url) ? (
                   <Image
                     src={marka.cloudinary_url || marka.logo_url!}
-                    alt={`${marka.marka_adi} logo`}
+                    alt={generateBrandAltText(marka.marka_adi, marka.yetkili_servis ? 'yetkili servis logosu' : undefined)}
                     width={300}
                     height={300}
                     className="max-w-full h-auto object-contain"
@@ -243,7 +226,7 @@ export default async function MarkaDetailPage({ params }: PageProps) {
                       <div className="h-48 overflow-hidden bg-gray-100">
                         <Image
                           src={urun.cloudinary_url || urun.gorsel_url!}
-                          alt={urun.urun_adi}
+                          alt={generateProductAltText(urun.urun_adi, marka.marka_adi, urun.kategori)}
                           width={300}
                           height={200}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

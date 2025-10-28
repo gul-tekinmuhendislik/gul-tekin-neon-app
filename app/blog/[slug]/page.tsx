@@ -46,6 +46,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       keywords: post.keywords?.join(', '),
       alternates: {
         canonical: `https://gul-tekinmuhendislik.com/blog/${slug}`,
+        languages: {
+          'tr-TR': `https://gul-tekinmuhendislik.com/blog/${slug}`,
+          'x-default': `https://gul-tekinmuhendislik.com/blog/${slug}`,
+        },
       },
       openGraph: {
         title: post.meta_title || post.title,

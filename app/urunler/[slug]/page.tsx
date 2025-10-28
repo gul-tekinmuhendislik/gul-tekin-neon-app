@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { decodeAndNormalizeSlug } from '@/lib/utils/slug';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { generateProductAltText } from '@/lib/seo-utils';
 
 // export const revalidate = 3600;
 
@@ -133,6 +135,10 @@ export async function generateMetadata({ params }: UrunDetailPageProps) {
     description: urun.aciklama || `${urun.urun_adi} detayları ve fiyat bilgisi. ${urun.kategori} kategorisinde ${urun.marka || ''} markasının kaliteli ürünü.`,
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/urunler/${slug}`,
+      languages: {
+        'tr-TR': `https://gul-tekinmuhendislik.com/urunler/${slug}`,
+        'x-default': `https://gul-tekinmuhendislik.com/urunler/${slug}`,
+      },
     },
     openGraph: {
       title: urun.urun_adi,
@@ -228,6 +234,14 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
   
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Ürünler', url: '/urunler' },
+          ...(urun.kategori ? [{ name: urun.kategori, url: `/urunler?kategori=${encodeURIComponent(urun.kategori)}` }] : []),
+          { name: urun.urun_adi, url: `/urunler/${slug}` }
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
@@ -270,7 +284,7 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
               {(urun.cloudinary_url || urun.gorsel_url) ? (
                 <Image
                   src={urun.cloudinary_url || urun.gorsel_url || ''}
-                  alt={urun.urun_adi || 'Ürün'}
+                  alt={generateProductAltText(urun.urun_adi || 'Ürün', urun.marka, urun.kategori)}
                   fill
                   className="object-contain p-8"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -480,7 +494,7 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
                     {(product.cloudinary_url || product.gorsel_url) ? (
                       <Image
                         src={product.cloudinary_url || product.gorsel_url || ''}
-                        alt={product.urun_adi}
+                        alt={generateProductAltText(product.urun_adi, product.marka, urun.kategori)}
                         fill
                         className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

@@ -5,6 +5,8 @@ import { getUrunlerByHizmetIdFromNeon } from '@/lib/urunler-client';
 import { Hizmet } from '@/lib/types/hizmet';
 import Link from 'next/link';
 import Image from 'next/image';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { generateServiceAltText, generateProductAltText } from '@/lib/seo-utils';
 
 interface PageProps {
   params: Promise<{
@@ -38,6 +40,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
     alternates: {
       canonical: `/hizmetler/${slug}`,
+      languages: {
+        'tr-TR': `/hizmetler/${slug}`,
+        'x-default': `/hizmetler/${slug}`,
+      },
     },
   };
 }
@@ -158,6 +164,13 @@ export default async function HizmetDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Hizmetler', url: '/hizmetler' },
+          { name: hizmet.hizmet_adi, url: `/hizmetler/${slug}` }
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
@@ -198,7 +211,7 @@ export default async function HizmetDetailPage({ params }: PageProps) {
               <div className="mb-8 rounded-xl overflow-hidden shadow-lg">
                 <Image
                   src={hizmet.cloudinary_url || hizmet.resim_url!}
-                  alt={hizmet.hizmet_adi}
+                  alt={generateServiceAltText(hizmet.hizmet_adi, undefined, 'hizmet görseli')}
                   width={800}
                   height={600}
                   className="w-full h-auto"
@@ -312,7 +325,7 @@ export default async function HizmetDetailPage({ params }: PageProps) {
                     <div className="h-48 overflow-hidden bg-gray-100">
                       <Image
                         src={urun.cloudinary_url || urun.gorsel_url!}
-                        alt={urun.urun_adi}
+                        alt={generateProductAltText(urun.urun_adi, urun.marka, hizmet.hizmet_adi)}
                         width={300}
                         height={200}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
@@ -392,7 +405,7 @@ export default async function HizmetDetailPage({ params }: PageProps) {
                     <div className="h-48 overflow-hidden bg-gray-100">
                       <Image
                         src={related.cloudinary_url || related.resim_url!}
-                        alt={related.hizmet_adi}
+                        alt={generateServiceAltText(related.hizmet_adi, undefined, 'ilgili hizmet')}
                         width={400}
                         height={300}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

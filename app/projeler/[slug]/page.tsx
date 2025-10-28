@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import { generateProjectAltText } from '@/lib/seo-utils';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -84,6 +86,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description: proje.aciklama ? proje.aciklama.substring(0, 160).replace(/\*\*/g, '') : `${proje.proje_adi} projesi detayları. ${proje.mahalle}, ${proje.ilce}`,
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/projeler/${slug}`,
+      languages: {
+        'tr-TR': `https://gul-tekinmuhendislik.com/projeler/${slug}`,
+        'x-default': `https://gul-tekinmuhendislik.com/projeler/${slug}`,
+      },
     },
     openGraph: {
       title: proje.proje_adi,
@@ -117,9 +123,17 @@ export default async function ProjeDetayPage({ params }: { params: Promise<{ slu
   };
   
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Breadcrumb */}
-      <nav className="mb-6">
+    <>
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Projeler', url: '/projeler' },
+          { name: proje.proje_adi, url: `/projeler/${slug}` }
+        ]}
+      />
+      <div className="container mx-auto px-4 py-8">
+        {/* Breadcrumb */}
+        <nav className="mb-6">
         <ol className="flex items-center space-x-2 text-sm">
           <li>
             <Link href="/" className="text-gray-500 hover:text-gray-700">
@@ -181,7 +195,7 @@ export default async function ProjeDetayPage({ params }: { params: Promise<{ slu
               <div className="relative aspect-video w-full bg-gray-100 rounded-lg overflow-hidden">
                 <Image
                   src={mainImageUrl}
-                  alt={proje.proje_adi}
+                  alt={generateProjectAltText(proje.proje_adi, `${proje.mahalle} ${proje.ilce}`)}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 66vw"
@@ -200,7 +214,7 @@ export default async function ProjeDetayPage({ params }: { params: Promise<{ slu
                   <div key={index} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
                     <Image
                       src={imageUrl}
-                      alt={`${proje.proje_adi} - Görsel ${index + 2}`}
+                      alt={generateProjectAltText(proje.proje_adi, `${proje.mahalle} ${proje.ilce}`, index + 1)}
                       fill
                       className="object-cover hover:scale-105 transition-transform"
                       sizes="(max-width: 768px) 50vw, 33vw"
@@ -313,5 +327,6 @@ export default async function ProjeDetayPage({ params }: { params: Promise<{ slu
         </Link>
       </div>
     </div>
+    </>
   );
 }

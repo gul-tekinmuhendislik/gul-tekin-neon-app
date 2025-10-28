@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 
 export const revalidate = 3600;
 
@@ -155,6 +156,10 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
     ],
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+      languages: {
+        'tr-TR': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+        'x-default': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+      },
     },
     openGraph: {
       title: `${lokasyon.ilce_adi} Tesisat, Su Deposu, Hidrofor Hizmetleri - Gül-Tekin Mühendislik`,
@@ -224,40 +229,18 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
     "image": lokasyon.resim_url || "https://gul-tekinmuhendislik.com/logo.png"
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Ana Sayfa",
-        "item": "https://gul-tekinmuhendislik.com"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Lokasyonlar",
-        "item": "https://gul-tekinmuhendislik.com/lokasyonlar"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": lokasyon.ilce_adi,
-        "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      <BreadcrumbSchema
+        items={[
+          { name: 'Ana Sayfa', url: '/' },
+          { name: 'Lokasyonlar', url: '/lokasyonlar' },
+          { name: lokasyon.ilce_adi, url: `/lokasyonlar/${slug}` }
+        ]}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         {/* Hero Section */}
