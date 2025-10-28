@@ -430,3 +430,121 @@ export function generateRatingSchema(
     "worstRating": 1
   };
 }
+
+/**
+ * Common Turkish locations to detect in content
+ */
+export const COMMON_LOCATIONS = [
+  { name: 'Bodrum', slug: 'bodrum' },
+  { name: 'Yalıkavak', slug: 'yalikavak' },
+  { name: 'Göltürkbükü', slug: 'golturkbuku' },
+  { name: 'Gündoğan', slug: 'gundogan' },
+  { name: 'Türkbükü', slug: 'turkbuku' },
+  { name: 'Torba', slug: 'torba' },
+  { name: 'Gümüşlük', slug: 'gumusluk' },
+  { name: 'Bitez', slug: 'bitez' },
+  { name: 'Ortakent', slug: 'ortakent' },
+  { name: 'Turgutreis', slug: 'turgutreis' },
+  { name: 'Muğla', slug: 'mugla' },
+  { name: 'Milas', slug: 'milas' },
+  { name: 'Yatağan', slug: 'yatagan' },
+  { name: 'Ula', slug: 'ula' },
+  { name: 'Fethiye', slug: 'fethiye' },
+  { name: 'Marmaris', slug: 'marmaris' },
+  { name: 'Datça', slug: 'datca' },
+];
+
+/**
+ * Common brands to detect in content
+ */
+export const COMMON_BRANDS = [
+  { name: 'Grundfos', slug: 'grundfos' },
+  { name: 'Solimpeks', slug: 'solimpeks' },
+  { name: 'Eraslan', slug: 'eraslan' },
+  { name: 'Panasonic', slug: 'panasonic' },
+  { name: 'Baymak', slug: 'baymak' },
+  { name: 'Vaillant', slug: 'vaillant' },
+  { name: 'Viessman', slug: 'viessman' },
+  { name: 'Yelkenci', slug: 'yelkenci' },
+  { name: 'Karyer', slug: 'karyer' },
+  { name: 'Atlantis', slug: 'atlantis' },
+  { name: 'Wilo', slug: 'wilo' },
+  { name: 'DAB', slug: 'dab' },
+  { name: 'Pedrollo', slug: 'pedrollo' },
+];
+
+/**
+ * Extract locations mentioned in content
+ */
+export function extractLocationsFromContent(content: string): Array<{name: string, slug: string}> {
+  const found: Array<{name: string, slug: string}> = [];
+  const contentLower = content.toLowerCase();
+
+  for (const location of COMMON_LOCATIONS) {
+    // Case insensitive search
+    const regex = new RegExp(`\\b${location.name}\\b`, 'gi');
+    if (regex.test(content)) {
+      found.push(location);
+    }
+  }
+
+  // Remove duplicates
+  return Array.from(new Map(found.map(item => [item.slug, item])).values());
+}
+
+/**
+ * Extract brands mentioned in content
+ */
+export function extractBrandsFromContent(content: string): Array<{name: string, slug: string}> {
+  const found: Array<{name: string, slug: string}> = [];
+
+  for (const brand of COMMON_BRANDS) {
+    const regex = new RegExp(`\\b${brand.name}\\b`, 'gi');
+    if (regex.test(content)) {
+      found.push(brand);
+    }
+  }
+
+  // Remove duplicates
+  return Array.from(new Map(found.map(item => [item.slug, item])).values());
+}
+
+/**
+ * Add internal links to content for locations and brands
+ */
+export function addInternalLinksToContent(content: string): string {
+  let linkedContent = content;
+
+  // Add location links (only first occurrence)
+  const addedLocations = new Set<string>();
+  for (const location of COMMON_LOCATIONS) {
+    if (!addedLocations.has(location.slug)) {
+      // Replace first occurrence only
+      const regex = new RegExp(`\\b(${location.name})\\b`, 'i');
+      if (regex.test(linkedContent)) {
+        linkedContent = linkedContent.replace(
+          regex,
+          `<a href="/lokasyonlar/${location.slug}" class="text-blue-600 hover:text-blue-700 underline font-medium">$1</a>`
+        );
+        addedLocations.add(location.slug);
+      }
+    }
+  }
+
+  // Add brand links (only first occurrence)
+  const addedBrands = new Set<string>();
+  for (const brand of COMMON_BRANDS) {
+    if (!addedBrands.has(brand.slug)) {
+      const regex = new RegExp(`\\b(${brand.name})\\b`, 'i');
+      if (regex.test(linkedContent)) {
+        linkedContent = linkedContent.replace(
+          regex,
+          `<a href="/markalar/${brand.slug}" class="text-blue-600 hover:text-blue-700 underline font-medium">$1</a>`
+        );
+        addedBrands.add(brand.slug);
+      }
+    }
+  }
+
+  return linkedContent;
+}
