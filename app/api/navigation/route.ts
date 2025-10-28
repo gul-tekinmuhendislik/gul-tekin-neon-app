@@ -1,27 +1,34 @@
 import { NextResponse } from 'next/server';
-import { sql } from '@/lib/db';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
     // Get all parent menu items
-    const parentItems = await sql`
-      SELECT id, title, href, order_index, icon, target
-      FROM navigation_menu
-      WHERE is_active = true AND parent_id IS NULL
-      ORDER BY order_index ASC
-    `;
+    const parentItems = await prisma.navigation_menu.findMany({
+      where: {
+        is_active: true,
+        parent_id: null
+      },
+      orderBy: {
+        order_index: 'asc'
+      }
+    });
 
     // Get all submenu items
-    const subItems = await sql`
-      SELECT id, title, href, order_index, icon, target, parent_id
-      FROM navigation_menu
-      WHERE is_active = true AND parent_id IS NOT NULL
-      ORDER BY parent_id, order_index ASC
-    `;
+    const subItems = await prisma.navigation_menu.findMany({
+      where: {
+        is_active: true,
+        parent_id: { not: null }
+      },
+      orderBy: [
+        { parent_id: 'asc' },
+        { order_index: 'asc' }
+      ]
+    });
 
     // Build hierarchical menu structure
-    const menuItems = parentItems.map((parent: any) => {
-      const children = subItems.filter((sub: any) => sub.parent_id === parent.id);
+    const menuItems = parentItems.map((parent) => {
+      const children = subItems.filter((sub) => sub.parent_id === parent.id);
       return {
         ...parent,
         children: children.length > 0 ? children : undefined
