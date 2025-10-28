@@ -303,9 +303,10 @@ export default async function HizmetDetailPage({ params }: PageProps) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {ilgiliUrunler.map((urun) => (
-                <div
+                <Link
                   key={urun.id}
-                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                  href={`/urunler/${urun.slug}`}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group block"
                 >
                   {(urun.cloudinary_url || urun.gorsel_url) ? (
                     <div className="h-48 overflow-hidden bg-gray-100">
@@ -346,15 +347,15 @@ export default async function HizmetDetailPage({ params }: PageProps) {
                           {urun.stokta ? 'Stokta' : 'Tükendi'}
                         </span>
                       )}
-                      <button className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
+                      <span className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
                         Detaylar
                         <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
-                      </button>
+                      </span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 
