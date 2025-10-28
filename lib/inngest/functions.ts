@@ -1498,3 +1498,6 @@ export {
   generateImageForBlog
   // Twitter functions moved to twitter-functions.ts
 };
+
+// Import auto post function
+export { autoPostBlogToFacebook } from './auto-facebook-post';

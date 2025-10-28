@@ -6,7 +6,7 @@ export default function LocalBusinessSchema() {
     "name": "Gül-Tekin Mühendislik",
     "image": "https://gul-tekinmuhendislik.com/logo.png",
     "url": "https://gul-tekinmuhendislik.com",
-    "telephone": "+902523850000",
+    "telephone": "+902523863554",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
@@ -42,10 +42,12 @@ export default function LocalBusinessSchema() {
       }
     ],
     "sameAs": [
-      "https://share.google/XnDMvkV4bTVtWo6BV",
-      "https://www.facebook.com/gultekinmuhendislik",
-      "https://www.instagram.com/gultekinmuhendislik",
-      "https://www.linkedin.com/company/gul-tekin-muhendislik"
+      "https://share.google/VJ161BKEdDPp0vMKU",
+      "https://www.facebook.com/gultekinbodrum",
+      "https://www.instagram.com/gultekinmuhendislik48/",
+      "https://www.linkedin.com/company/gul-tekinmuhendislik/?viewAsMember=true",
+      "https://x.com/gul_tekin_muh",
+      "https://www.youtube.com/@GÜLTEKİNMÜHENDİSLİK"
     ],
     "description": "Muğla bölgesinde profesyonel mühendislik, proje yönetimi ve danışmanlık hizmetleri sunan lider firma.",
     "foundingDate": "2015",

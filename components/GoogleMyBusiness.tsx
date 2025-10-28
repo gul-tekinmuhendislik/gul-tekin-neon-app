@@ -5,9 +5,10 @@ import { MapPin, Phone, Clock, Star } from 'lucide-react';
 export default function GoogleMyBusiness() {
   const businessInfo = {
     name: "Gül-Tekin Mühendislik",
-    address: "Yalıkavak, Bodrum, Muğla, Türkiye",
+    address: "Gökçebel Mah. İnönü Cad. 61/D, Yalıkavak, Bodrum, Muğla 48990",
     phone: "0252 386 35 54",
-    fax: "0252 386 41 34",
+    mobile: "0532 317 78 59",
+    whatsapp: "+905414573019",
     email: "info@gul-tekinmuhendislik.com",
     rating: 5.0,
     reviewCount: 12,
@@ -21,8 +22,8 @@ export default function GoogleMyBusiness() {
       saturday: "09:00 - 17:00",
       sunday: "Kapalı"
     },
-    mapUrl: "https://share.google/XnDMvkV4bTVtWo6BV",
-    description: "Yalıkavak ve Bodrum bölgesinde profesyonel mühendislik hizmetleri"
+    mapUrl: "https://share.google/VJ161BKEdDPp0vMKU",
+    description: "Bodrum ve Muğla bölgesinde mekanik tesisat, ısı pompası, hidrofor ve su arıtma sistemleri"
   };
 
   return (
@@ -57,14 +58,30 @@ export default function GoogleMyBusiness() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Phone className="w-5 h-5 text-primary" />
-          <a 
-            href={`tel:${businessInfo.phone.replace(/\s/g, '')}`}
-            className="text-gray-300 hover:text-white transition-colors"
-          >
-            {businessInfo.phone}
-          </a>
+        <div className="flex items-start gap-3">
+          <Phone className="w-5 h-5 text-primary mt-1" />
+          <div className="flex flex-col gap-1">
+            <a
+              href={`tel:${businessInfo.phone.replace(/\s/g, '')}`}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Tel: {businessInfo.phone}
+            </a>
+            <a
+              href={`tel:${businessInfo.mobile.replace(/\s/g, '')}`}
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Gsm: {businessInfo.mobile}
+            </a>
+            <a
+              href={`https://wa.me/${businessInfo.whatsapp.replace(/\+/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-400 hover:text-green-300 transition-colors"
+            >
+              WhatsApp: {businessInfo.whatsapp}
+            </a>
+          </div>
         </div>
 
         <div className="flex items-start gap-3">
