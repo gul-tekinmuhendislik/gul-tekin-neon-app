@@ -4,6 +4,7 @@ import { inter } from "./fonts";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { defaultMetadata } from "./metadata";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = defaultMetadata;
 
@@ -48,6 +49,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
