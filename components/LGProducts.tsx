@@ -29,7 +29,7 @@ async function getLGProducts() {
         AND anasayfa_goster = true
         AND (stokta = true OR stokta IS NULL)
       ORDER BY updated_at DESC
-      LIMIT 6
+      LIMIT 4
     `;
     return Array.isArray(products) ? products as unknown as Product[] : [];
   } catch (error) {

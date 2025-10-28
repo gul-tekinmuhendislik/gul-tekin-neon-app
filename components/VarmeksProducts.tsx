@@ -29,7 +29,7 @@ async function getVarmeksProducts() {
         AND anasayfa_goster = true
         AND (stokta = true OR stokta IS NULL)
       ORDER BY updated_at DESC
-      LIMIT 6
+      LIMIT 4
     `;
     return Array.isArray(products) ? products as unknown as Product[] : [];
   } catch (error) {
@@ -65,7 +65,7 @@ export default async function VarmeksProducts() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {products.map((product) => (
               <Link
                 key={product.id}
@@ -80,13 +80,13 @@ export default async function VarmeksProducts() {
                       alt={product.urun_adi}
                       fill
                       className="object-contain p-6 group-hover:scale-110 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
                       <div className="text-gray-300">
-                        <svg className="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>
                       </div>
@@ -102,11 +102,11 @@ export default async function VarmeksProducts() {
 
                 {/* Product Info */}
                 <div className="p-5">
-                  <h3 className="font-bold text-gray-900 text-lg mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                  <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
                     {product.urun_adi}
                   </h3>
                   {product.aciklama && (
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                    <p className="text-xs text-gray-600 line-clamp-2 mb-3">
                       {product.aciklama}
                     </p>
                   )}

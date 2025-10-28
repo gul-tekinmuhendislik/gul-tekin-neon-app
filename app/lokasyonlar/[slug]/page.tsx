@@ -393,7 +393,7 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {hizmetler.map((hizmet) => (
-                <Link key={hizmet.id} href={`/hizmetler/${hizmet.slug}`}>
+                <Link key={hizmet.id} href={`/lokasyonlar/${slug}/${hizmet.slug}`}>
                   <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     {(hizmet.cloudinary_url || hizmet.resim_url) ? (
                       <div className="relative w-full h-48">
@@ -425,7 +425,7 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
 
                     <div className="p-5">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                        {hizmet.hizmet_adi}
+                        {lokasyon.ilce_adi} {hizmet.hizmet_adi}
                       </h3>
                       {hizmet.kategori && (
                         <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full mb-2">
@@ -439,22 +439,24 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                       )}
                       {hizmet.urunler && hizmet.urunler.length > 0 && (
                         <div className="mt-3">
-                          <h4 className="text-sm font-medium text-gray-700 mb-1">Öne Çıkan Ürünler:</h4>
-                          <div className="space-y-1">
-                            {hizmet.urunler.map((urun) => (
-                              <div key={urun.id} className="flex items-center text-xs text-gray-600">
-                                {urun.cloudinary_url && (
-                                  <Image
-                                    src={urun.cloudinary_url}
-                                    alt={urun.urun_adi}
-                                    width={24}
-                                    height={24}
-                                    className="rounded-full object-cover mr-2"
-                                  />
-                                )}
-                                <span className="truncate">{urun.urun_adi}</span>
-                              </div>
-                            ))}
+                          <h4 className="text-sm font-medium text-gray-700 mb-1">
+                            {hizmet.urunler.length} Ürün Mevcut
+                          </h4>
+                          <div className="flex items-center text-sm text-blue-600 font-medium group-hover:text-blue-700">
+                            <span>Ürünleri Gör</span>
+                            <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+                      {(!hizmet.urunler || hizmet.urunler.length === 0) && (
+                        <div className="mt-3">
+                          <div className="flex items-center text-sm text-blue-600 font-medium group-hover:text-blue-700">
+                            <span>Detayları Gör</span>
+                            <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
                           </div>
                         </div>
                       )}
