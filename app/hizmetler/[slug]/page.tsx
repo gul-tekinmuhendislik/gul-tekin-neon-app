@@ -53,9 +53,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 //     }));
 // }
 
-// Force dynamic rendering for better performance and fresh data
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Use ISR for better performance and SEO
+export const revalidate = 3600;
 
 export default async function HizmetDetailPage({ params }: PageProps) {
   const { slug } = await params;

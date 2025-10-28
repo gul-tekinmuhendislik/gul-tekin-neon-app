@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import { validateMetaDescription, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
@@ -99,7 +100,11 @@ export async function generateMetadata({ params }: MahallePageProps) {
 
   return {
     title: `${mahalle.mahalle_adi} ${lokasyon.ilce_adi} - Su Deposu, Hidrofor, Pompa | Gül-Tekin Mühendislik`,
-    description: mahalle.aciklama || `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde su deposu, hidrofor, ısı pompası ve tesisat hizmetleri. Profesyonel kurulum ve servis.`,
+    description: validateMetaDescription(
+      mahalle.aciklama || undefined,
+      `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde su deposu, hidrofor, ısı pompası ve tesisat hizmetleri. Profesyonel kurulum ve servis.`,
+      `${mahalle.mahalle_adi} ${lokasyon.ilce_adi}`
+    ),
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
     },
@@ -229,7 +234,11 @@ export default async function MahallePage({ params }: MahallePageProps) {
                       <div className="relative w-full h-48">
                         <Image
                           src={(hizmet.cloudinary_url || hizmet.resim_url) as string}
-                          alt={hizmet.hizmet_adi || 'Hizmet'}
+                          alt={validateAltText(
+                            hizmet.hizmet_adi || undefined,
+                            (hizmet.cloudinary_url || hizmet.resim_url || '').split('/').pop() || 'hizmet',
+                            `${mahalle.mahalle_adi} ${hizmet.hizmet_adi}`
+                          )}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -276,7 +285,11 @@ export default async function MahallePage({ params }: MahallePageProps) {
                                 {urun.cloudinary_url && (
                                   <Image
                                     src={urun.cloudinary_url as string}
-                                    alt={urun.urun_adi || 'Ürün'}
+                                    alt={validateAltText(
+                                      urun.urun_adi || undefined,
+                                      urun.cloudinary_url?.split('/').pop() || 'urun',
+                                      `${urun.urun_adi} ürünü`
+                                    )}
                                     width={24}
                                     height={24}
                                     className="rounded-full object-cover mr-2"

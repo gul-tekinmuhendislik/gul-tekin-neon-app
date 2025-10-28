@@ -14,8 +14,7 @@ import { getRandomBrands } from "@/lib/get-brands";
 import { FlipWords } from "@/components/ui/flip-words";
 import { sql } from '@/lib/db';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Ana Sayfa | Gül-Tekin Mühendislik - Isı Pompası ve Enerji Sistemleri",

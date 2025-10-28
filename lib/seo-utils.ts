@@ -43,18 +43,95 @@ export function checkDescriptionOptimization(description: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  
+
   if (description.length < 120) {
     issues.push("Description is too short (< 120 characters)");
   }
   if (description.length > 160) {
     issues.push("Description is too long (> 160 characters)");
   }
-  
+
   return {
     isOptimized: issues.length === 0,
     issues,
   };
+}
+
+/**
+ * Validate and optimize meta description with intelligent truncation
+ */
+export function validateMetaDescription(
+  description: string | undefined,
+  fallback?: string,
+  context?: string
+): string {
+  const IDEAL_LENGTH = 155;
+  const MAX_LENGTH = 160;
+
+  if (!description || description.trim().length === 0) {
+    if (fallback) {
+      return validateMetaDescription(fallback, undefined, context);
+    }
+    return context ? `${context} hizmetleri hakkında detaylı bilgi alın.` : 'Profesyonel hizmetler.';
+  }
+
+  const cleanDescription = description.trim();
+
+  // If description is too long, truncate intelligently
+  if (cleanDescription.length > MAX_LENGTH) {
+    // Try to cut at a sentence or word boundary
+    const truncated = cleanDescription.substring(0, IDEAL_LENGTH);
+    const lastSentence = truncated.lastIndexOf('.');
+    const lastSpace = truncated.lastIndexOf(' ');
+
+    if (lastSentence > IDEAL_LENGTH - 30) {
+      return truncated.substring(0, lastSentence + 1);
+    } else if (lastSpace > IDEAL_LENGTH - 20) {
+      return truncated.substring(0, lastSpace) + '...';
+    } else {
+      return truncated + '...';
+    }
+  }
+
+  return cleanDescription;
+}
+
+/**
+ * Generate location-specific SEO metadata
+ */
+export function generateLocationSEO(
+  locationName: string,
+  districtName: string,
+  serviceType?: string
+): {
+  title: string;
+  description: string;
+  keywords: string[];
+} {
+  const title = serviceType
+    ? `${locationName} ${districtName} - ${serviceType} | Gül-Tekin Mühendislik`
+    : `${locationName} ${districtName} - Su Deposu, Hidrofor, Pompa | Gül-Tekin Mühendislik`;
+
+  const description = serviceType
+    ? validateMetaDescription(
+        `${districtName} ${locationName}'nde ${serviceType} hizmetleri. Profesyonel kurulum ve servis.`
+      )
+    : validateMetaDescription(
+        `${districtName} ${locationName}'nde su deposu, hidrofor, ısı pompası ve tesisat hizmetleri. Profesyonel kurulum ve servis.`
+      );
+
+  const keywords = [
+    locationName.toLowerCase(),
+    districtName.toLowerCase(),
+    'su deposu',
+    'hidrofor',
+    'ısı pompası',
+    'mekanik tesisat',
+    'muğla',
+    serviceType?.toLowerCase()
+  ].filter(Boolean) as string[];
+
+  return { title, description, keywords };
 }
 
 /**
@@ -124,7 +201,7 @@ export function checkAltTextQuality(altText: string, imageName?: string): {
   issues: string[];
 } {
   const issues: string[] = [];
-  
+
   if (!altText || altText.trim().length === 0) {
     issues.push("Alt text is missing");
   } else {
@@ -141,9 +218,38 @@ export function checkAltTextQuality(altText: string, imageName?: string): {
       issues.push("Alt text is the same as the file name");
     }
   }
-  
+
   return {
     isOptimized: issues.length === 0,
     issues,
   };
+}
+
+/**
+ * Validate and improve alt text for images
+ */
+export function validateAltText(
+  altText: string | undefined,
+  fileName: string,
+  context?: string
+): string {
+  if (altText && altText.trim().length > 0) {
+    // Ensure alt text doesn't exceed recommended length (125 characters)
+    const cleanAlt = altText.trim();
+    return cleanAlt.length > 125 ? cleanAlt.substring(0, 122) + '...' : cleanAlt;
+  }
+
+  // Generate descriptive alt text from filename and context
+  const cleanFileName = fileName
+    .replace(/\.[^/.]+$/, '') // Remove extension
+    .replace(/[-_]/g, ' ')     // Replace hyphens and underscores with spaces
+    .replace(/\d+/g, '')       // Remove numbers
+    .trim();
+
+  if (context) {
+    const contextAlt = `${context} - ${cleanFileName}`;
+    return contextAlt.length > 125 ? contextAlt.substring(0, 122) + '...' : contextAlt;
+  }
+
+  return cleanFileName || 'Görsel';
 }
