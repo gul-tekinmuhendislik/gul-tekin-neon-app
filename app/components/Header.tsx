@@ -118,17 +118,19 @@ export default function Header() {
                     </Link>
                   )}
                   {item.children && openSubmenu === item.id && (
-                    <div className="absolute top-full left-0 mt-1 bg-white shadow-xl rounded-md border border-gray-200 py-2 min-w-[200px] z-[10001]">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.id}
-                          href={child.href}
-                          target={child.target || '_self'}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
-                        >
-                          {child.title}
-                        </Link>
-                      ))}
+                    <div className="absolute top-full left-0 -mt-1 pt-2 bg-white shadow-xl rounded-md border border-gray-200 pb-2 min-w-[200px] z-[10001]">
+                      <div className="pt-1">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.id}
+                            href={child.href}
+                            target={child.target || '_self'}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                          >
+                            {child.title}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
