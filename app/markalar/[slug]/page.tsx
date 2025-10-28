@@ -233,10 +233,11 @@ export default async function MarkaDetailPage({ params }: PageProps) {
 
             {urunler.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {urunler.map((urun) => (
-                  <div
+                {urunler.filter(urun => urun.slug).map((urun) => (
+                  <Link
                     key={urun.id}
-                    className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group"
+                    href={`/urunler/${urun.slug}`}
+                    className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group block"
                   >
                     {(urun.cloudinary_url || urun.gorsel_url) ? (
                       <div className="h-48 overflow-hidden bg-gray-100">
@@ -279,7 +280,7 @@ export default async function MarkaDetailPage({ params }: PageProps) {
                         )}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (

@@ -416,8 +416,49 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
             {urun.ozellikler && (
               <div className="mt-6 pt-6 border-t">
                 <h3 className="font-semibold text-gray-900 mb-3">Detaylı Özellikler</h3>
-                <div className="text-gray-600 whitespace-pre-wrap">
-                  {typeof urun.ozellikler === 'object' ? JSON.stringify(urun.ozellikler, null, 2) : urun.ozellikler}
+                <div className="bg-gray-50 rounded-lg p-4">
+                  {(() => {
+                    try {
+                      const specs = typeof urun.ozellikler === 'string'
+                        ? JSON.parse(urun.ozellikler)
+                        : urun.ozellikler;
+
+                      if (typeof specs === 'object' && specs !== null) {
+                        // Turkish label mapping
+                        const labelMap: Record<string, string> = {
+                          model: 'Model',
+                          seri: 'Seri',
+                          kapasite: 'Kapasite',
+                          isitma_kapasitesi: 'Isıtma Kapasitesi',
+                          cop: 'COP',
+                          max_sicaklik: 'Maksimum Sıcaklık',
+                          sogutma_akiskani: 'Soğutma Akışkanı',
+                          wifi: 'WiFi',
+                          yardimci_isitici: 'Yardımcı Isıtıcı',
+                          net_agirlik: 'Net Ağırlık',
+                          guc_kaynagi: 'Güç Kaynağı',
+                        };
+
+                        return (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            {Object.entries(specs).map(([key, value]) => (
+                              <div key={key} className="flex items-center justify-between py-3 px-4 bg-white rounded-lg border border-gray-200">
+                                <span className="text-gray-700 font-medium">
+                                  {labelMap[key] || key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                                </span>
+                                <span className="text-gray-900 font-semibold text-right ml-4">
+                                  {String(value)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        );
+                      }
+                      return <div className="text-gray-600">{String(specs)}</div>;
+                    } catch (e) {
+                      return <div className="text-gray-600 whitespace-pre-wrap">{urun.ozellikler}</div>;
+                    }
+                  })()}
                 </div>
               </div>
             )}

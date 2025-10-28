@@ -27,14 +27,14 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a href="/privacy" className="text-gray-600 hover:text-gray-900 text-sm">
+                <Link href="/privacy" className="text-gray-600 hover:text-gray-900 text-sm">
                   Gizlilik Politikası
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/terms" className="text-gray-600 hover:text-gray-900 text-sm">
+                <Link href="/terms" className="text-gray-600 hover:text-gray-900 text-sm">
                   Kullanım Şartları
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

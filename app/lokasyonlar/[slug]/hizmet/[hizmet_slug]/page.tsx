@@ -69,7 +69,7 @@ async function getLokasyonHizmetData(lokasyonSlug: string, hizmetSlug: string) {
 
     // Bu hizmete ait ürünleri al
     // Kategori veya ürün adında hizmet adı geçenler + hizmetin urunler listesindekiler
-    const urunler = await prisma.urunler.findMany({
+    const urunler = hizmet.hizmet_adi ? await prisma.urunler.findMany({
       where: {
         aktif: true,
         OR: [
@@ -92,11 +92,11 @@ async function getLokasyonHizmetData(lokasyonSlug: string, hizmetSlug: string) {
         ]
       },
       orderBy: [
-        { sira: 'asc' },
+        { siralama_no: 'asc' },
         { urun_adi: 'asc' }
       ],
       take: 50
-    });
+    }) : [];
 
     return {
       lokasyon,
@@ -122,21 +122,22 @@ export async function generateMetadata({ params }: LokasyonHizmetPageProps) {
 
   const { lokasyon, hizmet, urunler } = data;
 
-  const title = `${lokasyon.ilce_adi} ${hizmet.hizmet_adi} - ${urunler.length} Ürün ve Çözüm | Gül-Tekin Mühendislik`;
+  const hizmetAdi = hizmet.hizmet_adi || 'Hizmet';
+  const title = `${lokasyon.ilce_adi} ${hizmetAdi} - ${urunler.length} Ürün ve Çözüm | Gül-Tekin Mühendislik`;
 
   const description = hizmet.aciklama ||
-    `${lokasyon.ilce_adi} bölgesinde ${hizmet.hizmet_adi} hizmeti için ${urunler.length} farklı ürün ve çözüm. Profesyonel kurulum, montaj, bakım ve servis hizmetleri. ${lokasyon.il || 'Muğla'} genelinde uzman ekip ile 7/24 destek.`;
+    `${lokasyon.ilce_adi} bölgesinde ${hizmetAdi} hizmeti için ${urunler.length} farklı ürün ve çözüm. Profesyonel kurulum, montaj, bakım ve servis hizmetleri. ${lokasyon.il || 'Muğla'} genelinde uzman ekip ile 7/24 destek.`;
 
   return {
     title,
     description,
     keywords: [
-      `${lokasyon.ilce_adi} ${hizmet.hizmet_adi.toLowerCase()}`,
-      `${lokasyon.ilce_adi} ${hizmet.hizmet_adi.toLowerCase()} fiyat`,
-      `${lokasyon.ilce_adi} ${hizmet.hizmet_adi.toLowerCase()} kurulum`,
-      `${lokasyon.ilce_adi} ${hizmet.hizmet_adi.toLowerCase()} montaj`,
-      `${lokasyon.il || 'Muğla'} ${hizmet.hizmet_adi.toLowerCase()}`,
-      ...urunler.slice(0, 5).map(u => `${lokasyon.ilce_adi} ${u.urun_adi.toLowerCase()}`),
+      `${lokasyon.ilce_adi} ${hizmetAdi.toLowerCase()}`,
+      `${lokasyon.ilce_adi} ${hizmetAdi.toLowerCase()} fiyat`,
+      `${lokasyon.ilce_adi} ${hizmetAdi.toLowerCase()} kurulum`,
+      `${lokasyon.ilce_adi} ${hizmetAdi.toLowerCase()} montaj`,
+      `${lokasyon.il || 'Muğla'} ${hizmetAdi.toLowerCase()}`,
+      ...urunler.slice(0, 5).map(u => `${lokasyon.ilce_adi} ${(u.urun_adi || '').toLowerCase()}`),
     ],
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/hizmet/${hizmetSlug}`,
@@ -168,12 +169,14 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
 
   const { lokasyon, hizmet, urunler } = data;
 
+  const hizmetAdi = hizmet.hizmet_adi || 'Hizmet';
+
   // Schema markup
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": `${hizmet.hizmet_adi} - ${lokasyon.ilce_adi}`,
-    "description": hizmet.aciklama || `${lokasyon.ilce_adi} bölgesinde ${hizmet.hizmet_adi} hizmeti`,
+    "name": `${hizmetAdi} - ${lokasyon.ilce_adi}`,
+    "description": hizmet.aciklama || `${lokasyon.ilce_adi} bölgesinde ${hizmetAdi} hizmeti`,
     "provider": {
       "@type": "LocalBusiness",
       "name": "Gül-Tekin Mühendislik",
@@ -217,7 +220,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
       {
         "@type": "ListItem",
         "position": 4,
-        "name": hizmet.hizmet_adi,
+        "name": hizmetAdi,
         "item": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/hizmet/${hizmetSlug}`
       }
     ]
@@ -226,14 +229,14 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
   const productListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": `${lokasyon.ilce_adi} ${hizmet.hizmet_adi} Ürünleri`,
+    "name": `${lokasyon.ilce_adi} ${hizmetAdi} Ürünleri`,
     "numberOfItems": urunler.length,
     "itemListElement": urunler.slice(0, 20).map((urun, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "item": {
         "@type": "Product",
-        "name": urun.urun_adi,
+        "name": urun.urun_adi || 'Ürün',
         "description": urun.aciklama || `${lokasyon.ilce_adi} bölgesinde ${urun.urun_adi}`,
         "brand": urun.marka ? {
           "@type": "Brand",
@@ -274,7 +277,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center text-white max-w-4xl px-4">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                {lokasyon.ilce_adi} {hizmet.hizmet_adi}
+                {lokasyon.ilce_adi} {hizmetAdi}
               </h1>
               <p className="text-xl md:text-2xl opacity-90">
                 {lokasyon.il && `${lokasyon.il} | `}
@@ -294,7 +297,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
               <li>/</li>
               <li><Link href={`/lokasyonlar/${slug}`} className="hover:text-blue-600">{lokasyon.ilce_adi}</Link></li>
               <li>/</li>
-              <li className="text-blue-600 font-medium">{hizmet.hizmet_adi}</li>
+              <li className="text-blue-600 font-medium">{hizmetAdi}</li>
             </ol>
           </nav>
 
@@ -302,11 +305,11 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
           <div className="max-w-5xl mx-auto mb-12">
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                {lokasyon.ilce_adi} Bölgesinde {hizmet.hizmet_adi} Hizmeti
+                {lokasyon.ilce_adi} Bölgesinde {hizmetAdi} Hizmeti
               </h2>
               <p className="text-gray-700 leading-relaxed text-lg mb-4">
                 {hizmet.aciklama ||
-                  `${lokasyon.ilce_adi} ve çevresinde profesyonel ${hizmet.hizmet_adi.toLowerCase()} hizmeti sunuyoruz.
+                  `${lokasyon.ilce_adi} ve çevresinde profesyonel ${hizmetAdi.toLowerCase()} hizmeti sunuyoruz.
                   Uzman ekibimiz ve kaliteli ürünlerimizle kurulum, montaj, bakım ve servis desteği sağlıyoruz.`}
               </p>
               <div className="grid md:grid-cols-3 gap-4 mt-6">
@@ -344,10 +347,10 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
           {/* Ürünler */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
-              {lokasyon.ilce_adi} {hizmet.hizmet_adi} Ürünlerimiz
+              {lokasyon.ilce_adi} {hizmetAdi} Ürünlerimiz
             </h2>
             <p className="text-center text-gray-600 mb-8 max-w-3xl mx-auto">
-              {lokasyon.ilce_adi} bölgesinde <strong>{hizmet.hizmet_adi.toLowerCase()}</strong> için
+              {lokasyon.ilce_adi} bölgesinde <strong>{hizmetAdi.toLowerCase()}</strong> için
               <strong> {urunler.length} farklı ürün</strong> ve çözüm sunuyoruz.
               Tüm ürünlerimiz kalite garantili olup profesyonel kurulum hizmeti ile birlikte sunulmaktadır.
             </p>
@@ -363,7 +366,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
                       <div className="relative w-full h-48 bg-gray-100">
                         <Image
                           src={urun.cloudinary_url}
-                          alt={urun.urun_adi}
+                          alt={urun.urun_adi || 'Ürün'}
                           fill
                           className="object-contain p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -378,7 +381,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
                     )}
                     <div className="p-5">
                       <h3 className="font-bold text-gray-900 mb-2 text-lg line-clamp-2">
-                        {urun.urun_adi}
+                        {urun.urun_adi || 'Ürün'}
                       </h3>
                       {urun.marka && (
                         <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full mb-2 font-medium">
@@ -424,7 +427,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
           {/* CTA */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center text-white mb-12">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              {lokasyon.ilce_adi} {hizmet.hizmet_adi} için Teklif Alın
+              {lokasyon.ilce_adi} {hizmetAdi} için Teklif Alın
             </h3>
             <p className="text-lg mb-6 opacity-90">
               Uzman ekibimizle size en uygun çözümü sunmak için hazırız
@@ -461,7 +464,7 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
               href={`/hizmetler/${hizmetSlug}`}
               className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
             >
-              {hizmet.hizmet_adi} Hakkında Detaylı Bilgi
+              {hizmetAdi} Hakkında Detaylı Bilgi
             </Link>
             <span className="text-gray-400">|</span>
             <Link
