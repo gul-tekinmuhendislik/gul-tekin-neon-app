@@ -17,7 +17,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^2.0.24",
+    "@ai-sdk/openai": "^2.0.56",
     "@fal-ai/serverless-client": "^0.15.0",
     "@google-cloud/aiplatform": "^5.7.0",
     "@google-cloud/vertexai": "^1.10.0",
