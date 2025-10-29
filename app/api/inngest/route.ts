@@ -48,6 +48,9 @@ import {
   generateBlogImageWithVertexAI
   // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
 } from "@/lib/inngest/vertex-ai-generation";
+import {
+  autoPostBlogToFacebook
+} from "@/lib/inngest/auto-facebook-post";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -81,7 +84,8 @@ export const { GET, POST, PUT } = serve({
     shareBlogOnTwitter,
     bulkShareOnTwitter,
     monitorTwitterHealth,
-    generateBlogImageWithVertexAI
+    generateBlogImageWithVertexAI,
     // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
+    autoPostBlogToFacebook
   ],
 });

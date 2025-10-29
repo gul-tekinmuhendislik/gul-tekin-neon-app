@@ -173,39 +173,36 @@ export async function saveTweetToDatabase(
   status: 'published' | 'failed' = 'published'
 ): Promise<void> {
   try {
+    const postData = {
+      text: tweetText,
+      url: `https://twitter.com/i/web/status/${tweetId}`,
+      mediaIds: mediaIds || [],
+      postedAt: new Date().toISOString()
+    };
+
     await sql`
       INSERT INTO social_media_posts (
         content_id,
         platform,
         post_id,
-        post_content,
-        post_url,
-        media_urls,
+        post_data,
         status,
-        posted_at,
-        created_at,
-        updated_at
+        posted_at
       ) VALUES (
         ${contentId},
         'twitter',
         ${tweetId},
-        ${tweetText},
-        ${`https://twitter.com/i/web/status/${tweetId}`},
-        ${mediaIds || []},
+        ${JSON.stringify(postData)},
         ${status},
-        ${new Date().toISOString()},
-        ${new Date().toISOString()},
         ${new Date().toISOString()}
       )
       ON CONFLICT (content_id, platform)
       DO UPDATE SET
         post_id = EXCLUDED.post_id,
-        post_content = EXCLUDED.post_content,
-        post_url = EXCLUDED.post_url,
-        media_urls = EXCLUDED.media_urls,
+        post_data = EXCLUDED.post_data,
         status = EXCLUDED.status,
         posted_at = EXCLUDED.posted_at,
-        updated_at = ${new Date().toISOString()}
+        updated_at = NOW()
     `;
 
     console.log(`Tweet saved to database for content ${contentId}`);
