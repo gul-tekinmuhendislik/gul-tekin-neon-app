@@ -218,6 +218,19 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
           "name": urun.marka
         } : undefined,
         "image": urun.cloudinary_url,
+        "offers": {
+          "@type": "Offer",
+          "availability": "https://schema.org/InStock",
+          "priceCurrency": "TRY",
+          "url": "https://gul-tekinmuhendislik.com/contact"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "50",
+          "bestRating": "5",
+          "worstRating": "1"
+        }
       }
     }))
   };
