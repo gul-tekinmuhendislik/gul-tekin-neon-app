@@ -79,7 +79,7 @@ export default async function MarkalarPage() {
     "logo": "https://gul-tekinmuhendislik.com/logo.png",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+902522117171",
+      "telephone": "+902523863554",
       "contactType": "customer service",
       "areaServed": "TR",
       "availableLanguage": "Turkish"

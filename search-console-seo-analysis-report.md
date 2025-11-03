@@ -263,7 +263,7 @@ Toplam URL: 309
 
 Bu rapor ile ilgili sorularınız için:
 - **E-posta:** info@gul-tekinmuhendislik.com
-- **Telefon:** +90 252 211 71 71
+- **Telefon:** 0252 386 35 54
 - **Web:** https://gul-tekinmuhendislik.com
 
 ---
