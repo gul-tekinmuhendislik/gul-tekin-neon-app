@@ -3,7 +3,6 @@ import { inngest } from "@/lib/inngest/client";
 import {
   helloWorld,
   sendWelcomeEmail,
-  processDataSync,
   logEventToDatabase,
   processNewContent,
   applyEEATOptimizations,
@@ -22,8 +21,7 @@ import {
 } from "@/lib/inngest/fal-ai-generation";
 import {
   shareBlogOnTwitter,
-  bulkShareOnTwitter,
-  monitorTwitterHealth
+  bulkShareOnTwitter
 } from "@/lib/inngest/twitter-functions";
 // Airtable sync removed - data now managed directly in Neon
 // import {
@@ -57,7 +55,6 @@ export const { GET, POST, PUT } = serve({
   functions: [
     helloWorld,
     sendWelcomeEmail,
-    processDataSync,
     logEventToDatabase,
     processNewContent,
     applyEEATOptimizations,
@@ -83,7 +80,6 @@ export const { GET, POST, PUT } = serve({
     suggestImageWithGemini,
     shareBlogOnTwitter,
     bulkShareOnTwitter,
-    monitorTwitterHealth,
     generateBlogImageWithVertexAI,
     // generateVertexImagesHourly - REMOVED: Vertex AI access no longer available
     autoPostBlogToFacebook

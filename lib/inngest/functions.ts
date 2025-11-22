@@ -50,27 +50,7 @@ export const sendWelcomeEmail = inngest.createFunction(
   }
 );
 
-export const processDataSync = inngest.createFunction(
-  { id: "process-data-sync", name: "Process Data Sync" },
-  { cron: "0 */6 * * *" },
-  async ({ step }) => {
-    const data = await step.run("fetch-data", async () => {
-      console.log("Fetching data for sync...");
-      return { count: Math.floor(Math.random() * 100) };
-    });
-    
-    await step.run("process-data", async () => {
-      console.log(`Processing ${data.count} items...`);
-      return { processed: data.count };
-    });
-    
-    return {
-      success: true,
-      itemsProcessed: data.count,
-      timestamp: new Date().toISOString()
-    };
-  }
-);
+// processDataSync removed - no longer needed
 
 // New function to log events to Neon database
 export const logEventToDatabase = inngest.createFunction(
