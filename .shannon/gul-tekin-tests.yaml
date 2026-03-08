@@ -1,0 +1,308 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: gul-tekin-tests-
+  namespace: default
+spec:
+  entrypoint: test-suite
+  serviceAccountName: argo
+
+  arguments:
+    parameters:
+      - name: repo-url
+        value: "https://github.com/gul-tekinmuhendislik/gul-tekin-neon-app"
+      - name: branch
+        value: "main"
+
+  templates:
+    - name: test-suite
+      dag:
+        tasks:
+          - name: checkout
+            template: git-checkout
+          
+          - name: neon-check
+            template: check-neon
+            dependencies: checkout
+          
+          - name: blog-check
+            template: check-blog
+            dependencies: checkout
+          
+          - name: cloudinary-check
+            template: check-cloudinary
+            dependencies: checkout
+          
+          - name: product-images-check
+            template: check-product-images
+            dependencies: checkout
+          
+          - name: markdown-validate
+            template: validate-markdown
+            dependencies: checkout
+          
+          - name: report
+            template: generate-report
+            dependencies: 
+              - neon-check
+              - blog-check
+              - cloudinary-check
+              - product-images-check
+              - markdown-validate
+
+    # Checkout repository
+    - name: git-checkout
+      container:
+        image: alpine/git:latest
+        command: [sh, -c]
+        args:
+          - |
+            git clone {{workflow.parameters.repo-url}} /workspace
+            cd /workspace
+            git checkout {{workflow.parameters.branch}}
+            echo "Repository cloned successfully"
+      outputs:
+        artifacts:
+          - name: repo
+            path: /workspace
+
+    # Neon Database Health Check
+    - name: check-neon
+      container:
+        image: node:22-alpine
+        workingDir: /workspace
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: database-url
+        command: [sh, -c]
+        args:
+          - |
+            npm install pg dotenv --silent
+            node check-neon.js > /tmp/neon-report.txt 2>&1
+            cat /tmp/neon-report.txt
+            
+            # Parse output and fail if error
+            if grep -q "Error\|HATA" /tmp/neon-report.txt; then
+              echo "Neon check FAILED"
+              exit 1
+            fi
+            echo "Neon check PASSED"
+      outputs:
+        artifacts:
+          - name: neon-report
+            path: /tmp/neon-report.txt
+      retryStrategy:
+        limit: 2
+
+    # Blog System Check
+    - name: check-blog
+      container:
+        image: node:22-alpine
+        workingDir: /workspace
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: database-url
+        command: [sh, -c]
+        args:
+          - |
+            npm install pg dotenv --silent
+            node check-blog.js > /tmp/blog-report.txt 2>&1
+            cat /tmp/blog-report.txt
+            
+            if grep -q "Error\|HATA" /tmp/blog-report.txt; then
+              echo "Blog check FAILED"
+              exit 1
+            fi
+            echo "Blog check PASSED"
+      outputs:
+        artifacts:
+          - name: blog-report
+            path: /tmp/blog-report.txt
+
+    # Cloudinary Storage Check
+    - name: check-cloudinary
+      container:
+        image: node:22-alpine
+        workingDir: /workspace
+        env:
+          - name: CLOUDINARY_CLOUD_NAME
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: cloudinary-name
+          - name: CLOUDINARY_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: cloudinary-key
+          - name: CLOUDINARY_API_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: cloudinary-secret
+        command: [sh, -c]
+        args:
+          - |
+            npm install dotenv --silent
+            node check-cloudinary-quick.js > /tmp/cloudinary-report.txt 2>&1
+            cat /tmp/cloudinary-report.txt
+            
+            if grep -q "Error\|HATA" /tmp/cloudinary-report.txt; then
+              echo "Cloudinary check FAILED"
+              exit 1
+            fi
+            echo "Cloudinary check PASSED"
+      outputs:
+        artifacts:
+          - name: cloudinary-report
+            path: /tmp/cloudinary-report.txt
+
+    # Product Images Integrity Check
+    - name: check-product-images
+      container:
+        image: node:22-alpine
+        workingDir: /workspace
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: gul-tekin-secrets
+                key: database-url
+        command: [sh, -c]
+        args:
+          - |
+            npm install pg dotenv --silent
+            node check-product-images.js > /tmp/product-images-report.txt 2>&1
+            cat /tmp/product-images-report.txt
+            
+            if grep -q "Error\|HATA" /tmp/product-images-report.txt; then
+              echo "Product images check FAILED"
+              exit 1
+            fi
+            echo "Product images check PASSED"
+      outputs:
+        artifacts:
+          - name: product-images-report
+            path: /tmp/product-images-report.txt
+
+    # Markdown Documentation Validation
+    - name: validate-markdown
+      container:
+        image: node:22-alpine
+        workingDir: /workspace
+        command: [sh, -c]
+        args:
+          - |
+            # Check that all .md files exist
+            md_files=(AGENTS.md BLOG.md CLOUDINARY.md CREDENTIALS.md NEON.md PRODUCT_IMAGES.md TOOLS.md MEMORY.md)
+            
+            echo "Checking documentation files..."
+            for file in "${md_files[@]}"; do
+              if [ -f "$file" ]; then
+                lines=$(wc -l < "$file")
+                echo "[OK] $file ($lines lines)"
+              else
+                echo "[FAIL] $file not found"
+                exit 1
+              fi
+            done
+            
+            # Check for required sections in each file
+            echo ""
+            echo "Validating content..."
+            
+            # NEON.md must have "Tables" section
+            grep -q "Tables\|table" NEON.md || { echo "[FAIL] NEON.md missing table info"; exit 1; }
+            echo "[OK] NEON.md has table documentation"
+            
+            # BLOG.md must have "BLOG_POSTS" reference
+            grep -q "blog_posts\|BLOG_POSTS" BLOG.md || { echo "[FAIL] BLOG.md missing table"; exit 1; }
+            echo "[OK] BLOG.md has blog_posts table"
+            
+            # CLOUDINARY.md must have storage info
+            grep -q "Storage\|storage" CLOUDINARY.md || { echo "[FAIL] CLOUDINARY.md missing storage"; exit 1; }
+            echo "[OK] CLOUDINARY.md has storage info"
+            
+            # PRODUCT_IMAGES.md must reference urunler
+            grep -q "urunler\|URUNLER" PRODUCT_IMAGES.md || { echo "[FAIL] PRODUCT_IMAGES.md missing urunler"; exit 1; }
+            echo "[OK] PRODUCT_IMAGES.md references products"
+            
+            echo ""
+            echo "All markdown validation PASSED"
+      outputs:
+        artifacts:
+          - name: markdown-report
+            path: /tmp/markdown-report.txt
+
+    # Generate Final Report
+    - name: generate-report
+      inputs:
+        artifacts:
+          - name: neon-report
+            path: /tmp/neon-report.txt
+            optional: true
+          - name: blog-report
+            path: /tmp/blog-report.txt
+            optional: true
+          - name: cloudinary-report
+            path: /tmp/cloudinary-report.txt
+            optional: true
+          - name: product-images-report
+            path: /tmp/product-images-report.txt
+            optional: true
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args:
+          - |
+            echo "=================================="
+            echo "GÜL-TEKİN TEST REPORT"
+            echo "=================================="
+            echo "Timestamp: $(date)"
+            echo ""
+            
+            echo "=== DATABASE HEALTH ==="
+            cat /tmp/neon-report.txt 2>/dev/null || echo "No report"
+            
+            echo ""
+            echo "=== BLOG SYSTEM ==="
+            cat /tmp/blog-report.txt 2>/dev/null || echo "No report"
+            
+            echo ""
+            echo "=== IMAGE STORAGE (CLOUDINARY) ==="
+            cat /tmp/cloudinary-report.txt 2>/dev/null || echo "No report"
+            
+            echo ""
+            echo "=== PRODUCT IMAGES INTEGRITY ==="
+            cat /tmp/product-images-report.txt 2>/dev/null || echo "No report"
+            
+            echo ""
+            echo "=================================="
+            echo "TEST SUITE COMPLETED SUCCESSFULLY"
+            echo "=================================="
+
+  onSuccess: print-success
+  onFailure: print-failure
+
+  lifecycle:
+    deleteStrategy: Pod
+
+---
+# Secret for Argo to use (configure these in Shannon)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gul-tekin-secrets
+  namespace: default
+type: Opaque
+stringData:
+  database-url: "postgresql://neondb_owner:npg_fjQXK6w3iWDP@ep-polished-frog-adaec7m0-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require"
+  cloudinary-name: "dgfdk0l8j"
+  cloudinary-key: "782682811169167"
+  cloudinary-secret: "g0ojrhN_9uoubWmiVKz0f396KOo"
