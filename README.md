@@ -33,6 +33,4 @@
   - fix: Remove Ürünlerimiz section showing Airtable record IDs
   - prisma
   - dashboard
-  - lib/inngest/functions.ts - Fonksiyon implementasyonları ve kullanılmayan import'lar (Exa, generateAndSaveContent, engineeringTopics) kaldırıldı
-  - anasayfada_goster eklendi
-    
+  - openclaw
