@@ -16,6 +16,20 @@ jest.mock('framer-motion', () => ({
   useInView: () => true,
 }));
 
+// Mock FlipWords component (causes render failures in test env)
+jest.mock('../flip-words', () => ({
+  FlipWords: ({ words, className }: { words: string[]; className?: string }) => {
+    return React.createElement('span', { className }, words[0] || '');
+  },
+}));
+
+// Mock fetch to prevent API calls
+beforeAll(() => {
+  global.fetch = jest.fn().mockResolvedValue({
+    json: () => Promise.resolve({ services: [] }),
+  });
+});
+
 // Mock IntersectionObserver
 global.IntersectionObserver = jest.fn().mockImplementation((callback) => ({
   observe: jest.fn(),

@@ -1,6 +1,6 @@
 import { getMarkalariNeon } from '@/lib/markalar-client';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Metadata } from 'next';
 
 // Force dynamic rendering since brand data can change
@@ -119,9 +119,9 @@ export default async function MarkalarPage() {
           <nav className="flex mb-8 text-sm" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               <li className="inline-flex items-center">
-                <a href="/" className="text-gray-500 hover:text-gray-700">
+                <Link href="/" className="text-gray-500 hover:text-gray-700">
                   Ana Sayfa
-                </a>
+                </Link>
               </li>
               <li>
                 <div className="flex items-center">

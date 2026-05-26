@@ -60,10 +60,13 @@ export async function GET(request: NextRequest) {
       }
 
       case 'performance': {
-        // Son 28 günlük performans verilerini al
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - 28);
+        // Tarih aralığını query parametrelerinden al, yoksa varsayılan 28 gün
+        const endDate = searchParams.get('endDate')
+          ? new Date(searchParams.get('endDate')!)
+          : new Date();
+        const startDate = searchParams.get('startDate')
+          ? new Date(searchParams.get('startDate')!)
+          : (() => { const d = new Date(); d.setDate(d.getDate() - 28); return d; })();
 
         const response = await searchconsole.searchanalytics.query({
           siteUrl: siteUrl,
@@ -73,11 +76,16 @@ export async function GET(request: NextRequest) {
             dimensions: ['date', 'query', 'page'],
             dimensionFilterGroups: [],
             aggregationType: 'byPage',
-            rowLimit: 100
+            rowLimit: 25000
           }
         });
 
         const rows = response.data.rows || [];
+
+        // Persist data to seo_performance table for historical analysis (async, non-blocking)
+        persistPerformanceRows(rows, siteUrl).catch((err) =>
+          console.error('[analytics] Failed to persist performance data:', err)
+        );
 
         // Toplam metrikleri hesapla
         const totals = {
@@ -163,6 +171,7 @@ export async function GET(request: NextRequest) {
           totals,
           topQueries,
           topPages,
+          rows: rows.slice(0, 25000), // Raw rows for chart rendering
           totalRows: rows.length
         });
       }
@@ -340,5 +349,54 @@ export async function POST(request: NextRequest) {
       error: (error as Error)?.message || 'Failed to perform Search Console action',
       details: (error as any)?.response?.data
     }, { status: 500 });
+  }
+}
+
+/**
+ * Fire-and-forget persistence: upserts GSC API rows into seo_performance
+ * for historical trend analysis. Does not throw — errors are logged and swallowed.
+ */
+async function persistPerformanceRows(rows: any[], siteUrl: string): Promise<void> {
+  if (!rows || rows.length === 0) return;
+
+  const BATCH_SIZE = 100;
+
+  for (let i = 0; i < rows.length; i += BATCH_SIZE) {
+    const batch = rows.slice(i, i + BATCH_SIZE);
+
+    await Promise.all(
+      batch.map(async (row: any) => {
+        const keys = row.keys || [];
+        const dateKey = keys[0] || null;
+        const queryKey = keys[1] || null;
+        const pageKey = keys[2] || null;
+
+        if (!dateKey) return; // Skip rows without a date key
+
+        try {
+          await sql`
+            INSERT INTO seo_performance (date, query, page, device, country, clicks, impressions, ctr, position)
+            VALUES (
+              ${dateKey}::date,
+              ${queryKey},
+              ${pageKey},
+              'DESKTOP',
+              'TR',
+              ${row.clicks || 0},
+              ${row.impressions || 0},
+              ${row.ctr || 0},
+              ${row.position || 0}
+            )
+            ON CONFLICT (date, query, page, device, country) DO UPDATE SET
+              clicks = EXCLUDED.clicks,
+              impressions = EXCLUDED.impressions,
+              ctr = EXCLUDED.ctr,
+              position = EXCLUDED.position
+          `;
+        } catch (insertErr) {
+          console.error('[analytics] Failed to persist row:', insertErr);
+        }
+      })
+    );
   }
 }

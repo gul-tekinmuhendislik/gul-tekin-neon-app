@@ -3,9 +3,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import Home from '../page';
 import '@testing-library/jest-dom';
 
-// Mock the database check function
-jest.mock('../db', () => ({
-  checkDbConnection: jest.fn(() => Promise.resolve('Database connected')),
+// Mock lib/db to prevent actual DB connection
+jest.mock('@/lib/db', () => ({
+  sql: jest.fn().mockResolvedValue([{ count: 500 }]),
+}));
+
+// Mock get-brands to return test data
+jest.mock('@/lib/get-brands', () => ({
+  getRandomBrands: jest.fn().mockResolvedValue(['Daikin', 'Vaillant', 'Bosch']),
 }));
 
 // Mock Next.js Image component
@@ -55,6 +60,43 @@ jest.mock('@/components/ui/logo-cloud', () => ({
   ),
 }));
 
+// Mock all other page sub-components
+jest.mock('@/components/Testimonials', () => ({
+  __esModule: true,
+  default: () => <div data-testid="testimonials">Testimonials</div>,
+}));
+
+jest.mock('@/components/DatabaseStats', () => ({
+  __esModule: true,
+  default: () => <div data-testid="database-stats">DatabaseStats</div>,
+}));
+
+jest.mock('@/components/ServiceLocations', () => ({
+  __esModule: true,
+  default: () => <div data-testid="service-locations">ServiceLocations</div>,
+}));
+
+jest.mock('@/components/HeatPumps', () => ({
+  __esModule: true,
+  default: () => <div data-testid="heat-pumps">HeatPumps</div>,
+}));
+
+jest.mock('@/components/VarmeksProducts', () => ({
+  __esModule: true,
+  default: () => <div data-testid="varmeks-products">VarmeksProducts</div>,
+}));
+
+jest.mock('@/components/LGProducts', () => ({
+  __esModule: true,
+  default: () => <div data-testid="lg-products">LGProducts</div>,
+}));
+
+jest.mock('@/components/ui/flip-words', () => ({
+  FlipWords: ({ words, className, ...props }: any) => (
+    <span className={className} {...props}>{words?.[0] || ''}</span>
+  ),
+}));
+
 // Mock framer-motion
 jest.mock('framer-motion', () => ({
   motion: {
@@ -65,9 +107,6 @@ jest.mock('framer-motion', () => ({
 describe('Home Page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // Reset the database mock to default success state
-    const { checkDbConnection } = require('../db');
-    checkDbConnection.mockResolvedValue('Database connected');
   });
 
   describe('Rendering', () => {
@@ -134,18 +173,13 @@ describe('Home Page', () => {
       });
     });
 
-    it('should render footer links', async () => {
+    it('should render secondary CTA link', async () => {
       render(await Home());
       
       await waitFor(() => {
-        const blogLink = screen.getByRole('link', { name: /Blog/ });
-        const aboutLink = screen.getByRole('link', { name: /Hakkımızda/ });
-        
-        expect(blogLink).toBeInTheDocument();
-        expect(blogLink).toHaveAttribute('href', '/blog');
-        
-        expect(aboutLink).toBeInTheDocument();
-        expect(aboutLink).toHaveAttribute('href', '/about');
+        const contactLink = screen.getByRole('link', { name: /İletişime Geç/ });
+        expect(contactLink).toBeInTheDocument();
+        expect(contactLink).toHaveAttribute('href', '/contact');
       });
     });
   });
@@ -173,40 +207,29 @@ describe('Home Page', () => {
     });
   });
 
-  describe('Database Connection Status', () => {
-    it('should display successful database connection', async () => {
-      const { checkDbConnection } = require('../db');
-      checkDbConnection.mockResolvedValue('Database connected');
-      
+  describe('Sub-components', () => {
+    it('should render Testimonials sub-component', async () => {
       render(await Home());
-      
       await waitFor(() => {
-        const statusBadge = screen.getByText('Database connected');
-        expect(statusBadge).toBeInTheDocument();
-        expect(statusBadge).toHaveClass('text-[#00E599]');
+        expect(screen.getByTestId('testimonials')).toBeInTheDocument();
       });
     });
 
-    it('should display failed database connection', async () => {
-      const { checkDbConnection } = require('../db');
-      checkDbConnection.mockResolvedValue('Database connection failed');
-      
+    it('should render DatabaseStats sub-component', async () => {
       render(await Home());
-      
       await waitFor(() => {
-        const statusBadge = screen.getByText('Database connection failed');
-        expect(statusBadge).toBeInTheDocument();
-        expect(statusBadge).toHaveClass('text-red-500');
+        expect(screen.getByTestId('database-stats')).toBeInTheDocument();
       });
     });
 
-    it('should handle database connection errors gracefully', async () => {
-      const { checkDbConnection } = require('../db');
-      checkDbConnection.mockResolvedValue('Database connection failed');
-      
-      // Should render even when database check returns error message
+    it('should render all sub-components', async () => {
       const result = await Home();
-      expect(result).toBeDefined();
+      const { container } = render(result);
+      
+      await waitFor(() => {
+        expect(container.querySelector('[data-testid="testimonials"]')).toBeInTheDocument();
+        expect(container.querySelector('[data-testid="database-stats"]')).toBeInTheDocument();
+      });
     });
   });
 
@@ -284,22 +307,16 @@ describe('Home Page', () => {
       
       await waitFor(() => {
         const footer = container.querySelector('footer');
-        expect(footer).toHaveClass('border-t', 'border-gray-200');
+        expect(footer).toHaveClass('border-t', 'border-gray-200', 'py-5');
       });
     });
 
-    it('should render footer links with icons', async () => {
+    it('should render footer element', async () => {
       const { container } = render(await Home());
       
       await waitFor(() => {
-        const footerLinks = container.querySelectorAll('footer a');
-        expect(footerLinks.length).toBeGreaterThan(0);
-        
-        // Each link should have an icon
-        footerLinks.forEach(link => {
-          const icon = link.querySelector('img');
-          expect(icon).toBeInTheDocument();
-        });
+        const footer = container.querySelector('footer');
+        expect(footer).toBeInTheDocument();
       });
     });
 

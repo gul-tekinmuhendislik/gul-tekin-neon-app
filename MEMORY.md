@@ -72,6 +72,17 @@
 - Ürün, hizmet, marka, projeler otomatik güncellemeler
 - Last sync: SYNCED_AT columns
 
+### 3. Google Search Console — SEO Performans Takibi
+**Status:** ✅ Aktif (2026-05-26)
+- **OAuth:** Google hesabı ile yetkilendirme tamamlandı
+- **DB Tabloları:** `seo_performance`, `seo_pages`, `seo_keywords`, `seo_backlinks`, `seo_errors`, `seo_sitemaps`
+- **Dashboard:** `/admin/seo` — performans metrikleri, trend grafikleri, cihaz karşılaştırması
+- **API Endpoints:** `/api/search-console/{auth,callback,setup,analytics,sync,summary}`
+- **Senkronizasyon:** Manuel (admin panel butonu) veya `POST /api/search-console/sync`
+- **Önerilen:** Günlük otomatik sync için cron job (örn. her gün 03:00)
+- **Yeniden Yetkilendirme:** Token süresi dolarsa `/admin/seo` → "Google ile Yetkilendir"
+- **Detaylı Dokümantasyon:** `docs/search-console-setup.md`
+
 ---
 
 ## Credentials & Keys (.env)
@@ -100,6 +111,38 @@
 - [ ] URUNLER'e yeni sütunlar ekle (opsiyonel: rating, featured, supplier_info)
 
 ---
+
+## Google Search Console Integration
+
+**Status:** ✅ Active (2026-05-26)
+**OAuth:** Completed — token stored in `google_tokens` (platform: `search_console`)
+
+### Database Tables
+
+| Table | Status |
+|---|---|
+| `seo_performance` | ✅ Created (dynamic, unique on date+query+page+device+country) |
+| `seo_keywords` | ✅ Created (dynamic) |
+| `seo_sitemaps` | ✅ Created (dynamic) |
+| `seo_pages` | ✅ Prisma schema (existing) |
+| `seo_errors` | ✅ Prisma schema (existing) |
+| `seo_backlinks` | ✅ Prisma schema (existing) |
+
+### Admin Dashboard
+
+- URL: `/admin/seo`
+- Features: Date range selector (7/14/28/90 days), trend charts (clicks, impressions, CTR, position), top queries/pages tables, mobile/desktop/tablet breakdown, sitemap status, manual sync button
+
+### Re-authentication
+
+If the token expires, visit `/admin/seo` and click **"Google ile Yetkilendir"**. The OAuth flow will replace the expired token in `google_tokens`.
+
+### Key Files
+
+- `lib/search-console-sync.ts` — Sync service (fetches GSC API data, upserts into `seo_performance`)
+- `app/api/search-console/sync/route.ts` — Sync API endpoint (POST to trigger, GET for status)
+- `app/admin/seo/components/` — Dashboard UI components (PerformanceChart, SummaryCards, TopQueriesTable, TopPagesTable, DeviceBreakdown, SitemapStatus)
+- `docs/search-console-setup.md` — Full setup documentation
 
 ## Linkler
 

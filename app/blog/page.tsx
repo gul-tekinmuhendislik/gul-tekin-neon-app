@@ -212,11 +212,13 @@ function BlogContent() {
                     const pages = [];
                     const maxVisible = 5;
                     let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-                    let endPage = Math.min(pagination.totalPages, startPage + maxVisible - 1);
+                    const endPage = Math.min(pagination.totalPages, startPage + maxVisible - 1);
 
-                    if (endPage - startPage < maxVisible - 1) {
-                      startPage = Math.max(1, endPage - maxVisible + 1);
+                    let adjustedStart = startPage;
+                    if (endPage - adjustedStart < maxVisible - 1) {
+                      adjustedStart = Math.max(1, endPage - maxVisible + 1);
                     }
+                    startPage = adjustedStart;
 
                     if (startPage > 1) {
                       pages.push(

@@ -1,5 +1,7 @@
 // Mock the dependencies first, before any imports
-jest.mock('../db')
+jest.mock('../db', () => ({
+  sql: jest.fn().mockResolvedValue([{ id: 'mock-content-id', topic: 'Isı Pompası Sistemleri', created_at: new Date().toISOString() }]),
+}))
 jest.mock('exa-js', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { MockExa } = require('../__mocks__/external-services')
