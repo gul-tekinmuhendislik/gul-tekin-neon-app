@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const action = searchParams.get('action') || 'performance';
-    const siteUrl = searchParams.get('site') || process.env.NEXT_PUBLIC_SITE_URL || 'https://gul-tekinmuhendislik.com';
+    const siteUrl = searchParams.get('site') || 'sc-domain:gul-tekinmuhendislik.com';
 
     // Token'ı al
     const token = await getSearchConsoleToken();
