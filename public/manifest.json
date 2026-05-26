@@ -1,0 +1,20 @@
+{
+  "name": "Gül-Tekin Mühendislik",
+  "short_name": "Gül-Tekin",
+  "description": "Muğla bölgesinde mekanik tesisat, ısı pompası, güneş enerjisi ve su arıtma sistemleri",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366F1",
+  "orientation": "portrait-primary",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "utilities"]
+}

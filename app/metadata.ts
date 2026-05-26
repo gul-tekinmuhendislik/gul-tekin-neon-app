@@ -17,6 +17,8 @@ export const defaultMetadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  applicationName: siteConfig.name,
+  creator: "ebartan.dev",
   keywords: [
     "Gül-Tekin Mühendislik",
     "mekanik tesisat",
@@ -86,4 +88,5 @@ export const defaultMetadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/logo.png',
   },
+  manifest: '/manifest.json',
 };

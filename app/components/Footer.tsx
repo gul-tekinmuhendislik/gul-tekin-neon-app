@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import DynamicFooterLinks from "./DynamicFooterLinks";
@@ -43,9 +45,21 @@ export default function Footer() {
               İletişim
             </h3>
             <ul className="space-y-2 text-gray-600 text-sm">
-              <li>Email: info@gul-tekinmuhendislik.com</li>
-              <li>Tel: 0252 386 35 54</li>
-              <li>Gsm: 0532 317 78 59</li>
+              <li>
+                <a href="mailto:info@gul-tekinmuhendislik.com" className="hover:text-gray-900 transition-colors">
+                  info@gul-tekinmuhendislik.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+902523863554" onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'phone_landline_click' })} className="hover:text-gray-900 transition-colors">
+                  Tel: 0252 386 35 54
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/905323177859" target="_blank" rel="noopener noreferrer" onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'whatsapp_footer_click' })} className="hover:text-gray-900 transition-colors">
+                  WhatsApp: 0532 317 78 59
+                </a>
+              </li>
               <li>Adres: Gökçebel Mah. İnönü Cad. 61/D Yalıkavak/Muğla</li>
             </ul>
           </div>
