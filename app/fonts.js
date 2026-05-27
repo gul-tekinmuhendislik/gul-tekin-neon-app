@@ -1,8 +1,11 @@
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
-export const inter = Inter({
-  weight: ["400", "500", "600"],
-  subsets: ["latin"],
+export const outfit = localFont({
+  src: [
+    { path: "../public/fonts/Outfit-Regular.ttf", weight: "400", style: "normal" },
+    { path: "../public/fonts/Outfit-Medium.ttf", weight: "500", style: "normal" },
+    { path: "../public/fonts/Outfit-SemiBold.ttf", weight: "600", style: "normal" },
+  ],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-outfit",
 });

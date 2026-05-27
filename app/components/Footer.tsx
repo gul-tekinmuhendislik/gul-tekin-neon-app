@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Heart } from "@phosphor-icons/react";
 import DynamicFooterLinks from "./DynamicFooterLinks";
 
 export default function Footer() {
@@ -70,7 +71,7 @@ export default function Footer() {
               <p>© {new Date().getFullYear()} Gül-Tekin Mühendislik. Tüm hakları saklıdır.</p>
               <span className="hidden sm:inline">•</span>
               <p className="flex items-center gap-1">
-                Muğla&apos;da <span className="text-red-500">❤️</span> ile yapıldı
+                Muğla&apos;da <Heart className="inline w-4 h-4 text-red-500" weight="fill" /> ile yapıldı
               </p>
               <span className="hidden sm:inline">•</span>
               <a 

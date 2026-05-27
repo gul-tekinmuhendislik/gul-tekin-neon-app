@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageCircle } from "lucide-react";
+import { WhatsappLogo } from "@phosphor-icons/react";
 
 const WHATSAPP_NUMBER = "905323177859";
 const WHATSAPP_MESSAGE = "Merhaba, Gül-Tekin Mühendislik hakkında bilgi almak istiyorum.";
@@ -26,7 +26,7 @@ export default function WhatsAppButton() {
         WhatsApp
       </span>
       <span className="flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] group-hover:bg-[#20BD5A] transition-colors">
-        <MessageCircle className="w-7 h-7 fill-white" />
+        <WhatsappLogo className="w-7 h-7" weight="fill" color="white" />
       </span>
     </a>
   );

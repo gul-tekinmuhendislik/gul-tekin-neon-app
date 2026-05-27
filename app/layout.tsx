@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { inter } from "./fonts";
+import { outfit } from "./fonts";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
@@ -77,7 +77,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="tr" className={inter.variable}>
+    <html lang="tr" className={outfit.variable}>
       <body className="flex flex-col min-h-screen">
         <script
           type="application/ld+json"

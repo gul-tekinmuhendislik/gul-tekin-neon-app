@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Cookie, X } from "lucide-react";
+import { Cookie, X } from "@phosphor-icons/react";
 
 const COOKIE_CONSENT_KEY = "gultekin_cookie_consent";
 
@@ -29,17 +29,17 @@ export default function CookieBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[60] p-4 animate-fade-in">
-      <div className="max-w-3xl mx-auto bg-white border rounded-2xl shadow-2xl p-6 relative">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 animate-fade-in">
+      <div className="max-w-3xl mx-auto bg-white border rounded-2xl shadow-2xl p-6 relative z-50">
         <button
           onClick={acceptEssential}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
           aria-label="Kapat"
         >
-          <X className="w-4 h-4" />
+          <X className="w-4 h-4" weight="bold" />
         </button>
         <div className="flex items-start gap-4">
-          <Cookie className="w-6 h-6 text-indigo-600 shrink-0 mt-0.5" />
+          <Cookie className="w-6 h-6 text-indigo-600 shrink-0 mt-0.5" weight="fill" />
           <div className="flex-1">
             <h3 className="font-semibold text-base mb-1">Çerez Bildirimi</h3>
             <p className="text-sm text-gray-600 mb-4">

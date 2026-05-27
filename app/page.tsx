@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Vortex } from "@/components/ui/gul-tekin-hero";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
 import Testimonials from "@/components/Testimonials";
@@ -33,9 +32,9 @@ export const metadata: Metadata = {
 };
 
 const DATA = {
-  title: "Gül-Tekin <span class='text-[#00E599]'>Mühendislik</span>",
+  title: "Gül-Tekin Mühendislik",
   description:
-    "Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.",
+    "Muğla bölgesinde uzman mühendis kadrosu ile ısı pompaları, güneş enerjisi, su arıtma ve mekanik tesisat çözümleri.",
   button: {
     text: "Hizmetlerimiz",
     href: "/services",
@@ -43,10 +42,6 @@ const DATA = {
   link: {
     text: "İletişime Geç",
     href: "/contact",
-  },
-  emergencyBanner: {
-    text: "📞 7/24 Teknik Destek",
-    phone: "0532 317 78 59"
   },
   footerLinks: [],
 };
@@ -79,87 +74,70 @@ export default async function Home() {
   const brandNames = await getRandomBrands(3);
   const projectCount = await getProjectCount();
   const locationCount = await getLocationCount();
-  const subtitle = `<span class='text-blue-600 font-semibold'>25+ Yıl Deneyim</span> • <span class='text-green-600 font-semibold'>${projectCount}+ Proje</span> • <span class='text-purple-600 font-semibold'>${locationCount} Lokasyon</span>`;
+  const subtitle = `${projectCount}+ Proje • ${locationCount} Lokasyon • 7/24 Destek`;
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <Vortex
-        backgroundColor="white"
-        className="flex items-center flex-col justify-center px-2 md:px-10 py-8 md:py-12 lg:py-16 w-full min-h-[50vh] md:min-h-[60vh]"
-        baseHue={120}
-        particleCount={50}
-        enableWaves={false}
-        enableSnowflakes={false}
-      >
-        <div className="mx-auto flex w-full max-w-md flex-1 flex-col px-5 md:max-w-lg md:px-0 lg:max-w-xl">
-          <main className="flex flex-1 flex-col justify-center">
-            <div className="mb-6 md:mb-7">
+      {/* Hero — Asymmetric Split, viewport-stable */}
+      <section className="relative min-h-[100dvh] grid md:grid-cols-2">
+        {/* Background — subtle gradient, no particle effects */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white md:col-span-1" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,229,153,0.06),transparent_60%)]" />
+
+        {/* Text content — left-aligned */}
+        <div className="relative z-10 flex flex-col justify-center px-6 md:px-16 lg:px-24 py-20 md:py-0">
+          <div className="mb-6">
+            <Image
+              className="h-8 w-auto dark:hidden"
+              src="/assets/logo.svg"
+              alt="Gül-Tekin Mühendislik"
+              width={150}
+              height={40}
+              priority
+            />
+            <Image
+              className="hidden h-8 w-auto dark:block"
+              src="/assets/logo-dark.svg"
+              alt="Gül-Tekin Mühendislik"
+              width={150}
+              height={40}
+              priority
+            />
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-gray-900 leading-[1.1]">
+            {DATA.title}
+          </h1>
+          <p className="mt-3 text-sm md:text-base text-gray-600 max-w-md">
+            {subtitle}
+          </p>
+          <p className="mt-4 text-base md:text-lg text-gray-700 max-w-lg leading-relaxed">
+            {DATA.description}{" "}
+            <FlipWords words={brandNames.length > 0 ? brandNames : ["Daikin", "Vaillant", "Bosch"]} duration={3000} className="text-[#00E599] font-semibold" />
+            {" "}yetkili servisi.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-5">
+            <Link
+              className="rounded-full bg-[#00E599] px-5 py-2.5 font-semibold tracking-tight text-[#0C0D0D] transition-all duration-200 hover:bg-[#00E5BF] active:scale-[0.98] lg:px-7 lg:py-3"
+              href={DATA.button.href}
+            >
+              {DATA.button.text}
+            </Link>
+            <Link
+              className="group flex items-center gap-2 leading-none tracking-tight text-gray-900 hover:text-[#00E599] transition-colors"
+              href={DATA.link.href}
+            >
+              {DATA.link.text}
               <Image
-                className="lg:h-7 lg:w-auto dark:hidden"
-                src="/assets/logo.svg"
-                alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
-                width={88}
-                height={24}
+                className="transition-transform duration-200 group-hover:translate-x-1"
+                src="/assets/arrow.svg"
+                alt=""
+                width={16}
+                height={10}
                 priority
               />
-              <Image
-                className="hidden lg:h-7 lg:w-auto dark:block"
-                src="/assets/logo-dark.svg"
-                alt="Gül-Tekin Mühendislik logosu - Mekanik tesisat ve enerji sistemleri"
-                width={88}
-                height={24}
-                priority
-              />
-            </div>
-            <h1
-              className="text-3xl font-semibold leading-none tracking-tighter text-gray-900 md:text-4xl md:leading-none lg:text-5xl lg:leading-none"
-              dangerouslySetInnerHTML={{ __html: DATA.title }}
-            />
-            <p
-              className="mt-2 text-sm md:text-base text-gray-600"
-              dangerouslySetInnerHTML={{ __html: subtitle }}
-            />
-            <div className="mt-3.5 max-w-none lg:max-w-2xl text-base leading-relaxed tracking-tight text-gray-700 md:text-lg md:leading-relaxed lg:text-xl lg:leading-relaxed">
-              <div className="inline">
-                Muğla bölgesinde <strong>uzman mühendis kadrosu</strong> ile ısı pompaları, güneş enerjisi sistemleri, su arıtma, yerden ısıtma ve mekanik tesisat çözümleri.{" "}
-                <FlipWords words={brandNames.length > 0 ? brandNames : ["Daikin", "Vaillant", "Bosch"]} duration={3000} className="text-[#00E599] font-semibold" />
-                {" "}yetkili servisi. Ortalama %45 enerji tasarrufu, 7/24 teknik destek.
-              </div>
-            </div>
-            {DATA.emergencyBanner && (
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-center gap-2">
-                <span className="text-blue-700 font-semibold">{DATA.emergencyBanner.text}</span>
-                <a href={`tel:${DATA.emergencyBanner.phone.replace(/\s/g, '')}`} className="text-blue-600 font-bold hover:underline">
-                  {DATA.emergencyBanner.phone}
-                </a>
-              </div>
-            )}
-            <div className="mt-8 flex flex-wrap items-center gap-5 md:mt-9 lg:mt-10">
-              <Link
-                className="rounded-full bg-[#00E599] px-5 py-2.5 font-semibold tracking-tight text-[#0C0D0D] transition-all duration-200 hover:bg-[#00E5BF] hover:scale-105 lg:px-7 lg:py-3"
-                href={DATA.button.href}
-              >
-                {DATA.button.text}
-              </Link>
-              <Link
-                className="group flex items-center gap-2 leading-none tracking-tight text-gray-900 hover:text-[#00E599] transition-colors"
-                href={DATA.link.href}
-              >
-                {DATA.link.text}
-                <Image
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                  src="/assets/arrow.svg"
-                  alt="Bağlantıya git ok işareti"
-                  width={16}
-                  height={10}
-                  priority
-                />
-              </Link>
-            </div>
-          </main>
-          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-200 py-5 sm:gap-2 sm:gap-6 md:pb-12 md:pt-10">
-          </footer>
+            </Link>
+          </div>
         </div>
-      </Vortex>
+      </section>
       <LogoCloud />
       <VarmeksProducts />
       <LGProducts />

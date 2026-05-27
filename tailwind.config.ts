@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-outfit)", ...defaultTheme.fontFamily.sans],
       },
       animation: {
         "spin-slow": "spin 20s linear infinite",
