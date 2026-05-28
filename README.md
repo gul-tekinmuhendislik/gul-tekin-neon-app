@@ -27,7 +27,6 @@
   - feat: Add SEO schema components and improvements
   - feat: Link brand logos to brand detail pages in factory tour
   - fix: Ürün detay sayfasından fiyat gösterimini kaldır ve favicon
-  - add content
   - Fabrika gezisi galeri sayfası (/fabrika-gezisi)
   - feat: Update factory tour page with brand logos and remove duplicate
   - fix: Remove Ürünlerimiz section showing Airtable record IDs
