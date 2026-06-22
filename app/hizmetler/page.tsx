@@ -69,7 +69,7 @@ export default async function HizmetlerPage() {
         "provider": {
           "@type": "LocalBusiness",
           "name": "Gül-Tekin Mühendislik",
-          "telephone": "+902522117171"
+          "telephone": "+902523863554"
         },
         "serviceType": hizmet.kategori,
         "areaServed": {

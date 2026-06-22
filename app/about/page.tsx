@@ -6,6 +6,7 @@ import WebPages from '@/components/WebPages';
 import ProjectStatisticsServer from '@/components/ProjectStatisticsServer';
 import { TextFlip } from '@/components/ui/text-flip';
 import { getRandomBrands } from '@/lib/get-brands';
+import { CONTACT_INFO } from '@/lib/contact-info';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -43,8 +44,8 @@ export default async function AboutPage() {
         "name": "Gül-Tekin Mühendislik",
         "description": "Muğla bölgesinde mekanik tesisat sistemleri ve enerji verimliliği çözümleri",
         "url": "https://gul-tekinmuhendislik.com",
-        "telephone": "+90 252 386 35 54",
-        "email": "info@gul-tekinmuhendislik.com",
+        "telephone": CONTACT_INFO.landline.displayFormatted,
+        "email": CONTACT_INFO.email,
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "Gökçebel Mahallesi İnönü Caddesi 61/D",
@@ -146,7 +147,7 @@ export default async function AboutPage() {
         "sameAs": [
           "https://www.facebook.com/gultekinbodrum",
           "https://www.instagram.com/gultekinmuhendislik48/",
-          "https://wa.me/905323177859"
+          `https://wa.me/${CONTACT_INFO.mobile.tel.replace(/^\+/, '')}`
         ],
         "logo": {
           "@type": "ImageObject",
@@ -367,7 +368,7 @@ export default async function AboutPage() {
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">📞</span>
-                0252 386 35 54 | 0532 317 78 59
+                {CONTACT_INFO.landline.displayFormatted} | {CONTACT_INFO.mobile.displayFormatted}
               </p>
               <p className="flex items-center text-gray-700">
                 <span className="text-xl mr-3">✉️</span>
@@ -383,7 +384,7 @@ export default async function AboutPage() {
               </p>
               <p className="flex items-center text-gray-700 font-semibold text-green-600">
                 <span className="text-xl mr-3">🚨</span>
-                7/24 Acil Servis Hattı: 0532 317 78 59
+                7/24 Acil Servis Hattı: {CONTACT_INFO.mobile.displayFormatted}
               </p>
             </div>
           </div>

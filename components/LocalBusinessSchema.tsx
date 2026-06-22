@@ -1,3 +1,5 @@
+import { CONTACT_INFO } from "@/lib/contact-info";
+
 export default function LocalBusinessSchema() {
   const schema = {
     "@context": "https://schema.org",
@@ -6,7 +8,7 @@ export default function LocalBusinessSchema() {
     "name": "Gül-Tekin Mühendislik",
     "image": "https://gul-tekinmuhendislik.com/logo.png",
     "url": "https://gul-tekinmuhendislik.com",
-    "telephone": "+902523863554",
+    "telephone": CONTACT_INFO.landline.tel,
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",

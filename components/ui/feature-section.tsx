@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { CONTACT_INFO } from "@/lib/contact-info";
 import { 
   Clock, 
   Shield, 
@@ -156,7 +157,7 @@ export function FeatureSection() {
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-3 text-sm text-gray-500">
             <Phone className="w-4 h-4" />
-            <span>Hemen arayın: +90 (252) 123 45 67</span>
+            <span>Hemen arayın: {CONTACT_INFO.landline.displayIntl}</span>
           </div>
         </div>
       </div>

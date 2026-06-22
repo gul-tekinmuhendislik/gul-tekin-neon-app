@@ -432,10 +432,10 @@ export default async function LokasyonHizmetPage({ params }: LokasyonHizmetPageP
                 Hemen İletişime Geç
               </Link>
               <a
-                href="tel:+902523134013"
+                href="tel:+902523863554"
                 className="inline-block bg-blue-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-900 transition-colors"
               >
-                📞 (252) 313 40 13
+                📞 02523863554
               </a>
             </div>
           </div>

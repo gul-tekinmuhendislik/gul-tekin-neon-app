@@ -46,7 +46,7 @@ describe('FeatureSection Component', () => {
     it('should render phone number in footer', () => {
       render(<FeatureSection />);
       
-      expect(screen.getByText('Hemen arayın: +90 (252) 123 45 67')).toBeInTheDocument();
+      expect(screen.getByText('Hemen arayın: +90 (252) 386 35 54')).toBeInTheDocument();
     });
 
     it('should render phone icon in footer', () => {

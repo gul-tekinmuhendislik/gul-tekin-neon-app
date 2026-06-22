@@ -8,6 +8,7 @@ import CookieBanner from "./components/CookieBanner";
 import { defaultMetadata } from "./metadata";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { CONTACT_INFO } from "@/lib/contact-info";
 
 export const metadata: Metadata = defaultMetadata;
 
@@ -36,8 +37,8 @@ export default function RootLayout({
       "latitude": "37.1776",
       "longitude": "27.2713"
     },
-    "telephone": "+902523863554",
-    "email": "info@gul-tekinmuhendislik.com",
+    "telephone": CONTACT_INFO.landline.tel,
+    "email": CONTACT_INFO.email,
     "priceRange": "₺₺",
     "openingHoursSpecification": [
       {

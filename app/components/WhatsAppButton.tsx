@@ -1,10 +1,10 @@
 "use client";
 
 import { WhatsappLogo } from "@phosphor-icons/react";
+import { CONTACT_INFO, whatsappHref } from "@/lib/contact-info";
 
-const WHATSAPP_NUMBER = "905323177859";
 const WHATSAPP_MESSAGE = "Merhaba, Gül-Tekin Mühendislik hakkında bilgi almak istiyorum.";
-const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const WHATSAPP_URL = `${whatsappHref(CONTACT_INFO.whatsapp.tel)}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 export default function WhatsAppButton() {
   const handleClick = () => {

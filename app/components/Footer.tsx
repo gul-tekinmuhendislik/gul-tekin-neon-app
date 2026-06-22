@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "@phosphor-icons/react";
 import DynamicFooterLinks from "./DynamicFooterLinks";
+import { CONTACT_INFO, phoneHref, whatsappHref } from "@/lib/contact-info";
 
 export default function Footer() {
   return (
@@ -47,18 +48,18 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-gray-600 text-sm">
               <li>
-                <a href="mailto:info@gul-tekinmuhendislik.com" className="hover:text-gray-900 transition-colors">
-                  info@gul-tekinmuhendislik.com
+                <a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-gray-900 transition-colors">
+                  {CONTACT_INFO.email}
                 </a>
               </li>
               <li>
-                <a href="tel:+902523863554" onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'phone_landline_click' })} className="hover:text-gray-900 transition-colors">
-                  Tel: 0252 386 35 54
+                <a href={phoneHref(CONTACT_INFO.landline.tel)} onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'phone_landline_click' })} className="hover:text-gray-900 transition-colors">
+                  Tel: {CONTACT_INFO.landline.displayFormatted}
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/905323177859" target="_blank" rel="noopener noreferrer" onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'whatsapp_footer_click' })} className="hover:text-gray-900 transition-colors">
-                  WhatsApp: 0532 317 78 59
+                <a href={whatsappHref(CONTACT_INFO.whatsapp.tel)} target="_blank" rel="noopener noreferrer" onClick={() => typeof window !== 'undefined' && typeof window.gtag === 'function' && window.gtag('event', 'conversion', { event_category: 'contact', event_label: 'whatsapp_footer_click' })} className="hover:text-gray-900 transition-colors">
+                  WhatsApp: {CONTACT_INFO.whatsapp.displayFormatted}
                 </a>
               </li>
               <li>Adres: Gökçebel Mah. İnönü Cad. 61/D Yalıkavak/Muğla</li>

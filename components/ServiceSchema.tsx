@@ -1,3 +1,5 @@
+import { CONTACT_INFO } from "@/lib/contact-info";
+
 interface ServiceSchemaProps {
   name: string;
   description: string;
@@ -39,7 +41,7 @@ export default function ServiceSchema(props: ServiceSchemaProps) {
       "@type": "LocalBusiness",
       "name": "Gül-Tekin Mühendislik",
       "url": "https://gul-tekinmuhendislik.com",
-      "telephone": "+902523850000",
+      "telephone": CONTACT_INFO.landline.tel,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Gökçebel Mah. İnönü Cad. 61/D",

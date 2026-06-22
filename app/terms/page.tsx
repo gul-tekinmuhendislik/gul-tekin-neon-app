@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { CONTACT_INFO } from '@/lib/contact-info';
 
 export const metadata: Metadata = {
   title: 'Kullanım Şartları | Gül-Tekin Mühendislik',
@@ -160,9 +161,9 @@ export default function TermsPage() {
             </p>
             <div className="bg-blue-50 p-4 rounded-lg">
               <p className="text-gray-700 mb-2"><strong>Firma Adı:</strong> Gül-Tekin Mühendislik</p>
-              <p className="text-gray-700 mb-2"><strong>E-posta:</strong> info@gul-tekinmuhendislik.com</p>
-              <p className="text-gray-700 mb-2"><strong>Telefon:</strong> 0252 386 35 54</p>
-              <p className="text-gray-700 mb-2"><strong>GSM:</strong> 0532 317 78 59</p>
+              <p className="text-gray-700 mb-2"><strong>E-posta:</strong> {CONTACT_INFO.email}</p>
+              <p className="text-gray-700 mb-2"><strong>Telefon:</strong> {CONTACT_INFO.landline.displayFormatted}</p>
+              <p className="text-gray-700 mb-2"><strong>GSM:</strong> {CONTACT_INFO.mobile.displayFormatted}</p>
               <p className="text-gray-700"><strong>Adres:</strong> Gökçebel Mah. İnönü Cad. 61/D Yalıkavak/Muğla</p>
             </div>
           </div>

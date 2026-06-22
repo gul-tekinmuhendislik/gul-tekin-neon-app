@@ -1,14 +1,15 @@
 'use client';
 
 import { MapPin, Phone, Clock, Star } from 'lucide-react';
+import { CONTACT_INFO, phoneHref, whatsappHref } from '@/lib/contact-info';
 
 export default function GoogleMyBusiness() {
   const businessInfo = {
     name: "Gül-Tekin Mühendislik",
     address: "Gökçebel Mah. İnönü Cad. 61/D, Yalıkavak, Bodrum, Muğla 48990",
-    phone: "0252 386 35 54",
-    mobile: "0532 317 78 59",
-    whatsapp: "+905414573019",
+    phone: CONTACT_INFO.landline.displayFormatted,
+    mobile: CONTACT_INFO.mobile.displayFormatted,
+    whatsapp: CONTACT_INFO.whatsapp.tel,
     email: "info@gul-tekinmuhendislik.com",
     rating: 5.0,
     reviewCount: 12,
@@ -62,19 +63,19 @@ export default function GoogleMyBusiness() {
           <Phone className="w-5 h-5 text-primary mt-1" />
           <div className="flex flex-col gap-1">
             <a
-              href={`tel:${businessInfo.phone.replace(/\s/g, '')}`}
+              href={phoneHref(CONTACT_INFO.landline.tel)}
               className="text-gray-300 hover:text-white transition-colors"
             >
               Tel: {businessInfo.phone}
             </a>
             <a
-              href={`tel:${businessInfo.mobile.replace(/\s/g, '')}`}
+              href={phoneHref(CONTACT_INFO.mobile.tel)}
               className="text-gray-300 hover:text-white transition-colors"
             >
               Gsm: {businessInfo.mobile}
             </a>
             <a
-              href={`https://wa.me/${businessInfo.whatsapp.replace(/\+/g, '')}`}
+              href={whatsappHref(CONTACT_INFO.whatsapp.tel)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-green-400 hover:text-green-300 transition-colors"

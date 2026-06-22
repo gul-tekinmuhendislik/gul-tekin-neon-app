@@ -180,7 +180,7 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
       "@type": "Organization",
       "name": "Gül-Tekin Mühendislik",
       "url": "https://gul-tekinmuhendislik.com",
-      "telephone": "+902522117171",
+      "telephone": "+902523863554",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Bodrum",
