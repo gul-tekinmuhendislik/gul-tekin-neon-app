@@ -2,7 +2,6 @@ import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
-import { CONTACT_INFO } from '@/lib/contact-info';
 
 export const revalidate = 3600;
 

@@ -50,3 +50,4 @@ service-account-key.json
 *.json
 
 /lib/generated/prisma
+.env*

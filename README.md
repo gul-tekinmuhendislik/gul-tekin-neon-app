@@ -1,35 +1,29 @@
-  - E-E-A-T Content Optimizer sistemi eklendi   
-  - Otomatik içerik optimizasyonu entegre edildi
-  - Inngest süreçleri raporu oluşturuldu        
-  - Tüm build hataları düzeltildi
-  - test: Inngest fonksiyonları için kapsamlı test suite ve build optimizasyonları
-  - feat: Homepage UI yenileme ve modern component entegrasyonu
-  - test: Kapsamlı test suite ve UI güncellemeleri
-  - logo clean again
-  - feat: Footer sosyal medya linkleri ve logo cloud güncelleme
-  - feat: E-E-A-T optimizasyonu ve Facebook entegrasyonu düzeltmeleri
-  - Airtable Markalar entegrasyonu tamamlandı
-  - Inngest ile günlük otomatik senkronizasyon kuruldu
-  - Inngest ile günlük otomatik senkronizasyon kuruldu
-  - 45 marka logosu ve bilgileri gösteriliyor
-  - feat: Airtable Hizmetler entegrasyonu ve dinamik hizmet sayfaları
-  - Dinamik hizmet sayfaları (/hizmetler ve /hizmetler/[slug])
-  - feat: SEO iyileştirmeleri ve domain konsolidasyonu
-  - fix: NeonDbError metadata column eksikliği çözüldü ve Cloudinary entegrasyonu
-  - feat: UI iyileştirmeleri ve marka güncellemeleri
-  - fix: Slug-based routing for hizmetler and urunler detail
-  - afer vercel lmit
-  - Neon markalar tablosuna airtable_hizmetler_id ve airtable_faaliyet_id alanları eklendi
-  - feat: Blog içerikleri için Fal.ai görsel üretimi ve Facebook entegrasyonu
-  - monday inngest calismiyor
-  - tuesday clear mainpage error loading
-  - fix: Lokasyonlar detay sayfası ve blog pagination
-  - feat: Add SEO schema components and improvements
-  - feat: Link brand logos to brand detail pages in factory tour
-  - fix: Ürün detay sayfasından fiyat gösterimini kaldır ve favicon
-  - Fabrika gezisi galeri sayfası (/fabrika-gezisi)
-  - feat: Update factory tour page with brand logos and remove duplicate
-  - fix: Remove Ürünlerimiz section showing Airtable record IDs
-  - prisma
-  - dashboard
-  - openclaw
+# Gül Tekin Mühendislik
+
+Bu depo, `Next.js 15` ve `React 19` tabanlı bir web uygulamasını içerir. Proje, `Prisma`, `Inngest`, `Cloudinary`, Google AI ve SEO optimizasyonlarını kullanır.
+
+## Kurulum
+
+1. `pnpm install`
+2. `.env` dosyanızı proje kökünde yapılandırın
+3. `pnpm prisma generate`
+
+## Geliştirme
+
+- `pnpm dev`
+
+## Üretim Build
+
+- `pnpm build`
+
+## Önemli Komutlar
+
+- `pnpm lint`
+- `pnpm test`
+- `pnpm prisma:generate`
+- `pnpm prisma:studio`
+
+## Notlar
+
+- `package.json` içinde `postinstall` adımı olarak `prisma generate` çalıştırılır.
+- Sunucu tarafı yapılandırmalar için `next.config.ts`, `prisma.config.ts` ve `.env` dosyasını kontrol edin.
