@@ -2,6 +2,7 @@ import { sql } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import { getListingImageUrl } from "@/lib/utils/image-optimization";
+import { Zap, ShieldCheck, Sparkles, ArrowRight, Flame, Droplets } from "lucide-react";
 
 interface Product {
   id: string;
@@ -13,8 +14,9 @@ interface Product {
   cloudinary_url?: string;
 }
 
-async function getVarmeksProducts() {
+async function getVarmeksHomeProducts() {
   try {
+    // Sadece Ev ve Villa Tipi Isı Pompalarını getir (Havuz ve Ticari modeller hariç)
     const products = await sql`
       SELECT
         id,
@@ -25,122 +27,175 @@ async function getVarmeksProducts() {
         aciklama,
         cloudinary_url
       FROM urunler
-      WHERE marka = 'Varmeks'
-        AND anasayfa_goster = true
+      WHERE (marka ILIKE '%Varmeks%' OR marka = 'Varmeks')
+        AND aktif = true
+        AND urun_adi NOT ILIKE '%pool%'
+        AND urun_adi NOT ILIKE '%havuz%'
+        AND urun_adi NOT ILIKE '%commercial%'
+        AND (kategori IS NULL OR (kategori NOT ILIKE '%havuz%' AND kategori NOT ILIKE '%pool%'))
         AND (stokta = true OR stokta IS NULL)
-      ORDER BY updated_at DESC
+      ORDER BY
+        CASE
+          WHEN urun_adi ILIKE '%BOOST%' THEN 1
+          WHEN urun_adi ILIKE '%UP%' THEN 2
+          WHEN urun_adi ILIKE '%ALL%' THEN 3
+          ELSE 4
+        END,
+        urun_adi ASC
       LIMIT 4
     `;
-    return Array.isArray(products) ? products as unknown as Product[] : [];
+    return Array.isArray(products) ? (products as unknown as Product[]) : [];
   } catch (error) {
-    console.error("Error fetching Varmeks products:", error);
+    console.error("Error fetching Varmeks residential products:", error);
     return [];
   }
 }
 
 export default async function VarmeksProducts() {
-  const products = await getVarmeksProducts();
+  const products = await getVarmeksHomeProducts();
 
   if (products.length === 0) {
     return null;
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
-      <div className="container mx-auto px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 mb-4">
-              <div className="h-1 w-12 bg-red-500 rounded-full"></div>
-              <h2 className="text-4xl font-bold text-gray-900">
-                Varmeks <span className="text-red-600">Isı Pompaları</span>
-              </h2>
-              <div className="h-1 w-12 bg-red-500 rounded-full"></div>
-            </div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Türkiye'nin öncü ısı pompası üreticisi Varmeks'in yenilikçi ve enerji verimli çözümleri.
-              R32 ve R290 çevre dostu gazlar ile -30°C'ye kadar güvenilir çalışma.
-            </p>
+    <section className="py-20 bg-gradient-to-b from-slate-50 via-white to-slate-50 relative overflow-hidden">
+      {/* Background Subtle Accents */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-red-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#00E599]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 border border-red-200/80 text-red-700 text-xs sm:text-sm font-semibold mb-4 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-red-600" />
+            <span>Ev & Villa İklimlendirme Çözümleri</span>
           </div>
 
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {products.map((product) => (
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
+            Varmeks <span className="text-red-600">Ev Tipi Isı Pompaları</span>
+          </h2>
+          
+          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-light">
+            Ege ve Akdeniz iklimine özel geliştirilen R290 ve R32 teknolojili monoblok ev tipi ısı pompaları. 
+            Isıtma, soğutma ve 75°C kullanım sıcak suyu tek ünitede.
+          </p>
+        </div>
+
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+          {products.map((product) => {
+            const isBoost = product.urun_adi.toUpperCase().includes("BOOST");
+            const isUp = product.urun_adi.toUpperCase().includes("UP");
+            const isAll = product.urun_adi.toUpperCase().includes("ALL");
+
+            let seriesBadge = "Ev Tipi";
+            let featureTag = "A+++ Verimlilik";
+            if (isBoost) {
+              seriesBadge = "R290 Monoblok";
+              featureTag = "75°C Sıcak Su";
+            } else if (isUp) {
+              seriesBadge = "EVI DC Inverter";
+              featureTag = "-30°C Dayanım";
+            } else if (isAll) {
+              seriesBadge = "Isı Pompalı Boyler";
+              featureTag = "COP 4.1";
+            }
+
+            return (
               <Link
                 key={product.id}
                 href={`/urunler/${product.slug}`}
-                className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-red-200"
+                className="group flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-200/80 hover:border-red-500/40 hover:-translate-y-1.5"
               >
-                {/* Product Image */}
-                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-red-50 to-gray-50">
+                {/* Product Image Container */}
+                <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-slate-50 via-red-50/20 to-slate-100 p-6 flex items-center justify-center">
                   {product.cloudinary_url ? (
                     <Image
                       src={getListingImageUrl(product.cloudinary_url)}
                       alt={product.urun_adi}
                       fill
-                      className="object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                      className="object-contain p-6 group-hover:scale-108 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-gray-300">
-                        <svg className="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                        </svg>
-                      </div>
+                    <div className="w-full h-full flex items-center justify-center text-slate-300">
+                      <Zap className="w-16 h-16 stroke-1" />
                     </div>
                   )}
-                  {/* Badge */}
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-600 text-white shadow-lg">
+
+                  {/* Top Badges */}
+                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow-md">
                       Varmeks
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-900/80 text-white backdrop-blur-sm">
+                      {seriesBadge}
+                    </span>
+                  </div>
+
+                  {/* Feature Pill Top Right */}
+                  <div className="absolute top-3 right-3">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {featureTag}
                     </span>
                   </div>
                 </div>
 
                 {/* Product Info */}
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
-                    {product.urun_adi}
-                  </h3>
-                  {product.aciklama && (
-                    <p className="text-xs text-gray-600 line-clamp-2 mb-3">
-                      {product.aciklama}
-                    </p>
-                  )}
-                  <div className="flex items-center justify-between">
-                    {product.kategori && (
-                      <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
-                        {product.kategori}
-                      </span>
+                <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base lg:text-lg mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
+                      {product.urun_adi}
+                    </h3>
+                    
+                    {product.aciklama ? (
+                      <p className="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed font-light">
+                        {product.aciklama}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-slate-500 line-clamp-2 mb-4 font-light">
+                        Yüksek verimli DC Inverter ev tipi ısı pompası sistemi.
+                      </p>
                     )}
-                    <span className="inline-flex items-center text-sm font-medium text-red-600 group-hover:text-red-700">
-                      Detaylar
-                      <svg className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
+                  </div>
+
+                  {/* Card Bottom / Action */}
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between mt-auto">
+                    <span className="text-xs font-medium text-slate-500">
+                      Ev & Villa Serisi
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-red-600 group-hover:text-red-700">
+                      İncele
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                     </span>
                   </div>
                 </div>
               </Link>
-            ))}
-          </div>
-
-          {/* View All Button */}
-          <div className="text-center">
-            <Link
-              href="/urunler?marka=Varmeks"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-red-600 text-white font-semibold rounded-full hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-            >
-              Tüm Varmeks Ürünlerini Gör
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
+            );
+          })}
         </div>
+
+        {/* View All Button & Sub CTA */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-center">
+          <Link
+            href="/urunler?marka=Varmeks"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full transition-all duration-200 shadow-lg shadow-red-600/25 hover:shadow-red-600/40 hover:scale-102 active:scale-98"
+          >
+            <span>Tüm Ev Tipi Varmeks Modellerini Gör</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium rounded-full transition-all duration-200"
+          >
+            <span>Ücretsiz Keşif & Projelendirme</span>
+          </Link>
+        </div>
+
       </div>
     </section>
   );

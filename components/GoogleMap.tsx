@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface GoogleMapProps {
   className?: string;
@@ -9,154 +9,134 @@ interface GoogleMapProps {
 
 export default function GoogleMap({ className = '', height = '400px' }: GoogleMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
-  const map = useRef<google.maps.Map | null>(null);
-  const marker = useRef<google.maps.Marker | null>(null);
+  const mapInstance = useRef<google.maps.Map | null>(null);
+  const markerInstance = useRef<google.maps.Marker | null>(null);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
+    // Gül-Tekin Mühendislik konumu (Yalıkavak, Bodrum)
+    const position = { lat: 37.1073, lng: 27.3089 };
+
     const initMap = () => {
-      if (!mapRef.current) return;
+      if (!mapRef.current || !window.google?.maps) return;
 
-      // Gül-Tekin Mühendislik konumu (Yalıkavak, Bodrum)
-      const position = { lat: 37.1073, lng: 27.3089 };
+      try {
+        mapInstance.current = new window.google.maps.Map(mapRef.current, {
+          center: position,
+          zoom: 15,
+          styles: [
+            { featureType: 'all', elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+            { featureType: 'all', elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+            { featureType: 'all', elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+            { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+            { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+            { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#263c3f' }] },
+            { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
+            { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9ca5b3' }] },
+            { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#746855' }] },
+            { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
+            { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#515c6d' }] },
+          ],
+        });
 
-      // Harita oluştur
-      map.current = new google.maps.Map(mapRef.current, {
-        center: position,
-        zoom: 15,
-        styles: [
-          {
-            featureType: 'all',
-            elementType: 'geometry',
-            stylers: [{ color: '#242f3e' }]
-          },
-          {
-            featureType: 'all',
-            elementType: 'labels.text.stroke',
-            stylers: [{ color: '#242f3e' }]
-          },
-          {
-            featureType: 'all',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#746855' }]
-          },
-          {
-            featureType: 'administrative.locality',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#d59563' }]
-          },
-          {
-            featureType: 'poi',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#d59563' }]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'geometry',
-            stylers: [{ color: '#263c3f' }]
-          },
-          {
-            featureType: 'poi.park',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#6b9a76' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry',
-            stylers: [{ color: '#38414e' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'geometry.stroke',
-            stylers: [{ color: '#212a37' }]
-          },
-          {
-            featureType: 'road',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#9ca5b3' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry',
-            stylers: [{ color: '#746855' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'geometry.stroke',
-            stylers: [{ color: '#1f2835' }]
-          },
-          {
-            featureType: 'road.highway',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#f3d19c' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'geometry',
-            stylers: [{ color: '#17263c' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.fill',
-            stylers: [{ color: '#515c6d' }]
-          },
-          {
-            featureType: 'water',
-            elementType: 'labels.text.stroke',
-            stylers: [{ color: '#17263c' }]
+        markerInstance.current = new window.google.maps.Marker({
+          position,
+          map: mapInstance.current,
+          title: 'Gül-Tekin Mühendislik',
+          animation: window.google.maps.Animation.DROP,
+        });
+
+        const infoWindow = new window.google.maps.InfoWindow({
+          content: `
+            <div style="padding: 10px; color: #111; font-family: sans-serif;">
+              <h3 style="margin: 0 0 4px 0; font-size: 15px; font-weight: bold; color: #000;">Gül-Tekin Mühendislik</h3>
+              <p style="margin: 0 0 6px 0; font-size: 13px; color: #555;">Gökçebel Mah. İnönü Cad. 61/D Yalıkavak / Muğla</p>
+              <a href="https://maps.google.com/?q=37.1073,27.3089" target="_blank" rel="noopener noreferrer"
+                 style="color: #00875A; font-weight: 600; text-decoration: none; font-size: 13px;">
+                Haritada Aç & Yol Tarifi Al →
+              </a>
+            </div>
+          `,
+        });
+
+        markerInstance.current.addListener('click', () => {
+          if (mapInstance.current && markerInstance.current) {
+            infoWindow.open(mapInstance.current, markerInstance.current);
           }
-        ]
-      });
-
-      // İşaretçi ekle
-      marker.current = new google.maps.Marker({
-        position,
-        map: map.current,
-        title: 'Gül-Tekin Mühendislik',
-        animation: google.maps.Animation.DROP,
-      });
-
-      // Info window ekle
-      const infoWindow = new google.maps.InfoWindow({
-        content: `
-          <div style="padding: 10px; color: #333;">
-            <h3 style="margin: 0 0 5px 0; font-size: 16px; font-weight: bold;">Gül-Tekin Mühendislik</h3>
-            <p style="margin: 0; font-size: 14px;">Yalıkavak, Bodrum, Muğla</p>
-            <a href="https://maps.google.com/?q=37.1073,27.3089" target="_blank" rel="noopener noreferrer"
-               style="color: #1a73e8; text-decoration: none; font-size: 14px;">
-              Haritada Görüntüle →
-            </a>
-          </div>
-        `
-      });
-
-      marker.current.addListener('click', () => {
-        infoWindow.open(map.current, marker.current);
-      });
+        });
+      } catch (err) {
+        console.error('Google Map initialization error:', err);
+        setLoadError(true);
+      }
     };
 
-    // Google Maps script yükle
-    if (!window.google) {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+    // Eğer Google Maps zaten yüklüyse doğrudan çalıştır
+    if (window.google?.maps) {
+      initMap();
+      return;
+    }
+
+    if (!apiKey) {
+      setLoadError(true);
+      return;
+    }
+
+    // Script tag'inin zaten head içinde olup olmadığını kontrol et (Çift yüklemeyi engeller)
+    const scriptId = 'google-maps-sdk';
+    let existingScript = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+    if (!existingScript) {
+      existingScript = document.querySelector('script[src*="maps.googleapis.com"]') as HTMLScriptElement | null;
+    }
+
+    if (existingScript) {
+      if (window.google?.maps) {
+        initMap();
+      } else {
+        existingScript.addEventListener('load', initMap);
+      }
+    } else {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+      script.id = scriptId;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
       script.async = true;
       script.defer = true;
       script.onload = initMap;
+      script.onerror = () => setLoadError(true);
       document.head.appendChild(script);
-    } else {
-      initMap();
     }
 
     return () => {
-      if (marker.current) {
-        marker.current.setMap(null);
+      if (markerInstance.current) {
+        markerInstance.current.setMap(null);
       }
     };
   }, []);
 
+  // Google Maps API Key yoksa veya hata oluşursa güvenilir Google Maps iframe fallback'i
+  if (loadError) {
+    return (
+      <div className={`w-full rounded-2xl overflow-hidden border border-slate-200 shadow-md ${className}`} style={{ height }}>
+        <iframe
+          title="Gül-Tekin Mühendislik Konum"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=37.1073,27.3089&hl=tr&z=15&output=embed"
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       ref={mapRef}
-      className={`w-full rounded-xl overflow-hidden ${className}`}
+      className={`w-full rounded-2xl overflow-hidden shadow-md border border-slate-200 ${className}`}
       style={{ height }}
     />
   );
