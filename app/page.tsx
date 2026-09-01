@@ -10,6 +10,7 @@ import ServiceLocations from "@/components/ServiceLocations";
 import HeatPumps from "@/components/HeatPumps";
 import VarmeksProducts from "@/components/VarmeksProducts";
 import VarmeksWarrantyFeatures from "@/components/VarmeksWarrantyFeatures";
+import HeatPumpTroubleshooter from "@/components/HeatPumpTroubleshooter";
 import LGProducts from "@/components/LGProducts";
 import { sql } from '@/lib/db';
 
@@ -68,6 +69,7 @@ export default async function Home() {
       <VarmeksWarrantyFeatures />
       <IntegrationsSection />
       <HeatPumps />
+      <HeatPumpTroubleshooter />
       <DatabaseStats />
       <ServiceLocations />
       <LGProducts />

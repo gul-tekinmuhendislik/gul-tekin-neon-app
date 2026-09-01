@@ -20,6 +20,13 @@ export function phoneHref(phone: string) {
   return `tel:${phone.replace(/\s/g, "")}`;
 }
 
-export function whatsappHref(phone: string) {
-  return `https://wa.me/${phone.replace(/\+/g, "")}`;
+export function whatsappHref(phone: string, text?: string) {
+  const digits = phone.replace(/[^0-9]/g, "");
+  const formattedPhone = digits.startsWith("90")
+    ? digits
+    : digits.startsWith("0")
+    ? `90${digits.slice(1)}`
+    : `90${digits}`;
+  const textParam = text ? `?text=${encodeURIComponent(text)}` : "";
+  return `https://wa.me/${formattedPhone}${textParam}`;
 }
