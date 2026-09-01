@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
   /* Performance */
   reactStrictMode: true,
   
-  /* Headers for Security and SEO */
+  /* Headers for Security, SEO and Performance */
   async headers() {
     return [
       {
@@ -65,6 +65,26 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "origin-when-cross-origin",
+          },
+        ],
+      },
+      // Static assets caching
+      {
+        source: "/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      // Blog images caching
+      {
+        source: "/public/images/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

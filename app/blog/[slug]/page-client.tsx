@@ -7,6 +7,18 @@ import Breadcrumb from "@/app/components/Breadcrumb";
 import BlogArticleSchema from "@/components/BlogArticleSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import { extractLocationsFromContent, extractBrandsFromContent, addInternalLinksToContent } from "@/lib/seo-utils";
+import { findRelatedProducts } from "@/lib/blog-related-products";
+
+interface RelatedProduct {
+  id: string | number;
+  urun_adi: string;
+  slug: string;
+  marka?: string;
+  kategori?: string;
+  matchScore: number;
+  cloudinary_url?: string;
+  gorsel_url?: string;
+}
 
 interface BlogPost {
   id: number;
@@ -32,6 +44,7 @@ export default function BlogDetailClient() {
   const router = useRouter();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
+  const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
 
   useEffect(() => {
     async function fetchPost() {
@@ -40,6 +53,14 @@ export default function BlogDetailClient() {
         if (response.ok) {
           const data = await response.json();
           setPost(data);
+
+          // İlgili ürünleri bul
+          const productsResponse = await fetch('/api/urunler?limit=100&aktif=true');
+          if (productsResponse.ok) {
+            const productsData = await productsResponse.json();
+            const related = findRelatedProducts(data.content, productsData.urunler || productsData);
+            setRelatedProducts(related);
+          }
         } else {
           router.push("/blog");
         }
@@ -169,12 +190,22 @@ export default function BlogDetailClient() {
         <article className="bg-white rounded-lg shadow-lg overflow-hidden">
           {(post.image_url || post.image) && (
             <div className="relative h-64 md:h-96 w-full">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={post.image_url || post.image}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
+              <picture>
+                {/* WebP format - daha küçük boyut */}
+                <source
+                  srcSet={`/images/blog/${post.id}.webp`}
+                  type="image/webp"
+                />
+                {/* JPG fallback */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.image_url || post.image}
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               {post.image_url && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-blue-500 text-white text-sm px-3 py-1 rounded-full font-medium shadow-lg">
                   AI Generated
@@ -250,6 +281,46 @@ export default function BlogDetailClient() {
                 </div>
               );
             })()}
+
+            {/* İlgili Ürünler */}
+            {relatedProducts.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <h3 className="text-lg font-semibold mb-4 text-gray-900 flex items-center">
+                  <svg className="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  İlgili Ürünler
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {relatedProducts.map((product) => (
+                    <Link
+                      key={product.id}
+                      href={`/urunler/${product.slug}`}
+                      className="group flex flex-col p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl hover:from-purple-100 hover:to-indigo-100 transition-all duration-200 border border-purple-100 hover:border-purple-200"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          {product.marka && (
+                            <span className="text-xs font-semibold text-purple-600 uppercase tracking-wide">{product.marka}</span>
+                          )}
+                          <h4 className="text-sm font-semibold text-gray-900 mt-1 group-hover:text-purple-700 transition-colors line-clamp-2">
+                            {product.urun_adi}
+                          </h4>
+                          {product.kategori && (
+                            <span className="inline-block mt-2 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                              {product.kategori}
+                            </span>
+                          )}
+                        </div>
+                        <svg className="w-5 h-5 text-purple-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* İlgili Markalar */}
             {(() => {

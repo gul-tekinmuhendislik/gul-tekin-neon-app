@@ -138,7 +138,7 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
   // Mahalle isimlerini topla (ilk 6 mahalle)
   const mahalleIsimleri = mahalleler.slice(0, 6).map(m => m.mahalle_adi).join(', ');
 
-  const title = createTitle(`${lokasyon.ilce_adi} Tesisat Hizmetleri`);
+  const title = `${lokasyon.ilce_adi} Tesisat, Su Deposu, Hidrofor Hizmetleri`;
 
   const description = lokasyon.aciklama ||
     `${lokasyon.ilce_adi} ve çevresinde ${hizmetler.length}+ profesyonel mühendislik hizmeti: ${hizmetIsimleri}. ${mahalleler.length} mahallede uzman ekip ile kurulum, bakım ve servis. ${mahalleIsimleri} bölgelerinde 7/24 destek.`;
