@@ -6,6 +6,8 @@ import { Hizmet } from '@/lib/types/hizmet';
 import Link from 'next/link';
 import Image from 'next/image';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import FAQSection from '@/components/FAQSection';
+import { generateServiceFAQs } from '@/lib/seo-faq-generator';
 import { generateServiceAltText, generateProductAltText } from '@/lib/seo-utils';
 
 interface PageProps {
@@ -387,6 +389,13 @@ export default async function HizmetDetailPage({ params }: PageProps) {
             )}
           </div>
         )}
+
+        {/* Service FAQs & Rich Schema */}
+        <FAQSection
+          items={generateServiceFAQs(hizmet)}
+          title={`${hizmet.hizmet_adi} Hakkında Sıkça Sorulan Sorular`}
+          subtitle={`${hizmet.hizmet_adi} keşif, projelendirme, montaj, yetkili servis ve garanti süreçleri hakkında merak edilenler.`}
+        />
 
         {/* Related Services */}
         {relatedServices.length > 0 && (

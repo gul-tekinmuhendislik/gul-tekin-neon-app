@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { decodeAndNormalizeSlug } from '@/lib/utils/slug';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import FAQSection from '@/components/FAQSection';
+import { generateProductFAQs } from '@/lib/seo-faq-generator';
 import { generateProductAltText, generateRatingSchema } from '@/lib/seo-utils';
 
 // export const revalidate = 3600;
@@ -479,6 +481,13 @@ export default async function UrunDetailPage({ params }: UrunDetailPageProps) {
             )}
           </div>
         )}
+        
+        {/* Product FAQs & Rich Schema */}
+        <FAQSection
+          items={generateProductFAQs(urun)}
+          title={`${urun.urun_adi} Hakkında Sıkça Sorulan Sorular`}
+          subtitle={`${urun.urun_adi} özellikleri, m² kapasitesi, elektrik tüketimi, montaj ve garanti koşulları hakkında merak edilenler.`}
+        />
         
         {/* Related Products */}
         {relatedProducts.length > 0 && (
