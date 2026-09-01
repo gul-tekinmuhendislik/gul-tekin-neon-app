@@ -11,9 +11,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const posts = await sql`
       SELECT slug, updated_at 
-      FROM generated_content 
-      WHERE status IN ('completed', 'published')
-      ORDER BY created_at DESC
+      FROM (
+        SELECT slug, updated_at FROM generated_content WHERE status IN ('completed', 'published')
+        UNION
+        SELECT slug, updated_at FROM blog_posts WHERE status = 'published'
+      ) combined
+      WHERE slug IS NOT NULL
+      ORDER BY updated_at DESC
     `;
     
     blogPosts = posts.map((post) => ({
