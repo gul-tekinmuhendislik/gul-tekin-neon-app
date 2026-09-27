@@ -24,35 +24,34 @@ export default function GoogleMyBusiness() {
       sunday: "Kapalı"
     },
     mapUrl: "https://share.google/VJ161BKEdDPp0vMKU",
-    description: "Bodrum ve Muğla bölgesinde mekanik tesisat, ısı pompası, hidrofor ve su arıtma sistemleri"
   };
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+    <section className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold text-white mb-2">{businessInfo.name}</h3>
-        <div className="flex items-center gap-4 mb-4">
+        <h2 className="mb-2 text-xl font-semibold text-gray-900">{businessInfo.name}</h2>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
           <div className="flex items-center gap-1">
-            <Star className="w-5 h-5 text-yellow-400 fill-current" />
-            <span className="text-white font-medium">{businessInfo.rating}</span>
-            <span className="text-gray-400">({businessInfo.reviewCount} değerlendirme)</span>
+            <Star className="w-4 h-4 text-amber-500 fill-current" />
+            <span className="font-medium text-gray-900">{businessInfo.rating}</span>
+            <span className="text-sm text-gray-600">({businessInfo.reviewCount} değerlendirme)</span>
           </div>
           {businessInfo.openNow && (
-            <span className="text-green-400 text-sm font-medium">Şu an açık</span>
+            <span className="text-sm font-medium text-green-700">Şu an açık</span>
           )}
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div className="flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-primary mt-1" />
+          <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
           <div>
-            <p className="text-gray-300">{businessInfo.address}</p>
+            <p className="text-gray-700">{businessInfo.address}</p>
             <a 
               href={businessInfo.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:text-primary/80 text-sm mt-1 inline-block transition-colors"
+              className="mt-1 inline-block text-sm font-medium text-blue-700 transition-colors hover:text-blue-900"
             >
               Haritada Görüntüle →
             </a>
@@ -60,36 +59,39 @@ export default function GoogleMyBusiness() {
         </div>
 
         <div className="flex items-start gap-3">
-          <Phone className="w-5 h-5 text-primary mt-1" />
-          <div className="flex flex-col gap-1">
+          <Phone className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
+          <div className="flex min-w-0 flex-col gap-2">
             <a
               href={phoneHref(CONTACT_INFO.landline.tel)}
-              className="text-gray-300 hover:text-white transition-colors"
+              className="flex flex-wrap items-baseline gap-x-2 text-gray-900 transition-colors hover:text-blue-800"
             >
-              Tel: {businessInfo.phone}
+              <span className="text-sm text-gray-600">Telefon</span>
+              <span className="whitespace-nowrap text-base font-semibold tabular-nums">{businessInfo.phone}</span>
             </a>
             <a
               href={phoneHref(CONTACT_INFO.mobile.tel)}
-              className="text-gray-300 hover:text-white transition-colors"
+              className="flex flex-wrap items-baseline gap-x-2 text-gray-900 transition-colors hover:text-blue-800"
             >
-              Gsm: {businessInfo.mobile}
+              <span className="text-sm text-gray-600">Cep telefonu</span>
+              <span className="whitespace-nowrap text-base font-semibold tabular-nums">{businessInfo.mobile}</span>
             </a>
             <a
               href={whatsappHref(CONTACT_INFO.whatsapp.tel)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-400 hover:text-green-300 transition-colors"
+              className="flex flex-wrap items-baseline gap-x-2 text-green-800 transition-colors hover:text-green-950"
             >
-              WhatsApp: {businessInfo.whatsapp}
+              <span className="text-sm">WhatsApp</span>
+              <span className="whitespace-nowrap text-base font-semibold tabular-nums">{businessInfo.whatsapp}</span>
             </a>
           </div>
         </div>
 
         <div className="flex items-start gap-3">
-          <Clock className="w-5 h-5 text-primary mt-1" />
+          <Clock className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" />
           <div className="text-sm">
-            <p className="text-white font-medium mb-2">Çalışma Saatleri</p>
-            <div className="space-y-1 text-gray-400">
+            <p className="mb-2 font-medium text-gray-900">Çalışma Saatleri</p>
+            <div className="space-y-1 text-gray-600">
               <div className="flex justify-between">
                 <span>Pazartesi - Cuma:</span>
                 <span>{businessInfo.hours.monday}</span>
@@ -106,18 +108,6 @@ export default function GoogleMyBusiness() {
           </div>
         </div>
       </div>
-
-      <div className="mt-6 pt-6 border-t border-white/10">
-        <p className="text-gray-400 text-sm mb-4">{businessInfo.description}</p>
-        <a
-          href={businessInfo.mapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center justify-center w-full px-4 py-3 bg-primary/20 hover:bg-primary/30 text-primary font-medium rounded-lg transition-colors"
-        >
-          Google&apos;da Bizi Bulun
-        </a>
-      </div>
-    </div>
+    </section>
   );
 }
