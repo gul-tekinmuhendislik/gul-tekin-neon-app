@@ -14,6 +14,10 @@ export const CONTACT_INFO = {
     tel: "+905414573019",
   },
   email: "info@gul-tekinmuhendislik.com",
+  googleMaps: {
+    placeUrl: "https://www.google.com/maps?cid=8142933487282399198&hl=tr",
+    embedUrl: "https://www.google.com/maps?cid=8142933487282399198&output=embed&hl=tr",
+  },
 } as const;
 
 export function phoneHref(phone: string) {
