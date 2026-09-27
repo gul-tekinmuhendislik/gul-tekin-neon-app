@@ -11,11 +11,33 @@ export default function GoogleMap({ className = '', height = '400px' }: GoogleMa
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<google.maps.Map | null>(null);
   const markerInstance = useRef<google.maps.Marker | null>(null);
-  const [loadError, setLoadError] = useState(false);
+  const mapReady = useRef(false);
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const [loadError, setLoadError] = useState(!apiKey);
 
   useEffect(() => {
+    if (!apiKey) {
+      setLoadError(true);
+      return;
+    }
+
     // Gül-Tekin Mühendislik konumu (Yalıkavak, Bodrum)
     const position = { lat: 37.1073, lng: 27.3089 };
+    let fallbackTimeout: number | undefined;
+    let tilesLoadedListener: google.maps.MapsEventListener | null = null;
+
+    const showFallback = () => {
+      if (fallbackTimeout !== undefined) window.clearTimeout(fallbackTimeout);
+      tilesLoadedListener?.remove();
+      markerInstance.current?.setMap(null);
+      markerInstance.current = null;
+      mapInstance.current = null;
+      setLoadError(true);
+    };
+
+    fallbackTimeout = window.setTimeout(() => {
+      if (!mapReady.current) showFallback();
+    }, 12000);
 
     const initMap = () => {
       if (!mapRef.current || !window.google?.maps) return;
@@ -37,6 +59,11 @@ export default function GoogleMap({ className = '', height = '400px' }: GoogleMa
             { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
             { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#515c6d' }] },
           ],
+        });
+
+        tilesLoadedListener = mapInstance.current.addListener('tilesloaded', () => {
+          mapReady.current = true;
+          if (fallbackTimeout !== undefined) window.clearTimeout(fallbackTimeout);
         });
 
         markerInstance.current = new window.google.maps.Marker({
@@ -66,54 +93,46 @@ export default function GoogleMap({ className = '', height = '400px' }: GoogleMa
         });
       } catch (err) {
         console.error('Google Map initialization error:', err);
-        setLoadError(true);
+        showFallback();
       }
     };
-
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
     // Eğer Google Maps zaten yüklüyse doğrudan çalıştır
     if (window.google?.maps) {
       initMap();
-      return;
-    }
-
-    if (!apiKey) {
-      setLoadError(true);
-      return;
-    }
-
-    // Script tag'inin zaten head içinde olup olmadığını kontrol et (Çift yüklemeyi engeller)
-    const scriptId = 'google-maps-sdk';
-    let existingScript = document.getElementById(scriptId) as HTMLScriptElement | null;
-
-    if (!existingScript) {
-      existingScript = document.querySelector('script[src*="maps.googleapis.com"]') as HTMLScriptElement | null;
-    }
-
-    if (existingScript) {
-      if (window.google?.maps) {
-        initMap();
-      } else {
-        existingScript.addEventListener('load', initMap);
-      }
     } else {
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initMap;
-      script.onerror = () => setLoadError(true);
-      document.head.appendChild(script);
+      // Script tag'inin zaten head içinde olup olmadığını kontrol et (Çift yüklemeyi engeller)
+      const scriptId = 'google-maps-sdk';
+      let existingScript = document.getElementById(scriptId) as HTMLScriptElement | null;
+
+      if (!existingScript) {
+        existingScript = document.querySelector('script[src*="maps.googleapis.com"]') as HTMLScriptElement | null;
+      }
+
+      if (existingScript) {
+        existingScript.addEventListener('load', initMap, { once: true });
+        existingScript.addEventListener('error', showFallback, { once: true });
+      } else {
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        script.onload = initMap;
+        script.onerror = showFallback;
+        document.head.appendChild(script);
+      }
     }
 
     return () => {
+      if (fallbackTimeout !== undefined) window.clearTimeout(fallbackTimeout);
+      tilesLoadedListener?.remove();
       if (markerInstance.current) {
         markerInstance.current.setMap(null);
       }
+      mapReady.current = false;
     };
-  }, []);
+  }, [apiKey]);
 
   // Google Maps API Key yoksa veya hata oluşursa güvenilir Google Maps iframe fallback'i
   if (loadError) {
