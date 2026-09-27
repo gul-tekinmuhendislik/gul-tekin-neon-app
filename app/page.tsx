@@ -9,6 +9,7 @@ import DatabaseStats from "@/components/DatabaseStats";
 import ServiceLocations from "@/components/ServiceLocations";
 import HeatPumps from "@/components/HeatPumps";
 import VarmeksProducts from "@/components/VarmeksProducts";
+import VarmeksPromoSidebar from "@/components/VarmeksPromoSidebar";
 import VarmeksWarrantyFeatures from "@/components/VarmeksWarrantyFeatures";
 import HeatPumpTroubleshooter from "@/components/HeatPumpTroubleshooter";
 import LGProducts from "@/components/LGProducts";
@@ -65,6 +66,7 @@ export default async function Home() {
       {/* Varmeks Hero Slider Section */}
       <HeroSlider projectCount={projectCount} locationCount={locationCount} />
       <LogoCloud />
+      <VarmeksPromoSidebar />
       <VarmeksProducts />
       <VarmeksWarrantyFeatures />
       <IntegrationsSection />
