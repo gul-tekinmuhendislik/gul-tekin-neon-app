@@ -86,6 +86,11 @@ jest.mock('@/components/VarmeksProducts', () => ({
   default: () => <div data-testid="varmeks-products">VarmeksProducts</div>,
 }));
 
+jest.mock('@/components/AldeaProducts', () => ({
+  __esModule: true,
+  default: () => <div data-testid="aldea-products">AldeaProducts</div>,
+}));
+
 jest.mock('@/components/LGProducts', () => ({
   __esModule: true,
   default: () => <div data-testid="lg-products">LGProducts</div>,
@@ -125,6 +130,7 @@ describe('Home Page', () => {
         expect(screen.getByTestId('vortex')).toBeInTheDocument();
         expect(screen.getByTestId('integrations-section')).toBeInTheDocument();
         expect(screen.getByTestId('logo-cloud')).toBeInTheDocument();
+        expect(screen.getByTestId('aldea-products')).toBeInTheDocument();
       });
     });
 

@@ -13,6 +13,7 @@ import VarmeksPromoSidebar from "@/components/VarmeksPromoSidebar";
 import VarmeksWarrantyFeatures from "@/components/VarmeksWarrantyFeatures";
 import HeatPumpTroubleshooter from "@/components/HeatPumpTroubleshooter";
 import LGProducts from "@/components/LGProducts";
+import AldeaProducts from "@/components/AldeaProducts";
 import { sql } from '@/lib/db';
 
 export const revalidate = 3600;
@@ -68,6 +69,7 @@ export default async function Home() {
       <LogoCloud />
       <VarmeksPromoSidebar />
       <VarmeksProducts />
+      <AldeaProducts />
       <VarmeksWarrantyFeatures />
       <IntegrationsSection />
       <HeatPumps />
