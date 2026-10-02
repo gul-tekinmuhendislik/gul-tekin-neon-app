@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getMarkalariNeon, getMarkaBySlug } from '@/lib/markalar-client';
+import { getMarkaBySlug } from '@/lib/markalar-client';
 import { getUrunlerByMarka } from '@/lib/urunler-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import BreadcrumbSchema from '@/components/BreadcrumbSchema';
 import { generateBrandAltText, generateProductAltText } from '@/lib/seo-utils';
+import AldeaCommissioningGuide from '@/components/AldeaCommissioningGuide';
 
 interface PageProps {
   params: Promise<{
@@ -28,9 +29,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${marka.marka_adi} | Gül-Tekin Mühendislik${marka.yetkili_servis ? ' - Yetkili Servis' : ''}`,
-    description: marka.aciklama || `${marka.marka_adi} ürünleri ve ${marka.yetkili_servis ? 'yetkili ' : ''}servis hizmetleri. Muğla bölgesinde profesyonel çözümler.`,
-    keywords: `${marka.marka_adi}, ${marka.kategori || 'mekanik tesisat'}, ${marka.yetkili_servis ? 'yetkili servis, ' : ''}Muğla, Bodrum`,
+    title: slug === 'aldea'
+      ? 'Aldea Isı Pompaları ve Blue Serisi Devreye Alma | Gül-Tekin'
+      : `${marka.marka_adi} | Gül-Tekin Mühendislik${marka.yetkili_servis ? ' - Yetkili Servis' : ''}`,
+    description: slug === 'aldea'
+      ? 'Aldea Blue ALD-DAMB ısı pompaları, nominal debi bilgileri ve montaj sonrası devreye alma kontrol listesi. Model kılavuzu ve uzman servisle güvenli çalışma.'
+      : marka.aciklama || `${marka.marka_adi} ürünleri ve ${marka.yetkili_servis ? 'yetkili ' : ''}servis hizmetleri. Muğla bölgesinde profesyonel çözümler.`,
+    keywords: slug === 'aldea'
+      ? 'Aldea ısı pompası, Aldea Blue, ALD-DAMB10, ALD-DAMB13, ALD-DAMB16, ısı pompası devreye alma, Bodrum ısı pompası'
+      : `${marka.marka_adi}, ${marka.kategori || 'mekanik tesisat'}, ${marka.yetkili_servis ? 'yetkili servis, ' : ''}Muğla, Bodrum`,
     openGraph: {
       title: `${marka.marka_adi} | Gül-Tekin Mühendislik`,
       description: marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
@@ -277,6 +284,8 @@ export default async function MarkaDetailPage({ params }: PageProps) {
               </div>
             )}
           </div>
+
+          {slug === 'aldea' && <AldeaCommissioningGuide />}
 
           {/* CTA Section */}
           <div className="mt-12 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-white">
