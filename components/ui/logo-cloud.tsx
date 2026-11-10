@@ -37,7 +37,7 @@ function getRandomPartners(): Partner[] {
   }
 }
 
-export default function LogoCloud() {
+export function LogoCloud() {
   const partners = getRandomPartners();
 
   return (
