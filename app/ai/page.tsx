@@ -1,11 +1,10 @@
 import { Metadata } from "next";
-import ChatInterface from "../components/ChatInterface";
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "AI Sohbet Asistanı",
-  description: "Groq'un güçlü Llama 3.3 70B modeli ile desteklenen yapay zeka asistanı. Sorularınıza anında yanıt alın.",
+  description: "Gül-Tekin Mühendislik AI asistanı - Groq API ve Llama 3.3 70B modeli ile güçlendirilmiş.",
   openGraph: {
     title: "AI Sohbet Asistanı | Gul Tekin",
     description: "Groq API ve Llama 3.3 70B modeli ile güçlendirilmiş AI asistanı.",
@@ -21,16 +20,15 @@ export default function AIPage() {
           AI Sohbet Asistanı
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Groq&apos;un güçlü Llama 3.3 70B modeli ile desteklenen AI asistanımız, 
-          sorularınıza anında yanıt verir ve size yardımcı olur.
+          Gül-Tekin Mühendislik AI asistanımız, sorularınıza yanıt verir ve size yardımcı olur.
+          Bu özellik GitHub Pages static deployment için devre dışı bırakılmıştır.
         </p>
       </div>
-      
-      <ChatInterface />
-      
+
       <div className="mt-8 text-center text-sm text-gray-500">
-        <p>Bu sohbet arayüzü Groq API kullanılarak oluşturulmuştur.</p>
-        <p>Model: Llama 3.3 70B Versatile</p>
+        <p>Bu sayfa AI sohbet arayüzünü göstermektedir.</p>
+        <p>Model: Llama 3.3 70B Versatile (Groq API)</p>
+        <p className="mt-2 text-yellow-600">⚠️ Canlı sohbet özelliği statik site üzerinde devre dışıdır.</p>
       </div>
     </div>
   );
