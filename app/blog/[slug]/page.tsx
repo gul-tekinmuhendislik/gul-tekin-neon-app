@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import BlogDetailClient from "./page-client";
-import { getBlogPostBySlug, type BlogPost } from "@/lib/static-data";
+import { getBlogPostBySlug, getAllUrunler, type BlogPost } from "@/lib/static-data";
+import { findRelatedProducts } from "@/lib/blog-related-products";
 
 export async function generateStaticParams() {
-  // Import here to avoid build-time issues if data file doesn't exist yet
   const { getAllBlogPostSlugs } = await import("@/lib/static-data");
   const slugs = getAllBlogPostSlugs();
   return slugs.map((slug) => ({ slug }));
@@ -74,6 +74,34 @@ export async function generateMetadata({
   }
 }
 
-export default function BlogDetailPage() {
-  return <BlogDetailClient />;
+interface BlogDetailPageProps {
+  post: BlogPost;
+  relatedProducts: Array<{
+    id: string | number;
+    urun_adi: string;
+    slug: string;
+    marka?: string;
+    kategori?: string;
+    cloudinary_url?: string;
+    gorsel_url?: string;
+    matchScore: number;
+  }>;
+}
+
+export default async function BlogDetailPage({
+  params,
+}: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug) as BlogPost | null;
+
+  if (!post) {
+    return <BlogDetailClient post={null as any} relatedProducts={[]} />;
+  }
+
+  const allUrunler = getAllUrunler();
+  const relatedProducts = findRelatedProducts(post.content, allUrunler as any);
+
+  return (
+    <BlogDetailClient post={post} relatedProducts={relatedProducts} />
+  );
 }

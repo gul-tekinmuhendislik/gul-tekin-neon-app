@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Breadcrumb from "@/app/components/Breadcrumb";
 import BlogArticleSchema from "@/components/BlogArticleSchema";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import { extractLocationsFromContent, extractBrandsFromContent, addInternalLinksToContent } from "@/lib/seo-utils";
-import { findRelatedProducts } from "@/lib/blog-related-products";
 
 interface RelatedProduct {
   id: string | number;
@@ -29,7 +28,6 @@ interface BlogPost {
   meta_title: string;
   meta_description: string;
   keywords: string[];
-  search_data: { url: string; title: string; content?: string }[];
   status: string;
   published_at: string | null;
   created_at: string;
@@ -39,43 +37,17 @@ interface BlogPost {
   image_prompt?: string;
 }
 
-export default function BlogDetailClient() {
+interface BlogDetailClientProps {
+  post: BlogPost | null;
+  relatedProducts: RelatedProduct[];
+}
+
+export default function BlogDetailClient({ post: postProp, relatedProducts: relatedProductsProp }: BlogDetailClientProps) {
   const params = useParams();
   const router = useRouter();
-  const [post, setPost] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
-
-  useEffect(() => {
-    async function fetchPost() {
-      try {
-        const response = await fetch(`/api/blog/${params.slug}`);
-        if (response.ok) {
-          const data = await response.json();
-          setPost(data);
-
-          // İlgili ürünleri bul
-          const productsResponse = await fetch('/api/urunler?limit=100&aktif=true');
-          if (productsResponse.ok) {
-            const productsData = await productsResponse.json();
-            const related = findRelatedProducts(data.content, productsData.urunler || productsData);
-            setRelatedProducts(related);
-          }
-        } else {
-          router.push("/blog");
-        }
-      } catch (error) {
-        console.error("Error fetching post:", error);
-        router.push("/blog");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (params.slug) {
-      fetchPost();
-    }
-  }, [params.slug, router]);
+  const [post, setPost] = useState<BlogPost | null>(postProp ?? null);
+  const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>(relatedProductsProp);
+  const [loading, setLoading] = useState(postProp === null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("tr-TR", {
@@ -86,35 +58,22 @@ export default function BlogDetailClient() {
   };
 
   const renderContent = (content: string) => {
-    // SEO başlığı ve meta açıklamayı içerikten kaldır
     let cleanContent = content
       .replace(/\*\*SEO Başlığı:\*\*.*/g, '')
       .replace(/\*\*Meta Açıklama:\*\*.*/g, '')
       .replace(/\*\*URL Slug:\*\*.*/g, '')
       .replace(/\*\*Anahtar Kelimeler:\*\*.*/g, '');
 
-    // Add internal links to locations and brands (BEFORE markdown rendering)
     cleanContent = addInternalLinksToContent(cleanContent);
 
-    // Basit markdown render işlemi
     let html = cleanContent;
-    
-    // Başlıklar
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-xl font-bold mt-6 mb-3">$1</h3>');
     html = html.replace(/^## (.*$)/gim, '<h2 class="text-2xl font-bold mt-8 mb-4">$1</h2>');
     html = html.replace(/^# (.*$)/gim, '<h1 class="text-3xl font-bold mt-8 mb-4">$1</h1>');
-    
-    // Bold text
     html = html.replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold">$1</strong>');
-    
-    // Linkler
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>');
-    
-    // Liste öğeleri
     html = html.replace(/^\* (.+)$/gim, '<li class="ml-6 mb-2">• $1</li>');
     html = html.replace(/^\d+\. (.+)$/gim, '<li class="ml-6 mb-2">$1</li>');
-    
-    // Paragraflar
     html = html.split('\n\n').map(paragraph => {
       if (paragraph.trim() === '') return '';
       if (paragraph.includes('<h1') || paragraph.includes('<h2') || paragraph.includes('<h3')) {
@@ -125,7 +84,7 @@ export default function BlogDetailClient() {
       }
       return `<p class="mb-4 leading-relaxed">${paragraph}</p>`;
     }).join('\n');
-    
+
     return html;
   };
 
@@ -191,13 +150,10 @@ export default function BlogDetailClient() {
           {(post.image_url || post.image) && (
             <div className="relative h-64 md:h-96 w-full">
               <picture>
-                {/* WebP format - daha küçük boyut */}
                 <source
                   srcSet={`/images/blog/${post.id}.webp`}
                   type="image/webp"
                 />
-                {/* JPG fallback */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={post.image_url || post.image}
                   alt={post.title}

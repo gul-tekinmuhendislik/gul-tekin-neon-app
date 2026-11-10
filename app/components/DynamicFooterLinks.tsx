@@ -55,6 +55,15 @@ const getHoverColor = (siteadi: string): string => {
   return colorMap[siteadi] || 'hover:text-gray-900';
 };
 
+const getDefaultLinks: SiteDomain[] = [
+  { id: 1, siteadi: 'Facebook', url: 'https://www.facebook.com/gultekinbodrum', kategori: 'social', icon: 'facebook' },
+  { id: 2, siteadi: 'Twitter', url: 'https://x.com/gul_tekin_muh', kategori: 'social', icon: 'twitter' },
+  { id: 3, siteadi: 'Instagram', url: 'https://www.instagram.com/gultekinbodrum/', kategori: 'social', icon: 'instagram' },
+  { id: 4, siteadi: 'Youtube', url: 'https://www.youtube.com/@gultekinbodrum', kategori: 'social', icon: 'youtube' },
+  { id: 5, siteadi: 'Github', url: 'https://github.com/gul-tekinmuhendislik', kategori: 'social', icon: 'github' },
+  { id: 6, siteadi: 'Google Business', url: 'https://g.page/r/Cd6nGRPdggFxEBE/review', kategori: 'social', icon: 'star' },
+];
+
 export default function DynamicFooterLinks() {
   const [links, setLinks] = useState<SiteDomain[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,13 +71,16 @@ export default function DynamicFooterLinks() {
   useEffect(() => {
     const fetchLinks = async () => {
       try {
-        const response = await fetch('/api/sites-domain');
+        const response = await fetch('/static-data/sites-domain.json');
         if (response.ok) {
           const data = await response.json();
           setLinks(data);
+        } else {
+          setLinks(getDefaultLinks);
         }
       } catch (error) {
         console.error('Error fetching footer links:', error);
+        setLinks(getDefaultLinks);
       } finally {
         setLoading(false);
       }

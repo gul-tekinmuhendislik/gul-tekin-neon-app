@@ -34,6 +34,20 @@ fs.mkdirSync(stage, { recursive: true });
 let status = 1;
 try {
   fs.cpSync(root, stage, { recursive: true, filter: (src) => !isSkipped(src) });
+
+  // Copy static JSON data to public/static-data so client components can fetch them
+  const staticDataSrc = path.join(stage, 'data', 'static');
+  const staticDataDst = path.join(stage, 'public', 'static-data');
+  if (fs.existsSync(staticDataSrc)) {
+    fs.mkdirSync(staticDataDst, { recursive: true });
+    for (const file of fs.readdirSync(staticDataSrc)) {
+      if (file.endsWith('.json')) {
+        fs.copyFileSync(path.join(staticDataSrc, file), path.join(staticDataDst, file));
+      }
+    }
+    console.log(`Copied static data files to public/static-data/`);
+  }
+
   fs.symlinkSync(path.join(root, 'node_modules'), stageModules, process.platform === 'win32' ? 'junction' : 'dir');
 
   const result = spawnSync('npx', ['next', 'build'], { cwd: stage, stdio: 'inherit', shell: true, env: process.env });

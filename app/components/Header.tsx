@@ -24,13 +24,12 @@ export default function Header() {
   useEffect(() => {
     async function fetchMenuItems() {
       try {
-        const response = await fetch('/api/navigation');
+        const response = await fetch('/static-data/navigation_menu.json');
         if (response.ok) {
           const data = await response.json();
           setMenuItems(data);
         } else {
           console.error('Failed to fetch menu items');
-          // Fallback menu items
           setMenuItems([
             { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
             { id: 2, title: 'Blog', href: '/blog', order_index: 2 },
@@ -39,7 +38,6 @@ export default function Header() {
         }
       } catch (error) {
         console.error('Error fetching menu items:', error);
-        // Fallback menu items
         setMenuItems([
           { id: 1, title: 'Ana Sayfa', href: '/', order_index: 1 },
           { id: 2, title: 'Blog', href: '/blog', order_index: 2 },

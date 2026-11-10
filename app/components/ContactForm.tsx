@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { ArrowRight } from "lucide-react";
 
 type FormData = {
@@ -11,6 +10,9 @@ type FormData = {
   message: string;
 };
 
+// Formspree endpoint — replace with your own Formspree form action URL
+const FORMSPREE_ACTION = "https://formspree.io/f/YOUR_FORM_ID";
+
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -18,45 +20,46 @@ export default function ContactForm() {
     message: string;
   }>({ type: null, message: "" });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
+    const formData = new FormData(e.currentTarget);
+    const data: FormData = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    };
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(FORMSPREE_ACTION, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify(data),
       });
-
-      const result = await response.json();
 
       if (response.ok) {
         setSubmitStatus({
           type: "success",
           message: "Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.",
         });
-        reset();
+        (e.currentTarget as HTMLFormElement).reset();
       } else {
         setSubmitStatus({
           type: "error",
-          message: result.error || "Bir hata oluştu. Lütfen tekrar deneyin.",
+          message: "Bir hata oluştu. Lütfen tekrar deneyin.",
         });
       }
     } catch {
       setSubmitStatus({
         type: "error",
         message: "Bir hata oluştu. Lütfen tekrar deneyin.",
-      });
+        });
     } finally {
       setIsSubmitting(false);
     }
@@ -66,18 +69,18 @@ export default function ContactForm() {
   const labelClassName = "block text-sm font-medium text-gray-800";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <form onSubmit={onSubmit} className="space-y-5" action={FORMSPREE_ACTION} method="POST" encType="application/json">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClassName}>Ad Soyad</label>
           <input
             type="text"
             id="name"
+            name="name"
             autoComplete="name"
-            {...register("name", { required: "Ad soyad gereklidir" })}
+            required
             className={fieldClassName}
           />
-          {errors.name && <p className="mt-1 text-sm text-red-700">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -85,17 +88,12 @@ export default function ContactForm() {
           <input
             type="email"
             id="email"
+            name="email"
             autoComplete="email"
-            {...register("email", {
-              required: "E-posta gereklidir",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Geçerli bir e-posta adresi giriniz",
-              },
-            })}
+            required
+            pattern="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"
             className={fieldClassName}
           />
-          {errors.email && <p className="mt-1 text-sm text-red-700">{errors.email.message}</p>}
         </div>
       </div>
 
@@ -104,21 +102,21 @@ export default function ContactForm() {
         <input
           type="text"
           id="subject"
-          {...register("subject", { required: "Konu gereklidir" })}
+          name="subject"
+          required
           className={fieldClassName}
         />
-        {errors.subject && <p className="mt-1 text-sm text-red-700">{errors.subject.message}</p>}
       </div>
 
       <div>
         <label htmlFor="message" className={labelClassName}>Mesaj</label>
         <textarea
           id="message"
+          name="message"
           rows={5}
-          {...register("message", { required: "Mesaj gereklidir" })}
+          required
           className={`${fieldClassName} min-h-36 resize-y`}
         />
-        {errors.message && <p className="mt-1 text-sm text-red-700">{errors.message.message}</p>}
       </div>
 
       {submitStatus.type && (
