@@ -46,7 +46,7 @@ await delay(6000); // 6 saniye bekle
 Quota artırdıktan sonra:
 1. 5 dakika bekleyin (değişikliklerin yansıması için)
 2. Tarayıcıyı yenileyin
-3. http://localhost:3002/admin/gmb adresine tekrar gidin
+3. Not: `/admin/gmb` yönetim sayfası GitHub Pages için kaldırılmıştır. Bu adım yalnızca ayrı bir sunucu dağıtımında geçerlidir.
 
 ## Notlar
 

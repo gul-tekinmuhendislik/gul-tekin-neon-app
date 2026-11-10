@@ -9,6 +9,8 @@ This document explains how to set up and use the Google Search Console integrati
 - Syncs daily performance metrics (clicks, impressions, CTR, position)
 - Displays data in an admin dashboard with trend charts, date range controls, and device breakdown
 
+> The `/admin/seo` dashboard has been removed from the GitHub Pages site. The dashboard and OAuth callback instructions below apply only to a separately hosted server deployment; GitHub Pages does not run API routes.
+
 ## Prerequisites
 
 - A Google Cloud Console project with the **Search Console API** enabled

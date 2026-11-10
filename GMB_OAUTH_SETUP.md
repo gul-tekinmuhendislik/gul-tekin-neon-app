@@ -1,5 +1,7 @@
 # Google My Business OAuth 2.0 Kurulum Rehberi
 
+> GitHub Pages yayını için `/admin/gmb` yönetim sayfası kaldırılmıştır. Bu rehber yalnızca API route'larını çalıştıran ayrı bir sunucu dağıtımı için geçerlidir.
+
 ## OAuth 2.0 Neden Gerekli?
 
 Google My Business API'nin yeni versiyonları, Service Account yerine OAuth 2.0 kullanmayı gerektiriyor. Bu, kullanıcının Google hesabıyla giriş yapmasını sağlar.
