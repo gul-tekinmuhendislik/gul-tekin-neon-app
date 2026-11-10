@@ -1,146 +1,54 @@
-import { prisma } from '@/lib/prisma';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import BreadcrumbSchema from '@/components/BreadcrumbSchema';
-import { createTitle } from '@/lib/seo-utils';
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import {
+  getLokasyonBySlug,
+  getAllMahalleler,
+  getAllHizmetler,
+  getAllUrunler,
+  type Lokasyon,
+  type Mahalle,
+  type Hizmet,
+  type Urun,
+} from "@/lib/static-data";
 
 export const revalidate = 3600;
 
 interface LokasyonPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+  params: { slug: string };
 }
 
-interface Lokasyon {
-  id: number;
-  ilce_adi: string;
-  slug: string;
-  il?: string;
-  aciklama?: string;
-  resim_url?: string;
-  aktif: boolean;
-  sira?: number;
+function findLokasyonBySlug(slug: string): Lokasyon | null {
+  const lokasyonlar = getAllLokasyonlar();
+  return lokasyonlar.find((l) => l.slug === slug) || null;
 }
 
-interface Urun {
-  id: string;
-  urun_adi: string;
-  kategori?: string;
-  marka?: string;
-  cloudinary_url?: string;
-}
+export async function generateMetadata({
+  params,
+}: LokasyonPageProps) {
+  const { slug } = params;
+  const lokasyon = findLokasyonBySlug(slug) as Lokasyon | null;
 
-interface Hizmet {
-  id: string;
-  hizmet_adi: string;
-  aciklama?: string;
-  kategori?: string;
-  slug?: string;
-  resim_url?: string;
-  cloudinary_url?: string;
-  urunler?: Urun[];
-}
-
-interface Mahalle {
-  id: number;
-  mahalle_adi: string;
-  slug?: string;
-  aciklama?: string;
-  proje_sayisi?: number;
-}
-
-async function getLokasyonData(slug: string) {
-  try {
-    // Lokasyon bilgilerini al
-    const lokasyon = await prisma.hizmet_lokasyonlari.findFirst({
-      where: {
-        slug: slug,
-        aktif: true
-      }
-    });
-
-    if (!lokasyon) {
-      return null;
-    }
-
-    // Hizmetleri al
-    const hizmetlerResult = await prisma.hizmetler.findMany({
-      where: {
-        aktif: true
-      },
-      orderBy: [
-        { seo_index: 'asc' },
-        { hizmet_adi: 'asc' }
-      ]
-    });
-
-    // Her hizmet için ürünleri al
-    const hizmetler = await Promise.all(
-      hizmetlerResult.map(async (hizmet) => {
-        if (hizmet.urunler && Array.isArray(hizmet.urunler) && hizmet.urunler.length > 0) {
-          try {
-            const urunler = await prisma.urunler.findMany({
-              where: {
-                id: { in: hizmet.urunler as string[] },
-                aktif: true
-              },
-              take: 5
-            });
-            return { ...hizmet, urunler } as any;
-          } catch (error) {
-            console.error(`Hizmet ID ${hizmet.id} için ürünler yüklenirken hata:`, error);
-            return { ...hizmet, urunler: [] } as any;
-          }
-        }
-        return { ...hizmet, urunler: [] } as any;
-      })
-    );
-
-    // Mahalleleri al
-    const mahalleler = await prisma.mahalleler.findMany({
-      where: {
-        ilce_id: lokasyon.id
-      },
-      orderBy: {
-        mahalle_adi: 'asc'
-      }
-    });
-
+  if (!lokasyon) {
     return {
-      lokasyon,
-      hizmetler,
-      mahalleler
-    };
-  } catch (error) {
-    console.error('Lokasyon detayı alınırken hata:', error);
-    return null;
-  }
-}
-
-export async function generateMetadata({ params }: LokasyonPageProps) {
-  const { slug } = await params;
-  const data = await getLokasyonData(slug);
-
-  if (!data) {
-    return {
-      title: 'Lokasyon Bulunamadı',
-      description: 'Aradığınız lokasyon bulunamadı.'
+      title: "Lokasyon Bulunamadı",
+      description: "Aradığınız lokasyon bulunamadı.",
     };
   }
 
-  const { lokasyon, mahalleler, hizmetler } = data;
+  const mahalleler = getAllMahalleler().filter(
+    (m) => m.ilce_id === lokasyon.id
+  ) as Mahalle[];
 
-  // Hizmet isimlerini topla (ilk 8 hizmet)
-  const hizmetIsimleri = hizmetler.slice(0, 8).map(h => h.hizmet_adi).join(', ');
-
-  // Mahalle isimlerini topla (ilk 6 mahalle)
-  const mahalleIsimleri = mahalleler.slice(0, 6).map(m => m.mahalle_adi).join(', ');
+  const hizmetler = getAllHizmetler() as Hizmet[];
+  const hizmetIsimleri = hizmetler.slice(0, 8).map((h) => h.hizmet_adi).join(", ");
+  const mahalleIsimleri = mahalleler.slice(0, 6).map((m) => m.mahalle_adi).join(", ");
 
   const title = `${lokasyon.ilce_adi} Tesisat, Su Deposu, Hidrofor Hizmetleri`;
 
-  const description = lokasyon.aciklama ||
+  const description =
+    lokasyon.aciklama ||
     `${lokasyon.ilce_adi} ve çevresinde ${hizmetler.length}+ profesyonel mühendislik hizmeti: ${hizmetIsimleri}. ${mahalleler.length} mahallede uzman ekip ile kurulum, bakım ve servis. ${mahalleIsimleri} bölgelerinde 7/24 destek.`;
 
   return {
@@ -152,14 +60,16 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
       `${lokasyon.ilce_adi} ısı pompası`,
       `${lokasyon.ilce_adi} tesisat`,
       `${lokasyon.ilce_adi} mühendislik`,
-      ...hizmetler.slice(0, 10).map(h => `${lokasyon.ilce_adi} ${h.hizmet_adi.toLowerCase()}`),
-      ...mahalleler.slice(0, 5).map(m => `${m.mahalle_adi} tesisat`)
+      ...hizmetler.slice(0, 10).map(
+        (h) => `${lokasyon.ilce_adi} ${h.hizmet_adi?.toLowerCase()}`
+      ),
+      ...mahalleler.slice(0, 5).map((m) => `${m.mahalle_adi} tesisat`),
     ],
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
       languages: {
-        'tr-TR': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
-        'x-default': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+        "tr-TR": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
+        "x-default": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
       },
     },
     openGraph: {
@@ -167,76 +77,96 @@ export async function generateMetadata({ params }: LokasyonPageProps) {
       description,
       images: lokasyon.resim_url ? [lokasyon.resim_url] : [],
       url: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}`,
-      type: 'website',
-      locale: 'tr_TR',
+      type: "website",
+      locale: "tr_TR",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: `${lokasyon.ilce_adi} Mühendislik Hizmetleri`,
       description,
       images: lokasyon.resim_url ? [lokasyon.resim_url] : [],
-    }
+    },
   };
 }
 
-export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
-  const { slug } = await params;
-  const data = await getLokasyonData(slug);
+export default function LokasyonDetayPage({
+  params,
+}: LokasyonPageProps) {
+  const { slug } = params;
+  const lokasyon = findLokasyonBySlug(slug) as Lokasyon | null;
 
-  if (!data) {
+  if (!lokasyon) {
     notFound();
   }
 
-  const { lokasyon, hizmetler, mahalleler } = data;
+  const mahalleler = getAllMahalleler().filter(
+    (m) => m.ilce_id === lokasyon.id
+  ) as Mahalle[];
 
-  // Schema markup
+  const hizmetler = getAllHizmetler() as Hizmet[];
+  const allUrunler = getAllUrunler() as Urun[];
+
+  // Attach urunler to each hizmet based on hizmet_id
+  const hizmetlerWithUrunler = hizmetler.map((hizmet) => {
+    const urunlerForHizmet = allUrunler.filter(
+      (u) => u.hizmet_id === hizmet.id
+    );
+    return { ...hizmet, urunler: urunlerForHizmet };
+  });
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": `Gül-Tekin Mühendislik - ${lokasyon.ilce_adi}`,
-    "description": lokasyon.aciklama || `${lokasyon.ilce_adi} bölgesinde mühendislik hizmetleri`,
-    "address": {
+    name: `Gül-Tekin Mühendislik - ${lokasyon.ilce_adi}`,
+    description: lokasyon.aciklama || `${lokasyon.ilce_adi} bölgesinde mühendislik hizmetleri`,
+    address: {
       "@type": "PostalAddress",
-      "addressLocality": lokasyon.ilce_adi,
-      "addressRegion": lokasyon.il || "Muğla",
-      "addressCountry": "TR"
+      addressLocality: lokasyon.ilce_adi,
+      addressRegion: lokasyon.il || "Muğla",
+      addressCountry: "TR",
     },
-    "areaServed": mahalleler.length > 0 ? mahalleler.map(m => ({
-      "@type": "City",
-      "name": `${m.mahalle_adi}, ${lokasyon.ilce_adi}`
-    })) : {
-      "@type": "City",
-      "name": lokasyon.ilce_adi
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Mühendislik Hizmetleri",
-      "itemListElement": hizmetler.slice(0, 15).map((hizmet, index) => ({
-        "@type": "Offer",
-        "position": index + 1,
-        "itemOffered": {
-          "@type": "Service",
-          "name": hizmet.hizmet_adi,
-          "description": hizmet.aciklama || `${lokasyon.ilce_adi} bölgesinde ${hizmet.hizmet_adi} hizmeti`,
-          "areaServed": {
+    areaServed:
+      mahalleler.length > 0
+        ? mahalleler.map((m) => ({
             "@type": "City",
-            "name": lokasyon.ilce_adi
-          }
-        }
-      }))
+            name: `${m.mahalle_adi}, ${lokasyon.ilce_adi}`,
+          }))
+        : {
+            "@type": "City",
+            name: lokasyon.ilce_adi,
+          },
     },
-    "priceRange": "$$",
-    "telephone": "+90-252-313-40-13",
-    "image": lokasyon.resim_url || "https://gul-tekinmuhendislik.com/logo.png"
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Mühendislik Hizmetleri",
+      itemListElement: hizmetlerWithUrunler.slice(0, 15).map((hizmet, index) => ({
+        "@type": "Offer",
+        position: index + 1,
+        itemOffered: {
+          "@type": "Service",
+          name: hizmet.hizmet_adi,
+          description:
+            hizmet.aciklama ||
+            `${lokasyon.ilce_adi} bölgesinde ${hizmet.hizmet_adi} hizmeti`,
+          areaServed: {
+            "@type": "City",
+            name: lokasyon.ilce_adi,
+          },
+        },
+      })),
+    },
+    priceRange: "$$",
+    telephone: "+90-252-313-40-13",
+    image: lokasyon.resim_url || "https://gul-tekinmuhendislik.com/logo.png",
   };
 
   return (
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'Ana Sayfa', url: '/' },
-          { name: 'Lokasyonlar', url: '/lokasyonlar' },
-          { name: lokasyon.ilce_adi, url: `/lokasyonlar/${slug}` }
+          { name: "Ana Sayfa", url: "/" },
+          { name: "Lokasyonlar", url: "/lokasyonlar" },
+          { name: lokasyon.ilce_adi, url: `/lokasyonlar/${slug}` },
         ]}
       />
       <script
@@ -244,7 +174,6 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        {/* Hero Section */}
         <div className="relative h-96 bg-gradient-to-br from-blue-600 to-blue-800">
           {lokasyon.resim_url && (
             <Image
@@ -261,16 +190,13 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                 {lokasyon.ilce_adi}
               </h1>
               {lokasyon.il && (
-                <p className="text-xl md:text-2xl">
-                  {lokasyon.il}
-                </p>
+                <p className="text-xl md:text-2xl">{lokasyon.il}</p>
               )}
             </div>
           </div>
         </div>
 
         <div className="container mx-auto px-4 py-16">
-          {/* Açıklama */}
           {lokasyon.aciklama && (
             <div className="max-w-4xl mx-auto mb-16 text-center">
               <p className="text-lg text-gray-600 leading-relaxed">
@@ -279,7 +205,6 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </div>
           )}
 
-          {/* Hizmet Özeti SEO */}
           <div className="max-w-5xl mx-auto mb-16">
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
@@ -297,24 +222,32 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                   <ul className="space-y-2 text-gray-800">
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">✓</span>
-                      <span><strong>Su Deposu:</strong> Polietilen, paslanmaz ve betonarme su deposu kurulumu, bakım ve onarım</span>
+                      <span>
+                        <strong>Su Deposu:</strong> Polietilen, paslanmaz ve betonarme su deposu kurulumu, bakım ve onarım
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">✓</span>
-                      <span><strong>Hidrofor:</strong> Hidrofor sistemi kurulumu, tamir ve periyodik bakım hizmetleri</span>
+                      <span>
+                        <strong>Hidrofor:</strong> Hidrofor sistemi kurulumu, tamir ve periyodik bakım hizmetleri
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">✓</span>
-                      <span><strong>Isı Pompası:</strong> Hava kaynaklı ve toprak kaynaklı ısı pompası montajı ve servisi</span>
+                      <span>
+                        <strong>Isı Pompası:</strong> Hava kaynaklı ve toprak kaynaklı ısı pompası montajı ve servisi
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">✓</span>
-                      <span><strong>Tesisat İşleri:</strong> Su tesisatı, doğalgaz tesisatı, sıhhi tesisat ve mekanik tesisat</span>
+                      <span>
+                        <strong>Tesisat İşleri:</strong> Su tesisatı, doğalgaz tesisatı, sıhhi tesisat ve mekanik tesisat
+                      </span>
                     </li>
                   </ul>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-3 mt-4">
+                <div className="grid md:grid-cols-2 gap-4 mt-4">
                   <div className="flex items-start">
                     <svg className="w-6 h-6 text-green-600 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -344,7 +277,6 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </div>
           </div>
 
-          {/* Hizmetler - ÖNCELİKLİ BÖLÜM */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
               {lokasyon.ilce_adi} Bölgesinde Sunduğumuz Tüm Hizmetler
@@ -356,13 +288,16 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {hizmetler.map((hizmet) => (
-                <Link key={hizmet.id} href={`/lokasyonlar/${slug}/hizmet/${hizmet.slug}`}>
+              {hizmetlerWithUrunler.map((hizmet) => (
+                <Link
+                  key={hizmet.id}
+                  href={`/lokasyonlar/${slug}/hizmet/${hizmet.slug}`}
+                >
                   <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     {(hizmet.cloudinary_url || hizmet.resim_url) ? (
                       <div className="relative w-full h-48">
                         <Image
-                          src={hizmet.cloudinary_url || hizmet.resim_url || ''}
+                          src={hizmet.cloudinary_url || hizmet.resim_url || ""}
                           alt={hizmet.hizmet_adi}
                           fill
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -414,7 +349,7 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                           </div>
                         </div>
                       )}
-                      {(!hizmet.urunler || hizmet.urunler.length === 0) && (
+                      {!hizmet.urunler || hizmet.urunler.length === 0 && (
                         <div className="mt-3">
                           <div className="flex items-center text-sm text-blue-600 font-medium group-hover:text-blue-700">
                             <span>Detayları Gör</span>
@@ -428,16 +363,15 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                   </div>
                 </Link>
               ))}
-            </div>
 
-            {hizmetler.length === 0 && (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <p className="text-gray-600">Bu lokasyon için henüz hizmet eklenmemiş.</p>
-              </div>
-            )}
+              {hizmetlerWithUrunler.length === 0 && (
+                <div className="text-center py-8 bg-gray-50 rounded-lg">
+                  <p className="text-gray-600">Bu lokasyon için henüz hizmet eklenmemiş.</p>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Mahalleler - ALTTA */}
           {mahalleler.length > 0 && (
             <div className="mb-16">
               <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">
@@ -452,14 +386,14 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {mahalleler.map((mahalle) => {
                   const mahalleSlug = mahalle.slug || mahalle.mahalle_adi.toLowerCase()
-                    .replace(/ı/g, 'i')
-                    .replace(/ğ/g, 'g')
-                    .replace(/ü/g, 'u')
-                    .replace(/ş/g, 's')
-                    .replace(/ö/g, 'o')
-                    .replace(/ç/g, 'c')
-                    .replace(/\s+/g, '-')
-                    .replace(/[^a-z0-9-]/g, '');
+                    .replace(/ı/g, "i")
+                    .replace(/ğ/g, "g")
+                    .replace(/ü/g, "u")
+                    .replace(/ş/g, "s")
+                    .replace(/ö/g, "o")
+                    .replace(/ç/g, "c")
+                    .replace(/\s+/g, "-")
+                    .replace(/[^a-z0-9-]/g, "");
 
                   return (
                     <Link
@@ -501,17 +435,14 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
                 })}
               </div>
 
-              {mahalleler.length > 0 && (
-                <div className="mt-8 text-center">
-                  <p className="text-gray-600">
-                    <span className="font-semibold text-blue-600">{mahalleler.length}</span> mahallede hizmet veriyoruz
-                  </p>
-                </div>
-              )}
+              <div className="mt-8 text-center">
+                <p className="text-gray-600">
+                  <span className="font-semibold text-blue-600">{mahalleler.length}</span> mahallede hizmet veriyoruz
+                </p>
+              </div>
             </div>
           )}
 
-          {/* İletişim CTA */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
               {lokasyon.ilce_adi} Bölgesinde Mühendislik Hizmeti Mi Arıyorsunuz?
@@ -535,7 +466,6 @@ export default async function LokasyonDetayPage({ params }: LokasyonPageProps) {
             </div>
           </div>
 
-          {/* Diğer Lokasyonlar */}
           <div className="mt-16 text-center">
             <Link
               href="/lokasyonlar"

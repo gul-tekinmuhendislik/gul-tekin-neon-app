@@ -1,61 +1,16 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getSolimpeksIsiPompalari(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND marka ILIKE '%solimpeks%'
-      AND (
-        kategori ILIKE '%ısı%pompa%'
-        OR kategori ILIKE '%isı%pompa%'
-        OR kategori ILIKE '%havuz%ısı%'
-        OR kategori ILIKE '%havuz%isı%'
-        OR urun_adi ILIKE '%ısı%pompa%'
-        OR urun_adi ILIKE '%isı%pompa%'
-      )
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE
-        WHEN urun_adi ILIKE '%havuz%' THEN 1
-        WHEN urun_adi ILIKE '%inverter%' THEN 2
-        ELSE 3
-      END,
-      CAST(SUBSTRING(urun_adi FROM '[0-9]+') AS INTEGER) NULLS LAST,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Solimpeks Isı Pompaları - İnverter ve Havuz Isı Pompası | Gül-Tekin Mühendislik',
+  title: createTitle('Solimpeks Isı Pompaları - İnverter ve Havuz Isı Pompası | Gül-Tekin Mühendislik'),
   description: 'Solimpeks marka ısı pompaları satış ve montaj hizmeti. İnverter monoblok ısı pompaları ve havuz ısı pompaları. Bodrum, Muğla bölgesinde profesyonel kurulum.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/solimpeks-isi-pompalari',
@@ -67,16 +22,38 @@ export const metadata = {
   }
 };
 
-export default async function SolimpeksIsiPompalariPage() {
-  const products = await getSolimpeksIsiPompalari();
+function getSolimpeksIsiPompalari(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    const marka = (product.marka || '').toLowerCase();
+    const kategori = (product.kategori || '').toLowerCase();
+    const urunAdi = (product.urun_adi || '').toLowerCase();
+    return (
+      product.aktif !== false &&
+      marka.includes('solimpeks') &&
+      (
+        kategori.includes('ısı pompa') ||
+        kategori.includes('isı pompa') ||
+        kategori.includes('havuz ısı') ||
+        kategori.includes('havuz isı') ||
+        urunAdi.includes('ısı pompa') ||
+        urunAdi.includes('isı pompa')
+      ) &&
+      !!product.slug
+    );
+  });
+}
+
+export default function SolimpeksIsiPompalariPage() {
+  const products = getSolimpeksIsiPompalari();
 
   // Group by type
-  const havuzPompalari = products.filter(p => p.urun_adi.toLowerCase().includes('havuz'));
+  const havuzPompalari = products.filter(p => (p.urun_adi || '').toLowerCase().includes('havuz'));
   const inverterPompalari = products.filter(p =>
-    p.urun_adi.toLowerCase().includes('inverter') && !p.urun_adi.toLowerCase().includes('havuz')
+    (p.urun_adi || '').toLowerCase().includes('inverter') && !(p.urun_adi || '').toLowerCase().includes('havuz')
   );
   const digerPompalari = products.filter(p =>
-    !p.urun_adi.toLowerCase().includes('havuz') && !p.urun_adi.toLowerCase().includes('inverter')
+    !(p.urun_adi || '').toLowerCase().includes('havuz') && !(p.urun_adi || '').toLowerCase().includes('inverter')
   );
 
   const productSchema = {
@@ -284,7 +261,7 @@ export default async function SolimpeksIsiPompalariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -348,7 +325,7 @@ export default async function SolimpeksIsiPompalariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -408,7 +385,7 @@ export default async function SolimpeksIsiPompalariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

@@ -1,26 +1,17 @@
-import { sql } from "@/lib/db";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getListingImageUrl } from "@/lib/utils/image-optimization";
+import {
+  getAllUrunler,
+  getUrunCategories,
+  getUrunBrands,
+  type Urun,
+} from "@/lib/static-data";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
-interface Product {
-  id: string;
-  urun_adi: string;
-  slug: string;
-  kategori?: string;
-  marka?: string;
-  aciklama?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  fiyat?: number;
-  stokta?: boolean;
-  ozellikler?: string;
-  airtable_created_time?: string;
-  updated_at?: string;
-}
+interface Product extends Urun {}
 
 interface ProductsPageProps {
   searchParams?: Promise<{
@@ -31,40 +22,40 @@ interface ProductsPageProps {
   }>;
 }
 
-export async function generateMetadata({ searchParams }: ProductsPageProps) {
-  const params = await searchParams || {};
-  const currentPage = parseInt(params.page || '1');
-  const selectedCategory = params.kategori;
-  const selectedBrand = params.marka;
-  const searchQuery = params.search;
+export async function generateMetadata({
+  searchParams,
+}: ProductsPageProps): Promise<Metadata> {
+  const params = (await searchParams) || {};
+  const currentPage = parseInt(params.page || "1");
+  const selectedCategory = params.kategori as string | undefined;
+  const selectedBrand = params.marka as string | undefined;
+  const searchQuery = params.search as string | undefined;
 
-  // Build query string for URLs
   const queryParams = new URLSearchParams();
-  if (currentPage > 1) queryParams.set('page', currentPage.toString());
-  if (selectedCategory) queryParams.set('kategori', selectedCategory);
-  if (selectedBrand) queryParams.set('marka', selectedBrand);
-  if (searchQuery) queryParams.set('search', searchQuery);
+  if (currentPage > 1) queryParams.set("page", currentPage.toString());
+  if (selectedCategory) queryParams.set("kategori", selectedCategory);
+  if (selectedBrand) queryParams.set("marka", selectedBrand);
+  if (searchQuery) queryParams.set("search", searchQuery);
 
   const queryString = queryParams.toString();
-  const baseUrl = 'https://gul-tekinmuhendislik.com/urunler';
+  const baseUrl = "https://gul-tekinmuhendislik.com/urunler";
   const canonicalUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 
-  // Build title with page number
   let title = "Ürünler - Gül-Tekin Mühendislik";
   if (currentPage > 1) {
     title = `Ürünler (Sayfa ${currentPage}) - Gül-Tekin Mühendislik`;
   }
   if (selectedCategory) {
-    title = `${selectedCategory} Ürünleri${currentPage > 1 ? ` (Sayfa ${currentPage})` : ''} - Gül-Tekin Mühendislik`;
+    title = `${selectedCategory} Ürünleri${currentPage > 1 ? ` (Sayfa ${currentPage})` : ""} - Gül-Tekin Mühendislik`;
   }
 
-  // Build description with page number
-  let description = "Gül-Tekin Mühendislik olarak sunduğumuz ürünler ve çözümler. Isı pompaları, güneş enerjisi sistemleri, su arıtma ve mekanik tesisat ürünleri.";
+  let description =
+    "Gül-Tekin Mühendislik olarak sunduğumuz ürünler ve çözümler. Isı pompaları, güneş enerjisi sistemleri, su arıtma ve mekanik tesisat ürünleri.";
   if (currentPage > 1) {
     description = `Ürünlerimiz sayfa ${currentPage}. Isı pompaları, güneş enerjisi, su arıtma sistemleri ve daha fazlası.`;
   }
   if (selectedCategory) {
-    description = `${selectedCategory} kategorisindeki ürünlerimiz${currentPage > 1 ? ` - Sayfa ${currentPage}` : ''}. Kaliteli ve güvenilir çözümler.`;
+    description = `${selectedCategory} kategorisindeki ürünlerimiz${currentPage > 1 ? ` - Sayfa ${currentPage}` : ""}. Kaliteli ve güvenilir çözümler.`;
   }
 
   return {
@@ -78,370 +69,92 @@ export async function generateMetadata({ searchParams }: ProductsPageProps) {
 
 const PRODUCTS_PER_PAGE = 24;
 
-async function getProducts(
-  page: number = 1,
+function filterProducts(
+  products: Product[],
   kategori?: string,
   marka?: string,
-  search?: string
-) {
-  try {
-    const offset = (page - 1) * PRODUCTS_PER_PAGE;
-    
-    // Get total count
-    let countResult;
-    if (kategori && marka && search) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE kategori = ${kategori} 
-          AND marka = ${marka}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-      `;
-    } else if (kategori && marka) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE kategori = ${kategori} AND marka = ${marka}
-      `;
-    } else if (kategori && search) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE kategori = ${kategori}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-      `;
-    } else if (marka && search) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE marka = ${marka}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-      `;
-    } else if (kategori) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE kategori = ${kategori}
-      `;
-    } else if (marka) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE marka = ${marka}
-      `;
-    } else if (search) {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-        WHERE LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'})
-      `;
-    } else {
-      countResult = await sql`
-        SELECT COUNT(*) as total
-        FROM urunler
-      `;
+  search?: string,
+): Product[] {
+  return products.filter((p) => {
+    if (kategori && p.kategori !== kategori) return false;
+    if (marka && p.marka?.toLowerCase() !== marka.toLowerCase()) return false;
+    if (search) {
+      const query = search.toLowerCase();
+      const haystack = `${p.urun_adi || ""} ${p.aciklama || ""}`.toLowerCase();
+      if (!haystack.includes(query)) return false;
     }
-    
-    // Get products with pagination
-    let productsResult;
-    if (kategori && marka && search) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE kategori = ${kategori}
-          AND marka = ${marka}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (kategori && marka) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE kategori = ${kategori} AND marka = ${marka}
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (kategori && search) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE kategori = ${kategori}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (marka && search) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE marka = ${marka}
-          AND (LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'}))
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (kategori) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE kategori = ${kategori}
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (marka) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE marka = ${marka}
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else if (search) {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        WHERE LOWER(urun_adi) LIKE LOWER(${'%' + search + '%'}) OR LOWER(aciklama) LIKE LOWER(${'%' + search + '%'})
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    } else {
-      productsResult = await sql`
-        SELECT 
-          id,
-          urun_adi,
-          slug,
-          kategori,
-          marka,
-          aciklama,
-          gorsel_url,
-          cloudinary_url,
-          fiyat,
-          stokta,
-          ozellikler,
-          airtable_created_time,
-          updated_at
-        FROM urunler
-        ORDER BY updated_at DESC NULLS LAST, kategori, urun_adi
-        LIMIT ${PRODUCTS_PER_PAGE}
-        OFFSET ${offset}
-      `;
-    }
-
-    const countArray = countResult as unknown as Array<{total: number}>;
-    const productsArray = Array.isArray(productsResult) ? productsResult as unknown as Product[] : [];
-
-    const totalProducts = countArray[0]?.total || 0;
-    const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
-
-    return { products: productsArray, totalProducts, totalPages };
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return { products: [], totalProducts: 0, totalPages: 0 };
-  }
+    return true;
+  });
 }
 
-async function getCategories() {
-  try {
-    const categories = await sql`
-      SELECT DISTINCT kategori, COUNT(*) as count
-      FROM urunler
-      WHERE kategori IS NOT NULL
-      GROUP BY kategori
-      ORDER BY kategori
-    `;
-    return Array.isArray(categories) ? categories : [];
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
-  }
-}
-
-async function getBrands() {
-  try {
-    const brands = await sql`
-      SELECT DISTINCT marka, COUNT(*) as count
-      FROM urunler
-      WHERE marka IS NOT NULL
-      GROUP BY marka
-      ORDER BY marka
-    `;
-    return Array.isArray(brands) ? brands : [];
-  } catch (error) {
-    console.error("Error fetching brands:", error);
-    return [];
-  }
-}
-
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams || {};
-  const currentPage = parseInt(params.page || '1');
+export default async function ProductsPage({
+  searchParams,
+}: ProductsPageProps) {
+  const params = (await searchParams) || {};
+  const currentPage = parseInt(params.page || "1");
   const selectedCategory = params.kategori;
   const selectedBrand = params.marka;
   const searchQuery = params.search;
-  
-  const [{ products, totalProducts, totalPages }, categories, brands] = await Promise.all([
-    getProducts(currentPage, selectedCategory, selectedBrand, searchQuery),
-    getCategories(),
-    getBrands()
-  ]);
-  
-  if (products.length === 0 && currentPage === 1) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <p className="text-gray-600">Aradığınız kriterlere uygun ürün bulunamadı.</p>
-      </div>
-    );
-  }
 
-  // Build pagination link URLs for rel next/prev
+  const allProducts = getAllUrunler();
+  const filteredProducts = filterProducts(
+    allProducts,
+    selectedCategory,
+    selectedBrand,
+    searchQuery,
+  );
+  const totalProducts = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
+  const safePage = Number.isFinite(currentPage) && currentPage > 0 ? currentPage : 1;
+  const offset = (safePage - 1) * PRODUCTS_PER_PAGE;
+  const pageProducts = filteredProducts.slice(offset, offset + PRODUCTS_PER_PAGE);
+
+  const categories = getUrunCategories();
+  const brands = getUrunBrands();
+
   const buildPaginationUrl = (page: number) => {
     const queryParams = new URLSearchParams();
-    queryParams.set('page', page.toString());
-    if (selectedCategory) queryParams.set('kategori', selectedCategory);
-    if (selectedBrand) queryParams.set('marka', selectedBrand);
-    if (searchQuery) queryParams.set('search', searchQuery);
-    return `https://gul-tekinmuhendislik.com/urunler?${queryParams.toString()}`;
+    queryParams.set("page", String(page));
+    if (selectedCategory) queryParams.set("kategori", selectedCategory);
+    if (selectedBrand) queryParams.set("marka", selectedBrand);
+    if (searchQuery) queryParams.set("search", searchQuery);
+    return `/urunler?${queryParams.toString()}`;
   };
 
   return (
-    <>
-      {/* SEO Pagination Links */}
-      {currentPage > 1 && (
-        <link rel="prev" href={buildPaginationUrl(currentPage - 1)} />
-      )}
-      {currentPage < totalPages && (
-        <link rel="next" href={buildPaginationUrl(currentPage + 1)} />
-      )}
-
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-7xl mx-auto">
-        
-        {/* Filters and Search */}
+    <div className="container mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto">
         <div className="mb-8 p-4 bg-gray-50 rounded-lg">
-          <form method="get" className="space-y-4">
+          <form method="get" action="/urunler" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {/* Search */}
               <div>
-                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="search"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Ürün Ara
                 </label>
                 <input
                   type="text"
                   id="search"
                   name="search"
-                  defaultValue={searchQuery}
+                  defaultValue={searchQuery || ""}
                   placeholder="Ürün adı veya açıklama..."
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              
-              {/* Category Filter */}
+
               <div>
-                <label htmlFor="kategori" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="kategori"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Kategori
                 </label>
                 <select
                   id="kategori"
                   name="kategori"
-                  defaultValue={selectedCategory}
+                  defaultValue={selectedCategory || ""}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Tüm Kategoriler</option>
@@ -452,16 +165,18 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   ))}
                 </select>
               </div>
-              
-              {/* Brand Filter */}
+
               <div>
-                <label htmlFor="marka" className="block text-sm font-medium text-gray-700 mb-1">
+                <label
+                  htmlFor="marka"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
                   Marka
                 </label>
                 <select
                   id="marka"
                   name="marka"
-                  defaultValue={selectedBrand}
+                  defaultValue={selectedBrand || ""}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Tüm Markalar</option>
@@ -472,8 +187,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   ))}
                 </select>
               </div>
-              
-              {/* Filter Button */}
+
               <div className="flex items-end">
                 <button
                   type="submit"
@@ -483,17 +197,13 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </button>
               </div>
             </div>
-            
-            {/* Active Filters */}
+
             {(selectedCategory || selectedBrand || searchQuery) && (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-gray-600">Aktif Filtreler:</span>
                 {searchQuery && (
                   <Link
-                    href={`/urunler?${new URLSearchParams({
-                      ...(selectedCategory && { kategori: selectedCategory }),
-                      ...(selectedBrand && { marka: selectedBrand })
-                    })}`}
+                    href={buildPaginationUrl(1)}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                   >
                     Arama: {searchQuery}
@@ -502,10 +212,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 )}
                 {selectedCategory && (
                   <Link
-                    href={`/urunler?${new URLSearchParams({
-                      ...(searchQuery && { search: searchQuery }),
-                      ...(selectedBrand && { marka: selectedBrand })
-                    })}`}
+                    href={buildPaginationUrl(1)}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                   >
                     {selectedCategory}
@@ -514,10 +221,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 )}
                 {selectedBrand && (
                   <Link
-                    href={`/urunler?${new URLSearchParams({
-                      ...(searchQuery && { search: searchQuery }),
-                      ...(selectedCategory && { kategori: selectedCategory })
-                    })}`}
+                    href={buildPaginationUrl(1)}
                     className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-700 hover:bg-blue-200"
                   >
                     {selectedBrand}
@@ -534,26 +238,25 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             )}
           </form>
         </div>
-        
-        {/* Results Info */}
+
         <div className="mb-6 text-sm text-gray-600">
-          Toplam {totalProducts} ürün bulundu. 
-          {totalPages > 1 && ` (Sayfa ${currentPage} / ${totalPages})`}
+          Toplam {totalProducts} ürün bulundu.
+          {totalPages > 1 && ` (Sayfa ${safePage} / ${totalPages})`}
         </div>
-        
-        {/* Products Grid */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
-          {products.map((product: Product) => (
+          {pageProducts.map((product: Product) => (
             <Link
               key={product.id}
               href={`/urunler/${product.slug}`}
               className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100"
             >
-              {/* Product Image */}
               <div className="aspect-square relative overflow-hidden bg-gray-50">
-                {(product.cloudinary_url || product.gorsel_url) ? (
+                {product.cloudinary_url || product.gorsel_url ? (
                   <Image
-                    src={getListingImageUrl(product.cloudinary_url || product.gorsel_url)}
+                    src={getListingImageUrl(
+                      product.cloudinary_url || product.gorsel_url || "",
+                    )}
                     alt={product.urun_adi}
                     fill
                     className="object-contain group-hover:scale-105 transition-transform duration-300"
@@ -578,8 +281,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   </div>
                 )}
               </div>
-              
-              {/* Product Info */}
               <div className="p-4">
                 {product.marka && (
                   <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
@@ -594,22 +295,32 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     {product.aciklama}
                   </p>
                 )}
-                
-                {/* Stock Status and Detail Button */}
                 <div className="mt-4 flex items-center justify-between">
                   {product.stokta !== undefined && (
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      product.stokta
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {product.stokta ? 'Stokta' : 'Stok Dışı'}
+                    <span
+                      className={`text-xs px-2 py-1 rounded-full ${
+                        product.stokta
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {product.stokta ? "Stokta" : "Stok Dışı"}
                     </span>
                   )}
                   <span className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700">
                     Detaylar
-                    <svg className="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="ml-1 w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </span>
                 </div>
@@ -617,99 +328,39 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </Link>
           ))}
         </div>
-        
-        {/* Pagination */}
+
         {totalPages > 1 && (
           <div className="flex justify-center items-center space-x-2">
-            {/* Previous Button */}
-            {currentPage > 1 && (
+            {safePage > 1 && (
               <Link
-                href={`/urunler?${new URLSearchParams({
-                  page: (currentPage - 1).toString(),
-                  ...(selectedCategory && { kategori: selectedCategory }),
-                  ...(selectedBrand && { marka: selectedBrand }),
-                  ...(searchQuery && { search: searchQuery })
-                })}`}
+                href={buildPaginationUrl(safePage - 1)}
                 className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
                 ← Önceki
               </Link>
             )}
-            
-            {/* Page Numbers */}
+
             <div className="flex items-center space-x-1">
-              {/* First page */}
-              {currentPage > 3 && (
-                <>
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (pageNumber) => (
                   <Link
-                    href={`/urunler?${new URLSearchParams({
-                      page: '1',
-                      ...(selectedCategory && { kategori: selectedCategory }),
-                      ...(selectedBrand && { marka: selectedBrand }),
-                      ...(searchQuery && { search: searchQuery })
-                    })}`}
-                    className="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                    key={pageNumber}
+                    href={buildPaginationUrl(pageNumber)}
+                    className={`px-3 py-2 border rounded-md transition-colors ${
+                      pageNumber === safePage
+                        ? "bg-blue-600 text-white border-blue-600"
+                        : "border-gray-300 hover:bg-gray-50"
+                    }`}
                   >
-                    1
+                    {pageNumber}
                   </Link>
-                  {currentPage > 4 && <span className="px-2">...</span>}
-                </>
-              )}
-              
-              {/* Pages around current */}
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                const pageNum = Math.max(1, Math.min(currentPage - 2 + i, totalPages - 4)) + i;
-                if (pageNum > 0 && pageNum <= totalPages) {
-                  return (
-                    <Link
-                      key={pageNum}
-                      href={`/urunler?${new URLSearchParams({
-                        page: pageNum.toString(),
-                        ...(selectedCategory && { kategori: selectedCategory }),
-                        ...(selectedBrand && { marka: selectedBrand }),
-                        ...(searchQuery && { search: searchQuery })
-                      })}`}
-                      className={`px-3 py-2 border rounded-md transition-colors ${
-                        pageNum === currentPage
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'border-gray-300 hover:bg-gray-50'
-                      }`}
-                    >
-                      {pageNum}
-                    </Link>
-                  );
-                }
-                return null;
-              }).filter(Boolean)}
-              
-              {/* Last page */}
-              {currentPage < totalPages - 2 && (
-                <>
-                  {currentPage < totalPages - 3 && <span className="px-2">...</span>}
-                  <Link
-                    href={`/urunler?${new URLSearchParams({
-                      page: totalPages.toString(),
-                      ...(selectedCategory && { kategori: selectedCategory }),
-                      ...(selectedBrand && { marka: selectedBrand }),
-                      ...(searchQuery && { search: searchQuery })
-                    })}`}
-                    className="px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                  >
-                    {totalPages}
-                  </Link>
-                </>
+                ),
               )}
             </div>
-            
-            {/* Next Button */}
-            {currentPage < totalPages && (
+
+            {safePage < totalPages && (
               <Link
-                href={`/urunler?${new URLSearchParams({
-                  page: (currentPage + 1).toString(),
-                  ...(selectedCategory && { kategori: selectedCategory }),
-                  ...(selectedBrand && { marka: selectedBrand }),
-                  ...(searchQuery && { search: searchQuery })
-                })}`}
+                href={buildPaginationUrl(safePage + 1)}
                 className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
                 Sonraki →
@@ -719,6 +370,5 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         )}
       </div>
     </div>
-    </>
   );
 }

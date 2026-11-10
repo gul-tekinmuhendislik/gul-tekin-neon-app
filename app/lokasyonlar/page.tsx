@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import LokasyonlarContent from "./lokasyonlar-content";
+import { getAllLokasyonlar, type Lokasyon } from "@/lib/static-data";
 
 export const metadata: Metadata = {
   title: "Hizmet Verdiğimiz Lokasyonlar",
@@ -47,5 +47,6 @@ export const metadata: Metadata = {
 };
 
 export default function LokasyonlarPage() {
-  return <LokasyonlarContent />;
+  const lokasyonlar = getAllLokasyonlar() as Lokasyon[];
+  return <LokasyonlarContent lokasyonlar={lokasyonlar} />;
 }

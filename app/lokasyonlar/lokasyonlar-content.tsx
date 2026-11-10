@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface Lokasyon {
   id: number;
@@ -15,37 +14,13 @@ interface Lokasyon {
   sira?: number;
 }
 
-export default function LokasyonlarContent() {
-  const [lokasyonlar, setLokasyonlar] = useState<Lokasyon[]>([]);
-  const [loading, setLoading] = useState(true);
+interface LokasyonlarContentProps {
+  lokasyonlar: Lokasyon[];
+}
 
-  useEffect(() => {
-    fetchLokasyonlar();
-  }, []);
-
-  const fetchLokasyonlar = async () => {
-    try {
-      const response = await fetch('/api/lokasyonlar');
-      const data = await response.json();
-      setLokasyonlar(data);
-    } catch (error) {
-      console.error('Lokasyonlar yüklenemedi:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <p className="mt-4 text-gray-600">Yükleniyor...</p>
-        </div>
-      </div>
-    );
-  }
-
+export default function LokasyonlarContent({
+  lokasyonlar,
+}: LokasyonlarContentProps) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 py-16">
@@ -139,13 +114,13 @@ export default function LokasyonlarContent() {
               </Link>
             </motion.div>
           ))}
-        </div>
 
-        {lokasyonlar.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-600">Henüz lokasyon eklenmemiş.</p>
-          </div>
-        )}
+          {lokasyonlar.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-600">Henüz lokasyon eklenmemiş.</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

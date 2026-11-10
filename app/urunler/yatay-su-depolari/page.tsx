@@ -1,53 +1,15 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getSuDepolari(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND (
-        kategori IN ('Su Depoları', 'TOPRAK ÜSTÜ SU DEPOSU', 'TOPRAK ALTI SU DEPOSU')
-        OR urun_adi ILIKE '%su depo%'
-      )
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE
-        WHEN urun_adi ILIKE '%yatay%' THEN 1
-        ELSE 2
-      END,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Yatay Su Depoları - Polietilen ve Polyester Su Tankları | Gül-Tekin Mühendislik',
+  title: createTitle('Yatay Su Depoları - Polietilen ve Polyester Su Tankları | Gül-Tekin Mühendislik'),
   description: 'Yatay su depoları, polietilen su tankları ve polyester su depoları. Toprak altı ve toprak üstü su depolama çözümleri. Bodrum, Muğla bölgesinde montaj hizmeti.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/urunler/yatay-su-depolari',
@@ -59,8 +21,24 @@ export const metadata = {
   }
 };
 
-export default async function YataySuDepolariPage() {
-  const products = await getSuDepolari();
+function getSuDepolari(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    const kategori = (product.kategori || '').toLowerCase();
+    const urunAdi = (product.urun_adi || '').toLowerCase();
+    return (
+      product.aktif !== false &&
+      (
+        (kategori === 'su depoları' || kategori === 'toprak üstü su deposu' || kategori === 'toprak altı su deposu') ||
+        urunAdi.includes('su depo')
+      ) &&
+      !!product.slug
+    );
+  });
+}
+
+export default function YataySuDepolariPage() {
+  const products = getSuDepolari();
 
   const categorySchema = {
     "@context": "https://schema.org",
@@ -155,7 +133,7 @@ export default async function YataySuDepolariPage() {
                   {(product.cloudinary_url || product.gorsel_url) ? (
                     <Image
                       src={product.cloudinary_url || product.gorsel_url || ''}
-                      alt={product.urun_adi}
+                      alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                       fill
                       className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

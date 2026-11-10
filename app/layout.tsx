@@ -7,8 +7,6 @@ import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import CookieBanner from "./components/CookieBanner";
 import { defaultMetadata } from "./metadata";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CONTACT_INFO } from "@/lib/contact-info";
 
 export const metadata: Metadata = defaultMetadata;
@@ -102,8 +100,6 @@ gtag('config', 'G-55ZTFYPJ0R');`}
         <Footer />
         <WhatsAppButton />
         <CookieBanner />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

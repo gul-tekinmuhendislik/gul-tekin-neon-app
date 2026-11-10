@@ -1,11 +1,8 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getListingImageUrl } from '@/lib/utils/image-optimization';
 import type { Metadata } from 'next';
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import { getAllProjeler, type Proje } from '@/lib/static-data';
+import { getListingImageUrl } from '@/lib/utils/image-optimization';
 
 export const metadata: Metadata = {
   title: 'Projeler - Gül-Tekin Mühendislik',
@@ -17,86 +14,19 @@ export const metadata: Metadata = {
   },
 };
 
-interface Proje {
-  id: number;
-  airtable_id: string;
-  proje_adi: string;
-  slug: string;
-  aciklama: string;
-  mahalle: string;
-  ilce: string;
-  baslangic_tarihi: string;
-  bitis_tarihi: string;
-  proje_yili: string;
-  ana_faaliyet_konusu: string[];
-  airtable_resim_url: string;
-  airtable_galeri_urls: string[];
-  cloudinary_url: string;
-  cloudinary_public_id: string;
-  cloudinary_galeri_urls: string[];
-  cloudinary_galeri_public_ids: string[];
-  aktif: boolean;
-  sira: number;
-}
-
 async function getProjeler(page: number = 1, perPage: number = 12) {
-  try {
-    const offset = (page - 1) * perPage;
-    
-    // Get total count for pagination
-    const countResult = await sql`
-      SELECT COUNT(*) as count
-      FROM projeler_gul_tekin
-      WHERE aktif = true
-    `;
-    const totalCount = Number(countResult[0]?.count || 0);
-    
-    // Get paginated projeler
-    const projeler = await sql`
-      SELECT 
-        id,
-        airtable_id,
-        proje_adi,
-        slug,
-        aciklama,
-        mahalle,
-        ilce,
-        baslangic_tarihi,
-        bitis_tarihi,
-        proje_yili,
-        ana_faaliyet_konusu,
-        airtable_resim_url,
-        airtable_galeri_urls,
-        cloudinary_url,
-        cloudinary_public_id,
-        cloudinary_galeri_urls,
-        cloudinary_galeri_public_ids,
-        aktif,
-        sira
-      FROM projeler_gul_tekin
-      WHERE aktif = true
-      ORDER BY sira ASC, baslangic_tarihi DESC, id DESC
-      LIMIT ${perPage}
-      OFFSET ${offset}
-    `;
-    
-    return {
-      projeler: projeler as Proje[],
-      totalCount,
-      totalPages: Math.ceil(totalCount / perPage),
-      currentPage: page,
-      perPage
-    };
-  } catch (error) {
-    console.error('Error fetching projeler:', error);
-    return {
-      projeler: [],
-      totalCount: 0,
-      totalPages: 0,
-      currentPage: 1,
-      perPage
-    };
-  }
+  const allProjeler = getAllProjeler().filter((proje) => proje.aktif !== false);
+  const offset = (page - 1) * perPage;
+  const projeler = allProjeler.slice(offset, offset + perPage);
+  const totalCount = allProjeler.length;
+
+  return {
+    projeler: projeler as Proje[],
+    totalCount,
+    totalPages: Math.max(1, Math.ceil(totalCount / perPage)),
+    currentPage: page,
+    perPage,
+  };
 }
 
 interface PageProps {
@@ -105,7 +35,7 @@ interface PageProps {
 
 export default async function ProjelerPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const currentPage = Number(params.page) || 1;
+  const currentPage = Number(params?.page) || 1;
   const { projeler, totalCount, totalPages } = await getProjeler(currentPage);
 
   return (

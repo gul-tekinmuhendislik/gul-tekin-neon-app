@@ -1,58 +1,16 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getGunesEnerjisiUrunleri(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND (
-        kategori ILIKE '%güneş%'
-        OR kategori ILIKE '%solar%'
-        OR kategori = 'Pv Panel'
-      )
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE marka
-        WHEN 'SOLİMPEKS' THEN 1
-        WHEN 'BURAK' THEN 2
-        WHEN 'ERASLAN' THEN 3
-        WHEN 'JİNKO' THEN 4
-        ELSE 5
-      END,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Güneş Enerjisi Sistemleri - Solar Panel, Kollektör, Boyler | Gül-Tekin Mühendislik',
+  title: createTitle('Güneş Enerjisi Sistemleri - Solar Panel, Kollektör, Boyler | Gül-Tekin Mühendislik'),
   description: 'Güneş enerjisi sistemleri, solar panel, güneş kollektörü ve boyler satış ve montaj hizmeti. Solimpeks, Burak, Eraslan markalarında. Bodrum, Muğla bölgesinde profesyonel kurulum.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/gunes-enerjisi',
@@ -64,8 +22,23 @@ export const metadata = {
   }
 };
 
-export default async function GunesEnerjisiPage() {
-  const products = await getGunesEnerjisiUrunleri();
+function getGunesEnerjisiUrunleri(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    const kategori = (product.kategori || '').toLowerCase();
+    const urunAdi = (product.urun_adi || '').toLowerCase();
+    return (
+      product.aktif !== false &&
+      (kategori.includes('güneş') ||
+        kategori.includes('solar') ||
+        kategori === 'Pv Panel') &&
+      !!product.slug
+    );
+  });
+}
+
+export default function GunesEnerjisiPage() {
+  const products = getGunesEnerjisiUrunleri();
 
   // Group products by brand
   const productsByBrand = products.reduce((acc, product) => {
@@ -75,7 +48,7 @@ export default async function GunesEnerjisiPage() {
     }
     acc[brand].push(product);
     return acc;
-  }, {} as Record<string, Product[]>);
+  }, {} as Record<string, Urun[]>);
 
   const productSchema = {
     "@context": "https://schema.org",
@@ -277,7 +250,7 @@ export default async function GunesEnerjisiPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

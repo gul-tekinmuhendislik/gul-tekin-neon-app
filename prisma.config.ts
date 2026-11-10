@@ -2,8 +2,17 @@ import { defineConfig, env } from "prisma/config";
 import * as dotenv from "dotenv";
 import * as path from "path";
 
-// Load .env.local file
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+const envFiles = [
+  '.env.production.local',
+  '.env.local',
+  '.env.development.local',
+  '.env.production',
+  '.env',
+];
+
+for (const envFile of envFiles) {
+  dotenv.config({ path: path.resolve(process.cwd(), envFile) });
+}
 
 export default defineConfig({
   schema: "prisma/schema.prisma",

@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import HeroSlider from "@/components/HeroSlider";
 import { IntegrationsSection } from "@/components/ui/integrations-section";
 import { LogoCloud } from "@/components/ui/logo-cloud";
@@ -14,7 +12,7 @@ import VarmeksWarrantyFeatures from "@/components/VarmeksWarrantyFeatures";
 import HeatPumpTroubleshooter from "@/components/HeatPumpTroubleshooter";
 import LGProducts from "@/components/LGProducts";
 import AldeaProducts from "@/components/AldeaProducts";
-import { sql } from '@/lib/db';
+import { getHomeMetricsFromSnapshot } from '@/lib/static-data';
 
 export const revalidate = 3600;
 
@@ -34,33 +32,8 @@ export const metadata: Metadata = {
   },
 };
 
-async function getProjectCount() {
-  try {
-    const result = await sql`
-      SELECT COUNT(*) as count FROM projeler_gul_tekin WHERE aktif = true
-    `;
-    return Number(result[0]?.count || 0);
-  } catch (error) {
-    console.error('Error fetching project count:', error);
-    return 236; // fallback
-  }
-}
-
-async function getLocationCount() {
-  try {
-    const result = await sql`
-      SELECT COUNT(*) as count FROM hizmet_lokasyonlari WHERE aktif = true
-    `;
-    return Number(result[0]?.count || 0);
-  } catch (error) {
-    console.error('Error fetching location count:', error);
-    return 13; // fallback
-  }
-}
-
-export default async function Home() {
-  const projectCount = await getProjectCount();
-  const locationCount = await getLocationCount();
+export default function Home() {
+  const { projectCount, locationCount } = getHomeMetricsFromSnapshot();
 
   return (
     <div className="flex min-h-screen flex-col bg-white">

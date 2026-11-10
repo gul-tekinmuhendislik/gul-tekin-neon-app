@@ -5,11 +5,14 @@ import Testimonials from '@/components/Testimonials';
 import WebPages from '@/components/WebPages';
 import ProjectStatisticsServer from '@/components/ProjectStatisticsServer';
 import { TextFlip } from '@/components/ui/text-flip';
-import { getRandomBrands } from '@/lib/get-brands';
 import { CONTACT_INFO } from '@/lib/contact-info';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+const STATIC_BRANDS = [
+  "Daikin", "Mitsubishi", "Bosch", "Vaillant", "Viessmann", "Alarko",
+  "Solimpeks", "Varmeks", "Makse", "Aldea", "Wepomp", "Wilso"
+];
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Hakkımızda | Gül-Tekin Mühendislik - Mekanik Tesisat',
@@ -33,8 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function AboutPage() {
-  const brandNames = await getRandomBrands(6);
+export default function AboutPage() {
+  const brandNames = STATIC_BRANDS;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [

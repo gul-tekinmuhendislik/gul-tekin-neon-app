@@ -1,103 +1,63 @@
-import { prisma } from '@/lib/prisma';
-import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import { validateMetaDescription, validateAltText, createTitle } from '@/lib/seo-utils';
-import BreadcrumbSchema from '@/components/BreadcrumbSchema';
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import {
+  validateMetaDescription,
+  validateAltText,
+  createTitle,
+} from "@/lib/seo-utils";
+import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import {
+  getLokasyonBySlug,
+  getAllMahalleler,
+  getAllHizmetler,
+  getAllUrunler,
+  type Lokasyon,
+  type Mahalle,
+  type Hizmet,
+  type Urun,
+} from "@/lib/static-data";
 
 export const revalidate = 3600;
 
 interface MahallePageProps {
-  params: Promise<{
-    slug: string;
-    mahalle: string;
-  }>;
+  params: { slug: string; mahalle: string };
 }
 
-// Prisma types are used directly
-
-async function getMahalleData(ilceSlug: string, mahalleSlug: string) {
-  try {
-    // İlçeyi bul
-    const lokasyon = await prisma.hizmet_lokasyonlari.findFirst({
-      where: {
-        slug: ilceSlug,
-        aktif: true
-      }
-    });
-
-    if (!lokasyon) {
-      return null;
-    }
-
-    // Mahalleyi bul
-    const mahalle = await prisma.mahalleler.findFirst({
-      where: {
-        ilce_id: lokasyon.id,
-        slug: mahalleSlug
-      }
-    });
-
-    if (!mahalle) {
-      return null;
-    }
-
-    // Hizmetleri al
-    const hizmetlerResult = await prisma.hizmetler.findMany({
-      where: {
-        aktif: true
-      },
-      orderBy: [
-        { seo_index: 'asc' },
-        { hizmet_adi: 'asc' }
-      ]
-    });
-
-    // Her hizmet için ürünleri al
-    const hizmetler = await Promise.all(
-      hizmetlerResult.map(async (hizmet) => {
-        if (hizmet.urunler && Array.isArray(hizmet.urunler) && hizmet.urunler.length > 0) {
-          try {
-            const urunler = await prisma.urunler.findMany({
-              where: {
-                id: { in: hizmet.urunler as string[] },
-                aktif: true
-              },
-              take: 5
-            });
-            return { ...hizmet, urunler };
-          } catch (error) {
-            console.error(`Hizmet ID ${hizmet.id} için ürünler yüklenirken hata:`, error);
-            return { ...hizmet, urunler: [] };
-          }
-        }
-        return { ...hizmet, urunler: [] };
-      })
-    );
-
-    return {
-      mahalle,
-      lokasyon,
-      hizmetler
-    };
-  } catch (error) {
-    console.error('Mahalle detayı alınırken hata:', error);
-    return null;
-  }
+function findLokasyonBySlug(slug: string): Lokasyon | null {
+  const lokasyonlar = getAllLokasyonlar();
+  return lokasyonlar.find((l) => l.slug === slug) || null;
 }
 
-export async function generateMetadata({ params }: MahallePageProps) {
-  const { slug, mahalle: mahalleSlug } = await params;
-  const data = await getMahalleData(slug, mahalleSlug);
+function findMahalleBySlug(
+  ilceId: number,
+  mahalleSlug: string
+): Mahalle | null {
+  const mahalleler = getAllMahalleler();
+  return mahalleler.find((m) => m.ilce_id === ilceId && m.slug === mahalleSlug) || null;
+}
 
-  if (!data) {
+export async function generateMetadata({
+  params,
+}: MahallePageProps) {
+  const { slug, mahalle: mahalleSlug } = params;
+  const lokasyon = findLokasyonBySlug(slug) as Lokasyon | null;
+
+  if (!lokasyon) {
     return {
-      title: 'Mahalle Bulunamadı',
-      description: 'Aradığınız mahalle bulunamadı.'
+      title: "Mahalle Bulunamadı",
+      description: "Aradığınız mahalle bulunamadı.",
     };
   }
 
-  const { mahalle, lokasyon } = data;
+  const mahalle = findMahalleBySlug(lokasyon.id, mahalleSlug) as Mahalle | null;
+
+  if (!mahalle) {
+    return {
+      title: "Mahalle Bulunamadı",
+      description: "Aradığınız mahalle bulunamadı.",
+    };
+  }
 
   return {
     title: createTitle(`${mahalle.mahalle_adi} ${lokasyon.ilce_adi} Tesisat`),
@@ -109,51 +69,64 @@ export async function generateMetadata({ params }: MahallePageProps) {
     alternates: {
       canonical: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
       languages: {
-        'tr-TR': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
-        'x-default': `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
+        "tr-TR": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
+        "x-default": `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
       },
     },
     openGraph: {
       title: `${mahalle.mahalle_adi} ${lokasyon.ilce_adi} - Gül-Tekin Mühendislik`,
       description: mahalle.aciklama || `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde mühendislik hizmetleri`,
       url: `https://gul-tekinmuhendislik.com/lokasyonlar/${slug}/${mahalleSlug}`,
-    }
+    },
   };
 }
 
-export default async function MahallePage({ params }: MahallePageProps) {
-  const { slug, mahalle: mahalleSlug } = await params;
-  const data = await getMahalleData(slug, mahalleSlug);
+export default function MahallePage({
+  params,
+}: MahallePageProps) {
+  const { slug, mahalle: mahalleSlug } = params;
+  const lokasyon = findLokasyonBySlug(slug) as Lokasyon | null;
 
-  if (!data) {
+  if (!lokasyon) {
     notFound();
   }
 
-  const { mahalle, lokasyon, hizmetler } = data;
+  const mahalle = findMahalleBySlug(lokasyon.id, mahalleSlug) as Mahalle | null;
 
-  // Schema markup
+  if (!mahalle) {
+    notFound();
+  }
+
+  const hizmetler = getAllHizmetler() as Hizmet[];
+  const allUrunler = getAllUrunler() as Urun[];
+
+  const hizmetlerWithUrunler = hizmetler.map((hizmet) => {
+    const urunlerForHizmet = allUrunler.filter((u) => u.hizmet_id === hizmet.id);
+    return { ...hizmet, urunler: urunlerForHizmet };
+  });
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": `Gül-Tekin Mühendislik - ${mahalle.mahalle_adi} ${lokasyon.ilce_adi}`,
-    "description": mahalle.aciklama || `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde mühendislik hizmetleri`,
-    "address": {
+    name: `Gül-Tekin Mühendislik - ${mahalle.mahalle_adi} ${lokasyon.ilce_adi}`,
+    description: mahalle.aciklama || `${lokasyon.ilce_adi} ${mahalle.mahalle_adi}'nde mühendislik hizmetleri`,
+    address: {
       "@type": "PostalAddress",
-      "streetAddress": mahalle.mahalle_adi,
-      "addressLocality": lokasyon.ilce_adi,
-      "addressRegion": lokasyon.il || "Muğla",
-      "addressCountry": "TR"
-    }
+      streetAddress: mahalle.mahalle_adi,
+      addressLocality: lokasyon.ilce_adi,
+      addressRegion: lokasyon.il || "Muğla",
+      addressCountry: "TR",
+    },
   };
 
   return (
     <>
       <BreadcrumbSchema
         items={[
-          { name: 'Ana Sayfa', url: '/' },
-          { name: 'Lokasyonlar', url: '/lokasyonlar' },
+          { name: "Ana Sayfa", url: "/" },
+          { name: "Lokasyonlar", url: "/lokasyonlar" },
           { name: lokasyon.ilce_adi, url: `/lokasyonlar/${slug}` },
-          { name: mahalle.mahalle_adi, url: `/lokasyonlar/${slug}/${mahalleSlug}` }
+          { name: mahalle.mahalle_adi, url: `/lokasyonlar/${slug}/${mahalleSlug}` },
         ]}
       />
       <script
@@ -162,15 +135,18 @@ export default async function MahallePage({ params }: MahallePageProps) {
       />
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4 py-16">
-          {/* Breadcrumb */}
           <nav className="mb-8 text-sm">
             <ol className="flex items-center flex-wrap space-x-2 text-gray-600">
               <li>
-                <Link href="/" className="hover:text-blue-600">Ana Sayfa</Link>
+                <Link href="/" className="hover:text-blue-600">
+                  Ana Sayfa
+                </Link>
               </li>
               <li>/</li>
               <li>
-                <Link href="/lokasyonlar" className="hover:text-blue-600">Lokasyonlar</Link>
+                <Link href="/lokasyonlar" className="hover:text-blue-600">
+                  Lokasyonlar
+                </Link>
               </li>
               <li>/</li>
               <li>
@@ -179,11 +155,12 @@ export default async function MahallePage({ params }: MahallePageProps) {
                 </Link>
               </li>
               <li>/</li>
-              <li className="text-gray-900 font-medium">{mahalle.mahalle_adi}</li>
+              <li className="text-gray-900 font-medium">
+                {mahalle.mahalle_adi}
+              </li>
             </ol>
           </nav>
 
-          {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               {mahalle.mahalle_adi}, {lokasyon.ilce_adi}
@@ -198,23 +175,25 @@ export default async function MahallePage({ params }: MahallePageProps) {
             )}
           </div>
 
-          {/* Hizmetler */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8">
               {mahalle.mahalle_adi}'nde Sunduğumuz Hizmetler
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {hizmetler.map((hizmet) => (
-                <Link key={hizmet.id} href={`/hizmetler/${hizmet.slug || hizmet.id}`}>
+              {hizmetlerWithUrunler.map((hizmet) => (
+                <Link
+                  key={hizmet.id}
+                  href={`/hizmetler/${hizmet.slug || hizmet.id}`}
+                >
                   <div className="group bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     {(hizmet.cloudinary_url || hizmet.resim_url) ? (
                       <div className="relative w-full h-48">
                         <Image
-                          src={(hizmet.cloudinary_url || hizmet.resim_url) as string}
+                          src={hizmet.cloudinary_url || hizmet.resim_url || ""}
                           alt={validateAltText(
                             hizmet.hizmet_adi || undefined,
-                            (hizmet.cloudinary_url || hizmet.resim_url || '').split('/').pop() || 'hizmet',
+                            (hizmet.cloudinary_url || hizmet.resim_url || "").split("/").pop() || "hizmet",
                             `${mahalle.mahalle_adi} ${hizmet.hizmet_adi}`
                           )}
                           fill
@@ -256,16 +235,18 @@ export default async function MahallePage({ params }: MahallePageProps) {
                       )}
                       {hizmet.urunler && hizmet.urunler.length > 0 && (
                         <div className="mt-3">
-                          <h4 className="text-sm font-medium text-gray-700 mb-1">Öne Çıkan Ürünler:</h4>
+                          <h4 className="text-sm font-medium text-gray-700 mb-1">
+                            Öne Çıkan Ürünler:
+                          </h4>
                           <div className="space-y-1">
-                            {hizmet.urunler.map((urun) => (
+                            {hizmet.urunler.slice(0, 5).map((urun) => (
                               <div key={urun.id} className="flex items-center text-xs text-gray-600">
                                 {urun.cloudinary_url && (
                                   <Image
                                     src={urun.cloudinary_url as string}
                                     alt={validateAltText(
                                       urun.urun_adi || undefined,
-                                      urun.cloudinary_url?.split('/').pop() || 'urun',
+                                      urun.cloudinary_url?.split("/").pop() || "urun",
                                       `${urun.urun_adi} ürünü`
                                     )}
                                     width={24}
@@ -286,7 +267,6 @@ export default async function MahallePage({ params }: MahallePageProps) {
             </div>
           </div>
 
-          {/* Neden Biz */}
           <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               Neden Gül-Tekin Mühendislik?
@@ -299,8 +279,12 @@ export default async function MahallePage({ params }: MahallePageProps) {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Deneyimli Ekip</h3>
-                  <p className="text-gray-600">Yılların deneyimiyle profesyonel hizmet</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Deneyimli Ekip
+                  </h3>
+                  <p className="text-gray-600">
+                    Yılların deneyimiyle profesyonel hizmet
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -310,8 +294,12 @@ export default async function MahallePage({ params }: MahallePageProps) {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Hızlı Hizmet</h3>
-                  <p className="text-gray-600">Acil durumlarda hızlı müdahale</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Hızlı Hizmet
+                  </h3>
+                  <p className="text-gray-600">
+                    Acil durumlarda hızlı müdahale
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -321,14 +309,17 @@ export default async function MahallePage({ params }: MahallePageProps) {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Kaliteli Malzeme</h3>
-                  <p className="text-gray-600">Güvenilir markalarla çalışıyoruz</p>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    Kaliteli Malzeme
+                  </h3>
+                  <p className="text-gray-600">
+                    Güvenilir markalarla çalışıyoruz
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* İletişim CTA */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center text-white">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
               {mahalle.mahalle_adi}'nde Hizmet İçin İletişime Geçin
@@ -352,24 +343,13 @@ export default async function MahallePage({ params }: MahallePageProps) {
             </div>
           </div>
 
-          {/* Back Links */}
           <div className="mt-16 flex justify-between items-center">
             <Link
               href={`/lokasyonlar/${slug}`}
               className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
             >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 16l-4-4m0 0l4-4m-4 4h18"
-                />
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
               </svg>
               {lokasyon.ilce_adi} Sayfasına Dön
             </Link>

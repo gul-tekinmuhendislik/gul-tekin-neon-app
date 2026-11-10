@@ -1,10 +1,15 @@
 import { MetadataRoute } from 'next';
-import { sql } from '@/lib/db';
+import { getAllBlogPosts } from '@/lib/static-data';
+import { getAllUrunler } from '@/lib/static-data';
+import { getAllHizmetler } from '@/lib/static-data';
+import { getAllProjeler } from '@/lib/static-data';
+import { getAllLokasyonlar } from '@/lib/static-data';
+import { getAllMahalleler } from '@/lib/static-data';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'error';
 export const revalidate = 3600;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://gul-tekinmuhendislik.com';
   const now = new Date().toISOString();
 
@@ -25,20 +30,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const entries: MetadataRoute.Sitemap = [...staticPages];
 
+  // 2. Blog Yazıları
   try {
-    // 2. Blog Yazıları (generated_content + blog_posts)
-    const blogPosts = await sql`
-      SELECT slug, updated_at, created_at
-      FROM (
-        SELECT slug, updated_at, created_at FROM generated_content WHERE status IN ('completed', 'published')
-        UNION
-        SELECT slug, updated_at, created_at FROM blog_posts WHERE status = 'published'
-      ) combined
-      WHERE slug IS NOT NULL AND slug != ''
-      ORDER BY updated_at DESC
-    `;
-
+    const blogPosts = getAllBlogPosts();
     for (const post of blogPosts) {
+      if (!post.slug) continue;
       entries.push({
         url: `${baseUrl}/blog/${post.slug}`,
         lastModified: post.updated_at || post.created_at || now,
@@ -47,18 +43,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch (err) {
-    console.error('Sitemap blog query error:', err);
+    console.error('Sitemap blog error:', err);
   }
 
+  // 3. Ürünler
   try {
-    // 3. Ürünler
-    const urunler = await sql`
-      SELECT slug, updated_at
-      FROM urunler
-      WHERE aktif = true AND slug IS NOT NULL AND slug != ''
-      ORDER BY id ASC
-    `;
-
+    const urunler = getAllUrunler().filter((u) => u.aktif !== false && u.slug);
     for (const urun of urunler) {
       entries.push({
         url: `${baseUrl}/urunler/${urun.slug}`,
@@ -68,18 +58,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch (err) {
-    console.error('Sitemap urunler query error:', err);
+    console.error('Sitemap urunler error:', err);
   }
 
+  // 4. Hizmetler
   try {
-    // 4. Hizmetler
-    const hizmetler = await sql`
-      SELECT slug, updated_at
-      FROM hizmetler
-      WHERE aktif = true AND slug IS NOT NULL AND slug != ''
-      ORDER BY id ASC
-    `;
-
+    const hizmetler = getAllHizmetler().filter((h) => h.aktif !== false && h.slug);
     for (const hizmet of hizmetler) {
       entries.push({
         url: `${baseUrl}/hizmetler/${hizmet.slug}`,
@@ -89,19 +73,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch (err) {
-    console.error('Sitemap hizmetler query error:', err);
+    console.error('Sitemap hizmetler error:', err);
   }
 
+  // 5. Projeler
   try {
-    // 5. Projeler
-    const projeler = await sql`
-      SELECT slug, updated_at
-      FROM projeler_gul_tekin
-      WHERE aktif = true AND slug IS NOT NULL AND slug != ''
-      ORDER BY id DESC
-      LIMIT 500
-    `;
-
+    const projeler = getAllProjeler().filter((p) => p.aktif !== false && p.slug);
     for (const proje of projeler) {
       entries.push({
         url: `${baseUrl}/projeler/${proje.slug}`,
@@ -111,48 +88,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
   } catch (err) {
-    console.error('Sitemap projeler query error:', err);
+    console.error('Sitemap projeler error:', err);
   }
 
+  // 6. Lokasyonlar (İlçe ve Mahalle Sayfaları)
   try {
-    // 6. Lokasyonlar (İlçe ve Mahalle Sayfaları)
-    const lokasyonlar = await sql`
-      SELECT
-        hl.slug as lokasyon_slug,
-        hl.updated_at,
-        m.slug as mahalle_slug,
-        m.updated_at as mahalle_updated_at
-      FROM hizmet_lokasyonlari hl
-      LEFT JOIN mahalleler m ON m.ilce_id = hl.id
-      WHERE hl.aktif = true AND hl.slug IS NOT NULL
-    `;
+    const lokasyonlar = getAllLokasyonlar().filter((l) => l.aktif !== false && l.slug);
+    const mahalleler = getAllMahalleler().filter((m) => m.slug);
 
     const addedIlceler = new Set<string>();
 
     for (const lok of lokasyonlar) {
       // İlçe ana sayfası (/lokasyonlar/[ilce])
-      if (lok.lokasyon_slug && !addedIlceler.has(lok.lokasyon_slug)) {
-        addedIlceler.add(lok.lokasyon_slug);
+      if (lok.slug && !addedIlceler.has(lok.slug)) {
+        addedIlceler.add(lok.slug);
         entries.push({
-          url: `${baseUrl}/lokasyonlar/${lok.lokasyon_slug}`,
-          lastModified: lok.updated_at || now,
+          url: `${baseUrl}/lokasyonlar/${lok.slug}`,
+          lastModified: now,
           changeFrequency: 'weekly',
           priority: 0.8,
         });
       }
 
       // Mahalle sayfası (/lokasyonlar/[ilce]/[mahalle])
-      if (lok.lokasyon_slug && lok.mahalle_slug) {
+      const mahalleList = mahalleler.filter((m) => m.ilce_id === lok.id);
+      for (const mahalle of mahalleList) {
         entries.push({
-          url: `${baseUrl}/lokasyonlar/${lok.lokasyon_slug}/${lok.mahalle_slug}`,
-          lastModified: lok.mahalle_updated_at || lok.updated_at || now,
+          url: `${baseUrl}/lokasyonlar/${lok.slug}/${mahalle.slug}`,
+          lastModified: now,
           changeFrequency: 'monthly',
           priority: 0.7,
         });
       }
     }
   } catch (err) {
-    console.error('Sitemap lokasyonlar query error:', err);
+    console.error('Sitemap lokasyonlar error:', err);
   }
 
   return entries;

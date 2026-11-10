@@ -2,23 +2,9 @@
 
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
-import { AnimatedCard } from "@/components/ui/animated-card";
 import { useSearchParams, useRouter } from "next/navigation";
-
-interface BlogPost {
-  id: number;
-  topic: string;
-  title: string;
-  slug: string;
-  content: string;
-  meta_description: string;
-  keywords: string[];
-  image?: string;
-  image_url?: string;
-  image_prompt?: string;
-  created_at: string;
-  updated_at: string;
-}
+import { AnimatedCard } from "@/components/ui/animated-card";
+import { getAllBlogPosts, type BlogPost } from "@/lib/static-data";
 
 interface PaginationInfo {
   page: number;
@@ -33,29 +19,38 @@ function BlogContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const currentPage = parseInt(searchParams.get('page') || '1');
+  const limit = 9;
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [pagination, setPagination] = useState<PaginationInfo | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        setLoading(true);
-        const response = await fetch(`/api/blog?page=${currentPage}&limit=9`);
-        if (response.ok) {
-          const data = await response.json();
-          setPosts(data.posts);
-          setPagination(data.pagination);
-        }
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
+    setLoading(true);
+    try {
+      const allPosts = getAllBlogPosts();
+      const totalPosts = allPosts.length;
+      const totalPages = Math.ceil(totalPosts / limit);
+      const page = Math.max(1, Math.min(currentPage, totalPages || 1));
+      const start = (page - 1) * limit;
+      const pagePosts = allPosts.slice(start, start + limit);
 
-    fetchPosts();
+      setPosts(pagePosts);
+      setPagination({
+        page,
+        limit,
+        totalPosts,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      });
+    } catch (error) {
+      console.error("Error loading posts:", error);
+      setPosts([]);
+      setPagination(null);
+    } finally {
+      setLoading(false);
+    }
   }, [currentPage]);
 
   const formatDate = (dateString: string) => {
@@ -133,7 +128,6 @@ function BlogContent() {
                               srcSet={`/images/blog/${post.id}.webp`}
                               type="image/webp"
                             />
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={post.image_url || post.image}
                               alt={post.title}
@@ -157,7 +151,7 @@ function BlogContent() {
                           {getExcerpt(post.content)}
                         </p>
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {post.keywords?.slice(0, 3).map((keyword, index) => (
+                          {post.seo_keywords?.slice(0, 3)?.map?.((keyword, index) => (
                             <span
                               key={index}
                               className="text-xs bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 px-3 py-1 rounded-full font-medium"
@@ -167,7 +161,7 @@ function BlogContent() {
                           ))}
                         </div>
                         <div className="flex justify-between items-center text-sm">
-                          <span className="text-gray-500">{formatDate(post.created_at)}</span>
+                          <span className="text-gray-500">{formatDate(post.created_at || post.published_at || post.updated_at || '')}</span>
                           <span className="text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold">
                             Devamını Oku →
                           </span>
@@ -182,7 +176,6 @@ function BlogContent() {
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
               <div className="mt-12 flex justify-center items-center space-x-2">
-                {/* İlk sayfa butonu */}
                 <button
                   onClick={() => handlePageChange(1)}
                   disabled={currentPage === 1}
@@ -198,7 +191,6 @@ function BlogContent() {
                   </svg>
                 </button>
 
-                {/* Önceki sayfa butonu */}
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={!pagination.hasPrev}
@@ -214,7 +206,6 @@ function BlogContent() {
                   </svg>
                 </button>
 
-                {/* Sayfa numaraları */}
                 <div className="flex space-x-1">
                   {(() => {
                     const pages = [];
@@ -282,7 +273,6 @@ function BlogContent() {
                   })()}
                 </div>
 
-                {/* Sonraki sayfa butonu */}
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={!pagination.hasNext}
@@ -298,7 +288,6 @@ function BlogContent() {
                   </svg>
                 </button>
 
-                {/* Son sayfa butonu */}
                 <button
                   onClick={() => handlePageChange(pagination.totalPages)}
                   disabled={currentPage === pagination.totalPages}
@@ -316,10 +305,9 @@ function BlogContent() {
               </div>
             )}
 
-            {/* Sayfa bilgisi */}
             {pagination && (
               <div className="mt-4 text-center text-sm text-gray-600">
-                Toplam {pagination.totalPosts} yazı • Sayfa {currentPage} / {pagination.totalPages}
+                Toplam {pagination.totalPosts} yazı • Sayfa {pagination.page} / {pagination.totalPages}
               </div>
             )}
           </>

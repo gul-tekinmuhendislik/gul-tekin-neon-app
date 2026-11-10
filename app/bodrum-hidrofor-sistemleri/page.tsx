@@ -1,54 +1,16 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getHidroforUrunleri(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND kategori = 'Hidrofor'
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE marka
-        WHEN 'GRUNDFOS' THEN 1
-        WHEN 'BAYMAK' THEN 2
-        WHEN 'ATLANTİS' THEN 3
-        WHEN 'WEPOMP' THEN 4
-        ELSE 5
-      END,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Bodrum Hidrofor Sistemleri - Grundfos, Baymak, Atlantis | Gül-Tekin Mühendislik',
+  title: createTitle('Bodrum Hidrofor Sistemleri - Grundfos, Baymak, Atlantis | Gül-Tekin Mühendislik'),
   description: 'Bodrum ve Muğla bölgesinde hidrofor sistemleri satış ve montaj hizmeti. Grundfos, Baymak, Atlantis markalarında kademeli ve paket hidroforlar. Profesyonel kurulum ve servis.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/bodrum-hidrofor-sistemleri',
@@ -60,8 +22,19 @@ export const metadata = {
   }
 };
 
-export default async function BodrumHidroforSistemleriPage() {
-  const products = await getHidroforUrunleri();
+function getHidroforUrunleri(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    return (
+      product.aktif !== false &&
+      product.kategori === 'Hidrofor' &&
+      !!product.slug
+    );
+  });
+}
+
+export default function BodrumHidroforSistemleriPage() {
+  const products = getHidroforUrunleri();
 
   // Group products by brand
   const productsByBrand = products.reduce((acc, product) => {
@@ -71,7 +44,7 @@ export default async function BodrumHidroforSistemleriPage() {
     }
     acc[brand].push(product);
     return acc;
-  }, {} as Record<string, Product[]>);
+  }, {} as Record<string, Urun[]>);
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -254,7 +227,7 @@ export default async function BodrumHidroforSistemleriPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

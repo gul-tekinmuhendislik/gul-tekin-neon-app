@@ -1,14 +1,10 @@
 import { Metadata } from 'next';
-import { getHizmetlerFromNeon } from '@/lib/hizmetler-client';
-import { Hizmet } from '@/lib/types/hizmet';
 import Image from 'next/image';
 import ServiceLocations from '@/components/ServiceLocations';
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import { getAllHizmetler, type Hizmet } from '@/lib/static-data';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+  const hizmetler = getAllHizmetler();
 
   return {
     title: 'Hizmetlerimiz | Gül-Tekin Mühendislik - Mekanik Tesisat',
@@ -27,8 +23,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function HizmetlerPage() {
-  const hizmetler = await getHizmetlerFromNeon() as Hizmet[];
+export default function HizmetlerPage() {
+  const hizmetler = getAllHizmetler();
 
   // BreadcrumbList Schema
   const breadcrumbSchema = {

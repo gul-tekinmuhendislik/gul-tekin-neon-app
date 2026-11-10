@@ -1,63 +1,16 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getBodrumGunesEnerjisiUrunleri(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND (
-        kategori ILIKE '%güneş%'
-        OR kategori ILIKE '%solar%'
-        OR kategori = 'Pv Panel'
-      )
-      AND (
-        marka IN ('SOLİMPEKS', 'ERASLAN', 'PANASONIC')
-        OR marka ILIKE '%solimpeks%'
-        OR marka ILIKE '%eraslan%'
-        OR marka ILIKE '%panasonic%'
-      )
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE marka
-        WHEN 'SOLİMPEKS' THEN 1
-        WHEN 'ERASLAN' THEN 2
-        WHEN 'PANASONIC' THEN 3
-        ELSE 4
-      END,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Bodrum Güneş Enerjisi - Solimpeks, Eraslan, Panasonic | Gül-Tekin Mühendislik',
+  title: createTitle('Bodrum Güneş Enerjisi - Solimpeks, Eraslan, Panasonic | Gül-Tekin Mühendislik'),
   description: 'Bodrum ve Muğla bölgesinde güneş enerjisi sistemleri satış ve montaj. Solimpeks, Eraslan, Panasonic markalarında solar panel, güneş kollektörü ve kombi sistemleri. Profesyonel kurulum.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/bodrum-gunes-enerjisi-solimpeks-eraslan-panasonic',
@@ -69,8 +22,26 @@ export const metadata = {
   }
 };
 
-export default async function BodrumGunesEnerjisiPage() {
-  const products = await getBodrumGunesEnerjisiUrunleri();
+function getBodrumGunesEnerjisiUrunleri(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    const kategori = (product.kategori || '').toLowerCase();
+    const marka = (product.marka || '').toLowerCase();
+    return (
+      product.aktif !== false &&
+      (kategori.includes('güneş') ||
+        kategori.includes('solar') ||
+        kategori === 'Pv Panel') &&
+      (marka.includes('solimpeks') ||
+        marka.includes('eraslan') ||
+        marka.includes('panasonic')) &&
+      !!product.slug
+    );
+  });
+}
+
+export default function BodrumGunesEnerjisiPage() {
+  const products = getBodrumGunesEnerjisiUrunleri();
 
   // Group products by brand
   const productsByBrand = products.reduce((acc, product) => {
@@ -80,7 +51,7 @@ export default async function BodrumGunesEnerjisiPage() {
     }
     acc[brand].push(product);
     return acc;
-  }, {} as Record<string, Product[]>);
+  }, {} as Record<string, Urun[]>);
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -361,7 +332,7 @@ export default async function BodrumGunesEnerjisiPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

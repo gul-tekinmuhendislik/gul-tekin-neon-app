@@ -1,102 +1,99 @@
-import { getMarkalariNeon } from '@/lib/markalar-client';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Metadata } from 'next';
+import Link from "next/link";
+import Image from "next/image";
+import { Metadata } from "next";
+import { getAllMarkalar, type Marka } from "@/lib/static-data";
 
-// Force dynamic rendering since brand data can change
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const markalar = await getMarkalariNeon();
+  const markalar = getAllMarkalar();
 
   return {
-    title: 'Çalıştığımız Markalar | Gül-Tekin Mühendislik',
+    title: "Çalıştığımız Markalar | Gül-Tekin Mühendislik",
     description: `Gül-Tekin Mühendislik olarak ${markalar.length} güvenilir ve kaliteli markayla çalışıyoruz. Isı pompası, güneş enerjisi, klima ve mekanik tesisat sistemlerinde yetkili servis hizmetleri.`,
-    keywords: markalar.map(m => m.marka_adi).join(', ') + ', yetkili servis, mekanik tesisat, Muğla, Bodrum',
+    keywords: markalar.map((m) => m.marka_adi).join(", ") + ", yetkili servis, mekanik tesisat, Muğla, Bodrum",
     openGraph: {
-      title: 'Çalıştığımız Markalar | Gül-Tekin Mühendislik',
+      title: "Çalıştığımız Markalar | Gül-Tekin Mühendislik",
       description: `${markalar.length} güvenilir markayla profesyonel çözümler sunuyoruz.`,
-      type: 'website',
-      locale: 'tr_TR',
-      siteName: 'Gül-Tekin Mühendislik',
+      type: "website",
+      locale: "tr_TR",
+      siteName: "Gül-Tekin Mühendislik",
     },
     alternates: {
-      canonical: '/markalar',
+      canonical: "/markalar",
     },
   };
 }
 
-export default async function MarkalarPage() {
-  const markalar = await getMarkalariNeon();
+export default function MarkalarPage() {
+  const markalar = getAllMarkalar();
 
-  // BreadcrumbList Schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    "itemListElement": [
+    itemListElement: [
       {
         "@type": "ListItem",
-        "position": 1,
-        "name": "Ana Sayfa",
-        "item": "https://gul-tekinmuhendislik.com"
+        position: 1,
+        name: "Ana Sayfa",
+        item: "https://gul-tekinmuhendislik.com",
       },
       {
         "@type": "ListItem",
-        "position": 2,
-        "name": "Markalar",
-        "item": "https://gul-tekinmuhendislik.com/markalar"
-      }
-    ]
+        position: 2,
+        name: "Markalar",
+        item: "https://gul-tekinmuhendislik.com/markalar",
+      },
+    ],
   };
 
-  // ItemList Schema for brands
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Gül-Tekin Mühendislik Çalıştığı Markalar",
-    "description": "Güvenilir ve kaliteli markalarla çalışarak müşterilerimize en iyi hizmeti sunuyoruz",
-    "numberOfItems": markalar.length,
-    "itemListElement": markalar.map((marka, index) => ({
+    name: "Gül-Tekin Mühendislik Çalıştığı Markalar",
+    description: "Güvenilir ve kaliteli markalarla çalışarak müşterilerimize en iyi hizmeti sunuyoruz",
+    numberOfItems: markalar.length,
+    itemListElement: markalar.map((marka, index) => ({
       "@type": "ListItem",
-      "position": index + 1,
-      "item": {
+      position: index + 1,
+      item: {
         "@type": "Brand",
-        "name": marka.marka_adi,
-        "url": marka.website || `https://gul-tekinmuhendislik.com/markalar`,
-        "logo": marka.cloudinary_url || marka.logo_url,
-        "description": marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`
-      }
-    }))
+        name: marka.marka_adi,
+        url: marka.website || `https://gul-tekinmuhendislik.com/markalar`,
+        logo: marka.cloudinary_url || marka.logo_url,
+        description: marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
+      },
+    })),
   };
 
-  // Organization Schema with brands
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Gül-Tekin Mühendislik",
-    "url": "https://gul-tekinmuhendislik.com",
-    "logo": "https://gul-tekinmuhendislik.com/logo.png",
-    "contactPoint": {
+    name: "Gül-Tekin Mühendislik",
+    url: "https://gul-tekinmuhendislik.com",
+    logo: "https://gul-tekinmuhendislik.com/logo.png",
+    contactPoint: {
       "@type": "ContactPoint",
-      "telephone": "+902523863554",
-      "contactType": "customer service",
-      "areaServed": "TR",
-      "availableLanguage": "Turkish"
+      telephone: "+902523863554",
+      contactType: "customer service",
+      areaServed: "TR",
+      availableLanguage: "Turkish",
     },
-    "address": {
+    address: {
       "@type": "PostalAddress",
-      "streetAddress": "Gökçebel Mah. İnönü Cad. 61/D",
-      "addressLocality": "Yalıkavak",
-      "addressRegion": "Muğla",
-      "postalCode": "48400",
-      "addressCountry": "TR"
+      streetAddress: "Gökçebel Mah. İnönü Cad. 61/D",
+      addressLocality: "Yalıkavak",
+      addressRegion: "Muğla",
+      postalCode: "48400",
+      addressCountry: "TR",
     },
-    "brand": markalar.filter(m => m.yetkili_servis).map(marka => ({
-      "@type": "Brand",
-      "name": marka.marka_adi,
-      "description": `${marka.marka_adi} Yetkili Servisi`
-    }))
+    brand: markalar
+      .filter((m) => m.yetkili_servis)
+      .map((marka) => ({
+        "@type": "Brand",
+        name: marka.marka_adi,
+        description: `${marka.marka_adi} Yetkili Servisi`,
+      })),
   };
 
   return (
@@ -115,7 +112,6 @@ export default async function MarkalarPage() {
       />
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4 py-16">
-          {/* Breadcrumb Navigation */}
           <nav className="flex mb-8 text-sm" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               <li className="inline-flex items-center">
@@ -142,47 +138,47 @@ export default async function MarkalarPage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {markalar.map((marka) => (
+            {markalar.map((marka: Marka) => (
               marka.slug ? (
-              <Link
-                key={marka.id}
-                href={`/markalar/${marka.slug}`}
-                className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center justify-center group"
-              >
-                {(marka.cloudinary_url || marka.logo_url) ? (
-                  <div className="w-full h-32 mb-4 flex items-center justify-center">
-                    <Image
-                      src={marka.cloudinary_url || marka.logo_url || ''}
-                      alt={`${marka.marka_adi} logo`}
-                      width={150}
-                      height={150}
-                      className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-full h-32 mb-4 flex items-center justify-center bg-gray-100 rounded">
-                    <span className="text-3xl font-bold text-gray-400">
-                      {marka.marka_adi?.charAt(0) || '?'}
+                <Link
+                  key={marka.id}
+                  href={`/markalar/${marka.slug}`}
+                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 p-6 flex flex-col items-center justify-center group"
+                >
+                  {(marka.cloudinary_url || marka.logo_url) ? (
+                    <div className="w-full h-32 mb-4 flex items-center justify-center">
+                      <Image
+                        src={marka.cloudinary_url || marka.logo_url || ""}
+                        alt={`${marka.marka_adi} logo`}
+                        width={150}
+                        height={150}
+                        className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-32 mb-4 flex items-center justify-center bg-gray-100 rounded">
+                      <span className="text-3xl font-bold text-gray-400">
+                        {marka.marka_adi?.charAt(0) || "?"}
+                      </span>
+                    </div>
+                  )}
+
+                  <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                    {marka.marka_adi}
+                  </h3>
+
+                  {marka.aciklama && (
+                    <p className="text-sm text-gray-600 text-center line-clamp-3">
+                      {marka.aciklama}
+                    </p>
+                  )}
+
+                  {marka.yetkili_servis && (
+                    <span className="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Yetkili Servis
                     </span>
-                  </div>
-                )}
-
-                <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
-                  {marka.marka_adi}
-                </h3>
-
-                {marka.aciklama && (
-                  <p className="text-sm text-gray-600 text-center line-clamp-3">
-                    {marka.aciklama}
-                  </p>
-                )}
-
-                {marka.yetkili_servis && (
-                  <span className="mt-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Yetkili Servis
-                  </span>
-                )}
-              </Link>
+                  )}
+                </Link>
               ) : null
             ))}
           </div>

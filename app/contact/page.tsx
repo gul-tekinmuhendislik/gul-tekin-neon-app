@@ -7,8 +7,7 @@ import ReviewQRCode from "../components/ReviewQRCode";
 import GoogleMap from "@/components/GoogleMap";
 import { CONTACT_INFO } from "@/lib/contact-info";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "İletişim",

@@ -1,54 +1,16 @@
-import { sql } from '@/lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CONTACT_INFO } from '@/lib/contact-info';
+import {
+  getAllUrunler,
+  type Urun,
+} from '@/lib/static-data';
+import { createTitle, validateAltText } from '@/lib/seo-utils';
 
 export const revalidate = 3600;
 
-interface Product {
-  id: number;
-  urun_adi: string;
-  slug: string;
-  aciklama?: string;
-  kategori?: string;
-  marka?: string;
-  gorsel_url?: string;
-  cloudinary_url?: string;
-  stokta?: boolean;
-}
-
-async function getYelkenciSuDepolari(): Promise<Product[]> {
-  const result = await sql`
-    SELECT
-      id,
-      urun_adi,
-      slug,
-      aciklama,
-      kategori,
-      marka,
-      gorsel_url,
-      cloudinary_url,
-      stokta
-    FROM urunler
-    WHERE aktif = true
-      AND marka = 'YELKENCİ'
-      AND (kategori ILIKE '%su depo%' OR urun_adi ILIKE '%su depo%')
-      AND slug IS NOT NULL
-    ORDER BY
-      CASE
-        WHEN urun_adi ILIKE '%yatay%' THEN 1
-        WHEN urun_adi ILIKE '%dikey%' OR urun_adi ILIKE '%dik%' THEN 2
-        ELSE 3
-      END,
-      CAST(SUBSTRING(urun_adi FROM '[0-9]+') AS INTEGER) NULLS LAST,
-      urun_adi
-  `;
-
-  return result as Product[];
-}
-
 export const metadata = {
-  title: 'Bodrum Yelkenci Su Depoları - Polietilen Su Tankları | Gül-Tekin Mühendislik',
+  title: createTitle('Bodrum Yelkenci Su Depoları - Polietilen Su Tankları | Gül-Tekin Mühendislik'),
   description: 'Bodrum bölgesinde Yelkenci marka polietilen su depoları satış ve montaj. Yatay, dikey ve füze tip su tankları. 100 litreden 20.000 litreye kadar. Profesyonel kurulum hizmeti.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/bodrum-yelkenci-su-depolari',
@@ -60,17 +22,32 @@ export const metadata = {
   }
 };
 
-export default async function BodrumYelkenciSuDepolariPage() {
-  const products = await getYelkenciSuDepolari();
+function getYelkenciSuDepolari(): Urun[] {
+  const allUrunler = getAllUrunler();
+  return allUrunler.filter((product) => {
+    const marka = (product.marka || '').toLowerCase();
+    const kategori = (product.kategori || '').toLowerCase();
+    const urunAdi = (product.urun_adi || '').toLowerCase();
+    return (
+      product.aktif !== false &&
+      marka === 'yelkenci' &&
+      (kategori.includes('su depo') || urunAdi.includes('su depo')) &&
+      !!product.slug
+    );
+  });
+}
+
+export default function BodrumYelkenciSuDepolariPage() {
+  const products = getYelkenciSuDepolari();
 
   // Group by type
-  const yatayDepoler = products.filter(p => p.urun_adi.toLowerCase().includes('yatay'));
+  const yatayDepoler = products.filter(p => (p.urun_adi || '').toLowerCase().includes('yatay'));
   const dikeyDepoler = products.filter(p =>
-    (p.urun_adi.toLowerCase().includes('dikey') || p.urun_adi.toLowerCase().includes('dik')) &&
-    !p.urun_adi.toLowerCase().includes('yatay')
+    ((p.urun_adi || '').toLowerCase().includes('dikey') || (p.urun_adi || '').toLowerCase().includes('dik')) &&
+    !(p.urun_adi || '').toLowerCase().includes('yatay')
   );
-  const fuzeDepoler = products.filter(p => p.urun_adi.toLowerCase().includes('füze'));
-  const prizmatikDepoler = products.filter(p => p.urun_adi.toLowerCase().includes('prizmatik'));
+  const fuzeDepoler = products.filter(p => (p.urun_adi || '').toLowerCase().includes('füze'));
+  const prizmatikDepoler = products.filter(p => (p.urun_adi || '').toLowerCase().includes('prizmatik'));
 
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -247,7 +224,7 @@ export default async function BodrumYelkenciSuDepolariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -305,7 +282,7 @@ export default async function BodrumYelkenciSuDepolariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -363,7 +340,7 @@ export default async function BodrumYelkenciSuDepolariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -421,7 +398,7 @@ export default async function BodrumYelkenciSuDepolariPage() {
                       {(product.cloudinary_url || product.gorsel_url) ? (
                         <Image
                           src={product.cloudinary_url || product.gorsel_url || ''}
-                          alt={product.urun_adi}
+                          alt={validateAltText(product.urun_adi, product.cloudinary_url || product.gorsel_url || '', product.urun_adi)}
                           fill
                           className="object-contain group-hover:scale-105 transition-transform duration-300 p-4"
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

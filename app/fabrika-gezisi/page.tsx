@@ -22,55 +22,87 @@ interface Brand {
   cloudinary_url: string;
 }
 
+const STATIC_BRANDS: Brand[] = [
+  {
+    marka_adi: 'Varmeks',
+    slug: 'varmeks',
+    cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png'
+  },
+  {
+    marka_adi: 'Solimpeks',
+    slug: 'solimpeks',
+    cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759745039/Solimpeks_Online_ost19m.png'
+  }
+];
+
+const STATIC_FACTORY_IMAGES: FactoryImage[] = [
+  {
+    publicId: 'gul-tekin/factory/varmeks-factory-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/varmeks-factory-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/varmeks-factory-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/varmeks-factory-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  },
+  {
+    publicId: 'gul-tekin/factory/solimpeks-factory-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/solimpeks-factory-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/solimpeks-factory-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/solimpeks-factory-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  },
+  {
+    publicId: 'gul-tekin/factory/production-line-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/production-line-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/production-line-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/production-line-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  },
+  {
+    publicId: 'gul-tekin/factory/assembly-area-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/assembly-area-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/assembly-area-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/assembly-area-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  },
+  {
+    publicId: 'gul-tekin/factory/warehouse-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/warehouse-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/warehouse-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/warehouse-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  },
+  {
+    publicId: 'gul-tekin/factory/quality-control-1',
+    url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/quality-control-1.jpg',
+    thumbnailUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/w_400,h_300,c_fill/gul-tekin/factory/quality-control-1.jpg',
+    fullUrl: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/gul-tekin/factory/quality-control-1.jpg',
+    width: 800,
+    height: 600,
+    format: 'jpg',
+    createdAt: new Date().toISOString()
+  }
+];
+
 export default function FabrikaGezisiPage() {
-  const [images, setImages] = useState<FactoryImage[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState<FactoryImage[]>(STATIC_FACTORY_IMAGES);
   const [selectedImage, setSelectedImage] = useState<FactoryImage | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [brands, setBrands] = useState<Brand[]>([]);
-
-  useEffect(() => {
-    fetchImages();
-    fetchBrands();
-  }, []);
-
-  const fetchBrands = async () => {
-    try {
-      // Hardcoded brand data for performance
-      setBrands([
-        {
-          marka_adi: 'Varmeks',
-          slug: 'warmeks',
-          cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759515968/gul-tekin/varmeks/varmeks-commercial-duo-1.png'
-        },
-        {
-          marka_adi: 'Solimpeks',
-          slug: 'solimpeks',
-          cloudinary_url: 'https://res.cloudinary.com/dgfdk0l8j/image/upload/v1759745039/Solimpeks_Online_ost19m.png'
-        }
-      ]);
-    } catch (err) {
-      console.error('Error setting brands:', err);
-    }
-  };
-
-  const fetchImages = async () => {
-    try {
-      const response = await fetch('/api/factory-tour-images');
-      const data = await response.json();
-
-      if (data.success) {
-        setImages(data.images);
-      } else {
-        setError(data.error || 'Resimler yüklenemedi');
-      }
-    } catch (err) {
-      setError('Resimler yüklenirken bir hata oluştu');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [brands, setBrands] = useState<Brand[]>(STATIC_BRANDS);
 
   const openLightbox = (image: FactoryImage) => {
     setSelectedImage(image);
@@ -107,17 +139,6 @@ export default function FabrikaGezisiPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedImage]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Resimler yükleniyor...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -233,7 +254,6 @@ export default function FabrikaGezisiPage() {
             className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
             onClick={closeLightbox}
           >
-            {/* Close Button */}
             <button
               onClick={closeLightbox}
               className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
@@ -253,7 +273,6 @@ export default function FabrikaGezisiPage() {
               </svg>
             </button>
 
-            {/* Previous Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -276,7 +295,6 @@ export default function FabrikaGezisiPage() {
               </svg>
             </button>
 
-            {/* Next Button */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -299,7 +317,6 @@ export default function FabrikaGezisiPage() {
               </svg>
             </button>
 
-            {/* Image */}
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -317,7 +334,6 @@ export default function FabrikaGezisiPage() {
               />
             </motion.div>
 
-            {/* Image Counter */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white bg-black bg-opacity-50 px-4 py-2 rounded-full">
               {images.findIndex(img => img.publicId === selectedImage.publicId) + 1} / {images.length}
             </div>
