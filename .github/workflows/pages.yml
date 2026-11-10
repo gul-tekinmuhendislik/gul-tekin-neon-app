@@ -32,7 +32,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build static export
         run: pnpm build
