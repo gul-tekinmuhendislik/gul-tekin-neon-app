@@ -1,31 +1,30 @@
 import Image from "next/image";
-import { sql } from '@/lib/db';
+import { getAllMarkalar } from "@/lib/static-data";
 
 interface Partner {
   name: string;
   logo: string;
 }
 
-async function getRandomPartners(): Promise<Partner[]> {
+function getRandomPartners(): Partner[] {
   try {
-    const result = await sql`
-      SELECT 
-        marka_adi as name,
-        COALESCE(cloudinary_url, logo_url) as logo
-      FROM markalar
-      WHERE aktif = true 
-        AND (cloudinary_url IS NOT NULL OR logo_url IS NOT NULL)
-      ORDER BY RANDOM()
-      LIMIT 12
-    `;
-    
-    return result.map(row => ({
-      name: row.name || 'Partner',
-      logo: row.logo || '/placeholder-logo.png'
-    }));
+    const allPartners = getAllMarkalar()
+      .filter((m) => m.aktif !== false && (m.cloudinary_url || m.logo_url))
+      .map((m) => ({
+        name: m.marka_adi || 'Partner',
+        logo: m.cloudinary_url || m.logo_url || '/placeholder-logo.png',
+      }));
+
+    // Fisher-Yates shuffle
+    const shuffled = [...allPartners];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled.slice(0, 12);
   } catch (error) {
     console.error('Error fetching partners:', error);
-    // Fallback veriler
     return [
       { name: "Varmek", logo: "/varmek.png" },
       { name: "REHAU", logo: "/REHAU.png" },
@@ -38,8 +37,8 @@ async function getRandomPartners(): Promise<Partner[]> {
   }
 }
 
-export async function LogoCloud() {
-  const partners = await getRandomPartners();
+export default function LogoCloud() {
+  const partners = getRandomPartners();
 
   return (
     <section

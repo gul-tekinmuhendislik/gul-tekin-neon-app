@@ -1,7 +1,6 @@
-import { sql } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
-import { getListingImageUrl } from "@/lib/utils/image-optimization";
+import { getAllUrunler } from "@/lib/static-data";
 import { Zap, ShieldCheck, Sparkles, ArrowRight, Flame, Droplets } from "lucide-react";
 
 interface Product {
@@ -14,45 +13,40 @@ interface Product {
   cloudinary_url?: string;
 }
 
-async function getVarmeksHomeProducts() {
+function getVarmeksHomeProducts(): Product[] {
   try {
-    // Sadece Ev ve Villa Tipi Isı Pompalarını getir (Havuz ve Ticari modeller hariç)
-    const products = await sql`
-      SELECT
-        id,
-        urun_adi,
-        slug,
-        kategori,
-        marka,
-        aciklama,
-        cloudinary_url
-      FROM urunler
-      WHERE (marka ILIKE '%Varmeks%' OR marka = 'Varmeks')
-        AND aktif = true
-        AND urun_adi NOT ILIKE '%pool%'
-        AND urun_adi NOT ILIKE '%havuz%'
-        AND urun_adi NOT ILIKE '%commercial%'
-        AND (kategori IS NULL OR (kategori NOT ILIKE '%havuz%' AND kategori NOT ILIKE '%pool%'))
-        AND (stokta = true OR stokta IS NULL)
-      ORDER BY
-        CASE
-          WHEN urun_adi ILIKE '%BOOST%' THEN 1
-          WHEN urun_adi ILIKE '%UP%' THEN 2
-          WHEN urun_adi ILIKE '%ALL%' THEN 3
-          ELSE 4
-        END,
-        urun_adi ASC
-      LIMIT 4
-    `;
-    return Array.isArray(products) ? (products as unknown as Product[]) : [];
+    const products = getAllUrunler().filter((p) =>
+      p.marka &&
+      (p.marka.toLowerCase().includes('varmeks') || p.marka.toLowerCase() === 'varmeks') &&
+      p.aktif !== false &&
+      !p.urun_adi?.toLowerCase().includes('pool') &&
+      !p.urun_adi?.toLowerCase().includes('havuz') &&
+      !p.urun_adi?.toLowerCase().includes('commercial') &&
+      (!p.kategori ||
+        (!p.kategori.toLowerCase().includes('havuz') &&
+          !p.kategori.toLowerCase().includes('pool'))) &&
+      (p.stokta === true || p.stokta === undefined || p.stokta === null)
+    );
+
+    // Sort by series priority, then name
+    const sorted = [...products].sort((a, b) => {
+      const aName = (a.urun_adi || '').toUpperCase();
+      const bName = (b.urun_adi || '').toUpperCase();
+      const aPri = aName.includes('BOOST') ? 1 : aName.includes('UP') ? 2 : aName.includes('ALL') ? 3 : 4;
+      const bPri = bName.includes('BOOST') ? 1 : bName.includes('UP') ? 2 : bName.includes('ALL') ? 3 : 4;
+      if (aPri !== bPri) return aPri - bPri;
+      return (a.urun_adi || '').localeCompare(b.urun_adi || '');
+    });
+
+    return sorted.slice(0, 4);
   } catch (error) {
     console.error("Error fetching Varmeks residential products:", error);
     return [];
   }
 }
 
-export default async function VarmeksProducts() {
-  const products = await getVarmeksHomeProducts();
+export default function VarmeksProducts() {
+  const products = getVarmeksHomeProducts();
 
   if (products.length === 0) {
     return null;
@@ -86,9 +80,9 @@ export default async function VarmeksProducts() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
           {products.map((product) => {
-            const isBoost = product.urun_adi.toUpperCase().includes("BOOST");
-            const isUp = product.urun_adi.toUpperCase().includes("UP");
-            const isAll = product.urun_adi.toUpperCase().includes("ALL");
+            const isBoost = (product.urun_adi || '').toUpperCase().includes("BOOST");
+            const isUp = (product.urun_adi || '').toUpperCase().includes("UP");
+            const isAll = (product.urun_adi || '').toUpperCase().includes("ALL");
 
             let seriesBadge = "Ev Tipi";
             let featureTag = "A+++ Verimlilik";
@@ -113,7 +107,7 @@ export default async function VarmeksProducts() {
                 <div className="aspect-square relative overflow-hidden bg-gradient-to-br from-slate-50 via-red-50/20 to-slate-100 p-6 flex items-center justify-center">
                   {product.cloudinary_url ? (
                     <Image
-                      src={getListingImageUrl(product.cloudinary_url)}
+                      src={product.cloudinary_url}
                       alt={product.urun_adi}
                       fill
                       className="object-contain p-6 group-hover:scale-108 transition-transform duration-500"

@@ -1,33 +1,13 @@
-import { sql } from '@/lib/db';
 import Link from 'next/link';
+import { getAllMarkalar, getAllHizmetler, getAllProjeler, getAllUrunler } from '@/lib/static-data';
 
-async function getDatabaseStats() {
+function getDatabaseStats() {
   try {
-    // Markalar sayısı
-    const markalarResult = await sql`
-      SELECT COUNT(*) as count FROM markalar WHERE aktif = true
-    `;
-
-    // Hizmetler sayısı
-    const hizmetlerResult = await sql`
-      SELECT COUNT(*) as count FROM hizmetler WHERE aktif = true
-    `;
-
-    // Projeler sayısı
-    const projelerResult = await sql`
-      SELECT COUNT(*) as count FROM projeler_gul_tekin WHERE aktif = true
-    `;
-
-    // Ürünler sayısı
-    const urunlerResult = await sql`
-      SELECT COUNT(*) as count FROM urunler WHERE aktif = true
-    `;
-
     return {
-      markalar: Number(markalarResult[0]?.count || 0),
-      hizmetler: Number(hizmetlerResult[0]?.count || 0),
-      projeler: Number(projelerResult[0]?.count || 0),
-      urunler: Number(urunlerResult[0]?.count || 0)
+      markalar: getAllMarkalar().filter((m) => m.aktif !== false).length,
+      hizmetler: getAllHizmetler().filter((h) => h.aktif !== false).length,
+      projeler: getAllProjeler().filter((p) => p.aktif !== false).length,
+      urunler: getAllUrunler().filter((u) => u.aktif !== false).length,
     };
   } catch (error) {
     console.error('Database stats error:', error);
@@ -40,8 +20,8 @@ async function getDatabaseStats() {
   }
 }
 
-export default async function DatabaseStats() {
-  const stats = await getDatabaseStats();
+export default function DatabaseStats() {
+  const stats = getDatabaseStats();
 
   const statCards = [
     {

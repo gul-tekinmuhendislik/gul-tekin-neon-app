@@ -1,8 +1,7 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { sql } from "@/lib/db";
-import { getListingImageUrl } from "@/lib/utils/image-optimization";
+import { getAllUrunler } from "@/lib/static-data";
 
 interface Product {
   id: string;
@@ -11,32 +10,35 @@ interface Product {
   aciklama?: string;
   gorsel_url?: string;
   cloudinary_url?: string;
+  updated_at?: string;
 }
 
-async function getAldeaHeatPumps(): Promise<Product[]> {
+function getAldeaHeatPumps(): Product[] {
   try {
-    const products = await sql`
-      SELECT id, urun_adi, slug, aciklama, gorsel_url, cloudinary_url
-      FROM urunler
-      WHERE marka = 'ALDEA'
-        AND kategori = 'Isı Pompaları'
-        AND aktif = true
-        AND (stokta = true OR stokta IS NULL)
-        AND slug IS NOT NULL
-        AND urun_adi <> 'Aldea Monoblok Isı Pompaları'
-      ORDER BY updated_at DESC NULLS LAST, urun_adi ASC
-      LIMIT 4
-    `;
+    const products = getAllUrunler()
+      .filter((p) =>
+        p.marka === 'ALDEA' &&
+        p.kategori === 'Isı Pompaları' &&
+        p.aktif !== false &&
+        (p.stokta === true || p.stokta === undefined || p.stokta === null) &&
+        p.slug &&
+        p.urun_adi !== 'Aldea Monoblok Isı Pompaları'
+      )
+      .sort((a, b) =>
+        new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime() ||
+        (a.urun_adi || '').localeCompare(b.urun_adi || '')
+      )
+      .slice(0, 4);
 
-    return Array.isArray(products) ? (products as unknown as Product[]) : [];
+    return products;
   } catch (error) {
     console.error("Error fetching Aldea heat pumps:", error);
     return [];
   }
 }
 
-export default async function AldeaProducts() {
-  const products = await getAldeaHeatPumps();
+export default function AldeaProducts() {
+  const products = getAldeaHeatPumps();
 
   if (products.length === 0) return null;
 
@@ -78,7 +80,7 @@ export default async function AldeaProducts() {
                 <div className="relative aspect-square overflow-hidden bg-slate-50 p-5">
                   {image ? (
                     <Image
-                      src={getListingImageUrl(image)}
+                      src={image}
                       alt={product.urun_adi}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

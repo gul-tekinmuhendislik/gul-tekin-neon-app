@@ -1,7 +1,6 @@
-import { sql } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
-import { getListingImageUrl } from "@/lib/utils/image-optimization";
+import { getAllUrunler } from "@/lib/static-data";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 interface Product {
@@ -12,35 +11,32 @@ interface Product {
   marka?: string;
   aciklama?: string;
   cloudinary_url?: string;
+  updated_at?: string;
 }
 
-async function getLGProducts() {
+function getLGProducts(): Product[] {
   try {
-    const products = await sql`
-      SELECT
-        id,
-        urun_adi,
-        slug,
-        kategori,
-        marka,
-        aciklama,
-        cloudinary_url
-      FROM urunler
-      WHERE marka ILIKE '%LG%'
-        AND (aktif = true OR aktif IS NULL)
-        AND (stokta = true OR stokta IS NULL)
-      ORDER BY updated_at DESC
-      LIMIT 3
-    `;
-    return Array.isArray(products) ? (products as unknown as Product[]) : [];
+    const products = getAllUrunler()
+      .filter((p) =>
+        p.marka &&
+        p.marka.toLowerCase().includes('lg') &&
+        (p.aktif !== false || p.aktif === undefined) &&
+        (p.stokta === true || p.stokta === undefined || p.stokta === null)
+      )
+      .sort((a, b) =>
+        new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
+      )
+      .slice(0, 3);
+
+    return products;
   } catch (error) {
     console.error("Error fetching LG products:", error);
     return [];
   }
 }
 
-export default async function LGProducts() {
-  const products = await getLGProducts();
+export default function LGProducts() {
+  const products = getLGProducts();
 
   if (products.length === 0) {
     return null;
@@ -86,7 +82,7 @@ export default async function LGProducts() {
               <div className="h-44 relative bg-gradient-to-br from-purple-50/50 to-slate-50 p-4 flex items-center justify-center">
                 {product.cloudinary_url ? (
                   <Image
-                    src={getListingImageUrl(product.cloudinary_url)}
+                    src={product.cloudinary_url}
                     alt={product.urun_adi}
                     fill
                     className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"

@@ -1,5 +1,5 @@
-import { sql } from '@/lib/db';
 import ProjectPortfolioClient from './ProjectPortfolioClient';
+import { getAllProjeler } from '@/lib/static-data';
 
 interface Proje {
   id: number;
@@ -15,41 +15,30 @@ interface Proje {
   sira: number;
 }
 
-async function getRandomProjects() {
+function getRandomProjects(): Proje[] {
   try {
-    const projects = await sql`
-      SELECT
-        id,
-        proje_adi,
-        slug,
-        aciklama,
-        mahalle,
-        ilce,
-        baslangic_tarihi,
-        bitis_tarihi,
-        ana_faaliyet_konusu,
-        cloudinary_url,
-        sira
-      FROM projeler_gul_tekin
-      WHERE aktif = true
-        AND cloudinary_url IS NOT NULL
-        AND aciklama IS NOT NULL
-        AND aciklama != ''
-      ORDER BY RANDOM()
-      LIMIT 3
-    ` as Proje[];
+    const allProjects = getAllProjeler()
+      .filter((p) => p.aktif !== false && p.cloudinary_url && p.aciklama);
 
-    return projects.map(project => ({
+    // Fisher-Yates shuffle
+    const shuffled = [...allProjects];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return shuffled.slice(0, 3).map((project) => ({
       id: project.id,
-      title: project.proje_adi,
-      location: `${project.mahalle || ''} ${project.ilce || 'Bodrum'}`.trim(),
-      category: Array.isArray(project.ana_faaliyet_konusu)
-        ? project.ana_faaliyet_konusu[0]
-        : 'Mekanik Tesisat',
-      completionDate: project.bitis_tarihi || project.baslangic_tarihi || '2024-01',
-      description: project.aciklama || '',
+      proje_adi: project.proje_adi,
       slug: project.slug,
-      image: project.cloudinary_url || null
+      aciklama: project.aciklama,
+      mahalle: project.mahalle,
+      ilce: project.ilce,
+      baslangic_tarihi: project.baslangic_tarihi,
+      bitis_tarihi: project.bitis_tarihi,
+      ana_faaliyet_konusu: project.ana_faaliyet_konusu,
+      cloudinary_url: project.cloudinary_url,
+      sira: project.sira,
     }));
   } catch (error) {
     console.error('Error fetching random projects:', error);
@@ -58,6 +47,6 @@ async function getRandomProjects() {
 }
 
 export default async function ProjectPortfolioServer() {
-  const projects = await getRandomProjects();
+  const projects = getRandomProjects();
   return <ProjectPortfolioClient initialProjects={projects} />;
 }
