@@ -7,12 +7,6 @@ export async function GET() {
       apiKey: !!process.env.CLOUDINARY_API_KEY,
       apiSecret: !!process.env.CLOUDINARY_API_SECRET,
     },
-    airtable: {
-      apiKey: !!process.env.AIRTABLE_API_KEY,
-      baseId: !!process.env.AIRTABLE_BASE_ID,
-      markalarTableId: !!process.env.AIRTABLE_TABLE_ID_MARKALAR,
-      hizmetlerTableId: !!process.env.AIRTABLE_TABLE_ID_HIZMETLER,
-    },
     inngest: {
       eventKey: !!process.env.INNGEST_EVENT_KEY,
       signingKey: !!process.env.INNGEST_SIGNING_KEY,
@@ -35,9 +29,6 @@ export async function GET() {
       cloudinary: Object.entries(envCheck.cloudinary)
         .filter(([, exists]) => !exists)
         .map(([key]) => `CLOUDINARY_${key.toUpperCase().replace('NAME', 'CLOUD_NAME')}`),
-      airtable: Object.entries(envCheck.airtable)
-        .filter(([, exists]) => !exists)
-        .map(([key]) => `AIRTABLE_${key.toUpperCase()}`),
       inngest: Object.entries(envCheck.inngest)
         .filter(([, exists]) => !exists)
         .map(([key]) => `INNGEST_${key.toUpperCase()}`),
