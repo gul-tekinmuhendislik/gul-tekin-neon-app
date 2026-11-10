@@ -1,4 +1,5 @@
 "use client";
+import { withBasePath } from "@/lib/base-path";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -95,7 +96,7 @@ export default function VarmeksPromoSidebar() {
                 transition={{ duration: 0.35 }}
               >
                 <Image
-                  src={slides[currentIndex].src}
+                  src={withBasePath(slides[currentIndex].src)}
                   alt={slides[currentIndex].alt}
                   fill
                   sizes="(max-width: 1023px) 280px, 280px"

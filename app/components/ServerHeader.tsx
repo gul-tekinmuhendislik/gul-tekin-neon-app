@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { withBasePath } from "@/lib/base-path";
 import { prisma } from '@/lib/prisma';
 import { Sparkles } from "@/components/ui/sparkles";
 import ClientNavigation from "./ClientNavigation";
@@ -80,7 +81,7 @@ export default async function ServerHeader() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Image
-                src="/logo.png"
+                src={withBasePath("/logo.png")}
                 alt="Gül-Tekin Mühendislik - Mekanik Tesisat ve Enerji Sistemleri"
                 width={150}
                 height={38}

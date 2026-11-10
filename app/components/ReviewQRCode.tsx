@@ -1,4 +1,5 @@
 "use client";
+import { withBasePath } from "@/lib/base-path";
 
 import Image from "next/image";
 import { Star } from "@phosphor-icons/react";
@@ -17,7 +18,7 @@ export default function ReviewQRCode() {
       </p>
       <div className="flex justify-center mb-4">
         <Image
-          src="/qr-review.png"
+          src={withBasePath("/qr-review.png")}
           alt="Google Business Review QR Code"
           width={150}
           height={150}

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { withBasePath } from "@/lib/base-path";
 import Image from 'next/image';
 import ServiceLocations from '@/components/ServiceLocations';
 import { getAllHizmetler, type Hizmet } from '@/lib/static-data';
@@ -176,7 +177,7 @@ export default function HizmetlerPage() {
                     
                     {hizmet.slug && (
                       <a
-                        href={`/hizmetler/${hizmet.slug}`}
+                        href={withBasePath(`/hizmetler/${hizmet.slug}`)}
                         className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm font-medium group/link"
                       >
                         Detaylı Bilgi
@@ -241,7 +242,7 @@ export default function HizmetlerPage() {
             
             <div className="mt-8">
               <a
-                href="/contact"
+                href={withBasePath("/contact")}
                 className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
               >
                 Hemen Teklif Alın

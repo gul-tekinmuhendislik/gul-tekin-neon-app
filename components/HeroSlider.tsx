@@ -1,4 +1,5 @@
 "use client";
+import { withBasePath } from "@/lib/base-path";
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
@@ -120,7 +121,7 @@ export default function HeroSlider({ projectCount = 236, locationCount = 13 }: H
           className="absolute inset-0 z-0"
         >
           <Image
-            src={currentSlide.image}
+            src={withBasePath(currentSlide.image)}
             alt={currentSlide.title}
             fill
             priority={currentIndex === 0}

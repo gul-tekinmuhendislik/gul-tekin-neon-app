@@ -1,4 +1,5 @@
 "use client";
+import { prefixInternalLinks } from "@/lib/base-path";
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -189,7 +190,7 @@ export default function BlogDetailClient({ post: postProp, relatedProducts: rela
 
             <div 
               className="prose max-w-none prose-gray prose-lg"
-              dangerouslySetInnerHTML={{ __html: renderContent(post.content) }}
+              dangerouslySetInnerHTML={{ __html: prefixInternalLinks(renderContent(post.content)) }}
             />
 
             {post.keywords && post.keywords.length > 0 && (

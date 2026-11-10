@@ -34,10 +34,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # Yayın yolunu verir: proje sitesinde "/gul-tekin-neon-app", özel domainde "".
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Build static export
         run: pnpm build
         env:
           NODE_ENV: production
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

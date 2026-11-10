@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { prefixInternalLinks, withBasePath } from "./base-path";
 
 export type HomeMetrics = {
   projectCount: number;
@@ -245,7 +246,12 @@ export type GeneratedContent = {
 };
 
 export function getAllBlogPosts(): BlogPost[] {
-  const posts = readTable<BlogPost>("blog_posts", []);
+  // İçerikteki iç linkler (markdown/HTML) alt dizin yayınında yayın yolu önekini alır.
+  const posts = readTable<BlogPost>("blog_posts", []).map((p) => ({
+    ...p,
+    content: prefixInternalLinks(p.content),
+    image_url: withBasePath(p.image_url),
+  }));
   const generated = readTable<GeneratedContent>("generated_content", [])
     .filter((g) => g.status === "completed" || g.status === "published")
     .map((g) => ({
@@ -253,9 +259,9 @@ export function getAllBlogPosts(): BlogPost[] {
       title: g.title,
       // Some generated slugs contain literal quotes, which are invalid in file paths
       slug: g.slug!.replace(/"/g, ""),
-      content: g.content,
+      content: prefixInternalLinks(g.content),
       summary: g.meta_description,
-      image_url: g.image_url,
+      image_url: withBasePath(g.image_url),
       category: g.topic,
       tags: g.keywords,
       status: g.status,
@@ -303,7 +309,11 @@ export type Mahalle = {
 };
 
 export function getAllLokasyonlar(): Lokasyon[] {
-  return readTable<Lokasyon>("hizmet_lokasyonlari", []);
+  // resim_url public/ altındaki yerel görsellerdir ("/dalaman.jpg"); yayın yolu öneki eklenir.
+  return readTable<Lokasyon>("hizmet_lokasyonlari", []).map((l) => ({
+    ...l,
+    resim_url: withBasePath(l.resim_url),
+  }));
 }
 
 export function getAllMahalleler(): Mahalle[] {

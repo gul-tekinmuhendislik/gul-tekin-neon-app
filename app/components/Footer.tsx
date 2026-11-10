@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { withBasePath } from "@/lib/base-path";
 import Link from "next/link";
 import { Heart } from "@phosphor-icons/react";
 import DynamicFooterLinks from "./DynamicFooterLinks";
@@ -14,7 +15,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="inline-block mb-4 hover:opacity-80 transition-opacity">
               <Image 
-                src="/logo.png" 
+                src={withBasePath("/logo.png")} 
                 alt="Gül-Tekin Mühendislik - Mekanik Tesisat ve Enerji Sistemleri" 
                 width={150} 
                 height={40} 

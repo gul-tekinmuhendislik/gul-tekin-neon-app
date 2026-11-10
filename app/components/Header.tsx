@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { withBasePath } from "@/lib/base-path";
 import { useEffect, useState } from "react";
 import { List, X, CaretDown, House, Envelope } from "@phosphor-icons/react";
 
@@ -58,7 +59,7 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <Image 
-                src="/logo.png" 
+                src={withBasePath("/logo.png")} 
                 alt="Gül-Tekin Mühendislik" 
                 width={120} 
                 height={30} 

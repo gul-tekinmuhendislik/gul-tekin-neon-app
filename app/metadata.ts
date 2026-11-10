@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { withBasePath } from "@/lib/base-path";
 
 export const siteConfig = {
   name: "Gül-Tekin Mühendislik",
@@ -84,9 +85,9 @@ export const defaultMetadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/logo.png',
+    icon: withBasePath('/favicon.ico'),
+    shortcut: withBasePath('/favicon.ico'),
+    apple: withBasePath('/logo.png'),
   },
-  manifest: '/manifest.json',
+  manifest: withBasePath('/manifest.json'),
 };

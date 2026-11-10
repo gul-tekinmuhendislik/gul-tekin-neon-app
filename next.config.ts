@@ -1,11 +1,24 @@
 import type { NextConfig } from "next";
 
+/*
+ * GitHub Pages yayın yolu. Proje sitesi olarak yayınlanınca "/gul-tekin-neon-app",
+ * özel domain bağlanınca "" olur. Workflow'da actions/configure-pages çıktısından gelir;
+ * yerelde boş bırakılırsa site kökten çalışır.
+ */
+const basePath = process.env.PAGES_BASE_PATH || "";
+
 const nextConfig: NextConfig = {
   /* SEO and Performance Optimizations */
   poweredByHeader: false,
 
   /* Static Export for GitHub Pages */
   output: 'export',
+  basePath,
+  assetPrefix: basePath || undefined,
+  env: {
+    // İstemci tarafında ham "/..." görsel yollarına önek eklemek için (lib/base-path.ts)
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
 
   /* Build Performance */
   typescript: {

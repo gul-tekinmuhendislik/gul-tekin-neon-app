@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Cookie, X } from "@phosphor-icons/react";
+import { withBasePath } from "@/lib/base-path";
 
 const COOKIE_CONSENT_KEY = "gultekin_cookie_consent";
 
@@ -45,7 +46,7 @@ export default function CookieBanner() {
             <p className="text-sm text-gray-600 mb-4">
               Web sitemizde deneyiminizi iyileştirmek, site trafiğini analiz etmek ve kişiselleştirilmiş içerik sunmak için çerezler kullanıyoruz.
               &quot;Tümünü Kabul Et&quot; seçeneğine tıklayarak analytics çerezlerini onaylayabilir veya yalnızca zorunlu çerezleri kabul edebilirsiniz.{" "}
-              <a href="/privacy" className="text-indigo-600 underline underline-offset-2 hover:text-indigo-800">
+              <a href={withBasePath("/privacy")} className="text-indigo-600 underline underline-offset-2 hover:text-indigo-800">
                 KVKK Aydınlatma Metni
               </a>
             </p>
