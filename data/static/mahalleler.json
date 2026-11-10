@@ -1,0 +1,6032 @@
+[
+  {
+    "id": 1,
+    "ilce_id": 1,
+    "mahalle_adi": "YALIKAVAK",
+    "slug": "yalikavak",
+    "proje_sayisi": 52,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 2,
+    "ilce_id": 1,
+    "mahalle_adi": "GÜNDOĞAN",
+    "slug": "gundogan",
+    "proje_sayisi": 27,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 3,
+    "ilce_id": 1,
+    "mahalle_adi": "GERİŞ",
+    "slug": "geris",
+    "proje_sayisi": 19,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 4,
+    "ilce_id": 1,
+    "mahalle_adi": "GÖLTÜRKBÜKÜ",
+    "slug": "golturkbuku",
+    "proje_sayisi": 17,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 5,
+    "ilce_id": 1,
+    "mahalle_adi": "GÜMÜŞLÜK",
+    "slug": "gumusluk",
+    "proje_sayisi": 15,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 6,
+    "ilce_id": 1,
+    "mahalle_adi": "ORTAKENT",
+    "slug": "ortakent",
+    "proje_sayisi": 13,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 7,
+    "ilce_id": 1,
+    "mahalle_adi": "DİRMİL",
+    "slug": "dirmil",
+    "proje_sayisi": 12,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 8,
+    "ilce_id": 1,
+    "mahalle_adi": "KONACIK",
+    "slug": "konacik",
+    "proje_sayisi": 10,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 9,
+    "ilce_id": 1,
+    "mahalle_adi": "TURGUTREİS",
+    "slug": "turgutreis",
+    "proje_sayisi": 10,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 10,
+    "ilce_id": 1,
+    "mahalle_adi": "BODRUM",
+    "slug": "bodrum",
+    "proje_sayisi": 8,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 11,
+    "ilce_id": 1,
+    "mahalle_adi": "BİTEZ",
+    "slug": "bitez",
+    "proje_sayisi": 7,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 12,
+    "ilce_id": 1,
+    "mahalle_adi": "KOYUNBABA",
+    "slug": "koyunbaba",
+    "proje_sayisi": 7,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 13,
+    "ilce_id": 1,
+    "mahalle_adi": "AKYARLAR",
+    "slug": "akyarlar",
+    "proje_sayisi": 6,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 14,
+    "ilce_id": 1,
+    "mahalle_adi": "GÜVERCİNLİK",
+    "slug": "guvercinlik",
+    "proje_sayisi": 5,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 15,
+    "ilce_id": 1,
+    "mahalle_adi": "TORBA",
+    "slug": "torba",
+    "proje_sayisi": 5,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 16,
+    "ilce_id": 1,
+    "mahalle_adi": "KADIKALESİ",
+    "slug": "kadikalesi",
+    "proje_sayisi": 3,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 17,
+    "ilce_id": 1,
+    "mahalle_adi": "MUMCULAR",
+    "slug": "mumcular",
+    "proje_sayisi": 3,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 18,
+    "ilce_id": 1,
+    "mahalle_adi": "MÜSKEBİ",
+    "slug": "muskebi",
+    "proje_sayisi": 3,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 19,
+    "ilce_id": 1,
+    "mahalle_adi": "TÜRKBÜKÜ",
+    "slug": "turkbuku",
+    "proje_sayisi": 3,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 20,
+    "ilce_id": 1,
+    "mahalle_adi": "BAĞLA",
+    "slug": "bagla",
+    "proje_sayisi": 2,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 21,
+    "ilce_id": 1,
+    "mahalle_adi": "GÜMBET",
+    "slug": "gumbet",
+    "proje_sayisi": 2,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 22,
+    "ilce_id": 1,
+    "mahalle_adi": "YALIÇİFTLİK",
+    "slug": "yaliciftlik",
+    "proje_sayisi": 2,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 23,
+    "ilce_id": 1,
+    "mahalle_adi": "YAKA",
+    "slug": "yaka",
+    "proje_sayisi": 1,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 24,
+    "ilce_id": 1,
+    "mahalle_adi": "İŞLAMHANELER",
+    "slug": "islamhaneler",
+    "proje_sayisi": 1,
+    "created_at": "2025-09-19T08:23:38.816Z",
+    "updated_at": "2025-09-19T08:23:38.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 25,
+    "ilce_id": 3,
+    "mahalle_adi": "BOZARMUT MAHALLESİ",
+    "slug": "bozarmut-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:16:30.014Z",
+    "updated_at": "2025-09-19T09:16:30.014Z",
+    "aciklama": null
+  },
+  {
+    "id": 26,
+    "ilce_id": 3,
+    "mahalle_adi": "YEŞİLBAĞCILAR",
+    "slug": "yesilbagcilar",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:16:58.515Z",
+    "updated_at": "2025-09-19T09:16:58.515Z",
+    "aciklama": null
+  },
+  {
+    "id": 27,
+    "ilce_id": 3,
+    "mahalle_adi": "TURGUT",
+    "slug": "turgut",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:17:03.389Z",
+    "updated_at": "2025-09-19T09:17:03.389Z",
+    "aciklama": null
+  },
+  {
+    "id": 28,
+    "ilce_id": 2,
+    "mahalle_adi": "GÜLLÜK",
+    "slug": "gulluk",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:18:28.418Z",
+    "updated_at": "2025-09-19T09:18:28.418Z",
+    "aciklama": null
+  },
+  {
+    "id": 29,
+    "ilce_id": 2,
+    "mahalle_adi": "SELİMİYE",
+    "slug": "selimiye",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:18:32.894Z",
+    "updated_at": "2025-09-19T09:18:32.894Z",
+    "aciklama": null
+  },
+  {
+    "id": 30,
+    "ilce_id": 2,
+    "mahalle_adi": "ÖREN MAHALLESİ",
+    "slug": "oren-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:18:59.673Z",
+    "updated_at": "2025-09-19T09:18:59.673Z",
+    "aciklama": null
+  },
+  {
+    "id": 31,
+    "ilce_id": 2,
+    "mahalle_adi": "MEŞELİK MAHALLESİ",
+    "slug": "meselik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:19:04.157Z",
+    "updated_at": "2025-09-19T09:19:04.157Z",
+    "aciklama": null
+  },
+  {
+    "id": 32,
+    "ilce_id": 2,
+    "mahalle_adi": "KORU",
+    "slug": "koru",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:19:21.744Z",
+    "updated_at": "2025-09-19T09:19:21.744Z",
+    "aciklama": null
+  },
+  {
+    "id": 33,
+    "ilce_id": 2,
+    "mahalle_adi": "KIYIKIŞLACIK",
+    "slug": "kiyikislacik",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:19:46.471Z",
+    "updated_at": "2025-09-19T09:19:46.471Z",
+    "aciklama": null
+  },
+  {
+    "id": 34,
+    "ilce_id": 2,
+    "mahalle_adi": "DÖRTTEPE",
+    "slug": "dorttepe",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:20:17.100Z",
+    "updated_at": "2025-09-19T09:20:17.100Z",
+    "aciklama": null
+  },
+  {
+    "id": 35,
+    "ilce_id": 2,
+    "mahalle_adi": "OVAKIŞLACIK",
+    "slug": "ovakislacik",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:20:37.752Z",
+    "updated_at": "2025-09-19T09:20:37.752Z",
+    "aciklama": null
+  },
+  {
+    "id": 36,
+    "ilce_id": 2,
+    "mahalle_adi": "KÖŞK MAHALLESİ",
+    "slug": "kosk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:21:45.883Z",
+    "updated_at": "2025-09-19T09:21:45.883Z",
+    "aciklama": null
+  },
+  {
+    "id": 37,
+    "ilce_id": 4,
+    "mahalle_adi": "YERKESİK MAHALLESİ",
+    "slug": "yerkesik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:23:35.994Z",
+    "updated_at": "2025-09-19T09:23:35.994Z",
+    "aciklama": null
+  },
+  {
+    "id": 38,
+    "ilce_id": 4,
+    "mahalle_adi": "YEŞİLYURT",
+    "slug": "yesilyurt",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:23:40.664Z",
+    "updated_at": "2025-09-19T09:23:40.664Z",
+    "aciklama": null
+  },
+  {
+    "id": 39,
+    "ilce_id": 4,
+    "mahalle_adi": "KOCAMUSTAFENDİ",
+    "slug": "kocamustafendi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:23:46.159Z",
+    "updated_at": "2025-09-19T09:23:46.159Z",
+    "aciklama": null
+  },
+  {
+    "id": 40,
+    "ilce_id": 4,
+    "mahalle_adi": "KÖTEKLİ MAHALLESİ",
+    "slug": "kotekli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:24:28.050Z",
+    "updated_at": "2025-09-19T09:24:28.050Z",
+    "aciklama": null
+  },
+  {
+    "id": 41,
+    "ilce_id": 4,
+    "mahalle_adi": "AKKAYA MAHALLESİ",
+    "slug": "akkaya-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:24:33.416Z",
+    "updated_at": "2025-09-19T09:24:33.416Z",
+    "aciklama": null
+  },
+  {
+    "id": 42,
+    "ilce_id": 4,
+    "mahalle_adi": "BAYIR MAHALLESİ",
+    "slug": "bayir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-09-19T09:24:38.563Z",
+    "updated_at": "2025-09-19T09:24:38.563Z",
+    "aciklama": null
+  },
+  {
+    "id": 43,
+    "ilce_id": 4,
+    "mahalle_adi": "Orhaniye Mahallesi",
+    "slug": "orhaniye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.024Z",
+    "updated_at": "2025-10-03T17:51:19.024Z",
+    "aciklama": null
+  },
+  {
+    "id": 44,
+    "ilce_id": 4,
+    "mahalle_adi": "Muslihittin Mahallesi",
+    "slug": "muslihittin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.192Z",
+    "updated_at": "2025-10-03T17:51:19.192Z",
+    "aciklama": null
+  },
+  {
+    "id": 45,
+    "ilce_id": 4,
+    "mahalle_adi": "Emirbeyazıt Mahallesi",
+    "slug": "emirbeyazit-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.348Z",
+    "updated_at": "2025-10-03T17:51:19.348Z",
+    "aciklama": null
+  },
+  {
+    "id": 46,
+    "ilce_id": 4,
+    "mahalle_adi": "Karamehmet Mahallesi",
+    "slug": "karamehmet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.505Z",
+    "updated_at": "2025-10-03T17:51:19.505Z",
+    "aciklama": null
+  },
+  {
+    "id": 47,
+    "ilce_id": 4,
+    "mahalle_adi": "Düğerek Mahallesi",
+    "slug": "dugerek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.673Z",
+    "updated_at": "2025-10-03T17:51:19.673Z",
+    "aciklama": null
+  },
+  {
+    "id": 48,
+    "ilce_id": 4,
+    "mahalle_adi": "Karşıyaka Mahallesi",
+    "slug": "karsiyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:19.839Z",
+    "updated_at": "2025-10-03T17:51:19.839Z",
+    "aciklama": null
+  },
+  {
+    "id": 49,
+    "ilce_id": 4,
+    "mahalle_adi": "Yeniköy Mahallesi",
+    "slug": "yenikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.003Z",
+    "updated_at": "2025-10-03T17:51:20.003Z",
+    "aciklama": null
+  },
+  {
+    "id": 50,
+    "ilce_id": 4,
+    "mahalle_adi": "Akçaova Mahallesi",
+    "slug": "akcaova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.170Z",
+    "updated_at": "2025-10-03T17:51:20.170Z",
+    "aciklama": null
+  },
+  {
+    "id": 51,
+    "ilce_id": 4,
+    "mahalle_adi": "Gülağzı Mahallesi",
+    "slug": "gulagzi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.338Z",
+    "updated_at": "2025-10-03T17:51:20.338Z",
+    "aciklama": null
+  },
+  {
+    "id": 52,
+    "ilce_id": 4,
+    "mahalle_adi": "Şeyh Mahallesi",
+    "slug": "seyh-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.504Z",
+    "updated_at": "2025-10-03T17:51:20.504Z",
+    "aciklama": null
+  },
+  {
+    "id": 53,
+    "ilce_id": 4,
+    "mahalle_adi": "Müştakbey Mahallesi",
+    "slug": "mustakbey-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.669Z",
+    "updated_at": "2025-10-03T17:51:20.669Z",
+    "aciklama": null
+  },
+  {
+    "id": 54,
+    "ilce_id": 4,
+    "mahalle_adi": "Camikebir Mahallesi",
+    "slug": "camikebir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.832Z",
+    "updated_at": "2025-10-03T17:51:20.832Z",
+    "aciklama": null
+  },
+  {
+    "id": 55,
+    "ilce_id": 4,
+    "mahalle_adi": "Yaraş Mahallesi",
+    "slug": "yaras-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:20.996Z",
+    "updated_at": "2025-10-03T17:51:20.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 56,
+    "ilce_id": 4,
+    "mahalle_adi": "Kıran Mahallesi",
+    "slug": "kiran-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.158Z",
+    "updated_at": "2025-10-03T17:51:21.158Z",
+    "aciklama": null
+  },
+  {
+    "id": 57,
+    "ilce_id": 4,
+    "mahalle_adi": "Çaybükü Mahallesi",
+    "slug": "caybuku-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.320Z",
+    "updated_at": "2025-10-03T17:51:21.320Z",
+    "aciklama": null
+  },
+  {
+    "id": 58,
+    "ilce_id": 4,
+    "mahalle_adi": "Denizova Mahallesi",
+    "slug": "denizova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.483Z",
+    "updated_at": "2025-10-03T17:51:21.483Z",
+    "aciklama": null
+  },
+  {
+    "id": 59,
+    "ilce_id": 4,
+    "mahalle_adi": "Taşlı Mahallesi",
+    "slug": "tasli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.637Z",
+    "updated_at": "2025-10-03T17:51:21.637Z",
+    "aciklama": null
+  },
+  {
+    "id": 60,
+    "ilce_id": 4,
+    "mahalle_adi": "Salihpaşalar Mahallesi",
+    "slug": "salihpasalar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.792Z",
+    "updated_at": "2025-10-03T17:51:21.792Z",
+    "aciklama": null
+  },
+  {
+    "id": 61,
+    "ilce_id": 4,
+    "mahalle_adi": "Dokuzçam Mahallesi",
+    "slug": "dokuzcam-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:21.945Z",
+    "updated_at": "2025-10-03T17:51:21.945Z",
+    "aciklama": null
+  },
+  {
+    "id": 62,
+    "ilce_id": 4,
+    "mahalle_adi": "Yörükoğlu Mahallesi",
+    "slug": "yorukoglu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.099Z",
+    "updated_at": "2025-10-03T17:51:22.099Z",
+    "aciklama": null
+  },
+  {
+    "id": 63,
+    "ilce_id": 4,
+    "mahalle_adi": "Hacırüstem Mahallesi",
+    "slug": "hacirustem-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.250Z",
+    "updated_at": "2025-10-03T17:51:22.250Z",
+    "aciklama": null
+  },
+  {
+    "id": 64,
+    "ilce_id": 4,
+    "mahalle_adi": "Dağpınar Mahallesi",
+    "slug": "dagpinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.403Z",
+    "updated_at": "2025-10-03T17:51:22.403Z",
+    "aciklama": null
+  },
+  {
+    "id": 65,
+    "ilce_id": 4,
+    "mahalle_adi": "Gazeller Mahallesi",
+    "slug": "gazeller-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.557Z",
+    "updated_at": "2025-10-03T17:51:22.557Z",
+    "aciklama": null
+  },
+  {
+    "id": 66,
+    "ilce_id": 4,
+    "mahalle_adi": "Esençay Mahallesi",
+    "slug": "esencay-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.711Z",
+    "updated_at": "2025-10-03T17:51:22.711Z",
+    "aciklama": null
+  },
+  {
+    "id": 67,
+    "ilce_id": 4,
+    "mahalle_adi": "Derinkuyu Mahallesi",
+    "slug": "derinkuyu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:22.864Z",
+    "updated_at": "2025-10-03T17:51:22.864Z",
+    "aciklama": null
+  },
+  {
+    "id": 68,
+    "ilce_id": 4,
+    "mahalle_adi": "Algı Mahallesi",
+    "slug": "algi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.016Z",
+    "updated_at": "2025-10-03T17:51:23.016Z",
+    "aciklama": null
+  },
+  {
+    "id": 69,
+    "ilce_id": 4,
+    "mahalle_adi": "Yemişendere Mahallesi",
+    "slug": "yemisendere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.192Z",
+    "updated_at": "2025-10-03T17:51:23.192Z",
+    "aciklama": null
+  },
+  {
+    "id": 70,
+    "ilce_id": 4,
+    "mahalle_adi": "Çamoluk Mahallesi",
+    "slug": "camoluk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.367Z",
+    "updated_at": "2025-10-03T17:51:23.367Z",
+    "aciklama": null
+  },
+  {
+    "id": 71,
+    "ilce_id": 4,
+    "mahalle_adi": "Kuyucak Mahallesi",
+    "slug": "kuyucak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.550Z",
+    "updated_at": "2025-10-03T17:51:23.550Z",
+    "aciklama": null
+  },
+  {
+    "id": 72,
+    "ilce_id": 4,
+    "mahalle_adi": "Paşapınarı Mahallesi",
+    "slug": "pasapinari-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.743Z",
+    "updated_at": "2025-10-03T17:51:23.743Z",
+    "aciklama": null
+  },
+  {
+    "id": 73,
+    "ilce_id": 4,
+    "mahalle_adi": "Çatakbağyaka Mahallesi",
+    "slug": "catakbagyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:23.943Z",
+    "updated_at": "2025-10-03T17:51:23.943Z",
+    "aciklama": null
+  },
+  {
+    "id": 74,
+    "ilce_id": 4,
+    "mahalle_adi": "Günlüce Mahallesi",
+    "slug": "gunluce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:24.156Z",
+    "updated_at": "2025-10-03T17:51:24.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 75,
+    "ilce_id": 4,
+    "mahalle_adi": "Balıbey Mahallesi",
+    "slug": "balibey-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:24.378Z",
+    "updated_at": "2025-10-03T17:51:24.378Z",
+    "aciklama": null
+  },
+  {
+    "id": 76,
+    "ilce_id": 4,
+    "mahalle_adi": "Meke Mahallesi",
+    "slug": "meke-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:24.612Z",
+    "updated_at": "2025-10-03T17:51:24.612Z",
+    "aciklama": null
+  },
+  {
+    "id": 77,
+    "ilce_id": 4,
+    "mahalle_adi": "Kozağaç Mahallesi",
+    "slug": "kozagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:24.858Z",
+    "updated_at": "2025-10-03T17:51:24.858Z",
+    "aciklama": null
+  },
+  {
+    "id": 78,
+    "ilce_id": 4,
+    "mahalle_adi": "Dağdibi Mahallesi",
+    "slug": "dagdibi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:25.128Z",
+    "updated_at": "2025-10-03T17:51:25.128Z",
+    "aciklama": null
+  },
+  {
+    "id": 79,
+    "ilce_id": 4,
+    "mahalle_adi": "Yenibağyaka Mahallesi",
+    "slug": "yenibagyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:25.400Z",
+    "updated_at": "2025-10-03T17:51:25.400Z",
+    "aciklama": null
+  },
+  {
+    "id": 80,
+    "ilce_id": 4,
+    "mahalle_adi": "Fadıl Mahallesi",
+    "slug": "fadil-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:25.684Z",
+    "updated_at": "2025-10-03T17:51:25.684Z",
+    "aciklama": null
+  },
+  {
+    "id": 81,
+    "ilce_id": 4,
+    "mahalle_adi": "Çırpı Mahallesi",
+    "slug": "cirpi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:25.982Z",
+    "updated_at": "2025-10-03T17:51:25.982Z",
+    "aciklama": null
+  },
+  {
+    "id": 82,
+    "ilce_id": 4,
+    "mahalle_adi": "Karacaören Mahallesi",
+    "slug": "karacaoren-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:26.235Z",
+    "updated_at": "2025-10-03T17:51:26.235Z",
+    "aciklama": null
+  },
+  {
+    "id": 83,
+    "ilce_id": 4,
+    "mahalle_adi": "Akyer Mahallesi",
+    "slug": "akyer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:26.524Z",
+    "updated_at": "2025-10-03T17:51:26.524Z",
+    "aciklama": null
+  },
+  {
+    "id": 84,
+    "ilce_id": 4,
+    "mahalle_adi": "Çakmak Mahallesi",
+    "slug": "cakmak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:26.796Z",
+    "updated_at": "2025-10-03T17:51:26.796Z",
+    "aciklama": null
+  },
+  {
+    "id": 85,
+    "ilce_id": 4,
+    "mahalle_adi": "İkizce Mahallesi",
+    "slug": "i-kizce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:27.055Z",
+    "updated_at": "2025-10-03T17:51:27.055Z",
+    "aciklama": null
+  },
+  {
+    "id": 86,
+    "ilce_id": 4,
+    "mahalle_adi": "Doğan Mahallesi",
+    "slug": "dogan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:27.291Z",
+    "updated_at": "2025-10-03T17:51:27.291Z",
+    "aciklama": null
+  },
+  {
+    "id": 87,
+    "ilce_id": 4,
+    "mahalle_adi": "Muratlar Mahallesi",
+    "slug": "muratlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:27.515Z",
+    "updated_at": "2025-10-03T17:51:27.515Z",
+    "aciklama": null
+  },
+  {
+    "id": 88,
+    "ilce_id": 4,
+    "mahalle_adi": "Özlüce Mahallesi",
+    "slug": "ozluce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:27.743Z",
+    "updated_at": "2025-10-03T17:51:27.743Z",
+    "aciklama": null
+  },
+  {
+    "id": 89,
+    "ilce_id": 4,
+    "mahalle_adi": "Avcılar Mahallesi",
+    "slug": "avcilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:27.976Z",
+    "updated_at": "2025-10-03T17:51:27.976Z",
+    "aciklama": null
+  },
+  {
+    "id": 90,
+    "ilce_id": 4,
+    "mahalle_adi": "Kuzluk Mahallesi",
+    "slug": "kuzluk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:28.214Z",
+    "updated_at": "2025-10-03T17:51:28.214Z",
+    "aciklama": null
+  },
+  {
+    "id": 91,
+    "ilce_id": 4,
+    "mahalle_adi": "Kiramettin Mahallesi",
+    "slug": "kiramettin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:28.455Z",
+    "updated_at": "2025-10-03T17:51:28.455Z",
+    "aciklama": null
+  },
+  {
+    "id": 92,
+    "ilce_id": 4,
+    "mahalle_adi": "Zeytin Mahallesi",
+    "slug": "zeytin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:28.692Z",
+    "updated_at": "2025-10-03T17:51:28.692Z",
+    "aciklama": null
+  },
+  {
+    "id": 93,
+    "ilce_id": 4,
+    "mahalle_adi": "Göktepe Mahallesi",
+    "slug": "goktepe-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:28.930Z",
+    "updated_at": "2025-10-03T17:51:28.930Z",
+    "aciklama": null
+  },
+  {
+    "id": 94,
+    "ilce_id": 4,
+    "mahalle_adi": "Sarnıç Mahallesi",
+    "slug": "sarnic-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:29.169Z",
+    "updated_at": "2025-10-03T17:51:29.169Z",
+    "aciklama": null
+  },
+  {
+    "id": 95,
+    "ilce_id": 4,
+    "mahalle_adi": "Bozyer Mahallesi",
+    "slug": "bozyer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:29.407Z",
+    "updated_at": "2025-10-03T17:51:29.407Z",
+    "aciklama": null
+  },
+  {
+    "id": 96,
+    "ilce_id": 4,
+    "mahalle_adi": "Orta Mahallesi",
+    "slug": "orta-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:29.648Z",
+    "updated_at": "2025-10-03T17:51:29.648Z",
+    "aciklama": null
+  },
+  {
+    "id": 97,
+    "ilce_id": 4,
+    "mahalle_adi": "Yenice Mahallesi",
+    "slug": "yenice-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:29.887Z",
+    "updated_at": "2025-10-03T17:51:29.887Z",
+    "aciklama": null
+  },
+  {
+    "id": 98,
+    "ilce_id": 4,
+    "mahalle_adi": "Şenyayla Mahallesi",
+    "slug": "senyayla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:30.127Z",
+    "updated_at": "2025-10-03T17:51:30.127Z",
+    "aciklama": null
+  },
+  {
+    "id": 99,
+    "ilce_id": 4,
+    "mahalle_adi": "Tekağaç Mahallesi",
+    "slug": "tekagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:30.365Z",
+    "updated_at": "2025-10-03T17:51:30.365Z",
+    "aciklama": null
+  },
+  {
+    "id": 100,
+    "ilce_id": 4,
+    "mahalle_adi": "Çiftlik Mahallesi",
+    "slug": "ciftlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:30.605Z",
+    "updated_at": "2025-10-03T17:51:30.605Z",
+    "aciklama": null
+  },
+  {
+    "id": 101,
+    "ilce_id": 4,
+    "mahalle_adi": "Kafaca Mahallesi",
+    "slug": "kafaca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:30.843Z",
+    "updated_at": "2025-10-03T17:51:30.843Z",
+    "aciklama": null
+  },
+  {
+    "id": 102,
+    "ilce_id": 4,
+    "mahalle_adi": "Kocamustafapaşa Mahallesi",
+    "slug": "kocamustafapasa-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:31.088Z",
+    "updated_at": "2025-10-03T17:51:31.088Z",
+    "aciklama": null
+  },
+  {
+    "id": 103,
+    "ilce_id": 4,
+    "mahalle_adi": "Ömerağa Mahallesi",
+    "slug": "omeraga-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:51:31.330Z",
+    "updated_at": "2025-10-03T17:51:31.330Z",
+    "aciklama": null
+  },
+  {
+    "id": 104,
+    "ilce_id": 3,
+    "mahalle_adi": "Akgedik Mahallesi",
+    "slug": "akgedik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.075Z",
+    "updated_at": "2025-10-03T17:53:22.075Z",
+    "aciklama": null
+  },
+  {
+    "id": 105,
+    "ilce_id": 3,
+    "mahalle_adi": "Akyol Mahallesi",
+    "slug": "akyol-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.224Z",
+    "updated_at": "2025-10-03T17:53:22.224Z",
+    "aciklama": null
+  },
+  {
+    "id": 106,
+    "ilce_id": 3,
+    "mahalle_adi": "Alaşar Mahallesi",
+    "slug": "alasar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.382Z",
+    "updated_at": "2025-10-03T17:53:22.382Z",
+    "aciklama": null
+  },
+  {
+    "id": 107,
+    "ilce_id": 3,
+    "mahalle_adi": "Atatürk Mahallesi",
+    "slug": "ataturk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.533Z",
+    "updated_at": "2025-10-03T17:53:22.533Z",
+    "aciklama": null
+  },
+  {
+    "id": 108,
+    "ilce_id": 3,
+    "mahalle_adi": "Bağyaka Mahallesi",
+    "slug": "bagyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.690Z",
+    "updated_at": "2025-10-03T17:53:22.690Z",
+    "aciklama": null
+  },
+  {
+    "id": 109,
+    "ilce_id": 3,
+    "mahalle_adi": "Bahçeyaka Mahallesi",
+    "slug": "bahceyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.840Z",
+    "updated_at": "2025-10-03T17:53:22.840Z",
+    "aciklama": null
+  },
+  {
+    "id": 110,
+    "ilce_id": 3,
+    "mahalle_adi": "Bencik Mahallesi",
+    "slug": "bencik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:22.997Z",
+    "updated_at": "2025-10-03T17:53:22.997Z",
+    "aciklama": null
+  },
+  {
+    "id": 111,
+    "ilce_id": 3,
+    "mahalle_adi": "Bozüyük Mahallesi",
+    "slug": "bozuyuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.148Z",
+    "updated_at": "2025-10-03T17:53:23.148Z",
+    "aciklama": null
+  },
+  {
+    "id": 112,
+    "ilce_id": 3,
+    "mahalle_adi": "Cazkirlar Mahallesi",
+    "slug": "cazkirlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.301Z",
+    "updated_at": "2025-10-03T17:53:23.301Z",
+    "aciklama": null
+  },
+  {
+    "id": 113,
+    "ilce_id": 3,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.452Z",
+    "updated_at": "2025-10-03T17:53:23.452Z",
+    "aciklama": null
+  },
+  {
+    "id": 114,
+    "ilce_id": 3,
+    "mahalle_adi": "Çakırlar Mahallesi",
+    "slug": "cakirlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.608Z",
+    "updated_at": "2025-10-03T17:53:23.608Z",
+    "aciklama": null
+  },
+  {
+    "id": 115,
+    "ilce_id": 3,
+    "mahalle_adi": "Çamlıca Mahallesi",
+    "slug": "camlica-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.759Z",
+    "updated_at": "2025-10-03T17:53:23.759Z",
+    "aciklama": null
+  },
+  {
+    "id": 116,
+    "ilce_id": 3,
+    "mahalle_adi": "Çukuröz Mahallesi",
+    "slug": "cukuroz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:23.915Z",
+    "updated_at": "2025-10-03T17:53:23.915Z",
+    "aciklama": null
+  },
+  {
+    "id": 117,
+    "ilce_id": 3,
+    "mahalle_adi": "Dere Mahallesi",
+    "slug": "dere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.064Z",
+    "updated_at": "2025-10-03T17:53:24.064Z",
+    "aciklama": null
+  },
+  {
+    "id": 118,
+    "ilce_id": 3,
+    "mahalle_adi": "Deştin Mahallesi",
+    "slug": "destin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.220Z",
+    "updated_at": "2025-10-03T17:53:24.220Z",
+    "aciklama": null
+  },
+  {
+    "id": 119,
+    "ilce_id": 3,
+    "mahalle_adi": "Doğanköy Mahallesi",
+    "slug": "dogankoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.369Z",
+    "updated_at": "2025-10-03T17:53:24.369Z",
+    "aciklama": null
+  },
+  {
+    "id": 120,
+    "ilce_id": 3,
+    "mahalle_adi": "Elmacık Mahallesi",
+    "slug": "elmacik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.524Z",
+    "updated_at": "2025-10-03T17:53:24.524Z",
+    "aciklama": null
+  },
+  {
+    "id": 121,
+    "ilce_id": 3,
+    "mahalle_adi": "Esenköy Mahallesi",
+    "slug": "esenkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.674Z",
+    "updated_at": "2025-10-03T17:53:24.674Z",
+    "aciklama": null
+  },
+  {
+    "id": 122,
+    "ilce_id": 3,
+    "mahalle_adi": "Eskihisar Mahallesi",
+    "slug": "eskihisar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.828Z",
+    "updated_at": "2025-10-03T17:53:24.828Z",
+    "aciklama": null
+  },
+  {
+    "id": 123,
+    "ilce_id": 3,
+    "mahalle_adi": "Gökgedik Mahallesi",
+    "slug": "gokgedik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:24.975Z",
+    "updated_at": "2025-10-03T17:53:24.975Z",
+    "aciklama": null
+  },
+  {
+    "id": 124,
+    "ilce_id": 3,
+    "mahalle_adi": "Gökpınar Mahallesi",
+    "slug": "gokpinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.146Z",
+    "updated_at": "2025-10-03T17:53:25.146Z",
+    "aciklama": null
+  },
+  {
+    "id": 125,
+    "ilce_id": 3,
+    "mahalle_adi": "Hacıbayramlar Mahallesi",
+    "slug": "hacibayramlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.295Z",
+    "updated_at": "2025-10-03T17:53:25.295Z",
+    "aciklama": null
+  },
+  {
+    "id": 126,
+    "ilce_id": 3,
+    "mahalle_adi": "Hacıveliler Mahallesi",
+    "slug": "haciveliler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.450Z",
+    "updated_at": "2025-10-03T17:53:25.450Z",
+    "aciklama": null
+  },
+  {
+    "id": 127,
+    "ilce_id": 3,
+    "mahalle_adi": "Hisarardı Mahallesi",
+    "slug": "hisarardi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.599Z",
+    "updated_at": "2025-10-03T17:53:25.599Z",
+    "aciklama": null
+  },
+  {
+    "id": 128,
+    "ilce_id": 3,
+    "mahalle_adi": "Kadıköy Mahallesi",
+    "slug": "kadikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.755Z",
+    "updated_at": "2025-10-03T17:53:25.755Z",
+    "aciklama": null
+  },
+  {
+    "id": 129,
+    "ilce_id": 3,
+    "mahalle_adi": "Kafacakaplancık Mahallesi",
+    "slug": "kafacakaplancik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:25.903Z",
+    "updated_at": "2025-10-03T17:53:25.903Z",
+    "aciklama": null
+  },
+  {
+    "id": 130,
+    "ilce_id": 3,
+    "mahalle_adi": "Kapubağ Mahallesi",
+    "slug": "kapubag-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.058Z",
+    "updated_at": "2025-10-03T17:53:26.058Z",
+    "aciklama": null
+  },
+  {
+    "id": 131,
+    "ilce_id": 3,
+    "mahalle_adi": "Katrancı Mahallesi",
+    "slug": "katranci-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.208Z",
+    "updated_at": "2025-10-03T17:53:26.208Z",
+    "aciklama": null
+  },
+  {
+    "id": 132,
+    "ilce_id": 3,
+    "mahalle_adi": "Kavak Mahallesi",
+    "slug": "kavak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.362Z",
+    "updated_at": "2025-10-03T17:53:26.362Z",
+    "aciklama": null
+  },
+  {
+    "id": 133,
+    "ilce_id": 3,
+    "mahalle_adi": "Kırıkköy Mahallesi",
+    "slug": "kirikkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.511Z",
+    "updated_at": "2025-10-03T17:53:26.511Z",
+    "aciklama": null
+  },
+  {
+    "id": 134,
+    "ilce_id": 3,
+    "mahalle_adi": "Konak Mahallesi",
+    "slug": "konak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.666Z",
+    "updated_at": "2025-10-03T17:53:26.666Z",
+    "aciklama": null
+  },
+  {
+    "id": 135,
+    "ilce_id": 3,
+    "mahalle_adi": "Kozağaç Mahallesi",
+    "slug": "kozagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.816Z",
+    "updated_at": "2025-10-03T17:53:26.816Z",
+    "aciklama": null
+  },
+  {
+    "id": 136,
+    "ilce_id": 3,
+    "mahalle_adi": "Köklük Mahallesi",
+    "slug": "kokluk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:26.970Z",
+    "updated_at": "2025-10-03T17:53:26.970Z",
+    "aciklama": null
+  },
+  {
+    "id": 137,
+    "ilce_id": 3,
+    "mahalle_adi": "Madenler Mahallesi",
+    "slug": "madenler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.119Z",
+    "updated_at": "2025-10-03T17:53:27.119Z",
+    "aciklama": null
+  },
+  {
+    "id": 138,
+    "ilce_id": 3,
+    "mahalle_adi": "Mesken Mahallesi",
+    "slug": "mesken-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.275Z",
+    "updated_at": "2025-10-03T17:53:27.275Z",
+    "aciklama": null
+  },
+  {
+    "id": 139,
+    "ilce_id": 3,
+    "mahalle_adi": "Nebiköy Mahallesi",
+    "slug": "nebikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.424Z",
+    "updated_at": "2025-10-03T17:53:27.424Z",
+    "aciklama": null
+  },
+  {
+    "id": 140,
+    "ilce_id": 3,
+    "mahalle_adi": "Şahinler Mahallesi",
+    "slug": "sahinler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.578Z",
+    "updated_at": "2025-10-03T17:53:27.578Z",
+    "aciklama": null
+  },
+  {
+    "id": 141,
+    "ilce_id": 3,
+    "mahalle_adi": "Şeref Mahallesi",
+    "slug": "seref-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.726Z",
+    "updated_at": "2025-10-03T17:53:27.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 142,
+    "ilce_id": 3,
+    "mahalle_adi": "Turgutlar Mahallesi",
+    "slug": "turgutlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:27.896Z",
+    "updated_at": "2025-10-03T17:53:27.896Z",
+    "aciklama": null
+  },
+  {
+    "id": 143,
+    "ilce_id": 3,
+    "mahalle_adi": "Yava Mahallesi",
+    "slug": "yava-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.049Z",
+    "updated_at": "2025-10-03T17:53:28.049Z",
+    "aciklama": null
+  },
+  {
+    "id": 144,
+    "ilce_id": 3,
+    "mahalle_adi": "Yayla Mahallesi",
+    "slug": "yayla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.203Z",
+    "updated_at": "2025-10-03T17:53:28.203Z",
+    "aciklama": null
+  },
+  {
+    "id": 145,
+    "ilce_id": 3,
+    "mahalle_adi": "Yeni Mahallesi",
+    "slug": "yeni-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.352Z",
+    "updated_at": "2025-10-03T17:53:28.352Z",
+    "aciklama": null
+  },
+  {
+    "id": 146,
+    "ilce_id": 3,
+    "mahalle_adi": "Yenikarakuyu Mahallesi",
+    "slug": "yenikarakuyu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.506Z",
+    "updated_at": "2025-10-03T17:53:28.506Z",
+    "aciklama": null
+  },
+  {
+    "id": 147,
+    "ilce_id": 3,
+    "mahalle_adi": "Yeniköy Mahallesi",
+    "slug": "yenikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.655Z",
+    "updated_at": "2025-10-03T17:53:28.655Z",
+    "aciklama": null
+  },
+  {
+    "id": 148,
+    "ilce_id": 3,
+    "mahalle_adi": "Yeşilköy Mahallesi",
+    "slug": "yesilkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.809Z",
+    "updated_at": "2025-10-03T17:53:28.809Z",
+    "aciklama": null
+  },
+  {
+    "id": 149,
+    "ilce_id": 3,
+    "mahalle_adi": "Yukarıyayla Mahallesi",
+    "slug": "yukariyayla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:28.957Z",
+    "updated_at": "2025-10-03T17:53:28.957Z",
+    "aciklama": null
+  },
+  {
+    "id": 150,
+    "ilce_id": 3,
+    "mahalle_adi": "Zeytinköy Mahallesi",
+    "slug": "zeytinkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:53:29.111Z",
+    "updated_at": "2025-10-03T17:53:29.111Z",
+    "aciklama": null
+  },
+  {
+    "id": 151,
+    "ilce_id": 2,
+    "mahalle_adi": "Ahmetçavuş Mahallesi",
+    "slug": "ahmetcavus-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:10.578Z",
+    "updated_at": "2025-10-03T17:57:10.578Z",
+    "aciklama": null
+  },
+  {
+    "id": 152,
+    "ilce_id": 2,
+    "mahalle_adi": "Aliağa Mahallesi",
+    "slug": "aliaga-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:10.734Z",
+    "updated_at": "2025-10-03T17:57:10.734Z",
+    "aciklama": null
+  },
+  {
+    "id": 153,
+    "ilce_id": 2,
+    "mahalle_adi": "Atatürk Mahallesi",
+    "slug": "ataturk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:10.882Z",
+    "updated_at": "2025-10-03T17:57:10.882Z",
+    "aciklama": null
+  },
+  {
+    "id": 154,
+    "ilce_id": 2,
+    "mahalle_adi": "Aydınlıkevler Mahallesi",
+    "slug": "aydinlikevler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.036Z",
+    "updated_at": "2025-10-03T17:57:11.036Z",
+    "aciklama": null
+  },
+  {
+    "id": 155,
+    "ilce_id": 2,
+    "mahalle_adi": "Bahçelievler Mahallesi",
+    "slug": "bahcelievler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.184Z",
+    "updated_at": "2025-10-03T17:57:11.184Z",
+    "aciklama": null
+  },
+  {
+    "id": 156,
+    "ilce_id": 2,
+    "mahalle_adi": "Burgaz Mahallesi",
+    "slug": "burgaz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.338Z",
+    "updated_at": "2025-10-03T17:57:11.338Z",
+    "aciklama": null
+  },
+  {
+    "id": 157,
+    "ilce_id": 2,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.485Z",
+    "updated_at": "2025-10-03T17:57:11.485Z",
+    "aciklama": null
+  },
+  {
+    "id": 158,
+    "ilce_id": 2,
+    "mahalle_adi": "Emek Mahallesi",
+    "slug": "emek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.639Z",
+    "updated_at": "2025-10-03T17:57:11.639Z",
+    "aciklama": null
+  },
+  {
+    "id": 159,
+    "ilce_id": 2,
+    "mahalle_adi": "Firuzpaşa Mahallesi",
+    "slug": "firuzpasa-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.787Z",
+    "updated_at": "2025-10-03T17:57:11.787Z",
+    "aciklama": null
+  },
+  {
+    "id": 160,
+    "ilce_id": 2,
+    "mahalle_adi": "Gücekbaşı Mahallesi",
+    "slug": "gucekbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:11.963Z",
+    "updated_at": "2025-10-03T17:57:11.963Z",
+    "aciklama": null
+  },
+  {
+    "id": 161,
+    "ilce_id": 2,
+    "mahalle_adi": "Gümüşlük Mahallesi",
+    "slug": "gumusluk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.108Z",
+    "updated_at": "2025-10-03T17:57:12.108Z",
+    "aciklama": null
+  },
+  {
+    "id": 162,
+    "ilce_id": 2,
+    "mahalle_adi": "Güneş Mahallesi",
+    "slug": "gunes-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.259Z",
+    "updated_at": "2025-10-03T17:57:12.259Z",
+    "aciklama": null
+  },
+  {
+    "id": 163,
+    "ilce_id": 2,
+    "mahalle_adi": "Hacıabti Mahallesi",
+    "slug": "haciabti-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.403Z",
+    "updated_at": "2025-10-03T17:57:12.403Z",
+    "aciklama": null
+  },
+  {
+    "id": 164,
+    "ilce_id": 2,
+    "mahalle_adi": "Hacıçorbacı Mahallesi",
+    "slug": "hacicorbaci-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.553Z",
+    "updated_at": "2025-10-03T17:57:12.553Z",
+    "aciklama": null
+  },
+  {
+    "id": 165,
+    "ilce_id": 2,
+    "mahalle_adi": "Hacıilyas Mahallesi",
+    "slug": "haciilyas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.697Z",
+    "updated_at": "2025-10-03T17:57:12.697Z",
+    "aciklama": null
+  },
+  {
+    "id": 166,
+    "ilce_id": 2,
+    "mahalle_adi": "Hisar Mahallesi",
+    "slug": "hisar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.848Z",
+    "updated_at": "2025-10-03T17:57:12.848Z",
+    "aciklama": null
+  },
+  {
+    "id": 167,
+    "ilce_id": 2,
+    "mahalle_adi": "Hisarbaşı Mahallesi",
+    "slug": "hisarbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:12.993Z",
+    "updated_at": "2025-10-03T17:57:12.993Z",
+    "aciklama": null
+  },
+  {
+    "id": 168,
+    "ilce_id": 2,
+    "mahalle_adi": "İlbira Mahallesi",
+    "slug": "i-lbira-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.143Z",
+    "updated_at": "2025-10-03T17:57:13.143Z",
+    "aciklama": null
+  },
+  {
+    "id": 169,
+    "ilce_id": 2,
+    "mahalle_adi": "İsmetpaşa Mahallesi",
+    "slug": "i-smetpasa-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.291Z",
+    "updated_at": "2025-10-03T17:57:13.291Z",
+    "aciklama": null
+  },
+  {
+    "id": 170,
+    "ilce_id": 2,
+    "mahalle_adi": "Kavaklıdere Mahallesi",
+    "slug": "kavaklidere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.443Z",
+    "updated_at": "2025-10-03T17:57:13.443Z",
+    "aciklama": null
+  },
+  {
+    "id": 171,
+    "ilce_id": 2,
+    "mahalle_adi": "Kocakışla Mahallesi",
+    "slug": "kocakisla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.589Z",
+    "updated_at": "2025-10-03T17:57:13.589Z",
+    "aciklama": null
+  },
+  {
+    "id": 172,
+    "ilce_id": 2,
+    "mahalle_adi": "Orta Mahallesi",
+    "slug": "orta-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.742Z",
+    "updated_at": "2025-10-03T17:57:13.742Z",
+    "aciklama": null
+  },
+  {
+    "id": 173,
+    "ilce_id": 2,
+    "mahalle_adi": "Şevketiye Mahallesi",
+    "slug": "sevketiye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:13.888Z",
+    "updated_at": "2025-10-03T17:57:13.888Z",
+    "aciklama": null
+  },
+  {
+    "id": 174,
+    "ilce_id": 2,
+    "mahalle_adi": "Yalı Mahallesi",
+    "slug": "yali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.040Z",
+    "updated_at": "2025-10-03T17:57:14.040Z",
+    "aciklama": null
+  },
+  {
+    "id": 175,
+    "ilce_id": 2,
+    "mahalle_adi": "Yeni Mahallesi",
+    "slug": "yeni-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.186Z",
+    "updated_at": "2025-10-03T17:57:14.186Z",
+    "aciklama": null
+  },
+  {
+    "id": 176,
+    "ilce_id": 2,
+    "mahalle_adi": "Ağaçlıhüyük Mahallesi",
+    "slug": "agaclihuyuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.337Z",
+    "updated_at": "2025-10-03T17:57:14.337Z",
+    "aciklama": null
+  },
+  {
+    "id": 177,
+    "ilce_id": 2,
+    "mahalle_adi": "Akçakaya Mahallesi",
+    "slug": "akcakaya-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.486Z",
+    "updated_at": "2025-10-03T17:57:14.486Z",
+    "aciklama": null
+  },
+  {
+    "id": 178,
+    "ilce_id": 2,
+    "mahalle_adi": "Akçalı Mahallesi",
+    "slug": "akcali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.651Z",
+    "updated_at": "2025-10-03T17:57:14.651Z",
+    "aciklama": null
+  },
+  {
+    "id": 179,
+    "ilce_id": 2,
+    "mahalle_adi": "Akkovalık Mahallesi",
+    "slug": "akkovalik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.810Z",
+    "updated_at": "2025-10-03T17:57:14.810Z",
+    "aciklama": null
+  },
+  {
+    "id": 180,
+    "ilce_id": 2,
+    "mahalle_adi": "Akyol Mahallesi",
+    "slug": "akyol-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:14.974Z",
+    "updated_at": "2025-10-03T17:57:14.974Z",
+    "aciklama": null
+  },
+  {
+    "id": 181,
+    "ilce_id": 2,
+    "mahalle_adi": "Alaçam Mahallesi",
+    "slug": "alacam-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.131Z",
+    "updated_at": "2025-10-03T17:57:15.131Z",
+    "aciklama": null
+  },
+  {
+    "id": 182,
+    "ilce_id": 2,
+    "mahalle_adi": "Alatepe Mahallesi",
+    "slug": "alatepe-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.291Z",
+    "updated_at": "2025-10-03T17:57:15.291Z",
+    "aciklama": null
+  },
+  {
+    "id": 183,
+    "ilce_id": 2,
+    "mahalle_adi": "Aslanyaka Mahallesi",
+    "slug": "aslanyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.447Z",
+    "updated_at": "2025-10-03T17:57:15.447Z",
+    "aciklama": null
+  },
+  {
+    "id": 184,
+    "ilce_id": 2,
+    "mahalle_adi": "Avşar Mahallesi",
+    "slug": "avsar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.608Z",
+    "updated_at": "2025-10-03T17:57:15.608Z",
+    "aciklama": null
+  },
+  {
+    "id": 185,
+    "ilce_id": 2,
+    "mahalle_adi": "Bafa Mahallesi",
+    "slug": "bafa-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.768Z",
+    "updated_at": "2025-10-03T17:57:15.768Z",
+    "aciklama": null
+  },
+  {
+    "id": 186,
+    "ilce_id": 2,
+    "mahalle_adi": "Bağdamları Mahallesi",
+    "slug": "bagdamlari-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:15.930Z",
+    "updated_at": "2025-10-03T17:57:15.930Z",
+    "aciklama": null
+  },
+  {
+    "id": 187,
+    "ilce_id": 2,
+    "mahalle_adi": "Baharlı Mahallesi",
+    "slug": "baharli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.083Z",
+    "updated_at": "2025-10-03T17:57:16.083Z",
+    "aciklama": null
+  },
+  {
+    "id": 188,
+    "ilce_id": 2,
+    "mahalle_adi": "Bahçe Mahallesi",
+    "slug": "bahce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.247Z",
+    "updated_at": "2025-10-03T17:57:16.247Z",
+    "aciklama": null
+  },
+  {
+    "id": 189,
+    "ilce_id": 2,
+    "mahalle_adi": "Bahçeburun Mahallesi",
+    "slug": "bahceburun-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.397Z",
+    "updated_at": "2025-10-03T17:57:16.397Z",
+    "aciklama": null
+  },
+  {
+    "id": 190,
+    "ilce_id": 2,
+    "mahalle_adi": "Balcılar Mahallesi",
+    "slug": "balcilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.549Z",
+    "updated_at": "2025-10-03T17:57:16.549Z",
+    "aciklama": null
+  },
+  {
+    "id": 191,
+    "ilce_id": 2,
+    "mahalle_adi": "Bayır Mahallesi",
+    "slug": "bayir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.696Z",
+    "updated_at": "2025-10-03T17:57:16.696Z",
+    "aciklama": null
+  },
+  {
+    "id": 192,
+    "ilce_id": 2,
+    "mahalle_adi": "Beçin Mahallesi",
+    "slug": "becin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.847Z",
+    "updated_at": "2025-10-03T17:57:16.847Z",
+    "aciklama": null
+  },
+  {
+    "id": 193,
+    "ilce_id": 2,
+    "mahalle_adi": "Beyciler Mahallesi",
+    "slug": "beyciler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:16.994Z",
+    "updated_at": "2025-10-03T17:57:16.994Z",
+    "aciklama": null
+  },
+  {
+    "id": 194,
+    "ilce_id": 2,
+    "mahalle_adi": "Boğaziçi Mahallesi",
+    "slug": "bogazici-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.145Z",
+    "updated_at": "2025-10-03T17:57:17.145Z",
+    "aciklama": null
+  },
+  {
+    "id": 195,
+    "ilce_id": 2,
+    "mahalle_adi": "Bozalan Mahallesi",
+    "slug": "bozalan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.291Z",
+    "updated_at": "2025-10-03T17:57:17.291Z",
+    "aciklama": null
+  },
+  {
+    "id": 196,
+    "ilce_id": 2,
+    "mahalle_adi": "Bozbük Mahallesi",
+    "slug": "bozbuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.443Z",
+    "updated_at": "2025-10-03T17:57:17.443Z",
+    "aciklama": null
+  },
+  {
+    "id": 197,
+    "ilce_id": 2,
+    "mahalle_adi": "Çakıralan Mahallesi",
+    "slug": "cakiralan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.589Z",
+    "updated_at": "2025-10-03T17:57:17.589Z",
+    "aciklama": null
+  },
+  {
+    "id": 198,
+    "ilce_id": 2,
+    "mahalle_adi": "Çallı Mahallesi",
+    "slug": "calli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.741Z",
+    "updated_at": "2025-10-03T17:57:17.741Z",
+    "aciklama": null
+  },
+  {
+    "id": 199,
+    "ilce_id": 2,
+    "mahalle_adi": "Çamköy Mahallesi",
+    "slug": "camkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:17.887Z",
+    "updated_at": "2025-10-03T17:57:17.887Z",
+    "aciklama": null
+  },
+  {
+    "id": 200,
+    "ilce_id": 2,
+    "mahalle_adi": "Çamlıbelen Mahallesi",
+    "slug": "camlibelen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.038Z",
+    "updated_at": "2025-10-03T17:57:18.038Z",
+    "aciklama": null
+  },
+  {
+    "id": 201,
+    "ilce_id": 2,
+    "mahalle_adi": "Çamlıca Mahallesi",
+    "slug": "camlica-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.184Z",
+    "updated_at": "2025-10-03T17:57:18.184Z",
+    "aciklama": null
+  },
+  {
+    "id": 202,
+    "ilce_id": 2,
+    "mahalle_adi": "Çamlıyurt Mahallesi",
+    "slug": "camliyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.335Z",
+    "updated_at": "2025-10-03T17:57:18.335Z",
+    "aciklama": null
+  },
+  {
+    "id": 203,
+    "ilce_id": 2,
+    "mahalle_adi": "Çamovalı Mahallesi",
+    "slug": "camovali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.481Z",
+    "updated_at": "2025-10-03T17:57:18.481Z",
+    "aciklama": null
+  },
+  {
+    "id": 204,
+    "ilce_id": 2,
+    "mahalle_adi": "Çandır Mahallesi",
+    "slug": "candir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.634Z",
+    "updated_at": "2025-10-03T17:57:18.634Z",
+    "aciklama": null
+  },
+  {
+    "id": 205,
+    "ilce_id": 2,
+    "mahalle_adi": "Çınarlı Mahallesi",
+    "slug": "cinarli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.781Z",
+    "updated_at": "2025-10-03T17:57:18.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 206,
+    "ilce_id": 2,
+    "mahalle_adi": "Çiftlik Mahallesi",
+    "slug": "ciftlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:18.932Z",
+    "updated_at": "2025-10-03T17:57:18.932Z",
+    "aciklama": null
+  },
+  {
+    "id": 207,
+    "ilce_id": 2,
+    "mahalle_adi": "Çomakdağkızılağaç Mahallesi",
+    "slug": "comakdagkizilagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.078Z",
+    "updated_at": "2025-10-03T17:57:19.078Z",
+    "aciklama": null
+  },
+  {
+    "id": 208,
+    "ilce_id": 2,
+    "mahalle_adi": "Çökertme Mahallesi",
+    "slug": "cokertme-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.229Z",
+    "updated_at": "2025-10-03T17:57:19.229Z",
+    "aciklama": null
+  },
+  {
+    "id": 209,
+    "ilce_id": 2,
+    "mahalle_adi": "Çukur Mahallesi",
+    "slug": "cukur-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.377Z",
+    "updated_at": "2025-10-03T17:57:19.377Z",
+    "aciklama": null
+  },
+  {
+    "id": 210,
+    "ilce_id": 2,
+    "mahalle_adi": "Damlıboğaz Mahallesi",
+    "slug": "damlibogaz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.528Z",
+    "updated_at": "2025-10-03T17:57:19.528Z",
+    "aciklama": null
+  },
+  {
+    "id": 211,
+    "ilce_id": 2,
+    "mahalle_adi": "Danişment Mahallesi",
+    "slug": "danisment-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.674Z",
+    "updated_at": "2025-10-03T17:57:19.674Z",
+    "aciklama": null
+  },
+  {
+    "id": 212,
+    "ilce_id": 2,
+    "mahalle_adi": "Demirciler Mahallesi",
+    "slug": "demirciler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.827Z",
+    "updated_at": "2025-10-03T17:57:19.827Z",
+    "aciklama": null
+  },
+  {
+    "id": 213,
+    "ilce_id": 2,
+    "mahalle_adi": "Dere Mahallesi",
+    "slug": "dere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:19.973Z",
+    "updated_at": "2025-10-03T17:57:19.973Z",
+    "aciklama": null
+  },
+  {
+    "id": 214,
+    "ilce_id": 2,
+    "mahalle_adi": "Derince Mahallesi",
+    "slug": "derince-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.126Z",
+    "updated_at": "2025-10-03T17:57:20.126Z",
+    "aciklama": null
+  },
+  {
+    "id": 215,
+    "ilce_id": 2,
+    "mahalle_adi": "Dibekdere Mahallesi",
+    "slug": "dibekdere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.273Z",
+    "updated_at": "2025-10-03T17:57:20.273Z",
+    "aciklama": null
+  },
+  {
+    "id": 216,
+    "ilce_id": 2,
+    "mahalle_adi": "Eğridere Mahallesi",
+    "slug": "egridere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.424Z",
+    "updated_at": "2025-10-03T17:57:20.424Z",
+    "aciklama": null
+  },
+  {
+    "id": 217,
+    "ilce_id": 2,
+    "mahalle_adi": "Ekinanbarı Mahallesi",
+    "slug": "ekinanbari-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.570Z",
+    "updated_at": "2025-10-03T17:57:20.570Z",
+    "aciklama": null
+  },
+  {
+    "id": 218,
+    "ilce_id": 2,
+    "mahalle_adi": "Ekindere Mahallesi",
+    "slug": "ekindere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.721Z",
+    "updated_at": "2025-10-03T17:57:20.721Z",
+    "aciklama": null
+  },
+  {
+    "id": 219,
+    "ilce_id": 2,
+    "mahalle_adi": "Ekizköy Mahallesi",
+    "slug": "ekizkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:20.868Z",
+    "updated_at": "2025-10-03T17:57:20.868Z",
+    "aciklama": null
+  },
+  {
+    "id": 220,
+    "ilce_id": 2,
+    "mahalle_adi": "Ekiztaş Mahallesi",
+    "slug": "ekiztas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.019Z",
+    "updated_at": "2025-10-03T17:57:21.019Z",
+    "aciklama": null
+  },
+  {
+    "id": 221,
+    "ilce_id": 2,
+    "mahalle_adi": "Epçe Mahallesi",
+    "slug": "epce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.166Z",
+    "updated_at": "2025-10-03T17:57:21.166Z",
+    "aciklama": null
+  },
+  {
+    "id": 222,
+    "ilce_id": 2,
+    "mahalle_adi": "Etrenli Mahallesi",
+    "slug": "etrenli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.318Z",
+    "updated_at": "2025-10-03T17:57:21.318Z",
+    "aciklama": null
+  },
+  {
+    "id": 223,
+    "ilce_id": 2,
+    "mahalle_adi": "Fesleğen Mahallesi",
+    "slug": "feslegen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.464Z",
+    "updated_at": "2025-10-03T17:57:21.464Z",
+    "aciklama": null
+  },
+  {
+    "id": 224,
+    "ilce_id": 2,
+    "mahalle_adi": "Gökbel Mahallesi",
+    "slug": "gokbel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.616Z",
+    "updated_at": "2025-10-03T17:57:21.616Z",
+    "aciklama": null
+  },
+  {
+    "id": 225,
+    "ilce_id": 2,
+    "mahalle_adi": "Gökçeler Mahallesi",
+    "slug": "gokceler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.769Z",
+    "updated_at": "2025-10-03T17:57:21.769Z",
+    "aciklama": null
+  },
+  {
+    "id": 226,
+    "ilce_id": 2,
+    "mahalle_adi": "Göldere Mahallesi",
+    "slug": "goldere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:21.920Z",
+    "updated_at": "2025-10-03T17:57:21.920Z",
+    "aciklama": null
+  },
+  {
+    "id": 227,
+    "ilce_id": 2,
+    "mahalle_adi": "Gölyaka Mahallesi",
+    "slug": "golyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.077Z",
+    "updated_at": "2025-10-03T17:57:22.077Z",
+    "aciklama": null
+  },
+  {
+    "id": 228,
+    "ilce_id": 2,
+    "mahalle_adi": "Güvercinlik Mahallesi",
+    "slug": "guvercinlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.228Z",
+    "updated_at": "2025-10-03T17:57:22.228Z",
+    "aciklama": null
+  },
+  {
+    "id": 229,
+    "ilce_id": 2,
+    "mahalle_adi": "Hacıköy Mahallesi",
+    "slug": "hacikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.374Z",
+    "updated_at": "2025-10-03T17:57:22.374Z",
+    "aciklama": null
+  },
+  {
+    "id": 230,
+    "ilce_id": 2,
+    "mahalle_adi": "Hançalı Mahallesi",
+    "slug": "hancali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.526Z",
+    "updated_at": "2025-10-03T17:57:22.526Z",
+    "aciklama": null
+  },
+  {
+    "id": 231,
+    "ilce_id": 2,
+    "mahalle_adi": "Hasıralar Mahallesi",
+    "slug": "hasiralar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.672Z",
+    "updated_at": "2025-10-03T17:57:22.672Z",
+    "aciklama": null
+  },
+  {
+    "id": 232,
+    "ilce_id": 2,
+    "mahalle_adi": "Hayıtlı Mahallesi",
+    "slug": "hayitli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.824Z",
+    "updated_at": "2025-10-03T17:57:22.824Z",
+    "aciklama": null
+  },
+  {
+    "id": 233,
+    "ilce_id": 2,
+    "mahalle_adi": "Hidirlik Mahallesi",
+    "slug": "hidirlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:22.970Z",
+    "updated_at": "2025-10-03T17:57:22.970Z",
+    "aciklama": null
+  },
+  {
+    "id": 234,
+    "ilce_id": 2,
+    "mahalle_adi": "Hıdırlar Mahallesi",
+    "slug": "hidirlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.122Z",
+    "updated_at": "2025-10-03T17:57:23.122Z",
+    "aciklama": null
+  },
+  {
+    "id": 235,
+    "ilce_id": 2,
+    "mahalle_adi": "İçme Mahallesi",
+    "slug": "i-cme-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.268Z",
+    "updated_at": "2025-10-03T17:57:23.268Z",
+    "aciklama": null
+  },
+  {
+    "id": 236,
+    "ilce_id": 2,
+    "mahalle_adi": "İnköy Mahallesi",
+    "slug": "i-nkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.419Z",
+    "updated_at": "2025-10-03T17:57:23.419Z",
+    "aciklama": null
+  },
+  {
+    "id": 237,
+    "ilce_id": 2,
+    "mahalle_adi": "İsabey Mahallesi",
+    "slug": "i-sabey-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.566Z",
+    "updated_at": "2025-10-03T17:57:23.566Z",
+    "aciklama": null
+  },
+  {
+    "id": 238,
+    "ilce_id": 2,
+    "mahalle_adi": "İskele Mahallesi",
+    "slug": "i-skele-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.716Z",
+    "updated_at": "2025-10-03T17:57:23.716Z",
+    "aciklama": null
+  },
+  {
+    "id": 239,
+    "ilce_id": 2,
+    "mahalle_adi": "Kafaca Mahallesi",
+    "slug": "kafaca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:23.863Z",
+    "updated_at": "2025-10-03T17:57:23.863Z",
+    "aciklama": null
+  },
+  {
+    "id": 240,
+    "ilce_id": 2,
+    "mahalle_adi": "Kalem Mahallesi",
+    "slug": "kalem-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.015Z",
+    "updated_at": "2025-10-03T17:57:24.015Z",
+    "aciklama": null
+  },
+  {
+    "id": 241,
+    "ilce_id": 2,
+    "mahalle_adi": "Kalınağıl Mahallesi",
+    "slug": "kalinagil-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.163Z",
+    "updated_at": "2025-10-03T17:57:24.163Z",
+    "aciklama": null
+  },
+  {
+    "id": 242,
+    "ilce_id": 2,
+    "mahalle_adi": "Kamışlık Mahallesi",
+    "slug": "kamislik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.314Z",
+    "updated_at": "2025-10-03T17:57:24.314Z",
+    "aciklama": null
+  },
+  {
+    "id": 243,
+    "ilce_id": 2,
+    "mahalle_adi": "Kaplan Mahallesi",
+    "slug": "kaplan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.460Z",
+    "updated_at": "2025-10-03T17:57:24.460Z",
+    "aciklama": null
+  },
+  {
+    "id": 244,
+    "ilce_id": 2,
+    "mahalle_adi": "Karaahmet Mahallesi",
+    "slug": "karaahmet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.611Z",
+    "updated_at": "2025-10-03T17:57:24.611Z",
+    "aciklama": null
+  },
+  {
+    "id": 245,
+    "ilce_id": 2,
+    "mahalle_adi": "Karaaslan Mahallesi",
+    "slug": "karaaslan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.757Z",
+    "updated_at": "2025-10-03T17:57:24.757Z",
+    "aciklama": null
+  },
+  {
+    "id": 246,
+    "ilce_id": 2,
+    "mahalle_adi": "Karacaağaç Mahallesi",
+    "slug": "karacaagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:24.908Z",
+    "updated_at": "2025-10-03T17:57:24.908Z",
+    "aciklama": null
+  },
+  {
+    "id": 247,
+    "ilce_id": 2,
+    "mahalle_adi": "Karacahisar Mahallesi",
+    "slug": "karacahisar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.054Z",
+    "updated_at": "2025-10-03T17:57:25.054Z",
+    "aciklama": null
+  },
+  {
+    "id": 248,
+    "ilce_id": 2,
+    "mahalle_adi": "Karahüyük Mahallesi",
+    "slug": "karahuyuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.205Z",
+    "updated_at": "2025-10-03T17:57:25.205Z",
+    "aciklama": null
+  },
+  {
+    "id": 249,
+    "ilce_id": 2,
+    "mahalle_adi": "Karaköy Mahallesi",
+    "slug": "karakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.356Z",
+    "updated_at": "2025-10-03T17:57:25.356Z",
+    "aciklama": null
+  },
+  {
+    "id": 250,
+    "ilce_id": 2,
+    "mahalle_adi": "Karapınar Mahallesi",
+    "slug": "karapinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.510Z",
+    "updated_at": "2025-10-03T17:57:25.510Z",
+    "aciklama": null
+  },
+  {
+    "id": 251,
+    "ilce_id": 2,
+    "mahalle_adi": "Karaveli Mahallesi",
+    "slug": "karaveli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.657Z",
+    "updated_at": "2025-10-03T17:57:25.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 252,
+    "ilce_id": 2,
+    "mahalle_adi": "Kargıcak Mahallesi",
+    "slug": "kargicak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.808Z",
+    "updated_at": "2025-10-03T17:57:25.808Z",
+    "aciklama": null
+  },
+  {
+    "id": 253,
+    "ilce_id": 2,
+    "mahalle_adi": "Karıncalı Mahallesi",
+    "slug": "karincali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:25.954Z",
+    "updated_at": "2025-10-03T17:57:25.954Z",
+    "aciklama": null
+  },
+  {
+    "id": 254,
+    "ilce_id": 2,
+    "mahalle_adi": "Kazıkbeli Mahallesi",
+    "slug": "kazikbeli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.105Z",
+    "updated_at": "2025-10-03T17:57:26.105Z",
+    "aciklama": null
+  },
+  {
+    "id": 255,
+    "ilce_id": 2,
+    "mahalle_adi": "Kemerköy Mahallesi",
+    "slug": "kemerkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.250Z",
+    "updated_at": "2025-10-03T17:57:26.250Z",
+    "aciklama": null
+  },
+  {
+    "id": 256,
+    "ilce_id": 2,
+    "mahalle_adi": "Kırcağız Mahallesi",
+    "slug": "kircagiz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.401Z",
+    "updated_at": "2025-10-03T17:57:26.401Z",
+    "aciklama": null
+  },
+  {
+    "id": 257,
+    "ilce_id": 2,
+    "mahalle_adi": "Kırıköy Mahallesi",
+    "slug": "kirikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.548Z",
+    "updated_at": "2025-10-03T17:57:26.548Z",
+    "aciklama": null
+  },
+  {
+    "id": 258,
+    "ilce_id": 2,
+    "mahalle_adi": "Kızılyaka Mahallesi",
+    "slug": "kizilyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.700Z",
+    "updated_at": "2025-10-03T17:57:26.700Z",
+    "aciklama": null
+  },
+  {
+    "id": 259,
+    "ilce_id": 2,
+    "mahalle_adi": "Konak Mahallesi",
+    "slug": "konak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.846Z",
+    "updated_at": "2025-10-03T17:57:26.846Z",
+    "aciklama": null
+  },
+  {
+    "id": 260,
+    "ilce_id": 2,
+    "mahalle_adi": "Koruköy Mahallesi",
+    "slug": "korukoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:26.998Z",
+    "updated_at": "2025-10-03T17:57:26.998Z",
+    "aciklama": null
+  },
+  {
+    "id": 261,
+    "ilce_id": 2,
+    "mahalle_adi": "Köseler Mahallesi",
+    "slug": "koseler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.144Z",
+    "updated_at": "2025-10-03T17:57:27.144Z",
+    "aciklama": null
+  },
+  {
+    "id": 262,
+    "ilce_id": 2,
+    "mahalle_adi": "Küçükkolpan Mahallesi",
+    "slug": "kucukkolpan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.296Z",
+    "updated_at": "2025-10-03T17:57:27.296Z",
+    "aciklama": null
+  },
+  {
+    "id": 263,
+    "ilce_id": 2,
+    "mahalle_adi": "Küçüknarköy Mahallesi",
+    "slug": "kucuknarkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.443Z",
+    "updated_at": "2025-10-03T17:57:27.443Z",
+    "aciklama": null
+  },
+  {
+    "id": 264,
+    "ilce_id": 2,
+    "mahalle_adi": "Kuyudere Mahallesi",
+    "slug": "kuyudere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.594Z",
+    "updated_at": "2025-10-03T17:57:27.594Z",
+    "aciklama": null
+  },
+  {
+    "id": 265,
+    "ilce_id": 2,
+    "mahalle_adi": "Narlıdere Mahallesi",
+    "slug": "narlidere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.740Z",
+    "updated_at": "2025-10-03T17:57:27.740Z",
+    "aciklama": null
+  },
+  {
+    "id": 266,
+    "ilce_id": 2,
+    "mahalle_adi": "Oba Mahallesi",
+    "slug": "oba-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:27.891Z",
+    "updated_at": "2025-10-03T17:57:27.891Z",
+    "aciklama": null
+  },
+  {
+    "id": 267,
+    "ilce_id": 2,
+    "mahalle_adi": "Orhanlı Mahallesi",
+    "slug": "orhanli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.038Z",
+    "updated_at": "2025-10-03T17:57:28.038Z",
+    "aciklama": null
+  },
+  {
+    "id": 268,
+    "ilce_id": 2,
+    "mahalle_adi": "Özbükü Mahallesi",
+    "slug": "ozbuku-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.189Z",
+    "updated_at": "2025-10-03T17:57:28.189Z",
+    "aciklama": null
+  },
+  {
+    "id": 269,
+    "ilce_id": 2,
+    "mahalle_adi": "Özdemir Mahallesi",
+    "slug": "ozdemir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.349Z",
+    "updated_at": "2025-10-03T17:57:28.349Z",
+    "aciklama": null
+  },
+  {
+    "id": 270,
+    "ilce_id": 2,
+    "mahalle_adi": "Pınarcık Mahallesi",
+    "slug": "pinarcik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.501Z",
+    "updated_at": "2025-10-03T17:57:28.501Z",
+    "aciklama": null
+  },
+  {
+    "id": 271,
+    "ilce_id": 2,
+    "mahalle_adi": "Sar Mahallesi",
+    "slug": "sar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.647Z",
+    "updated_at": "2025-10-03T17:57:28.647Z",
+    "aciklama": null
+  },
+  {
+    "id": 272,
+    "ilce_id": 2,
+    "mahalle_adi": "Savran Mahallesi",
+    "slug": "savran-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.798Z",
+    "updated_at": "2025-10-03T17:57:28.798Z",
+    "aciklama": null
+  },
+  {
+    "id": 273,
+    "ilce_id": 2,
+    "mahalle_adi": "Selimiye Mahallesi",
+    "slug": "selimiye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:28.945Z",
+    "updated_at": "2025-10-03T17:57:28.945Z",
+    "aciklama": null
+  },
+  {
+    "id": 274,
+    "ilce_id": 2,
+    "mahalle_adi": "Sinir Mahallesi",
+    "slug": "sinir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.096Z",
+    "updated_at": "2025-10-03T17:57:29.096Z",
+    "aciklama": null
+  },
+  {
+    "id": 275,
+    "ilce_id": 2,
+    "mahalle_adi": "Sodra Mahallesi",
+    "slug": "sodra-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.242Z",
+    "updated_at": "2025-10-03T17:57:29.242Z",
+    "aciklama": null
+  },
+  {
+    "id": 276,
+    "ilce_id": 2,
+    "mahalle_adi": "Suludere Mahallesi",
+    "slug": "suludere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.396Z",
+    "updated_at": "2025-10-03T17:57:29.396Z",
+    "aciklama": null
+  },
+  {
+    "id": 277,
+    "ilce_id": 2,
+    "mahalle_adi": "Şamlı Mahallesi",
+    "slug": "samli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.541Z",
+    "updated_at": "2025-10-03T17:57:29.541Z",
+    "aciklama": null
+  },
+  {
+    "id": 278,
+    "ilce_id": 2,
+    "mahalle_adi": "Şeyhler Mahallesi",
+    "slug": "seyhler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.692Z",
+    "updated_at": "2025-10-03T17:57:29.692Z",
+    "aciklama": null
+  },
+  {
+    "id": 279,
+    "ilce_id": 2,
+    "mahalle_adi": "Taşlı Mahallesi",
+    "slug": "tasli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.839Z",
+    "updated_at": "2025-10-03T17:57:29.839Z",
+    "aciklama": null
+  },
+  {
+    "id": 280,
+    "ilce_id": 2,
+    "mahalle_adi": "Tekeli Mahallesi",
+    "slug": "tekeli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:29.990Z",
+    "updated_at": "2025-10-03T17:57:29.990Z",
+    "aciklama": null
+  },
+  {
+    "id": 281,
+    "ilce_id": 2,
+    "mahalle_adi": "Topçular Mahallesi",
+    "slug": "topcular-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.136Z",
+    "updated_at": "2025-10-03T17:57:30.136Z",
+    "aciklama": null
+  },
+  {
+    "id": 282,
+    "ilce_id": 2,
+    "mahalle_adi": "Toprak Mahallesi",
+    "slug": "toprak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.287Z",
+    "updated_at": "2025-10-03T17:57:30.287Z",
+    "aciklama": null
+  },
+  {
+    "id": 283,
+    "ilce_id": 2,
+    "mahalle_adi": "Tulumentaş Mahallesi",
+    "slug": "tulumentas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.433Z",
+    "updated_at": "2025-10-03T17:57:30.433Z",
+    "aciklama": null
+  },
+  {
+    "id": 284,
+    "ilce_id": 2,
+    "mahalle_adi": "Türkevleri Mahallesi",
+    "slug": "turkevleri-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.586Z",
+    "updated_at": "2025-10-03T17:57:30.586Z",
+    "aciklama": null
+  },
+  {
+    "id": 285,
+    "ilce_id": 2,
+    "mahalle_adi": "Uzundere Mahallesi",
+    "slug": "uzundere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.732Z",
+    "updated_at": "2025-10-03T17:57:30.732Z",
+    "aciklama": null
+  },
+  {
+    "id": 286,
+    "ilce_id": 2,
+    "mahalle_adi": "Yakaköy Mahallesi",
+    "slug": "yakakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:30.884Z",
+    "updated_at": "2025-10-03T17:57:30.884Z",
+    "aciklama": null
+  },
+  {
+    "id": 287,
+    "ilce_id": 2,
+    "mahalle_adi": "Yassıbağ Mahallesi",
+    "slug": "yassibag-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.029Z",
+    "updated_at": "2025-10-03T17:57:31.029Z",
+    "aciklama": null
+  },
+  {
+    "id": 288,
+    "ilce_id": 2,
+    "mahalle_adi": "Yavşan Mahallesi",
+    "slug": "yavsan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.180Z",
+    "updated_at": "2025-10-03T17:57:31.180Z",
+    "aciklama": null
+  },
+  {
+    "id": 289,
+    "ilce_id": 2,
+    "mahalle_adi": "Yazır Mahallesi",
+    "slug": "yazir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.327Z",
+    "updated_at": "2025-10-03T17:57:31.327Z",
+    "aciklama": null
+  },
+  {
+    "id": 290,
+    "ilce_id": 2,
+    "mahalle_adi": "Yeniköy Mahallesi",
+    "slug": "yenikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.478Z",
+    "updated_at": "2025-10-03T17:57:31.478Z",
+    "aciklama": null
+  },
+  {
+    "id": 291,
+    "ilce_id": 2,
+    "mahalle_adi": "Yeşilbağcılar Mahallesi",
+    "slug": "yesilbagcilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.624Z",
+    "updated_at": "2025-10-03T17:57:31.624Z",
+    "aciklama": null
+  },
+  {
+    "id": 292,
+    "ilce_id": 2,
+    "mahalle_adi": "Yoğunoluk Mahallesi",
+    "slug": "yogunoluk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.776Z",
+    "updated_at": "2025-10-03T17:57:31.776Z",
+    "aciklama": null
+  },
+  {
+    "id": 293,
+    "ilce_id": 2,
+    "mahalle_adi": "Yöney Mahallesi",
+    "slug": "yoney-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:31.924Z",
+    "updated_at": "2025-10-03T17:57:31.924Z",
+    "aciklama": null
+  },
+  {
+    "id": 294,
+    "ilce_id": 2,
+    "mahalle_adi": "Yukarısoku Mahallesi",
+    "slug": "yukarisoku-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:32.075Z",
+    "updated_at": "2025-10-03T17:57:32.075Z",
+    "aciklama": null
+  },
+  {
+    "id": 295,
+    "ilce_id": 2,
+    "mahalle_adi": "Yunus Mahallesi",
+    "slug": "yunus-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T17:57:32.222Z",
+    "updated_at": "2025-10-03T17:57:32.222Z",
+    "aciklama": null
+  },
+  {
+    "id": 296,
+    "ilce_id": 1,
+    "mahalle_adi": "Akçaalan Mahallesi",
+    "slug": "akcaalan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:48.233Z",
+    "updated_at": "2025-10-03T18:00:48.233Z",
+    "aciklama": null
+  },
+  {
+    "id": 297,
+    "ilce_id": 1,
+    "mahalle_adi": "Bahçelievler Mahallesi",
+    "slug": "bahcelievler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:48.392Z",
+    "updated_at": "2025-10-03T18:00:48.392Z",
+    "aciklama": null
+  },
+  {
+    "id": 298,
+    "ilce_id": 1,
+    "mahalle_adi": "Bahçeyaka Mahallesi",
+    "slug": "bahceyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:48.551Z",
+    "updated_at": "2025-10-03T18:00:48.551Z",
+    "aciklama": null
+  },
+  {
+    "id": 299,
+    "ilce_id": 1,
+    "mahalle_adi": "Cevat Şakir Mahallesi",
+    "slug": "cevat-sakir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:48.708Z",
+    "updated_at": "2025-10-03T18:00:48.708Z",
+    "aciklama": null
+  },
+  {
+    "id": 300,
+    "ilce_id": 1,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:48.865Z",
+    "updated_at": "2025-10-03T18:00:48.865Z",
+    "aciklama": null
+  },
+  {
+    "id": 301,
+    "ilce_id": 1,
+    "mahalle_adi": "Çamarası Mahallesi",
+    "slug": "camarasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:49.476Z",
+    "updated_at": "2025-10-03T18:00:49.476Z",
+    "aciklama": null
+  },
+  {
+    "id": 302,
+    "ilce_id": 1,
+    "mahalle_adi": "Çamlık Mahallesi",
+    "slug": "camlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:49.632Z",
+    "updated_at": "2025-10-03T18:00:49.632Z",
+    "aciklama": null
+  },
+  {
+    "id": 303,
+    "ilce_id": 1,
+    "mahalle_adi": "Çarşı Mahallesi",
+    "slug": "carsi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:49.789Z",
+    "updated_at": "2025-10-03T18:00:49.789Z",
+    "aciklama": null
+  },
+  {
+    "id": 304,
+    "ilce_id": 1,
+    "mahalle_adi": "Çırkan Mahallesi",
+    "slug": "cirkan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:49.947Z",
+    "updated_at": "2025-10-03T18:00:49.947Z",
+    "aciklama": null
+  },
+  {
+    "id": 305,
+    "ilce_id": 1,
+    "mahalle_adi": "Çiftlik Mahallesi",
+    "slug": "ciftlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.104Z",
+    "updated_at": "2025-10-03T18:00:50.104Z",
+    "aciklama": null
+  },
+  {
+    "id": 306,
+    "ilce_id": 1,
+    "mahalle_adi": "Çömlekçi Mahallesi",
+    "slug": "comlekci-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.263Z",
+    "updated_at": "2025-10-03T18:00:50.263Z",
+    "aciklama": null
+  },
+  {
+    "id": 307,
+    "ilce_id": 1,
+    "mahalle_adi": "Dağbelen Mahallesi",
+    "slug": "dagbelen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.420Z",
+    "updated_at": "2025-10-03T18:00:50.420Z",
+    "aciklama": null
+  },
+  {
+    "id": 308,
+    "ilce_id": 1,
+    "mahalle_adi": "Dereköy Mahallesi",
+    "slug": "derekoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.577Z",
+    "updated_at": "2025-10-03T18:00:50.577Z",
+    "aciklama": null
+  },
+  {
+    "id": 309,
+    "ilce_id": 1,
+    "mahalle_adi": "Dirmil Mahallesi",
+    "slug": "dirmil-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.733Z",
+    "updated_at": "2025-10-03T18:00:50.733Z",
+    "aciklama": null
+  },
+  {
+    "id": 310,
+    "ilce_id": 1,
+    "mahalle_adi": "Eskiçeşme Mahallesi",
+    "slug": "eskicesme-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:50.891Z",
+    "updated_at": "2025-10-03T18:00:50.891Z",
+    "aciklama": null
+  },
+  {
+    "id": 311,
+    "ilce_id": 1,
+    "mahalle_adi": "Farilya Mahallesi",
+    "slug": "farilya-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.046Z",
+    "updated_at": "2025-10-03T18:00:51.046Z",
+    "aciklama": null
+  },
+  {
+    "id": 312,
+    "ilce_id": 1,
+    "mahalle_adi": "Gökpınar Mahallesi",
+    "slug": "gokpinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.205Z",
+    "updated_at": "2025-10-03T18:00:51.205Z",
+    "aciklama": null
+  },
+  {
+    "id": 313,
+    "ilce_id": 1,
+    "mahalle_adi": "Gölbaşı Mahallesi",
+    "slug": "golbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.362Z",
+    "updated_at": "2025-10-03T18:00:51.362Z",
+    "aciklama": null
+  },
+  {
+    "id": 314,
+    "ilce_id": 1,
+    "mahalle_adi": "Gölköy Mahallesi",
+    "slug": "golkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.519Z",
+    "updated_at": "2025-10-03T18:00:51.519Z",
+    "aciklama": null
+  },
+  {
+    "id": 315,
+    "ilce_id": 1,
+    "mahalle_adi": "Gürece Mahallesi",
+    "slug": "gurece-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.674Z",
+    "updated_at": "2025-10-03T18:00:51.674Z",
+    "aciklama": null
+  },
+  {
+    "id": 316,
+    "ilce_id": 1,
+    "mahalle_adi": "Güvercinlik Mahallesi",
+    "slug": "guvercinlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.829Z",
+    "updated_at": "2025-10-03T18:00:51.829Z",
+    "aciklama": null
+  },
+  {
+    "id": 317,
+    "ilce_id": 1,
+    "mahalle_adi": "İslamhaneleri Mahallesi",
+    "slug": "i-slamhaneleri-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:51.985Z",
+    "updated_at": "2025-10-03T18:00:51.985Z",
+    "aciklama": null
+  },
+  {
+    "id": 318,
+    "ilce_id": 1,
+    "mahalle_adi": "Karabağ Mahallesi",
+    "slug": "karabag-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.142Z",
+    "updated_at": "2025-10-03T18:00:52.142Z",
+    "aciklama": null
+  },
+  {
+    "id": 319,
+    "ilce_id": 1,
+    "mahalle_adi": "Karaova Mahallesi",
+    "slug": "karaova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.297Z",
+    "updated_at": "2025-10-03T18:00:52.297Z",
+    "aciklama": null
+  },
+  {
+    "id": 320,
+    "ilce_id": 1,
+    "mahalle_adi": "Kemer Mahallesi",
+    "slug": "kemer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.455Z",
+    "updated_at": "2025-10-03T18:00:52.455Z",
+    "aciklama": null
+  },
+  {
+    "id": 321,
+    "ilce_id": 1,
+    "mahalle_adi": "Kızılağaç Mahallesi",
+    "slug": "kizilagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.611Z",
+    "updated_at": "2025-10-03T18:00:52.611Z",
+    "aciklama": null
+  },
+  {
+    "id": 322,
+    "ilce_id": 1,
+    "mahalle_adi": "Kumbahçe Mahallesi",
+    "slug": "kumbahce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.767Z",
+    "updated_at": "2025-10-03T18:00:52.767Z",
+    "aciklama": null
+  },
+  {
+    "id": 323,
+    "ilce_id": 1,
+    "mahalle_adi": "Kumköy Mahallesi",
+    "slug": "kumkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:52.925Z",
+    "updated_at": "2025-10-03T18:00:52.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 324,
+    "ilce_id": 1,
+    "mahalle_adi": "Küçükbük Mahallesi",
+    "slug": "kucukbuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.083Z",
+    "updated_at": "2025-10-03T18:00:53.083Z",
+    "aciklama": null
+  },
+  {
+    "id": 325,
+    "ilce_id": 1,
+    "mahalle_adi": "Mazıköy Mahallesi",
+    "slug": "mazikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.239Z",
+    "updated_at": "2025-10-03T18:00:53.239Z",
+    "aciklama": null
+  },
+  {
+    "id": 326,
+    "ilce_id": 1,
+    "mahalle_adi": "Peksimet Mahallesi",
+    "slug": "peksimet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.394Z",
+    "updated_at": "2025-10-03T18:00:53.394Z",
+    "aciklama": null
+  },
+  {
+    "id": 327,
+    "ilce_id": 1,
+    "mahalle_adi": "Pınarlıbelen Mahallesi",
+    "slug": "pinarlibelen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.549Z",
+    "updated_at": "2025-10-03T18:00:53.549Z",
+    "aciklama": null
+  },
+  {
+    "id": 328,
+    "ilce_id": 1,
+    "mahalle_adi": "Sazköy Mahallesi",
+    "slug": "sazkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.704Z",
+    "updated_at": "2025-10-03T18:00:53.704Z",
+    "aciklama": null
+  },
+  {
+    "id": 329,
+    "ilce_id": 1,
+    "mahalle_adi": "Tepecik Mahallesi",
+    "slug": "tepecik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:53.858Z",
+    "updated_at": "2025-10-03T18:00:53.858Z",
+    "aciklama": null
+  },
+  {
+    "id": 330,
+    "ilce_id": 1,
+    "mahalle_adi": "Türkkuyusu Mahallesi",
+    "slug": "turkkuyusu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:54.016Z",
+    "updated_at": "2025-10-03T18:00:54.016Z",
+    "aciklama": null
+  },
+  {
+    "id": 331,
+    "ilce_id": 1,
+    "mahalle_adi": "Yalıçiftlik Mahallesi",
+    "slug": "yaliciftlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:54.185Z",
+    "updated_at": "2025-10-03T18:00:54.185Z",
+    "aciklama": null
+  },
+  {
+    "id": 332,
+    "ilce_id": 1,
+    "mahalle_adi": "Yeniköy Mahallesi",
+    "slug": "yenikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:54.349Z",
+    "updated_at": "2025-10-03T18:00:54.349Z",
+    "aciklama": null
+  },
+  {
+    "id": 333,
+    "ilce_id": 1,
+    "mahalle_adi": "Yokuşbaşı Mahallesi",
+    "slug": "yokusbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-03T18:00:54.510Z",
+    "updated_at": "2025-10-03T18:00:54.510Z",
+    "aciklama": null
+  },
+  {
+    "id": 334,
+    "ilce_id": 5,
+    "mahalle_adi": "Akçataş Mahallesi",
+    "slug": "akcatas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 335,
+    "ilce_id": 5,
+    "mahalle_adi": "Altıntaş Mahallesi",
+    "slug": "altintas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 336,
+    "ilce_id": 5,
+    "mahalle_adi": "Atakent Mahallesi",
+    "slug": "atakent-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 337,
+    "ilce_id": 5,
+    "mahalle_adi": "Bezkese Mahallesi",
+    "slug": "bezkese-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 338,
+    "ilce_id": 5,
+    "mahalle_adi": "Bozbel Mahallesi",
+    "slug": "bozbel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 339,
+    "ilce_id": 5,
+    "mahalle_adi": "Çöğmen Mahallesi",
+    "slug": "cogmen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 340,
+    "ilce_id": 5,
+    "mahalle_adi": "Dariyeri Mahallesi",
+    "slug": "dariyeri-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 341,
+    "ilce_id": 5,
+    "mahalle_adi": "Ege Mahallesi",
+    "slug": "ege-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 342,
+    "ilce_id": 5,
+    "mahalle_adi": "Elçik Mahallesi",
+    "slug": "elcik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 343,
+    "ilce_id": 5,
+    "mahalle_adi": "Gürköy Mahallesi",
+    "slug": "gurkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 344,
+    "ilce_id": 5,
+    "mahalle_adi": "Gürleyk Mahallesi",
+    "slug": "gurleyk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 345,
+    "ilce_id": 5,
+    "mahalle_adi": "Hürriyet Mahallesi",
+    "slug": "hurriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 346,
+    "ilce_id": 5,
+    "mahalle_adi": "Kapukargin Mahallesi",
+    "slug": "kapukargin-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 347,
+    "ilce_id": 5,
+    "mahalle_adi": "Karacaağaç Mahallesi",
+    "slug": "karacaagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 348,
+    "ilce_id": 5,
+    "mahalle_adi": "Karaçalı Mahallesi",
+    "slug": "karacali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 349,
+    "ilce_id": 5,
+    "mahalle_adi": "Karginkürü Mahallesi",
+    "slug": "karginkuru-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 350,
+    "ilce_id": 5,
+    "mahalle_adi": "Kavacık Mahallesi",
+    "slug": "kavacik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 351,
+    "ilce_id": 5,
+    "mahalle_adi": "Kıyadibi Mahallesi",
+    "slug": "kiyadibi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 352,
+    "ilce_id": 5,
+    "mahalle_adi": "Kızılkaya Mahallesi",
+    "slug": "kizilkaya-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 353,
+    "ilce_id": 5,
+    "mahalle_adi": "Merkez Mahallesi",
+    "slug": "merkez-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 354,
+    "ilce_id": 5,
+    "mahalle_adi": "Narlı Mahallesi",
+    "slug": "narli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 355,
+    "ilce_id": 5,
+    "mahalle_adi": "Sabunlu Mahallesi",
+    "slug": "sabunlu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 356,
+    "ilce_id": 5,
+    "mahalle_adi": "Söğütlüyurt Mahallesi",
+    "slug": "sogutluyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 357,
+    "ilce_id": 5,
+    "mahalle_adi": "Şerefler Mahallesi",
+    "slug": "serefler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 358,
+    "ilce_id": 5,
+    "mahalle_adi": "Taşbaşı Mahallesi",
+    "slug": "tasbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:14:47.925Z",
+    "updated_at": "2025-10-31T11:14:47.925Z",
+    "aciklama": null
+  },
+  {
+    "id": 359,
+    "ilce_id": 6,
+    "mahalle_adi": "İskele Mahallesi",
+    "slug": "iskele-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 360,
+    "ilce_id": 6,
+    "mahalle_adi": "Eski Datça Mahallesi",
+    "slug": "eski-datca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 361,
+    "ilce_id": 6,
+    "mahalle_adi": "Reşadiye Mahallesi",
+    "slug": "resadiye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 362,
+    "ilce_id": 6,
+    "mahalle_adi": "Hızırşah Mahallesi",
+    "slug": "hizirşah-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 363,
+    "ilce_id": 6,
+    "mahalle_adi": "Kızlan Mahallesi",
+    "slug": "kizlan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 364,
+    "ilce_id": 6,
+    "mahalle_adi": "Emecik Mahallesi",
+    "slug": "emecik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 365,
+    "ilce_id": 6,
+    "mahalle_adi": "Karaköy Mahallesi",
+    "slug": "karakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 366,
+    "ilce_id": 6,
+    "mahalle_adi": "Mesudiye Mahallesi",
+    "slug": "mesudiye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 367,
+    "ilce_id": 6,
+    "mahalle_adi": "Sındı Mahallesi",
+    "slug": "sindi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 368,
+    "ilce_id": 6,
+    "mahalle_adi": "Yakaköy Mahallesi",
+    "slug": "yakakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 369,
+    "ilce_id": 6,
+    "mahalle_adi": "Cumalı Mahallesi",
+    "slug": "cumali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 370,
+    "ilce_id": 6,
+    "mahalle_adi": "Yazıköy Mahallesi",
+    "slug": "yazikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:16:51.196Z",
+    "updated_at": "2025-10-31T11:16:51.196Z",
+    "aciklama": null
+  },
+  {
+    "id": 371,
+    "ilce_id": 7,
+    "mahalle_adi": "Akarca Mahallesi",
+    "slug": "akarca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 372,
+    "ilce_id": 7,
+    "mahalle_adi": "Babataşı Mahallesi",
+    "slug": "babatasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 373,
+    "ilce_id": 7,
+    "mahalle_adi": "Bozyer Mahallesi",
+    "slug": "bozyer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 374,
+    "ilce_id": 7,
+    "mahalle_adi": "Cami Mahallesi",
+    "slug": "cami-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 375,
+    "ilce_id": 7,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 376,
+    "ilce_id": 7,
+    "mahalle_adi": "Çamköy Mahallesi",
+    "slug": "camkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 377,
+    "ilce_id": 7,
+    "mahalle_adi": "Çatalarik Mahallesi",
+    "slug": "catalarik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 378,
+    "ilce_id": 7,
+    "mahalle_adi": "Çenger Mahallesi",
+    "slug": "cenger-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 379,
+    "ilce_id": 7,
+    "mahalle_adi": "Çiftlik Mahallesi",
+    "slug": "ciftlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 380,
+    "ilce_id": 7,
+    "mahalle_adi": "Eldirek Mahallesi",
+    "slug": "eldirek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 381,
+    "ilce_id": 7,
+    "mahalle_adi": "Esenköy Mahallesi",
+    "slug": "esenkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 382,
+    "ilce_id": 7,
+    "mahalle_adi": "Faralya Mahallesi",
+    "slug": "faralya-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 383,
+    "ilce_id": 7,
+    "mahalle_adi": "Foça Mahallesi",
+    "slug": "foca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 384,
+    "ilce_id": 7,
+    "mahalle_adi": "Göcek Mahallesi",
+    "slug": "gocek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 385,
+    "ilce_id": 7,
+    "mahalle_adi": "Gökben Mahallesi",
+    "slug": "gokben-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 386,
+    "ilce_id": 7,
+    "mahalle_adi": "Gökçeovacık Mahallesi",
+    "slug": "gokceovacik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 387,
+    "ilce_id": 7,
+    "mahalle_adi": "İncirköy Mahallesi",
+    "slug": "incirkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 388,
+    "ilce_id": 7,
+    "mahalle_adi": "İnlice Mahallesi",
+    "slug": "inlice-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 389,
+    "ilce_id": 7,
+    "mahalle_adi": "Karaağaç Mahallesi",
+    "slug": "karaagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 390,
+    "ilce_id": 7,
+    "mahalle_adi": "Karacaören Mahallesi",
+    "slug": "karacaoren-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 391,
+    "ilce_id": 7,
+    "mahalle_adi": "Karaçulha Mahallesi",
+    "slug": "karaculha-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 392,
+    "ilce_id": 7,
+    "mahalle_adi": "Karagedik Mahallesi",
+    "slug": "karagedik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 393,
+    "ilce_id": 7,
+    "mahalle_adi": "Karagözler Mahallesi",
+    "slug": "karagozler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 394,
+    "ilce_id": 7,
+    "mahalle_adi": "Karakecililer Mahallesi",
+    "slug": "karakecililer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 395,
+    "ilce_id": 7,
+    "mahalle_adi": "Kargı Mahallesi",
+    "slug": "kargi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 396,
+    "ilce_id": 7,
+    "mahalle_adi": "Kayaköy Mahallesi",
+    "slug": "kayakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 397,
+    "ilce_id": 7,
+    "mahalle_adi": "Kesikkapi Mahallesi",
+    "slug": "kesikkapi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 398,
+    "ilce_id": 7,
+    "mahalle_adi": "Kizilbel Mahallesi",
+    "slug": "kizilbel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 399,
+    "ilce_id": 7,
+    "mahalle_adi": "Koruköy Mahallesi",
+    "slug": "korukoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 400,
+    "ilce_id": 7,
+    "mahalle_adi": "Menteşeoğlu Mahallesi",
+    "slug": "menteseoglu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 401,
+    "ilce_id": 7,
+    "mahalle_adi": "Nif Mahallesi",
+    "slug": "nif-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 402,
+    "ilce_id": 7,
+    "mahalle_adi": "Ölüdeniz Mahallesi",
+    "slug": "oludeniz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 403,
+    "ilce_id": 7,
+    "mahalle_adi": "Patlangiç Mahallesi",
+    "slug": "patlangic-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 404,
+    "ilce_id": 7,
+    "mahalle_adi": "Pazaryeri Mahallesi",
+    "slug": "pazaryeri-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 405,
+    "ilce_id": 7,
+    "mahalle_adi": "Söğütlü Mahallesi",
+    "slug": "sogutlu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 406,
+    "ilce_id": 7,
+    "mahalle_adi": "Taşyaka Mahallesi",
+    "slug": "tasyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 407,
+    "ilce_id": 7,
+    "mahalle_adi": "Tuzla Mahallesi",
+    "slug": "tuzla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 408,
+    "ilce_id": 7,
+    "mahalle_adi": "Yakacik Mahallesi",
+    "slug": "yakacik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 409,
+    "ilce_id": 7,
+    "mahalle_adi": "Yanıklar Mahallesi",
+    "slug": "yaniklar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 410,
+    "ilce_id": 7,
+    "mahalle_adi": "Yeni Mahallesi",
+    "slug": "yeni-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 411,
+    "ilce_id": 7,
+    "mahalle_adi": "Yeşilüzümlü Mahallesi",
+    "slug": "yesiluzumlu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:32:40.781Z",
+    "updated_at": "2025-10-31T11:32:40.781Z",
+    "aciklama": null
+  },
+  {
+    "id": 412,
+    "ilce_id": 8,
+    "mahalle_adi": "Bakırcılar Mahallesi",
+    "slug": "bakircilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 413,
+    "ilce_id": 8,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 414,
+    "ilce_id": 8,
+    "mahalle_adi": "Çamlıbel Mahallesi",
+    "slug": "camlibel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 415,
+    "ilce_id": 8,
+    "mahalle_adi": "Çamlıyurt Mahallesi",
+    "slug": "camliyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 416,
+    "ilce_id": 8,
+    "mahalle_adi": "Çatak Mahallesi",
+    "slug": "catak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 417,
+    "ilce_id": 8,
+    "mahalle_adi": "Çavdır Mahallesi",
+    "slug": "cavdir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 418,
+    "ilce_id": 8,
+    "mahalle_adi": "Çayboyu Mahallesi",
+    "slug": "cayboyu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 419,
+    "ilce_id": 8,
+    "mahalle_adi": "Derebağ Mahallesi",
+    "slug": "derebag-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 420,
+    "ilce_id": 8,
+    "mahalle_adi": "Kurucuova Mahallesi",
+    "slug": "kurucuova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 421,
+    "ilce_id": 8,
+    "mahalle_adi": "Menteşe Mahallesi",
+    "slug": "mentese-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 422,
+    "ilce_id": 8,
+    "mahalle_adi": "Nebiler Mahallesi",
+    "slug": "nebiler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 423,
+    "ilce_id": 8,
+    "mahalle_adi": "Ortaköy Mahallesi",
+    "slug": "ortakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 424,
+    "ilce_id": 8,
+    "mahalle_adi": "Salkım Mahallesi",
+    "slug": "salkim-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 425,
+    "ilce_id": 8,
+    "mahalle_adi": "Yeni Mahallesi",
+    "slug": "yeni-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 426,
+    "ilce_id": 8,
+    "mahalle_adi": "Yeşilköy Mahallesi",
+    "slug": "yesilkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:34:38.484Z",
+    "updated_at": "2025-10-31T11:34:38.484Z",
+    "aciklama": null
+  },
+  {
+    "id": 427,
+    "ilce_id": 9,
+    "mahalle_adi": "Akköprü Mahallesi",
+    "slug": "akkopru-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 428,
+    "ilce_id": 9,
+    "mahalle_adi": "Balcılar Mahallesi",
+    "slug": "balcilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 429,
+    "ilce_id": 9,
+    "mahalle_adi": "Beyobaşı Mahallesi",
+    "slug": "beyobasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 430,
+    "ilce_id": 9,
+    "mahalle_adi": "Çandır Mahallesi",
+    "slug": "candir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 431,
+    "ilce_id": 9,
+    "mahalle_adi": "Çayhisar Mahallesi",
+    "slug": "cayhisar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 432,
+    "ilce_id": 9,
+    "mahalle_adi": "Döğüşbelen Mahallesi",
+    "slug": "dogusbelen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 433,
+    "ilce_id": 9,
+    "mahalle_adi": "Ekincik Mahallesi",
+    "slug": "ekincik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 434,
+    "ilce_id": 9,
+    "mahalle_adi": "Gelişim Mahallesi",
+    "slug": "gelisim-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 435,
+    "ilce_id": 9,
+    "mahalle_adi": "Gülpınar Mahallesi",
+    "slug": "gulpinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 436,
+    "ilce_id": 9,
+    "mahalle_adi": "Hamitköy Mahallesi",
+    "slug": "hamitkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 437,
+    "ilce_id": 9,
+    "mahalle_adi": "Karaçam Mahallesi",
+    "slug": "karacam-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 438,
+    "ilce_id": 9,
+    "mahalle_adi": "Kavakarası Mahallesi",
+    "slug": "kavakarasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 439,
+    "ilce_id": 9,
+    "mahalle_adi": "Köyceğiz Mahallesi",
+    "slug": "koycegiz-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 440,
+    "ilce_id": 9,
+    "mahalle_adi": "Otmanlar Mahallesi",
+    "slug": "otmanlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 441,
+    "ilce_id": 9,
+    "mahalle_adi": "Pınar Mahallesi",
+    "slug": "pinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 442,
+    "ilce_id": 9,
+    "mahalle_adi": "Sazak Mahallesi",
+    "slug": "sazak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 443,
+    "ilce_id": 9,
+    "mahalle_adi": "Sultaniye Mahallesi",
+    "slug": "sultaniye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 444,
+    "ilce_id": 9,
+    "mahalle_adi": "Toparlar Mahallesi",
+    "slug": "toparlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 445,
+    "ilce_id": 9,
+    "mahalle_adi": "Ulucami Mahallesi",
+    "slug": "ulucami-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 446,
+    "ilce_id": 9,
+    "mahalle_adi": "Yangı Mahallesi",
+    "slug": "yangi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 447,
+    "ilce_id": 9,
+    "mahalle_adi": "Yayla Mahallesi",
+    "slug": "yayla-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 448,
+    "ilce_id": 9,
+    "mahalle_adi": "Yeni Mahallesi",
+    "slug": "yeni-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 449,
+    "ilce_id": 9,
+    "mahalle_adi": "Yeşilköy Mahallesi",
+    "slug": "yesilkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 450,
+    "ilce_id": 9,
+    "mahalle_adi": "Zaferler Mahallesi",
+    "slug": "zaferler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 451,
+    "ilce_id": 9,
+    "mahalle_adi": "Zeytinalanı Mahallesi",
+    "slug": "zeytinalani-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T11:59:16.645Z",
+    "updated_at": "2025-10-31T11:59:16.645Z",
+    "aciklama": null
+  },
+  {
+    "id": 452,
+    "ilce_id": 10,
+    "mahalle_adi": "Adaköy Mahallesi",
+    "slug": "adakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 453,
+    "ilce_id": 10,
+    "mahalle_adi": "Armutalan Mahallesi",
+    "slug": "armutalan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 454,
+    "ilce_id": 10,
+    "mahalle_adi": "Bayır Mahallesi",
+    "slug": "bayir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 455,
+    "ilce_id": 10,
+    "mahalle_adi": "Beldibi Mahallesi",
+    "slug": "beldibi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 456,
+    "ilce_id": 10,
+    "mahalle_adi": "Bozburun Mahallesi",
+    "slug": "bozburun-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 457,
+    "ilce_id": 10,
+    "mahalle_adi": "Camiavlu Mahallesi",
+    "slug": "camiavlu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 458,
+    "ilce_id": 10,
+    "mahalle_adi": "Çamdibi Mahallesi",
+    "slug": "camdibi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 459,
+    "ilce_id": 10,
+    "mahalle_adi": "Çamlı Mahallesi",
+    "slug": "camli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 460,
+    "ilce_id": 10,
+    "mahalle_adi": "Çetibeli Mahallesi",
+    "slug": "cetibeli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 461,
+    "ilce_id": 10,
+    "mahalle_adi": "Çıldır Mahallesi",
+    "slug": "cildir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 462,
+    "ilce_id": 10,
+    "mahalle_adi": "Gölenye Mahallesi",
+    "slug": "golenye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 463,
+    "ilce_id": 10,
+    "mahalle_adi": "Hatipirimi Mahallesi",
+    "slug": "hatipirimi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 464,
+    "ilce_id": 10,
+    "mahalle_adi": "Hisarönü Mahallesi",
+    "slug": "hisaronu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 465,
+    "ilce_id": 10,
+    "mahalle_adi": "İçmeler Mahallesi",
+    "slug": "icmeler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 466,
+    "ilce_id": 10,
+    "mahalle_adi": "Karaca Mahallesi",
+    "slug": "karaca-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 467,
+    "ilce_id": 10,
+    "mahalle_adi": "Karşıyaka Mahallesi",
+    "slug": "karsiyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 468,
+    "ilce_id": 10,
+    "mahalle_adi": "Kemeraltı Mahallesi",
+    "slug": "kemeralti-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 469,
+    "ilce_id": 10,
+    "mahalle_adi": "Orhaniye Mahallesi",
+    "slug": "orhaniye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 470,
+    "ilce_id": 10,
+    "mahalle_adi": "Osmaniye Mahallesi",
+    "slug": "osmaniye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 471,
+    "ilce_id": 10,
+    "mahalle_adi": "Sarıana Mahallesi",
+    "slug": "sariana-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 472,
+    "ilce_id": 10,
+    "mahalle_adi": "Selimiye Mahallesi",
+    "slug": "selimiye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 473,
+    "ilce_id": 10,
+    "mahalle_adi": "Sinan Mahallesi",
+    "slug": "sinan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 474,
+    "ilce_id": 10,
+    "mahalle_adi": "Siteler Mahallesi",
+    "slug": "siteler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 475,
+    "ilce_id": 10,
+    "mahalle_adi": "Söğüt Mahallesi",
+    "slug": "sogut-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 476,
+    "ilce_id": 10,
+    "mahalle_adi": "Taşlıca Mahallesi",
+    "slug": "taslica-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 477,
+    "ilce_id": 10,
+    "mahalle_adi": "Tepe Mahallesi",
+    "slug": "tepe-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 478,
+    "ilce_id": 10,
+    "mahalle_adi": "Turgut Mahallesi",
+    "slug": "turgut-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 479,
+    "ilce_id": 10,
+    "mahalle_adi": "Turunç Mahallesi",
+    "slug": "turunc-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 480,
+    "ilce_id": 10,
+    "mahalle_adi": "Yeşilbelde Mahallesi",
+    "slug": "yesilbelde-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 481,
+    "ilce_id": 10,
+    "mahalle_adi": "Yeşilova Mahallesi",
+    "slug": "yesilova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:00:48.156Z",
+    "updated_at": "2025-10-31T12:00:48.156Z",
+    "aciklama": null
+  },
+  {
+    "id": 482,
+    "ilce_id": 11,
+    "mahalle_adi": "Akıncı Mahallesi",
+    "slug": "akinci-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 483,
+    "ilce_id": 11,
+    "mahalle_adi": "Arıkbaşı Mahallesi",
+    "slug": "arikbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 484,
+    "ilce_id": 11,
+    "mahalle_adi": "Atatürk Mahallesi",
+    "slug": "ataturk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 485,
+    "ilce_id": 11,
+    "mahalle_adi": "Bahçelievler Mahallesi",
+    "slug": "bahcelievler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 486,
+    "ilce_id": 11,
+    "mahalle_adi": "Beşköprü Mahallesi",
+    "slug": "beskopru-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 487,
+    "ilce_id": 11,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 488,
+    "ilce_id": 11,
+    "mahalle_adi": "Çaylı Mahallesi",
+    "slug": "cayli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 489,
+    "ilce_id": 11,
+    "mahalle_adi": "Dalak Mahallesi",
+    "slug": "dalak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 490,
+    "ilce_id": 11,
+    "mahalle_adi": "Dalyan Mahallesi",
+    "slug": "dalyan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 491,
+    "ilce_id": 11,
+    "mahalle_adi": "Dereköy Mahallesi",
+    "slug": "derekoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 492,
+    "ilce_id": 11,
+    "mahalle_adi": "Dikmekavak Mahallesi",
+    "slug": "dikmekavak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 493,
+    "ilce_id": 11,
+    "mahalle_adi": "Ekşiliyurt Mahallesi",
+    "slug": "eksiliyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 494,
+    "ilce_id": 11,
+    "mahalle_adi": "Eskiköy Mahallesi",
+    "slug": "eskikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 495,
+    "ilce_id": 11,
+    "mahalle_adi": "Fevziye Mahallesi",
+    "slug": "fevziye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 496,
+    "ilce_id": 11,
+    "mahalle_adi": "Gökbel Mahallesi",
+    "slug": "gokbel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 497,
+    "ilce_id": 11,
+    "mahalle_adi": "Gölbaşı Mahallesi",
+    "slug": "golbasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 498,
+    "ilce_id": 11,
+    "mahalle_adi": "Güzelyurt Mahallesi",
+    "slug": "guzelyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 499,
+    "ilce_id": 11,
+    "mahalle_adi": "Karaburun Mahallesi",
+    "slug": "karaburun-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 500,
+    "ilce_id": 11,
+    "mahalle_adi": "Karadonlar Mahallesi",
+    "slug": "karadonlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 501,
+    "ilce_id": 11,
+    "mahalle_adi": "Kemaliye Mahallesi",
+    "slug": "kemaliye-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 502,
+    "ilce_id": 11,
+    "mahalle_adi": "Mergenli Mahallesi",
+    "slug": "mergenli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 503,
+    "ilce_id": 11,
+    "mahalle_adi": "Okçular Mahallesi",
+    "slug": "okcular-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 504,
+    "ilce_id": 11,
+    "mahalle_adi": "Sarıgerme Mahallesi",
+    "slug": "sarigerme-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 505,
+    "ilce_id": 11,
+    "mahalle_adi": "Tepearası Mahallesi",
+    "slug": "tepearasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 506,
+    "ilce_id": 11,
+    "mahalle_adi": "Terzialiler Mahallesi",
+    "slug": "terzialiler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 507,
+    "ilce_id": 11,
+    "mahalle_adi": "Yerbelen Mahallesi",
+    "slug": "yerbelen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 508,
+    "ilce_id": 11,
+    "mahalle_adi": "Yeşilyurt Mahallesi",
+    "slug": "yesilyurt-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:02:06.726Z",
+    "updated_at": "2025-10-31T12:02:06.726Z",
+    "aciklama": null
+  },
+  {
+    "id": 509,
+    "ilce_id": 12,
+    "mahalle_adi": "Alaçat Mahallesi",
+    "slug": "alacat-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 510,
+    "ilce_id": 12,
+    "mahalle_adi": "Arifler Mahallesi",
+    "slug": "arifler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 511,
+    "ilce_id": 12,
+    "mahalle_adi": "Arsaköy Mahallesi",
+    "slug": "arsakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 512,
+    "ilce_id": 12,
+    "mahalle_adi": "Atlıdere Mahallesi",
+    "slug": "atlidere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 513,
+    "ilce_id": 12,
+    "mahalle_adi": "Bağlıağaç Mahallesi",
+    "slug": "bagliagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 514,
+    "ilce_id": 12,
+    "mahalle_adi": "Bayırköy Mahallesi",
+    "slug": "bayirkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 515,
+    "ilce_id": 12,
+    "mahalle_adi": "Bekçiler Mahallesi",
+    "slug": "bekciler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 516,
+    "ilce_id": 12,
+    "mahalle_adi": "Belen Mahallesi",
+    "slug": "belen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 517,
+    "ilce_id": 12,
+    "mahalle_adi": "Boğalar Mahallesi",
+    "slug": "bogalar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 518,
+    "ilce_id": 12,
+    "mahalle_adi": "Boğaziçi Mahallesi",
+    "slug": "bogazici-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 519,
+    "ilce_id": 12,
+    "mahalle_adi": "Ceylan Mahallesi",
+    "slug": "ceylan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 520,
+    "ilce_id": 12,
+    "mahalle_adi": "Cumhuriyet Mahallesi",
+    "slug": "cumhuriyet-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 521,
+    "ilce_id": 12,
+    "mahalle_adi": "Çaltılar Mahallesi",
+    "slug": "caltilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 522,
+    "ilce_id": 12,
+    "mahalle_adi": "Çaltıözü Mahallesi",
+    "slug": "caltiozu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 523,
+    "ilce_id": 12,
+    "mahalle_adi": "Çamurköy Mahallesi",
+    "slug": "camurkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 524,
+    "ilce_id": 12,
+    "mahalle_adi": "Çatak Mahallesi",
+    "slug": "catak-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 525,
+    "ilce_id": 12,
+    "mahalle_adi": "Çayan Mahallesi",
+    "slug": "cayan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 526,
+    "ilce_id": 12,
+    "mahalle_adi": "Çaykenari Mahallesi",
+    "slug": "caykenari-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 527,
+    "ilce_id": 12,
+    "mahalle_adi": "Çobanisa Mahallesi",
+    "slug": "cobanisa-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 528,
+    "ilce_id": 12,
+    "mahalle_adi": "Çobanlar Mahallesi",
+    "slug": "cobanlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 529,
+    "ilce_id": 12,
+    "mahalle_adi": "Çökek Mahallesi",
+    "slug": "cokek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 530,
+    "ilce_id": 12,
+    "mahalle_adi": "Çukirincir Mahallesi",
+    "slug": "cukirincir-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 531,
+    "ilce_id": 12,
+    "mahalle_adi": "Demirler Mahallesi",
+    "slug": "demirler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 532,
+    "ilce_id": 12,
+    "mahalle_adi": "Dereköy Mahallesi",
+    "slug": "derekoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 533,
+    "ilce_id": 12,
+    "mahalle_adi": "Dodurga Mahallesi",
+    "slug": "dodurga-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 534,
+    "ilce_id": 12,
+    "mahalle_adi": "Doğanlar Mahallesi",
+    "slug": "doganlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 535,
+    "ilce_id": 12,
+    "mahalle_adi": "Dont Mahallesi",
+    "slug": "dont-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 536,
+    "ilce_id": 12,
+    "mahalle_adi": "Döğer Mahallesi",
+    "slug": "doger-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 537,
+    "ilce_id": 12,
+    "mahalle_adi": "Eşen Mahallesi",
+    "slug": "esen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 538,
+    "ilce_id": 12,
+    "mahalle_adi": "Gerişburnu Mahallesi",
+    "slug": "gerisburnu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 539,
+    "ilce_id": 12,
+    "mahalle_adi": "Girmeler Mahallesi",
+    "slug": "girmeler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 540,
+    "ilce_id": 12,
+    "mahalle_adi": "Gölbent Mahallesi",
+    "slug": "golbent-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 541,
+    "ilce_id": 12,
+    "mahalle_adi": "Güneşli Mahallesi",
+    "slug": "gunesli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 542,
+    "ilce_id": 12,
+    "mahalle_adi": "Hacıosmanlar Mahallesi",
+    "slug": "haciosmanlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 543,
+    "ilce_id": 12,
+    "mahalle_adi": "İzzettinköy Mahallesi",
+    "slug": "izzettinkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 544,
+    "ilce_id": 12,
+    "mahalle_adi": "Kabaağaç Mahallesi",
+    "slug": "kabaagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 545,
+    "ilce_id": 12,
+    "mahalle_adi": "Kadıköy Mahallesi",
+    "slug": "kadikoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 546,
+    "ilce_id": 12,
+    "mahalle_adi": "Karadere Mahallesi",
+    "slug": "karadere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 547,
+    "ilce_id": 12,
+    "mahalle_adi": "Karaköy Mahallesi",
+    "slug": "karakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 548,
+    "ilce_id": 12,
+    "mahalle_adi": "Kayabaşı Mahallesi",
+    "slug": "kayabasi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 549,
+    "ilce_id": 12,
+    "mahalle_adi": "Kayacık Mahallesi",
+    "slug": "kayacik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 550,
+    "ilce_id": 12,
+    "mahalle_adi": "Kayadibi Mahallesi",
+    "slug": "kayadibi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 551,
+    "ilce_id": 12,
+    "mahalle_adi": "Kıncılar Mahallesi",
+    "slug": "kincilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 552,
+    "ilce_id": 12,
+    "mahalle_adi": "Kınık Mahallesi",
+    "slug": "kinik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 553,
+    "ilce_id": 12,
+    "mahalle_adi": "Korubükü Mahallesi",
+    "slug": "korubuku-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 554,
+    "ilce_id": 12,
+    "mahalle_adi": "Kumluova Mahallesi",
+    "slug": "kumluova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 555,
+    "ilce_id": 12,
+    "mahalle_adi": "Menekşe Mahallesi",
+    "slug": "menekse-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 556,
+    "ilce_id": 12,
+    "mahalle_adi": "Minare Mahallesi",
+    "slug": "minare-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 557,
+    "ilce_id": 12,
+    "mahalle_adi": "Ortaköy Mahallesi",
+    "slug": "ortakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 558,
+    "ilce_id": 12,
+    "mahalle_adi": "Ören Mahallesi",
+    "slug": "oren-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 559,
+    "ilce_id": 12,
+    "mahalle_adi": "Paşalı Mahallesi",
+    "slug": "pasali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 560,
+    "ilce_id": 12,
+    "mahalle_adi": "Sahilceylan Mahallesi",
+    "slug": "sahilceylan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 561,
+    "ilce_id": 12,
+    "mahalle_adi": "Sarıyer Mahallesi",
+    "slug": "sariyer-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 562,
+    "ilce_id": 12,
+    "mahalle_adi": "Seki Mahallesi",
+    "slug": "seki-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 563,
+    "ilce_id": 12,
+    "mahalle_adi": "Seydiler Mahallesi",
+    "slug": "seydiler-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 564,
+    "ilce_id": 12,
+    "mahalle_adi": "Söğütlüdere Mahallesi",
+    "slug": "sogutludere-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 565,
+    "ilce_id": 12,
+    "mahalle_adi": "Temel Mahallesi",
+    "slug": "temel-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 566,
+    "ilce_id": 12,
+    "mahalle_adi": "Uğurlu Mahallesi",
+    "slug": "ugurlu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 567,
+    "ilce_id": 12,
+    "mahalle_adi": "Yakabağ Mahallesi",
+    "slug": "yakabag-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 568,
+    "ilce_id": 12,
+    "mahalle_adi": "Yakaköy Mahallesi",
+    "slug": "yakakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 569,
+    "ilce_id": 12,
+    "mahalle_adi": "Yayla Eldirek Mahallesi",
+    "slug": "yayla-eldirek-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 570,
+    "ilce_id": 12,
+    "mahalle_adi": "Yayla Gökben Mahallesi",
+    "slug": "yayla-gokben-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 571,
+    "ilce_id": 12,
+    "mahalle_adi": "Yayla Karaçulha Mahallesi",
+    "slug": "yayla-karaculha-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 572,
+    "ilce_id": 12,
+    "mahalle_adi": "Yaylapatlangıç Mahallesi",
+    "slug": "yaylapatlangic-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 573,
+    "ilce_id": 12,
+    "mahalle_adi": "Zorlar Mahallesi",
+    "slug": "zorlar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:17:33.996Z",
+    "updated_at": "2025-10-31T12:17:33.996Z",
+    "aciklama": null
+  },
+  {
+    "id": 574,
+    "ilce_id": 13,
+    "mahalle_adi": "Akçapınar Mahallesi",
+    "slug": "akcapinar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 575,
+    "ilce_id": 13,
+    "mahalle_adi": "Akyaka Mahallesi",
+    "slug": "akyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 576,
+    "ilce_id": 13,
+    "mahalle_adi": "Alparslan Mahallesi",
+    "slug": "alparslan-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 577,
+    "ilce_id": 13,
+    "mahalle_adi": "Arıcılar Mahallesi",
+    "slug": "aricilar-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 578,
+    "ilce_id": 13,
+    "mahalle_adi": "Armutçuk Mahallesi",
+    "slug": "armutcuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 579,
+    "ilce_id": 13,
+    "mahalle_adi": "Ataköy Mahallesi",
+    "slug": "atakoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 580,
+    "ilce_id": 13,
+    "mahalle_adi": "Ayazküyü Mahallesi",
+    "slug": "ayazkuyu-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 581,
+    "ilce_id": 13,
+    "mahalle_adi": "Çitlik Mahallesi",
+    "slug": "citlik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 582,
+    "ilce_id": 13,
+    "mahalle_adi": "Çiçekli Mahallesi",
+    "slug": "cicekli-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 583,
+    "ilce_id": 13,
+    "mahalle_adi": "Çörüş Mahallesi",
+    "slug": "corus-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 584,
+    "ilce_id": 13,
+    "mahalle_adi": "Demirtaş Mahallesi",
+    "slug": "demirtas-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 585,
+    "ilce_id": 13,
+    "mahalle_adi": "Elmalı Mahallesi",
+    "slug": "elmali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 586,
+    "ilce_id": 13,
+    "mahalle_adi": "Esentepe Mahallesi",
+    "slug": "esentepe-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 587,
+    "ilce_id": 13,
+    "mahalle_adi": "Gökçe Mahallesi",
+    "slug": "gokce-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 588,
+    "ilce_id": 13,
+    "mahalle_adi": "Gökova Mahallesi",
+    "slug": "gokova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 589,
+    "ilce_id": 13,
+    "mahalle_adi": "Gölcük Mahallesi",
+    "slug": "golcuk-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 590,
+    "ilce_id": 13,
+    "mahalle_adi": "Karabörtlen Mahallesi",
+    "slug": "karabortlen-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 591,
+    "ilce_id": 13,
+    "mahalle_adi": "Kavakçalı Mahallesi",
+    "slug": "kavakcali-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 592,
+    "ilce_id": 13,
+    "mahalle_adi": "Kıra Mahallesi",
+    "slug": "kira-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 593,
+    "ilce_id": 13,
+    "mahalle_adi": "Kızılağaç Mahallesi",
+    "slug": "kizilagac-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 594,
+    "ilce_id": 13,
+    "mahalle_adi": "Kızılyaka Mahallesi",
+    "slug": "kizilyaka-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 595,
+    "ilce_id": 13,
+    "mahalle_adi": "Köprübaşı Mahallesi",
+    "slug": "koprubaşi-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 596,
+    "ilce_id": 13,
+    "mahalle_adi": "Örnekköy Mahallesi",
+    "slug": "ornekkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 597,
+    "ilce_id": 13,
+    "mahalle_adi": "Portakallık Mahallesi",
+    "slug": "portakallik-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 598,
+    "ilce_id": 13,
+    "mahalle_adi": "Sarayyani Mahallesi",
+    "slug": "sarayyani-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 599,
+    "ilce_id": 13,
+    "mahalle_adi": "Şirinköy Mahallesi",
+    "slug": "sirinkoy-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 600,
+    "ilce_id": 13,
+    "mahalle_adi": "Turgut Mahallesi",
+    "slug": "turgut-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 601,
+    "ilce_id": 13,
+    "mahalle_adi": "Yaylasöğüt Mahallesi",
+    "slug": "yaylasogut-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 602,
+    "ilce_id": 13,
+    "mahalle_adi": "Yeşilçam Mahallesi",
+    "slug": "yesilcam-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  },
+  {
+    "id": 603,
+    "ilce_id": 13,
+    "mahalle_adi": "Yeşilova Mahallesi",
+    "slug": "yesilova-mahallesi",
+    "proje_sayisi": 0,
+    "created_at": "2025-10-31T12:22:03.657Z",
+    "updated_at": "2025-10-31T12:22:03.657Z",
+    "aciklama": null
+  }
+]

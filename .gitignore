@@ -51,3 +51,7 @@ service-account-key.json
 
 /lib/generated/prisma
 .env*
+
+# Static data snapshot for the GitHub Pages build
+!data/static/
+!data/static/*.json
