@@ -8,7 +8,7 @@ import {
 } from "@/lib/seo-utils";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import {
-  getLokasyonBySlug,
+  getAllLokasyonlar,
   getAllMahalleler,
   getAllHizmetler,
   getAllUrunler,
@@ -35,6 +35,16 @@ function findMahalleBySlug(
 ): Mahalle | null {
   const mahalleler = getAllMahalleler();
   return mahalleler.find((m) => m.ilce_id === ilceId && m.slug === mahalleSlug) || null;
+}
+
+export async function generateStaticParams() {
+  const lokasyonlar = getAllLokasyonlar();
+  return getAllMahalleler().flatMap((m) => {
+    const lokasyon = lokasyonlar.find((l) => l.id === m.ilce_id);
+    return lokasyon?.slug && m.slug
+      ? [{ slug: lokasyon.slug, mahalle: m.slug }]
+      : [];
+  });
 }
 
 export async function generateMetadata({

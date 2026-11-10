@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import BlogContent from "./blog-content";
+import { getAllBlogPosts } from "@/lib/static-data";
 
 export const metadata: Metadata = {
   title: "Blog | Gül-Tekin Mühendislik - Isı Pompası, Su Deposu, Hidrofor Rehberi",
@@ -42,5 +43,5 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  return <BlogContent />;
+  return <BlogContent allPosts={getAllBlogPosts()} />;
 }

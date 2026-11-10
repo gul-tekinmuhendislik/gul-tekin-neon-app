@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { getAllLokasyonlar, type Lokasyon } from "@/lib/static-data";
+import LokasyonlarContent from "./lokasyonlar-content";
 
 export const metadata: Metadata = {
   title: "Hizmet Verdiğimiz Lokasyonlar",

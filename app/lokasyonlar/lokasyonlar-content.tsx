@@ -10,7 +10,7 @@ interface Lokasyon {
   il?: string;
   aciklama?: string;
   resim_url?: string;
-  aktif: boolean;
+  aktif?: boolean;
   sira?: number;
 }
 

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build-static.mjs",
     "start": "next start",
     "export:data": "node scripts/export-static-data.js",
     "build:static": "next build",
@@ -15,7 +15,9 @@
     "test:ci": "jest --ci --coverage --maxWorkers=2",
     "prisma:generate": "prisma generate",
     "prisma:pull": "prisma db pull",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "build:next": "next build",
+    "export:tables": "node scripts/export-static-tables.js"
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.24",

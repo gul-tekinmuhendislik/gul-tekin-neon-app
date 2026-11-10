@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AnimatedCard } from "@/components/ui/animated-card";
-import { getAllBlogPosts, type BlogPost } from "@/lib/static-data";
+import type { BlogPost } from "@/lib/static-data";
 
 interface PaginationInfo {
   page: number;
@@ -15,7 +15,11 @@ interface PaginationInfo {
   hasPrev: boolean;
 }
 
-function BlogContent() {
+interface BlogContentProps {
+  allPosts: BlogPost[];
+}
+
+function BlogContent({ allPosts }: BlogContentProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const currentPage = parseInt(searchParams.get('page') || '1');
@@ -28,7 +32,6 @@ function BlogContent() {
   useEffect(() => {
     setLoading(true);
     try {
-      const allPosts = getAllBlogPosts();
       const totalPosts = allPosts.length;
       const totalPages = Math.ceil(totalPosts / limit);
       const page = Math.max(1, Math.min(currentPage, totalPages || 1));
@@ -51,7 +54,7 @@ function BlogContent() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, allPosts]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("tr-TR", {
@@ -317,7 +320,7 @@ function BlogContent() {
   );
 }
 
-export default function BlogPage() {
+export default function BlogPage({ allPosts }: BlogContentProps) {
   return (
     <Suspense
       fallback={
@@ -345,7 +348,7 @@ export default function BlogPage() {
         </div>
       }
     >
-      <BlogContent />
+      <BlogContent allPosts={allPosts} />
     </Suspense>
   );
 }

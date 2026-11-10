@@ -6,8 +6,7 @@ import { getAllProjeler } from '@/lib/static-data';
 import { getAllLokasyonlar } from '@/lib/static-data';
 import { getAllMahalleler } from '@/lib/static-data';
 
-export const dynamic = 'error';
-export const revalidate = 3600;
+export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://gul-tekinmuhendislik.com';

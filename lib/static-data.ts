@@ -251,7 +251,8 @@ export function getAllBlogPosts(): BlogPost[] {
     .map((g) => ({
       id: g.id,
       title: g.title,
-      slug: g.slug!,
+      // Some generated slugs contain literal quotes, which are invalid in file paths
+      slug: g.slug!.replace(/"/g, ""),
       content: g.content,
       summary: g.meta_description,
       image_url: g.image_url,

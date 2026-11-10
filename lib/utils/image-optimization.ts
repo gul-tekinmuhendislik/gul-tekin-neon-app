@@ -1,5 +1,3 @@
-import { getOptimizedImageUrl } from '@/lib/cloudinary';
-
 export interface ImageOptimizationConfig {
   quality?: 'auto:low' | 'auto:eco' | 'auto:good' | 'auto:best' | number;
   format?: 'auto' | 'webp' | 'avif';
@@ -65,13 +63,38 @@ export function getOptimizedUrl(
   // Merge config with defaults
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
   
-  return getOptimizedImageUrl(publicId, width, height, {
+  return buildCloudinaryTransformUrl(url, width, height, {
     quality: finalConfig.quality,
     fetch_format: finalConfig.format,
     crop: 'fill',
     gravity: 'auto',
     dpr: 'auto'
   });
+}
+
+// Builds a transformed Cloudinary delivery URL by inserting the transformation segment
+// after "/upload/". Pure string work, so it is safe in client bundles (the Node
+// cloudinary SDK in lib/cloudinary.ts cannot be bundled for the browser).
+function buildCloudinaryTransformUrl(
+  url: string,
+  width: number | undefined,
+  height: number | undefined,
+  options: { quality?: string | number; fetch_format?: string; crop?: string; gravity?: string; dpr?: string | number }
+): string {
+  const segments: string[] = [];
+  if (width) segments.push(`w_${width}`);
+  if (height) segments.push(`h_${height}`);
+  if (options.crop) segments.push(`c_${options.crop}`);
+  if (options.gravity) segments.push(`g_${options.gravity}`);
+  if (options.quality !== undefined) segments.push(`q_${options.quality}`);
+  if (options.fetch_format) segments.push(`f_${options.fetch_format}`);
+  if (options.dpr !== undefined) segments.push(`dpr_${options.dpr}`);
+
+  const marker = '/upload/';
+  const index = url.indexOf(marker);
+  if (index === -1 || segments.length === 0) return url;
+  const insertAt = index + marker.length;
+  return `${url.slice(0, insertAt)}${segments.join(',')}/${url.slice(insertAt)}`;
 }
 
 export function getResponsiveSrcSet(

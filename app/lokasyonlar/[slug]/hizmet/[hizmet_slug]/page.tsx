@@ -4,7 +4,8 @@ import Image from "next/image";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import { createTitle } from "@/lib/seo-utils";
 import {
-  getLokasyonBySlug,
+  getAllLokasyonlar,
+  getAllHizmetler,
   getHizmetBySlug,
   getAllUrunler,
   type Lokasyon,
@@ -21,6 +22,18 @@ interface LokasyonHizmetPageProps {
 function findLokasyonBySlug(slug: string): Lokasyon | null {
   const lokasyonlar = getAllLokasyonlar();
   return lokasyonlar.find((l) => l.slug === slug) || null;
+}
+
+export async function generateStaticParams() {
+  const lokasyonlar = getAllLokasyonlar();
+  const hizmetler = getAllHizmetler();
+  return lokasyonlar.flatMap((l) =>
+    l.slug
+      ? hizmetler
+          .filter((h) => h.slug)
+          .map((h) => ({ slug: l.slug, hizmet_slug: h.slug }))
+      : []
+  );
 }
 
 export async function generateMetadata({

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import {
-  getLokasyonBySlug,
+  getAllLokasyonlar,
   getAllMahalleler,
   getAllHizmetler,
   getAllUrunler,
@@ -22,6 +22,12 @@ interface LokasyonPageProps {
 function findLokasyonBySlug(slug: string): Lokasyon | null {
   const lokasyonlar = getAllLokasyonlar();
   return lokasyonlar.find((l) => l.slug === slug) || null;
+}
+
+export async function generateStaticParams() {
+  return getAllLokasyonlar()
+    .filter((l) => l.slug)
+    .map((l) => ({ slug: l.slug }));
 }
 
 export async function generateMetadata({
@@ -135,7 +141,6 @@ export default function LokasyonDetayPage({
             "@type": "City",
             name: lokasyon.ilce_adi,
           },
-    },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Mühendislik Hizmetleri",
