@@ -10,8 +10,7 @@ type FormData = {
   message: string;
 };
 
-// Formspree endpoint — replace with your own Formspree form action URL
-const FORMSPREE_ACTION = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_ACTION = "https://formspree.io/f/mvkapqpl";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,10 +21,11 @@ export default function ContactForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data: FormData = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
@@ -48,7 +48,7 @@ export default function ContactForm() {
           type: "success",
           message: "Mesajınız başarıyla gönderildi! En kısa sürede size dönüş yapacağız.",
         });
-        (e.currentTarget as HTMLFormElement).reset();
+        form.reset();
       } else {
         setSubmitStatus({
           type: "error",
@@ -69,7 +69,7 @@ export default function ContactForm() {
   const labelClassName = "block text-sm font-medium text-gray-800";
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5" action={FORMSPREE_ACTION} method="POST" encType="application/json">
+    <form onSubmit={onSubmit} className="space-y-5" action={FORMSPREE_ACTION} method="POST">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClassName}>Ad Soyad</label>

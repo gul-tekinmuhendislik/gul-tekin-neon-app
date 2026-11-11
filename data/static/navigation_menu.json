@@ -106,29 +106,5 @@
     "target": "_self",
     "created_at": "2025-09-06T18:57:08.586Z",
     "updated_at": "2025-09-11T17:05:05.692Z"
-  },
-  {
-    "id": 13,
-    "title": "Fabrika Gezisi",
-    "href": "/fabrika-gezisi",
-    "order_index": 1,
-    "is_active": true,
-    "parent_id": 8,
-    "icon": null,
-    "target": "_self",
-    "created_at": "2025-10-06T05:47:33.169Z",
-    "updated_at": "2025-10-06T05:47:33.169Z"
-  },
-  {
-    "id": 14,
-    "title": "Biten Projeler",
-    "href": "/projeler",
-    "order_index": 11,
-    "is_active": true,
-    "parent_id": 8,
-    "icon": null,
-    "target": "_self",
-    "created_at": "2025-10-28T03:55:40.456Z",
-    "updated_at": "2025-10-28T03:55:40.456Z"
   }
 ]
