@@ -32,7 +32,7 @@ interface SlideData {
 const slides: SlideData[] = [
   {
     id: 1,
-    image: "/images/hero/varmeks-hero-1.jpg",
+    image: "/images/hero/varmeks-hero-1.webp",
     badge: "Ege & Akdeniz Mimarisine Özel İklimlendirme",
     title: "Varmeks Yeni Nesil",
     highlight: "Isı Pompası Sistemleri",
@@ -47,7 +47,7 @@ const slides: SlideData[] = [
   },
   {
     id: 2,
-    image: "/images/hero/varmeks-hero-2.jpg",
+    image: "/images/hero/varmeks-hero-2.webp",
     badge: "R290 Çevre Dostu Soğutucu Akışkan",
     title: "A+++ DC Inverter",
     highlight: "Yüksek Verimli Teknoloji",
@@ -62,7 +62,7 @@ const slides: SlideData[] = [
   },
   {
     id: 3,
-    image: "/images/hero/varmeks-hero-3.jpg",
+    image: "/images/hero/varmeks-hero-3.webp",
     badge: "Hibrit Enerji Mühendisliği",
     title: "Güneş Enerjisi &",
     highlight: "Sıfır Karbon Konfor",
