@@ -9,14 +9,14 @@ import { createTitle, validateAltText } from '@/lib/seo-utils';
 export const revalidate = 3600;
 
 export const metadata = {
-  title: createTitle('Yatay Su Depoları - Polietilen ve Polyester Su Tankları | Gül-Tekin Mühendislik'),
-  description: 'Yatay su depoları, polietilen su tankları ve polyester su depoları. Toprak altı ve toprak üstü su depolama çözümleri. Bodrum, Muğla bölgesinde montaj hizmeti.',
+  title: createTitle('Su Deposu Fiyatları ve Modelleri | Bodrum, Muğla - Gül-Tekin'),
+  description: 'Bodrum ve Muğla için polietilen, polyester ve farklı kapasitelerde su deposu modelleri. Fiyatı belirleyen kapasite, malzeme, nakliye ve montaj koşullarını öğrenin.',
   alternates: {
     canonical: 'https://gul-tekinmuhendislik.com/urunler/yatay-su-depolari',
   },
   openGraph: {
-    title: 'Yatay Su Depoları - Su Tankları',
-    description: 'Yatay ve dikey su depoları. Polietilen ve polyester su tankları.',
+    title: 'Su Deposu Modelleri ve Fiyatı Etkileyen Unsurlar | Gül-Tekin',
+    description: 'Bodrum ve Muğla’da su deposu seçimi, kapasite ve fiyatı etkileyen unsurlar.',
     url: 'https://gul-tekinmuhendislik.com/urunler/yatay-su-depolari',
   }
 };
@@ -44,7 +44,7 @@ export default function YataySuDepolariPage() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Su Depoları",
-    "description": "Yatay ve dikey su depoları, polietilen ve polyester su tankları",
+    "description": "Bodrum ve Muğla için farklı kapasite ve malzemelerde su deposu modelleri; kapasite, malzeme, nakliye ve montaj fiyatı etkiler.",
     "url": "https://gul-tekinmuhendislik.com/urunler/yatay-su-depolari",
     "numberOfItems": products.length
   };
@@ -76,11 +76,75 @@ export default function YataySuDepolariPage() {
               Su Depoları
             </h1>
             <p className="text-lg text-gray-600 max-w-3xl">
-              Yatay ve dikey su depoları, polietilen ve polyester su tankları.
-              Toprak altı ve toprak üstü su depolama çözümleri.
-              100 litreden 130.000 litreye kadar çeşitli kapasitelerde.
+              Yatay ve dikey, polietilen ve polyester su depoları; toprak üstü ve
+              toprak altı seçenekleriyle 100 litreden 130.000 litreye kadar farklı
+              ihtiyaçlara yönelik modeller. Bodrum ve Muğla’da kapasite seçimi,
+              nakliye ve montaj koşulları için bilgi alın.
             </p>
           </div>
+
+          <section
+            aria-labelledby="water-tank-guide-title"
+            className="mb-12 rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8"
+          >
+            <h2 id="water-tank-guide-title" className="text-2xl font-bold text-gray-900">
+              Bodrum su deposu fiyatları ve seçim rehberi
+            </h2>
+            <p className="mt-3 max-w-4xl leading-7 text-gray-600">
+              Su deposunun fiyatı yalnızca litre kapasitesine göre belirlenmez.
+              Depolanacak suyun kullanım amacı, deponun konulacağı alan ve montaj
+              koşulları da doğru ürünün ve toplam teklifin belirlenmesinde etkilidir.
+              Bu nedenle güncel bir fiyat karşılaştırması yaparken ürün ve kurulum
+              kapsamını birlikte değerlendirin.
+            </p>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Fiyatı hangi unsurlar etkiler?
+                </h3>
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-gray-600">
+                  <li>Depo hacmi, ölçüleri ve yatay ya da dikey tasarımı</li>
+                  <li>Polietilen, polyester veya ihtiyaca uygun başka bir malzeme</li>
+                  <li>Toprak üstü ya da toprak altı kullanımına uygunluk</li>
+                  <li>Bodrum ve Muğla’daki teslimat adresi, erişim ve taşıma koşulları</li>
+                  <li>Zemin hazırlığı, bağlantı ekipmanları ve montaj işçiliği</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Kapasiteyi nasıl belirlemeli?
+                </h3>
+                <p className="mt-3 leading-7 text-gray-600">
+                  Kullanıcı sayısı ve günlük tüketimin yanında su kesintilerinin
+                  süresini, bahçe sulama gibi ek ihtiyaçları, mevcut alanı ve suyun
+                  kullanım amacını da hesaba katın. Gereğinden büyük depo maliyeti
+                  ve kapladığı alanı artırabilir; kesin kapasiteyi yerinde koşullar
+                  ve kullanım bilgileriyle belirlemek daha sağlıklıdır.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 border-t border-gray-100 pt-5">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Su deposu hidroforla birlikte mi kullanılmalı?
+              </h3>
+              <p className="mt-2 leading-7 text-gray-600">
+                Depo suyu saklar; hidrofor ise tesisatın ihtiyaç duyduğu debi ve
+                basınca göre suyu iletir. Şebeke basıncı, bina kat sayısı ve aynı
+                anda kullanılabilecek noktalar uygunsa hidrofor gerekebilir.
+                Hidroforlu su deposu seçimi ve maliyeti hakkında ayrıntılar için{" "}
+                <Link
+                  href="/blog/su-depoları-ve-hidrofor-sistemleri-fiyatları-2024-2025-10-03"
+                  className="font-medium text-blue-700 underline decoration-blue-300 underline-offset-2 hover:text-blue-900"
+                >
+                  su deposu ve hidrofor rehberimizi inceleyin
+                </Link>
+                .
+              </p>
+            </div>
+          </section>
 
           {/* Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
