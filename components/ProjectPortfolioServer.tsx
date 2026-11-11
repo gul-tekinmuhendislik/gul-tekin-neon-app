@@ -18,7 +18,13 @@ interface Proje {
 function getRandomProjects(): Proje[] {
   try {
     const allProjects = getAllProjeler()
-      .filter((p) => p.aktif !== false && p.cloudinary_url && p.aciklama);
+      .filter(
+        (p) =>
+          p.aktif !== false &&
+          p.cloudinary_url &&
+          p.aciklama &&
+          p.bitis_tarihi
+      );
 
     // Fisher-Yates shuffle
     const shuffled = [...allProjects];
