@@ -17,6 +17,9 @@ import {
 
 export const revalidate = 3600;
 
+const STANDART_DESCRIPTION =
+  "STANDART Pompa, 1957'den beri pompa üretimi yapan yerli bir üreticidir. Endüstriyel ve petrokimya pompalarının yanı sıra bu sayfada listelenen STANDART hidrofor modellerini inceleyin; ürün özellikleri ve teklif için Gül-Tekin Mühendislik ile iletişime geçin.";
+
 export async function generateStaticParams() {
   const markalar = getAllMarkalar();
   return markalar
@@ -43,21 +46,33 @@ export async function generateMetadata({
     title:
       slug === "aldea"
         ? "Aldea Isı Pompaları ve Blue Serisi Devreye Alma | Gül-Tekin"
+        : slug === "standart"
+          ? "STANDART Pompa ve Hidrofor Modelleri | Gül-Tekin"
         : `${marka.marka_adi} | Gül-Tekin Mühendislik${
             marka.yetkili_servis ? " - Yetkili Servis" : ""
           }`,
     description:
       slug === "aldea"
         ? "Aldea Blue ALD-DAMB ısı pompaları, nominal debi bilgileri ve montaj sonrası devreye alma kontrol listesi. Model kılavuzu ve uzman servisle güvenli çalışma."
+        : slug === "standart"
+          ? STANDART_DESCRIPTION
         : marka.aciklama ||
           `${marka.marka_adi} ürünleri ve ${marka.yetkili_servis ? "yetkili " : ""}servis hizmetleri. Muğla bölgesinde profesyonel çözümler.`,
     keywords:
       slug === "aldea"
         ? "Aldea ısı pompası, Aldea Blue, ALD-DAMB10, ALD-DAMB13, ALD-DAMB16, ısı pompası devreye alma, Bodrum ısı pompası"
+        : slug === "standart"
+          ? "STANDART Pompa, STANDART hidrofor, endüstriyel pompa, petrokimya pompaları, Muğla, Bodrum"
         : `${marka.marka_adi}, ${marka.kategori || "mekanik tesisat"}, ${marka.yetkili_servis ? "yetkili servis, " : ""}Muğla, Bodrum`,
     openGraph: {
-      title: `${marka.marka_adi} | Gül-Tekin Mühendislik`,
-      description: marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
+      title:
+        slug === "standart"
+          ? "STANDART Pompa ve Hidrofor Modelleri | Gül-Tekin Mühendislik"
+          : `${marka.marka_adi} | Gül-Tekin Mühendislik`,
+      description:
+        slug === "standart"
+          ? STANDART_DESCRIPTION
+          : marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
       type: "website",
       locale: "tr_TR",
       siteName: "Gül-Tekin Mühendislik",
@@ -96,7 +111,10 @@ export default async function MarkaDetailPage({
     "@context": "https://schema.org",
     "@type": "Brand",
     name: marka.marka_adi,
-    description: marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
+    description:
+      slug === "standart"
+        ? STANDART_DESCRIPTION
+        : marka.aciklama || `${marka.marka_adi} ürünleri ve servis hizmetleri`,
     logo: marka.cloudinary_url || marka.logo_url,
     url: marka.website || `https://gul-tekinmuhendislik.com/markalar/${slug}`,
     slogan: marka.yetkili_servis ? "Yetkili Servis" : undefined,
@@ -201,7 +219,7 @@ export default async function MarkaDetailPage({
               <div className="md:w-2/3 p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                    {marka.marka_adi}
+                    {slug === "standart" ? "STANDART Pompa" : marka.marka_adi}
                   </h1>
                   {marka.yetkili_servis && (
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
@@ -214,9 +232,9 @@ export default async function MarkaDetailPage({
                   <p className="text-gray-500 mb-4">{marka.kategori}</p>
                 )}
 
-                {marka.aciklama && (
+                {(slug === "standart" || marka.aciklama) && (
                   <p className="text-gray-700 leading-relaxed mb-6">
-                    {marka.aciklama}
+                    {slug === "standart" ? STANDART_DESCRIPTION : marka.aciklama}
                   </p>
                 )}
 
@@ -239,7 +257,7 @@ export default async function MarkaDetailPage({
 
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              {marka.marka_adi} Ürünleri
+              {slug === "standart" ? "STANDART Pompa Modelleri" : `${marka.marka_adi} Ürünleri`}
               <span className="ml-3 text-lg text-gray-500 font-normal">
                 ({urunler.length} ürün)
               </span>
